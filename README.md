@@ -33,9 +33,9 @@ AuthAPI uses Maven to handle its dependencies.
 Coding and Pull Request Conventions
 -----------------------------------
 * Generally follow the Oracle coding standards.
+* 80 column limit.
 * Use tabs, no spaces.
 * No trailing whitespaces.
-* No 80 column limit or midstatement newlines.
 * Pull requests must compile and work.
 * Pull requests must be formatted properly.
 * Number of commits in a pull request should be kept to a minimum.

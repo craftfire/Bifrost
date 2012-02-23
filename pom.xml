@@ -51,6 +51,15 @@
 		</repository>
 	</repositories>
 
+	<!-- Dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>com.craftfire</groupId>
+			<artifactId>commons</artifactId>
+			<version>dev-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
 	<!-- Build -->
 	<build>
 		<defaultGoal>clean install</defaultGoal>
