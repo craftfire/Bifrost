@@ -17,38 +17,39 @@
 package com.craftfire.authapi.classes;
 
 import java.util.Date;
+import java.util.List;
 
 public class Thread implements ThreadInterface {
-	private final String author, authorip, subject, body;
-	private final int postid, threadid, boardid, authorid, threadviews, threadreplies;
-	private final Date threaddate;
-	private final boolean locked, poll, sticky;
+	private final Script script;
+	private ScriptUser author;
+	private String subject, body;
+	private int firstpostid, lastpostid, threadid;
+	private final int boardid;
+	private int threadviews, threadreplies;
+	private Date threaddate;
+	private boolean locked, poll, sticky;
 
-	public Thread(int postid, int threadid, int boardid, Date threaddate, int authorid, String author, String authorip, String subject, String body, int threadviews, int threadreplies, boolean locked, boolean poll, boolean sticky) {
-		this.postid = postid;
+	public Thread(Script script, int firstpostid, int lastpostid, int threadid, int boardid) {
+		this.script = script;
+		this.firstpostid = firstpostid;
+		this.lastpostid = lastpostid;
 		this.threadid = threadid;
 		this.boardid = boardid;
-		this.threaddate = threaddate;
-		this.authorid = authorid;
-		this.author = author;
-		this.authorip = authorip;
-		this.subject = subject;
-		this.body = body;
-		this.threadviews = threadviews;
-		this.threadreplies = threadreplies;
-		this.locked = locked;
-		this.poll = poll;
-		this.sticky = sticky;
+	}
+
+	public Thread(Script script, int boardid) {
+		this.script = script;
+		this.boardid = boardid;
 	}
 
 	@Override
-	public int getPostID() {
-		return this.postid;
-	}
-
-	@Override
-	public int getThreadID() {
+	public int getID() {
 		return this.threadid;
+	}
+
+	@Override
+	public void setID(int id) {
+		this.threadid = id;
 	}
 
 	@Override
@@ -57,23 +58,38 @@ public class Thread implements ThreadInterface {
 	}
 
 	@Override
+	public List<Post> getPosts(int limit) {
+		return this.script.getPostsFromThread(this.threadid, limit);
+	}
+
+	@Override
+	public Post getFirstPost() {
+		return this.script.getPost(this.firstpostid);
+	}
+
+	@Override
+	public Post getLastPost() {
+		return this.script.getPost(this.lastpostid);
+	}
+
+	@Override
 	public Date getThreadDate() {
 		return this.threaddate;
 	}
 
 	@Override
-	public int getAuthorID() {
-		return this.authorid;
+	public void setThreadDate(Date threaddate) {
+		this.threaddate = threaddate;
 	}
 
 	@Override
-	public String getAuthor() {
+	public ScriptUser getAuthor() {
 		return this.author;
 	}
 
 	@Override
-	public String getAuthorIP() {
-		return this.authorip;
+	public void setAuthor(ScriptUser author) {
+		this.author = author;
 	}
 
 	@Override
@@ -82,8 +98,18 @@ public class Thread implements ThreadInterface {
 	}
 
 	@Override
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	@Override
 	public String getBody() {
 		return this.body;
+	}
+
+	@Override
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	@Override
@@ -92,8 +118,18 @@ public class Thread implements ThreadInterface {
 	}
 
 	@Override
+	public void setViews(int threadviews) {
+		this.threadviews = threadviews;
+	}
+
+	@Override
 	public int getReplies() {
 		return this.threadreplies;
+	}
+
+	@Override
+	public void setReplies(int threadreplies) {
+		this.threadreplies = threadreplies;
 	}
 
 	@Override
@@ -102,12 +138,37 @@ public class Thread implements ThreadInterface {
 	}
 
 	@Override
+	public void setLocked(boolean isLocked) {
+		this.locked = isLocked;
+	}
+
+	@Override
 	public boolean isPoll() {
 		return this.poll;
 	}
 
 	@Override
+	public void setPoll(boolean isPoll) {
+		this.poll = isPoll;
+	}
+
+	@Override
 	public boolean isSticky() {
 		return this.sticky;
+	}
+
+	@Override
+	public void setSticky(boolean isSticky) {
+		this.sticky = isSticky;
+	}
+
+	@Override
+	public void updateThread() {
+		this.script.updateThread(this);
+	}
+
+	@Override
+	public void createThread() {
+		this.script.createThread(this);
 	}
 }

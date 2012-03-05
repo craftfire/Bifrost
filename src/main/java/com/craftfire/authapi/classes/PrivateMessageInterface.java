@@ -18,50 +18,48 @@ package com.craftfire.authapi.classes;
 
 import java.util.Date;
 
-public interface BanInterface {
+public interface PrivateMessageInterface {
 	public int getID();
 
 	public void setID(int id);
-
-	public String getName();
-
-	public void setName(String name);
-
-	public int getUserID();
-
-	public void setUserID(int userid);
-
-	public String getEmail();
-
-	public void setEmail(String email);
-
-	public String getIP();
-
-	public void setIP(String ip);
-
-	public long getTimeLength();
-
-	public long getTimeRemaining();
-
-	public String getReason();
-
-	public void setReason(String reason);
-
-	public String getNotes();
-
-	public void setNotes(String notes);
-
-	public Date getStartDate();
-
-	public void setStartDate(Date startdate);
-
-	public Date getEndDate();
 	
-	public void setEndDate(Date enddate);
-
-	public boolean isPermanent();
+	public ScriptUser getFromUser();
 	
-	public void updateBan();
+	public void setFromUser(ScriptUser user);
+	
+	public ScriptUser getToUser();
+	
+	public void setToUser(ScriptUser user);
+	
+	public Date getDate();
+	
+	public void setDate(Date date);
+	
+	public String getSubject();
+	
+	public void setSubject(String subject);
+	
+	public String getBody();
+	
+	public void setBody(String body);
 
-	public void addBan();
+	public boolean isDeletedBySender();
+	
+	public void setDeletedBySender(boolean deleted);
+
+	public boolean isRead();
+	
+	public void setRead(boolean read);
+	
+	public boolean isNew();
+	
+	public void setNew(boolean isnew);
+	
+	public boolean isDeleted();
+	
+	public void setDeleted(boolean deleted);
+	
+	public void updatePrivateMessage();
+
+	public void createPrivateMessage();
 }

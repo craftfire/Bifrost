@@ -19,26 +19,34 @@ package com.craftfire.authapi.classes;
 import java.util.Date;
 
 public class Post implements PostInterface {
-	private final String author, authorip, authoremail, subject, body;
-	private final int postid, threadid, boardid, authorid;
-	private final Date postdate;
+	private final Script script;
+	private ScriptUser author;
+	private String subject, body;
+	private int postid;
+	private final int threadid, boardid;
+	private Date postdate;
 
-	public Post(int postid, int threadid, int boardid, Date postdate, int authorid, String author, String authoremail, String authorip, String subject, String body) {
+	public Post(Script script, int postid, int threadid, int boardid) {
+		this.script = script;
 		this.postid = postid;
 		this.threadid = threadid;
 		this.boardid = boardid;
-		this.postdate = postdate;
-		this.authorid  = authorid;
-		this.author = author;
-        this.authoremail = authoremail;
-		this.authorip = authorip;
-		this.subject = subject;
-		this.body = body;
+	}
+
+	public Post(Script script, int threadid, int boardid) {
+		this.script = script;
+		this.threadid = threadid;
+		this.boardid = boardid;
 	}
 
 	@Override
-	public int getPostID() {
+	public int getID() {
 		return this.postid;
+	}
+
+	@Override
+	public void setID(int id) {
+		this.postid = id;
 	}
 
 	@Override
@@ -50,6 +58,11 @@ public class Post implements PostInterface {
 	public int getBoardID() {
 		return this.boardid;
 	}
+	
+	@Override
+	public Thread getThread() {
+		return this.script.getThread(this.threadid);
+	}
 
 	@Override
 	public Date getPostDate() {
@@ -57,23 +70,18 @@ public class Post implements PostInterface {
 	}
 
 	@Override
-	public int getAuthorID() {
-		return this.authorid;
+	public void setPostDate(Date postdate) {
+		this.postdate = postdate;
 	}
 
 	@Override
-	public String getAuthor() {
+	public ScriptUser getAuthor() {
 		return this.author;
 	}
 
-    @Override
-    public String getAuthorEmail() {
-        return this.authoremail;
-    }
-
 	@Override
-	public String getAuthorIP() {
-		return this.authorip;
+	public void setAuthor(ScriptUser author) {
+		this.author = author;
 	}
 
 	@Override
@@ -82,7 +90,27 @@ public class Post implements PostInterface {
 	}
 
 	@Override
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	@Override
 	public String getBody() {
 		return this.body;
+	}
+
+	@Override
+	public void setBody(String body) {
+		this.body = body;
+	}
+	
+	@Override
+	public void updatePost() {
+		this.script.updatePost(this);
+	}
+
+	@Override
+	public void createPost() {
+		this.script.createPost(this);
 	}
 }

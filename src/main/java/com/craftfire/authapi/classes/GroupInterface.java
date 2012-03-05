@@ -16,6 +16,30 @@
  */
 package com.craftfire.authapi.classes;
 
-public interface GroupInterface {
+import java.util.List;
 
+public interface GroupInterface {
+    public int getID();
+
+	public void setID(int id);
+
+    public String getName();
+
+    public void setName(String name);
+    
+    public String getDescription();
+
+    public void setDescription(String description);
+
+    public List<ScriptUser> getUsers();
+	
+	public void setUsers(List<ScriptUser> users);
+    
+    public int getUserCount();
+
+	public void setUserCount(int usercount);
+
+	public void updateGroup();
+
+	public void createGroup();
 }

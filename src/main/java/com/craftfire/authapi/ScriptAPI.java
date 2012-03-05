@@ -21,6 +21,10 @@ import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.scripts.forum.SMFScript;
 import com.craftfire.commons.DataManager;
 
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class ScriptAPI {
 	private Script script;
 	private final DataManager dataManager;
@@ -29,15 +33,7 @@ public class ScriptAPI {
 
 	public enum Scripts {
 		SMF
-	}
-
-	public enum Gender {
-		MALE, FEMALE, UNKNOWN
-	}
-
-	public enum AccountStatus {
-		INACTIVE, REGISTRED, ACTIVATED
-	}
+    }
 
 	/**
 	 * @param script  The script using the enum list, for example: Scripts.SMF.
@@ -66,21 +62,6 @@ public class ScriptAPI {
 	 */
 	public Script getScript() {
 		return this.script;
-	}
-
-	/**
-	 * @return The ScriptUser object.
-	 */
-	public ScriptUser getUser() {
-		return this.script.getUser();
-	}
-
-	/**
-	 * @param username The username for the user.
-	 * @param password The password for the user.
-	 */
-	public void setUser(String username, String password) {
-		this.script.setUser(username, password);
 	}
 
 	/**

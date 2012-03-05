@@ -26,7 +26,8 @@ public class AuthAPI {
 	private final Script script;
 	private final DataManager dataManager;
 
-	public AuthAPI(Scripts script, String version, String host, int port, String database, String username, String password, String prefix) {
+	public AuthAPI(Scripts script, String version, String host, int port, String database, String username,
+				   String password, String prefix) {
 		this.dataManager = new DataManager(host, port, database, username, password, prefix);
 		this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
 		this.script = this.scriptAPI.getScript();
@@ -42,15 +43,11 @@ public class AuthAPI {
 		return this.script;
 	}
 
-	public void setUser(String username, String password) {
-		this.script.setUser(username, password);
-	}
-
-	public ScriptUser getUser() {
-		return this.script.getUser();
-	}
-
 	public ScriptUser getUser(String username) {
-		return this.script.getUser();
+		return this.script.getUser(username);
+	}
+	
+	public boolean authenticate(String username, String password) {
+		return this.script.authenticate(username, password);
 	}
 }

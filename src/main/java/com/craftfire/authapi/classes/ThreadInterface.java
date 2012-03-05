@@ -17,33 +17,58 @@
 package com.craftfire.authapi.classes;
 
 import java.util.Date;
+import java.util.List;
 
 public interface ThreadInterface {
-	public int getPostID();
+	public Post getFirstPost();
 
-	public int getThreadID();
+	public Post getLastPost();
+
+	public List<Post> getPosts(int limit);
+
+	public int getID();
+
+	public void setID(int id);
 
 	public int getBoardID();
 
 	public Date getThreadDate();
 
-	public int getAuthorID();
+	public void setThreadDate(Date threaddate);
 
-	public String getAuthor();
+	public ScriptUser getAuthor();
 
-	public String getAuthorIP();
+	public void setAuthor(ScriptUser author);
 
 	public String getSubject();
 
+	public void setSubject(String subject);
+
 	public String getBody();
+
+	public void setBody(String body);
 
 	public int getViews();
 
+	public void setViews(int threadviews);
+
 	public int getReplies();
+
+	public void setReplies(int threadreplies);
 
 	public boolean isLocked();
 
+	public void setLocked(boolean isLocked);
+
 	public boolean isPoll();
 
+	public void setPoll(boolean isPoll);
+
 	public boolean isSticky();
+
+	public void setSticky(boolean isSticky);
+
+	public void updateThread();
+
+	public void createThread();
 }

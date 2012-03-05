@@ -19,23 +19,33 @@ package com.craftfire.authapi.classes;
 import java.util.Date;
 
 public interface PostInterface {
-	public int getPostID();
+	public int getID();
+
+	public void setID(int id);
 
 	public int getThreadID();
+	
+	public Thread getThread();
 
 	public int getBoardID();
 
 	public Date getPostDate();
 
-	public int getAuthorID();
+	public void setPostDate(Date postdate);
 
-	public String getAuthor();
+	public ScriptUser getAuthor();
 
-	public String getAuthorIP();
-
-    public String getAuthorEmail();
+	public void setAuthor(ScriptUser author);
 
 	public String getSubject();
 
+	public void setSubject(String subject);
+
 	public String getBody();
+	
+	public void setBody(String body);
+
+	public void updatePost();
+
+	public void createPost();
 }

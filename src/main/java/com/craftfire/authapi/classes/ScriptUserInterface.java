@@ -16,18 +16,120 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.awt.*;
 import java.util.Date;
+import java.util.List;
 
 public interface ScriptUserInterface {
-	public String getUsername();
+    public int getID();
 
-	public Script getScript();
+	public void setID(int id);
+    
+    public Date getRegDate();
 
-	public String getPasswordHash();
+    public void setRegDate(Date date);
 
-	public String getCurrentPasswordHash();
+    public Date getLastLogin();
 
-	public Date getBirthday();
+    public void setLastLogin(Date date);
 
-	public boolean authenticate();
+    public String getUsername();
+
+    public void setUsername(String username);
+
+    public String getUserTitle();
+
+    public void setUserTitle(String title);
+
+    public String getNickname();
+
+    public void setNickname(String nickname);
+
+    public String getRealName();
+
+    public void setRealName(String realname);
+
+    public String getFirstName();
+
+    public void setFirstName(String firstname);
+
+    public String getLastName();
+
+    public void setLastName(String lastname);
+
+    public List<Group> getUserGroups();
+
+    public void setGroups(List<Group> groups);
+
+    public String getEmail();
+
+    public void setEmail(String email);
+
+	public String getPassword();
+
+    public void setPassword(String password);
+
+    public String getPasswordSalt();
+
+    public void setPasswordSalt(String passwordsalt);
+
+    public Date getBirthday();
+
+    public void setBirthday(Date date);
+
+    public Gender getGender();
+
+    public void setGender(Gender gender);
+
+    public String getStatusMessage();
+
+    public void setStatusMessage(String message);
+
+    public Image getAvatar();
+
+    public String getAvatarURL();
+
+    public void setAvatarURL(String url);
+
+    public String getProfileURL();
+
+    public void setProfileURL(String url);
+
+    public String getRegIP();
+
+    public void setRegIP(String ip);
+
+    public String getLastIP();
+
+    public void setLastIP(String ip);
+
+    public boolean isActivated();
+
+    public void setActivated(boolean activated);
+
+	public List<PrivateMessage> getPMsFromUser(int limit);
+
+	public List<PrivateMessage> getPMsToUser(int limit);
+	
+	public int getPMSentCount();
+	
+	public int getPMReceivedCount();
+	
+	public int getPostCount();
+
+	public int getThreadCount();
+
+	public boolean isBanned();
+
+	public boolean isRegistered();
+
+	public List<String> getIPs();
+
+	public Thread getLastThread();
+
+	public Post getLastPost();
+
+	public void updateUser();
+
+	public void createUser();
 }

@@ -16,6 +16,82 @@
  */
 package com.craftfire.authapi.classes;
 
-public class Group implements GroupInterface {
+import java.util.List;
 
+public class Group implements GroupInterface {
+    private final Script script;
+    private int groupid, usercount;
+    private String groupname, groupdescription;
+    private List<ScriptUser> users;
+    
+    public Group (Script script, int groupid, String groupname) {
+        this.script = script;
+        this.groupid = groupid;
+        this.groupname = groupname;
+    }
+
+	public Group (Script script, String groupname) {
+		this.script = script;
+		this.groupname = groupname;
+	}
+
+	@Override
+    public int getID() {
+        return this.groupid;
+    }
+
+	@Override
+	public void setID(int id) {
+		this.groupid = id;
+	}
+
+	@Override
+    public String getName() {
+        return this.groupname;
+    }
+
+	@Override
+    public void setName(String name) {
+        this.groupname = name;
+    }
+
+	@Override
+    public String getDescription() {
+        return this.groupdescription;
+    }
+
+	@Override
+    public void setDescription(String description) {
+        this.groupdescription = description;
+    }
+
+	@Override
+    public List<ScriptUser> getUsers() {
+        return this.users;
+    }
+
+	@Override
+	public void setUsers(List<ScriptUser> users) {
+		this.users = users;
+	}
+
+	@Override
+    public int getUserCount() {
+        return this.usercount;
+    }
+
+	@Override
+	public void setUserCount(int usercount) {
+		this.usercount = usercount;
+	}
+
+	@Override
+	public void updateGroup() {
+		this.script.updateGroup(this);
+	}
+
+	@Override
+	public void createGroup() {
+		this.script.createGroup(this);
+	}
 }

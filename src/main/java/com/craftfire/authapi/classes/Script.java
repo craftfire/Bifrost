@@ -16,11 +16,8 @@
  */
 package com.craftfire.authapi.classes;
 
-import java.awt.Image;
-import java.util.Date;
 import java.util.List;
 
-import com.craftfire.authapi.ScriptAPI;
 import com.craftfire.authapi.ScriptAPI.Scripts;
 
 public class Script implements ScriptInterface {
@@ -33,12 +30,19 @@ public class Script implements ScriptInterface {
 		this.script = script;
 	}
 
-	public void setUser(String username, String password) {
-		this.user = new ScriptUser(this, username, password);
+    @Override
+    public ScriptUser getUser(String username) {
+        return null;
+    }
+
+	@Override
+	public ScriptUser getUser(int userid) {
+		return null;
 	}
 
-	public ScriptUser getUser() {
-		return this.user;
+	@Override
+	public ScriptUser getLastRegUser() {
+		return null;
 	}
 
 	@Override
@@ -77,159 +81,72 @@ public class Script implements ScriptInterface {
 	}
 
 	@Override
-	public Date getRegDate(String username) {
-		return null;
-	}
-
-	@Override
-	public void setRegDate(String username, Date date) {
-	}
-
-	@Override
-	public Date getLastLogin(String username) {
-		return null;
-	}
-
-	@Override
-	public void setLastLogin(String username, Date date) {
-	}
-
-	@Override
-	public ScriptAPI.AccountStatus getAccountStatus(String username) {
-		return null;
-	}
-
-	@Override
-	public void setAccountStatus(String username, ScriptAPI.AccountStatus status) {
-	}
-
-	@Override
-	public String getUserName(int userid) {
+	public String getUsername(int userid) {
 		return null;
 	}
 
     @Override
-    public int getUserId(String username) {
+    public int getUserID(String username) {
         return 0;
     }
 
+    @Override
+    public void updateUser(ScriptUser user) {
+    }
+
 	@Override
-	public void setUserName(String username, String newUsername) {
+	public void createUser(ScriptUser user) {
 	}
 
 	@Override
-	public String getUserTitle(String username) {
+	public List<Group> getGroups(int limit) {
 		return null;
 	}
 
 	@Override
-	public void setUserTitle(String username, String title) {
-
-	}
-
-	@Override
-	public String getNickName(String username) {
+	public Group getGroup(int groupid) {
 		return null;
 	}
 
 	@Override
-	public void setNickname(String username, String nickname) {
-	}
-
-	@Override
-	public String getRealName(String username) {
+	public List<Group> getUserGroups(String username) {
 		return null;
 	}
 
 	@Override
-	public void setRealName(String username, String realname) {
+	public void updateGroup(Group group) {
 	}
 
 	@Override
-	public String getFirstName(String username) {
+	public void createGroup(Group group) {
+	}
+
+	@Override
+	public List<PrivateMessage> getPMsSent(String username, int limit) {
 		return null;
 	}
 
 	@Override
-	public void setFirstName(String username, String firstname) {
-	}
-
-	@Override
-	public String getLastName(String username) {
+	public List<PrivateMessage> getPMsReceived(String username, int limit) {
 		return null;
 	}
 
 	@Override
-	public void setLastName(String username, String lastname) {
+	public int getPMSentCount(String username) {
+		return 0;
 	}
 
 	@Override
-	public List<Group> getGroups(String username) {
-		return null;
+	public int getPMReceivedCount(String username) {
+		return 0;
 	}
 
 	@Override
-	public void setGroups(List<Group> groups) {
+	public void updatePrivateMessage(PrivateMessage privateMessage) {
 	}
 
 	@Override
-	public String getEmail(String username) {
-		return null;
-	}
-
-	@Override
-	public void setEmail(String username, String email) {
-	}
-
-	@Override
-	public void setPassword(String username, String password) {
-	}
-
-	@Override
-	public String getPasswordHash(String username) {
-		return null;
-	}
-
-	@Override
-	public void setPasswordHash(String username, String passwordHash) {
-
-	}
-
-	@Override
-	public String getPasswordSalt(String username) {
-		return null;
-	}
-
-	@Override
-	public void setPasswordSalt(String username, String passwordSalt) {
-
-	}
-
-	@Override
-	public Date getBirthday(String username) {
-		return null;
-	}
-
-	@Override
-	public void setBirthday(String username, Date date) {
-	}
-
-	@Override
-	public ScriptAPI.Gender getGender(String username) {
-		return null;
-	}
-
-	@Override
-	public void setGender(String username, ScriptAPI.Gender gender) {
-	}
-
-	@Override
-	public String getStatusMessage(String username) {
-		return null;
-	}
-
-	@Override
-	public void setStatusMessage(String username, String message) {
+	public void createPrivateMessage(PrivateMessage privateMessage) {
 	}
 
 	@Override
@@ -253,8 +170,26 @@ public class Script implements ScriptInterface {
 	}
 
 	@Override
-	public List<Post> getPosts(int amount) {
+	public List<Post> getPosts(int limit) {
 		return null;
+	}
+
+	@Override
+	public List<Post> getPostsFromThread(int threadid, int limit) {
+		return null;
+	}
+
+	@Override
+	public Post getPost(int postid) {
+		return null;
+	}
+
+    @Override
+    public void updatePost(Post post) {
+    }
+
+	@Override
+	public void createPost(Post post) {
 	}
 
 	@Override
@@ -278,8 +213,21 @@ public class Script implements ScriptInterface {
 	}
 
 	@Override
-	public List<Thread> getThreads() {
+	public Thread getThread(int threadid) {
 		return null;
+	}
+
+	@Override
+	public List<Thread> getThreads(int limit) {
+		return null;
+	}
+
+    @Override
+    public void updateThread(Thread thread) {
+    }
+
+	@Override
+	public void createThread(Thread thread) {
 	}
 
 	@Override
@@ -290,21 +238,6 @@ public class Script implements ScriptInterface {
 	@Override
 	public int getGroupCount() {
 		return 0;
-	}
-
-	@Override
-	public Image getAvatar(String username) {
-		return null;
-	}
-
-	@Override
-	public String getAvatarURL(String username) {
-		return null;
-	}
-
-	@Override
-	public String getProfileURL(String username) {
-		return null;
 	}
 
 	@Override
@@ -323,18 +256,16 @@ public class Script implements ScriptInterface {
 	}
 
 	@Override
-	public String getRegIP(String username) {
+	public List<Ban> getBans(int limit) {
 		return null;
 	}
 
 	@Override
-	public String getLastIP(String username) {
-		return null;
+	public void updateBan(Ban ban) {
 	}
 
 	@Override
-	public List<Ban> getBans() {
-		return null;
+	public void addBan(Ban ban) {
 	}
 
 	@Override
@@ -344,11 +275,6 @@ public class Script implements ScriptInterface {
 
 	@Override
 	public boolean isBanned(String string) {
-		return false;
-	}
-	
-	@Override
-	public boolean isActivated(String username) {
 		return false;
 	}
 
