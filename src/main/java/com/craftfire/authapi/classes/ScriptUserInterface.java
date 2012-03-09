@@ -16,15 +16,15 @@
  */
 package com.craftfire.authapi.classes;
 
-import java.awt.*;
+import java.awt.Image;
 import java.util.Date;
 import java.util.List;
 
 public interface ScriptUserInterface {
     public int getID();
 
-	public void setID(int id);
-    
+    public void setID(int id);
+
     public Date getRegDate();
 
     public void setRegDate(Date date);
@@ -65,7 +65,7 @@ public interface ScriptUserInterface {
 
     public void setEmail(String email);
 
-	public String getPassword();
+    public String getPassword();
 
     public void setPassword(String password);
 
@@ -107,29 +107,29 @@ public interface ScriptUserInterface {
 
     public void setActivated(boolean activated);
 
-	public List<PrivateMessage> getPMsFromUser(int limit);
+    public List<PrivateMessage> getPMsFromUser(int limit);
 
-	public List<PrivateMessage> getPMsToUser(int limit);
-	
-	public int getPMSentCount();
-	
-	public int getPMReceivedCount();
-	
-	public int getPostCount();
+    public List<PrivateMessage> getPMsToUser(int limit);
 
-	public int getThreadCount();
+    public int getPMSentCount();
 
-	public boolean isBanned();
+    public int getPMReceivedCount();
 
-	public boolean isRegistered();
+    public int getPostCount();
 
-	public List<String> getIPs();
+    public int getThreadCount();
 
-	public Thread getLastThread();
+    public boolean isBanned();
 
-	public Post getLastPost();
+    public boolean isRegistered();
 
-	public void updateUser();
+    public List<String> getIPs();
 
-	public void createUser();
+    public Thread getLastThread();
+
+    public Post getLastPost();
+
+    public void updateUser();
+
+    public void createUser();
 }

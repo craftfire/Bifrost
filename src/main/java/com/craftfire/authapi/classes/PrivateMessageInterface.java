@@ -17,49 +17,50 @@
 package com.craftfire.authapi.classes;
 
 import java.util.Date;
+import java.util.List;
 
 public interface PrivateMessageInterface {
-	public int getID();
+    public int getID();
 
-	public void setID(int id);
-	
-	public ScriptUser getFromUser();
-	
-	public void setFromUser(ScriptUser user);
-	
-	public ScriptUser getToUser();
-	
-	public void setToUser(ScriptUser user);
-	
-	public Date getDate();
-	
-	public void setDate(Date date);
-	
-	public String getSubject();
-	
-	public void setSubject(String subject);
-	
-	public String getBody();
-	
-	public void setBody(String body);
+    public void setID(int id);
 
-	public boolean isDeletedBySender();
-	
-	public void setDeletedBySender(boolean deleted);
+    public ScriptUser getSender();
 
-	public boolean isRead();
-	
-	public void setRead(boolean read);
-	
-	public boolean isNew();
-	
-	public void setNew(boolean isnew);
-	
-	public boolean isDeleted();
-	
-	public void setDeleted(boolean deleted);
-	
-	public void updatePrivateMessage();
+    public void setSender(ScriptUser user);
 
-	public void createPrivateMessage();
+    public List<ScriptUser> getRecipients();
+
+    public void setRecipients(List<ScriptUser> recipients);
+
+    public Date getDate();
+
+    public void setDate(Date date);
+
+    public String getSubject();
+
+    public void setSubject(String subject);
+
+    public String getBody();
+
+    public void setBody(String body);
+
+    public boolean isDeletedBySender();
+
+    public void setDeletedBySender(boolean deleted);
+
+    public boolean isRead(ScriptUser recipient);
+
+    public void setRead(ScriptUser recipient, boolean read);
+
+    public boolean isNew(ScriptUser recipient);
+
+    public void setNew(ScriptUser recipient, boolean isnew);
+
+    public boolean isDeleted(ScriptUser recipient);
+
+    public void setDeleted(ScriptUser recipient, boolean deleted);
+
+    public void updatePrivateMessage();
+
+    public void createPrivateMessage();
 }

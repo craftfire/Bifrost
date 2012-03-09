@@ -21,25 +21,25 @@ import java.util.List;
 public interface GroupInterface {
     public int getID();
 
-	public void setID(int id);
+    public void setID(int id);
 
     public String getName();
 
     public void setName(String name);
-    
+
     public String getDescription();
 
     public void setDescription(String description);
 
     public List<ScriptUser> getUsers();
-	
-	public void setUsers(List<ScriptUser> users);
-    
+
+    public void setUsers(List<ScriptUser> users);
+
     public int getUserCount();
 
-	public void setUserCount(int usercount);
+    public void setUserCount(int usercount);
 
-	public void updateGroup();
+    public void updateGroup();
 
-	public void createGroup();
+    public void createGroup();
 }

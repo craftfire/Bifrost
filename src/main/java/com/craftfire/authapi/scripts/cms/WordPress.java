@@ -14,276 +14,271 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.authapi.classes;
+package com.craftfire.authapi.scripts.cms;
 
 import java.util.List;
 
-import com.craftfire.authapi.ScriptAPI.Scripts;
+import com.craftfire.authapi.ScriptAPI;
+import com.craftfire.authapi.classes.Ban;
+import com.craftfire.authapi.classes.Group;
+import com.craftfire.authapi.classes.Post;
+import com.craftfire.authapi.classes.PrivateMessage;
+import com.craftfire.authapi.classes.Script;
+import com.craftfire.authapi.classes.ScriptUser;
+import com.craftfire.authapi.classes.Thread;
+import com.craftfire.commons.DataManager;
 
-public class Script implements ScriptInterface {
-    private final String version;
-    private final Scripts script;
-    private ScriptUser user;
+public class WordPress extends Script {
+    private final String scriptName = "xenforo"; /*TODO*/
+    private final String shortName = "xf"; /*TODO*/
+    private final String encryption = "sha1"; /*TODO*/
+    private final String[] versionRanges = {"1.0.4"}; /*TODO*/
+    private final String userVersion;
+    private final DataManager dataManager;
+    private String currentUsername = null;
 
-    protected Script(Scripts script, String version) {
-        this.version = version;
-        this.script = script;
+    public WordPress(ScriptAPI.Scripts script, String version, DataManager dataManager) {
+        super(script, version);
+        this.userVersion = version;
+        this.dataManager = dataManager;
     }
 
-    @Override
-    public ScriptUser getUser(String username) {
-        return null;
-    }
-
-    @Override
-    public ScriptUser getUser(int userid) {
-        return null;
-    }
-
-    @Override
-    public ScriptUser getLastRegUser() {
-        return null;
-    }
-
-    @Override
     public String getLatestVersion() {
-        return null;
+        /*TODO*/
+        return this.versionRanges[0];
     }
 
-    @Override
     public String getVersion() {
-        return this.version;
+        return this.userVersion;
     }
 
-    @Override
     public String getEncryption() {
-        return null;
+        return this.encryption;
     }
 
-    @Override
     public String getScriptName() {
-        return null;
+        return this.scriptName;
     }
 
-    @Override
     public String getScriptShortname() {
-        return null;
+        return this.shortName;
     }
 
-    @Override
     public boolean authenticate(String username, String password) {
+        /*TODO*/
         return false;
     }
 
-    @Override
     public String hashPassword(String salt, String password) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public String getUsername(int userid) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public int getUserID(String username) {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public void updateUser(ScriptUser user) {
+        /*TODO*/
     }
 
-    @Override
     public void createUser(ScriptUser user) {
+        /*TODO*/
     }
 
-    @Override
     public List<Group> getGroups(int limit) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public Group getGroup(int groupid) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public List<Group> getUserGroups(String username) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public void updateGroup(Group group) {
+        /*TODO*/
     }
 
-    @Override
     public void createGroup(Group group) {
+        /*TODO*/
     }
-    @Override
+
     public PrivateMessage getPM(int pmid) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public List<PrivateMessage> getPMsSent(String username, int limit) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public List<PrivateMessage> getPMsReceived(String username, int limit) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public int getPMSentCount(String username) {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public int getPMReceivedCount(String username) {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public void updatePrivateMessage(PrivateMessage privateMessage) {
+        /*TODO*/
     }
 
-    @Override
     public void createPrivateMessage(PrivateMessage privateMessage) {
+        /*TODO*/
     }
 
-    @Override
     public int getPostCount(String username) {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public int getTotalPostCount() {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public Post getLastPost() {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public Post getLastUserPost(String username) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public List<Post> getPosts(int limit) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public List<Post> getPostsFromThread(int threadid, int limit) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public Post getPost(int postid) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public void updatePost(Post post) {
+        /*TODO*/
     }
 
-    @Override
     public void createPost(Post post) {
+        /*TODO*/
     }
 
-    @Override
     public int getThreadCount(String username) {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public int getTotalThreadCount() {
+        /*TODO*/
         return 0;
     }
 
-    @Override
-    public Thread getLastThread() {
+    public com.craftfire.authapi.classes.Thread getLastThread() {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public Thread getLastUserThread(String username) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public Thread getThread(int threadid) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public List<Thread> getThreads(int limit) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public void updateThread(Thread thread) {
+        /*TODO*/
     }
 
-    @Override
     public void createThread(Thread thread) {
+        /*TODO*/
     }
 
-    @Override
     public int getUserCount() {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public int getGroupCount() {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public String getHomeURL() {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public String getForumURL() {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public List<String> getIPs(String username) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public List<Ban> getBans(int limit) {
+        /*TODO*/
         return null;
     }
 
-    @Override
     public void updateBan(Ban ban) {
+        /*TODO*/
     }
 
-    @Override
     public void addBan(Ban ban) {
+        /*TODO*/
     }
 
-    @Override
     public int getBanCount() {
+        /*TODO*/
         return 0;
     }
 
-    @Override
     public boolean isBanned(String string) {
+        /*TODO*/
         return false;
     }
 
-    @Override
     public boolean isRegistered(String username) {
+        /*TODO*/
         return false;
     }
 }

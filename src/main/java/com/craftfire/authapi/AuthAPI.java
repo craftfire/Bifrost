@@ -22,32 +22,32 @@ import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.commons.DataManager;
 
 public class AuthAPI {
-	private final ScriptAPI scriptAPI;
-	private final Script script;
-	private final DataManager dataManager;
+    private final ScriptAPI scriptAPI;
+    private final Script script;
+    private final DataManager dataManager;
 
-	public AuthAPI(Scripts script, String version, String host, int port, String database, String username,
-				   String password, String prefix) {
-		this.dataManager = new DataManager(host, port, database, username, password, prefix);
-		this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
-		this.script = this.scriptAPI.getScript();
-	}
+    public AuthAPI(Scripts script, String version, String host, int port, String database, String username,
+                   String password, String prefix) {
+        this.dataManager = new DataManager(host, port, database, username, password, prefix);
+        this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
+        this.script = this.scriptAPI.getScript();
+    }
 
-	public AuthAPI(Scripts script, String version, DataManager dataManager) {
-		this.scriptAPI = new ScriptAPI(script, version, dataManager);
-		this.script = this.scriptAPI.getScript();
-		this.dataManager = dataManager;
-	}
+    public AuthAPI(Scripts script, String version, DataManager dataManager) {
+        this.scriptAPI = new ScriptAPI(script, version, dataManager);
+        this.script = this.scriptAPI.getScript();
+        this.dataManager = dataManager;
+    }
 
-	public Script getScript() {
-		return this.script;
-	}
+    public Script getScript() {
+        return this.script;
+    }
 
-	public ScriptUser getUser(String username) {
-		return this.script.getUser(username);
-	}
-	
-	public boolean authenticate(String username, String password) {
-		return this.script.authenticate(username, password);
-	}
+    public ScriptUser getUser(String username) {
+        return this.script.getUser(username);
+    }
+
+    public boolean authenticate(String username, String password) {
+        return this.script.authenticate(username, password);
+    }
 }

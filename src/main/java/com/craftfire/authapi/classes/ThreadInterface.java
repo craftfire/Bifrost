@@ -20,55 +20,55 @@ import java.util.Date;
 import java.util.List;
 
 public interface ThreadInterface {
-	public Post getFirstPost();
+    public Post getFirstPost();
 
-	public Post getLastPost();
+    public Post getLastPost();
 
-	public List<Post> getPosts(int limit);
+    public List<Post> getPosts(int limit);
 
-	public int getID();
+    public int getID();
 
-	public void setID(int id);
+    public void setID(int id);
 
-	public int getBoardID();
+    public int getBoardID();
 
-	public Date getThreadDate();
+    public Date getThreadDate();
 
-	public void setThreadDate(Date threaddate);
+    public void setThreadDate(Date threaddate);
 
-	public ScriptUser getAuthor();
+    public ScriptUser getAuthor();
 
-	public void setAuthor(ScriptUser author);
+    public void setAuthor(ScriptUser author);
 
-	public String getSubject();
+    public String getSubject();
 
-	public void setSubject(String subject);
+    public void setSubject(String subject);
 
-	public String getBody();
+    public String getBody();
 
-	public void setBody(String body);
+    public void setBody(String body);
 
-	public int getViews();
+    public int getViews();
 
-	public void setViews(int threadviews);
+    public void setViews(int threadviews);
 
-	public int getReplies();
+    public int getReplies();
 
-	public void setReplies(int threadreplies);
+    public void setReplies(int threadreplies);
 
-	public boolean isLocked();
+    public boolean isLocked();
 
-	public void setLocked(boolean isLocked);
+    public void setLocked(boolean isLocked);
 
-	public boolean isPoll();
+    public boolean isPoll();
 
-	public void setPoll(boolean isPoll);
+    public void setPoll(boolean isPoll);
 
-	public boolean isSticky();
+    public boolean isSticky();
 
-	public void setSticky(boolean isSticky);
+    public void setSticky(boolean isSticky);
 
-	public void updateThread();
+    public void updateThread();
 
-	public void createThread();
+    public void createThread();
 }

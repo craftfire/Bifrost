@@ -23,75 +23,75 @@ public class Group implements GroupInterface {
     private int groupid, usercount;
     private String groupname, groupdescription;
     private List<ScriptUser> users;
-    
-    public Group (Script script, int groupid, String groupname) {
+
+    public Group(Script script, int groupid, String groupname) {
         this.script = script;
         this.groupid = groupid;
         this.groupname = groupname;
     }
 
-	public Group (Script script, String groupname) {
-		this.script = script;
-		this.groupname = groupname;
-	}
+    public Group(Script script, String groupname) {
+        this.script = script;
+        this.groupname = groupname;
+    }
 
-	@Override
+    @Override
     public int getID() {
         return this.groupid;
     }
 
-	@Override
-	public void setID(int id) {
-		this.groupid = id;
-	}
+    @Override
+    public void setID(int id) {
+        this.groupid = id;
+    }
 
-	@Override
+    @Override
     public String getName() {
         return this.groupname;
     }
 
-	@Override
+    @Override
     public void setName(String name) {
         this.groupname = name;
     }
 
-	@Override
+    @Override
     public String getDescription() {
         return this.groupdescription;
     }
 
-	@Override
+    @Override
     public void setDescription(String description) {
         this.groupdescription = description;
     }
 
-	@Override
+    @Override
     public List<ScriptUser> getUsers() {
         return this.users;
     }
 
-	@Override
-	public void setUsers(List<ScriptUser> users) {
-		this.users = users;
-	}
+    @Override
+    public void setUsers(List<ScriptUser> users) {
+        this.users = users;
+    }
 
-	@Override
+    @Override
     public int getUserCount() {
         return this.usercount;
     }
 
-	@Override
-	public void setUserCount(int usercount) {
-		this.usercount = usercount;
-	}
+    @Override
+    public void setUserCount(int usercount) {
+        this.usercount = usercount;
+    }
 
-	@Override
-	public void updateGroup() {
-		this.script.updateGroup(this);
-	}
+    @Override
+    public void updateGroup() {
+        this.script.updateGroup(this);
+    }
 
-	@Override
-	public void createGroup() {
-		this.script.createGroup(this);
-	}
+    @Override
+    public void createGroup() {
+        this.script.createGroup(this);
+    }
 }

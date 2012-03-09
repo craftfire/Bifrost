@@ -19,98 +19,98 @@ package com.craftfire.authapi.classes;
 import java.util.Date;
 
 public class Post implements PostInterface {
-	private final Script script;
-	private ScriptUser author;
-	private String subject, body;
-	private int postid;
-	private final int threadid, boardid;
-	private Date postdate;
+    private final Script script;
+    private ScriptUser author;
+    private String subject, body;
+    private int postid;
+    private final int threadid, boardid;
+    private Date postdate;
 
-	public Post(Script script, int postid, int threadid, int boardid) {
-		this.script = script;
-		this.postid = postid;
-		this.threadid = threadid;
-		this.boardid = boardid;
-	}
+    public Post(Script script, int postid, int threadid, int boardid) {
+        this.script = script;
+        this.postid = postid;
+        this.threadid = threadid;
+        this.boardid = boardid;
+    }
 
-	public Post(Script script, int threadid, int boardid) {
-		this.script = script;
-		this.threadid = threadid;
-		this.boardid = boardid;
-	}
+    public Post(Script script, int threadid, int boardid) {
+        this.script = script;
+        this.threadid = threadid;
+        this.boardid = boardid;
+    }
 
-	@Override
-	public int getID() {
-		return this.postid;
-	}
+    @Override
+    public int getID() {
+        return this.postid;
+    }
 
-	@Override
-	public void setID(int id) {
-		this.postid = id;
-	}
+    @Override
+    public void setID(int id) {
+        this.postid = id;
+    }
 
-	@Override
-	public int getThreadID() {
-		return this.threadid;
-	}
+    @Override
+    public int getThreadID() {
+        return this.threadid;
+    }
 
-	@Override
-	public int getBoardID() {
-		return this.boardid;
-	}
-	
-	@Override
-	public Thread getThread() {
-		return this.script.getThread(this.threadid);
-	}
+    @Override
+    public int getBoardID() {
+        return this.boardid;
+    }
 
-	@Override
-	public Date getPostDate() {
-		return this.postdate;
-	}
+    @Override
+    public Thread getThread() {
+        return this.script.getThread(this.threadid);
+    }
 
-	@Override
-	public void setPostDate(Date postdate) {
-		this.postdate = postdate;
-	}
+    @Override
+    public Date getPostDate() {
+        return this.postdate;
+    }
 
-	@Override
-	public ScriptUser getAuthor() {
-		return this.author;
-	}
+    @Override
+    public void setPostDate(Date postdate) {
+        this.postdate = postdate;
+    }
 
-	@Override
-	public void setAuthor(ScriptUser author) {
-		this.author = author;
-	}
+    @Override
+    public ScriptUser getAuthor() {
+        return this.author;
+    }
 
-	@Override
-	public String getSubject() {
-		return this.subject;
-	}
+    @Override
+    public void setAuthor(ScriptUser author) {
+        this.author = author;
+    }
 
-	@Override
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    @Override
+    public String getSubject() {
+        return this.subject;
+    }
 
-	@Override
-	public String getBody() {
-		return this.body;
-	}
+    @Override
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-	@Override
-	public void setBody(String body) {
-		this.body = body;
-	}
-	
-	@Override
-	public void updatePost() {
-		this.script.updatePost(this);
-	}
+    @Override
+    public String getBody() {
+        return this.body;
+    }
 
-	@Override
-	public void createPost() {
-		this.script.createPost(this);
-	}
+    @Override
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    @Override
+    public void updatePost() {
+        this.script.updatePost(this);
+    }
+
+    @Override
+    public void createPost() {
+        this.script.createPost(this);
+    }
 }

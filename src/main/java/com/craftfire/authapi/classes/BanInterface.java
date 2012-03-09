@@ -19,49 +19,49 @@ package com.craftfire.authapi.classes;
 import java.util.Date;
 
 public interface BanInterface {
-	public int getID();
+    public int getID();
 
-	public void setID(int id);
+    public void setID(int id);
 
-	public String getName();
+    public String getName();
 
-	public void setName(String name);
+    public void setName(String name);
 
-	public int getUserID();
+    public int getUserID();
 
-	public void setUserID(int userid);
+    public void setUserID(int userid);
 
-	public String getEmail();
+    public String getEmail();
 
-	public void setEmail(String email);
+    public void setEmail(String email);
 
-	public String getIP();
+    public String getIP();
 
-	public void setIP(String ip);
+    public void setIP(String ip);
 
-	public long getTimeLength();
+    public long getTimeLength();
 
-	public long getTimeRemaining();
+    public long getTimeRemaining();
 
-	public String getReason();
+    public String getReason();
 
-	public void setReason(String reason);
+    public void setReason(String reason);
 
-	public String getNotes();
+    public String getNotes();
 
-	public void setNotes(String notes);
+    public void setNotes(String notes);
 
-	public Date getStartDate();
+    public Date getStartDate();
 
-	public void setStartDate(Date startdate);
+    public void setStartDate(Date startdate);
 
-	public Date getEndDate();
-	
-	public void setEndDate(Date enddate);
+    public Date getEndDate();
 
-	public boolean isPermanent();
-	
-	public void updateBan();
+    public void setEndDate(Date enddate);
 
-	public void addBan();
+    public boolean isPermanent();
+
+    public void updateBan();
+
+    public void addBan();
 }

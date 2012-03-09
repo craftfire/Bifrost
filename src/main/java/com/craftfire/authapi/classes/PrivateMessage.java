@@ -17,133 +17,139 @@
 package com.craftfire.authapi.classes;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class PrivateMessage implements PrivateMessageInterface {
-	private final Script script;
-	private int pmid;
-	private String subject, body;
-	private ScriptUser fromuser, touser;
-	private Date date;
-	private boolean deletedbysender, deleted, read, isnew;
+    private final Script script;
+    private int pmid;
+    private String subject, body;
+    private ScriptUser sender;
+    private List<ScriptUser> recipients;
+    private HashMap<ScriptUser, Boolean> isnew = new HashMap<ScriptUser, Boolean>();
+    private HashMap<ScriptUser, Boolean> read = new HashMap<ScriptUser, Boolean>();
+    private HashMap<ScriptUser, Boolean> deleted = new HashMap<ScriptUser, Boolean>();
+    private Date date;
+    private boolean deletedbysender;
 
-	public PrivateMessage(Script script, int pmid) {
-		this.script = script;
-		this.pmid = pmid;
-	}
+    public PrivateMessage(Script script, int pmid) {
+        this.script = script;
+        this.pmid = pmid;
+    }
 
-	public PrivateMessage(Script script, ScriptUser fromuser, ScriptUser touser) {
-		this.script = script;
-		this.fromuser = fromuser;
-		this.touser = touser;
-	}
-	
-	@Override
-	public int getID() {
-		return this.pmid;
-	}
-	
-	@Override
-	public void setID(int id) {
-		this.pmid = id;
-	}
+    public PrivateMessage(Script script, ScriptUser sender, List<ScriptUser> recipients) {
+        this.script = script;
+        this.sender = sender;
+        this.recipients = recipients;
+    }
 
-	@Override
-	public ScriptUser getFromUser() {
-		return this.fromuser;
-	}
+    @Override
+    public int getID() {
+        return this.pmid;
+    }
 
-	@Override
-	public void setFromUser(ScriptUser user) {
-		this.fromuser = user;
-	}
+    @Override
+    public void setID(int id) {
+        this.pmid = id;
+    }
 
-	@Override
-	public ScriptUser getToUser() {
-		return this.touser;
-	}
+    @Override
+    public ScriptUser getSender() {
+        return this.sender;
+    }
 
-	@Override
-	public void setToUser(ScriptUser user) {
-		this.touser = user;
-	}
+    @Override
+    public void setSender(ScriptUser user) {
+        this.sender = user;
+    }
 
-	@Override
-	public Date getDate() {
-		return this.date;
-	}
+    @Override
+    public List<ScriptUser> getRecipients() {
+        return this.recipients;
+    }
 
-	@Override
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    @Override
+    public void setRecipients(List<ScriptUser> users) {
+        this.recipients = users;
+    }
 
-	@Override
-	public String getSubject() {
-		return this.subject;
-	}
+    @Override
+    public Date getDate() {
+        return this.date;
+    }
 
-	@Override
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    @Override
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	@Override
-	public String getBody() {
-		return this.body;
-	}
+    @Override
+    public String getSubject() {
+        return this.subject;
+    }
 
-	@Override
-	public void setBody(String body) {
-		this.body = body;
-	}
+    @Override
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-	@Override
-	public boolean isDeletedBySender() {
-		return this.deletedbysender;
-	}
+    @Override
+    public String getBody() {
+        return this.body;
+    }
 
-	@Override
-	public void setDeletedBySender(boolean deleted) {
-		this.deletedbysender = deleted;
-	}
+    @Override
+    public void setBody(String body) {
+        this.body = body;
+    }
 
-	@Override
-	public boolean isRead() {
-		return this.read;
-	}
+    @Override
+    public boolean isDeletedBySender() {
+        return this.deletedbysender;
+    }
 
-	@Override
-	public void setRead(boolean read) {
-		this.read = read;
-	}
+    @Override
+    public void setDeletedBySender(boolean deleted) {
+        this.deletedbysender = deleted;
+    }
 
-	@Override
-	public boolean isNew() {
-		return this.isnew;
-	}
+    @Override
+    public boolean isRead(ScriptUser recipient) {
+        return this.read.get(recipient);
+    }
 
-	@Override
-	public void setNew(boolean isnew) {
-		this.isnew = isnew;
-	}
+    @Override
+    public void setRead(ScriptUser recipient, boolean read) {
+        this.read.put(recipient, read);
+    }
 
-	@Override
-	public boolean isDeleted() {
-		return this.deleted;
-	}
+    @Override
+    public boolean isNew(ScriptUser recipient) {
+        return this.isnew.get(recipient);
+    }
 
-	@Override
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
+    @Override
+    public void setNew(ScriptUser recipient, boolean isnew) {
+        this.isnew.put(recipient, isnew);
+    }
 
-	@Override
-	public void updatePrivateMessage() {
-		this.script.updatePrivateMessage(this);
-	}
+    @Override
+    public boolean isDeleted(ScriptUser recipient) {
+        return this.deleted.get(recipient);
+    }
 
-	@Override
-	public void createPrivateMessage() {
-		this.script.createPrivateMessage(this);
-	}
+    @Override
+    public void setDeleted(ScriptUser recipient, boolean deleted) {
+        this.deleted.put(recipient, deleted);
+    }
+
+    @Override
+    public void updatePrivateMessage() {
+        this.script.updatePrivateMessage(this);
+    }
+
+    @Override
+    public void createPrivateMessage() {
+        this.script.createPrivateMessage(this);
+    }
 }

@@ -16,20 +16,19 @@
  */
 package com.craftfire.authapi.classes;
 
-import com.craftfire.authapi.ScriptAPI;
-import com.craftfire.commons.CraftCommons;
-
-import java.awt.*;
+import java.awt.Image;
 import java.util.Date;
 import java.util.List;
+
+import com.craftfire.commons.CraftCommons;
 
 public class ScriptUser implements ScriptUserInterface {
     private final Script script;
     private int userid;
     private Date regdate, lastlogin, birthday;
     private Gender gender;
-    private String username, title, nickname, realname, firstname, lastname, email, password,
-	passwordsalt, statusmessage, avatarurl, profileurl, regip, lastip;
+    private String username, title, nickname, realname, firstname, lastname, email, password, passwordsalt,
+            statusmessage, avatarurl, profileurl, regip, lastip;
     private boolean activated;
     private List<Group> groups;
 
@@ -37,14 +36,14 @@ public class ScriptUser implements ScriptUserInterface {
         this.script = script;
         this.username = username;
         this.userid = userid;
-		this.password = password;
+        this.password = password;
     }
 
-	public ScriptUser(Script script, String username, String password) {
-		this.script = script;
-		this.username = username;
-		this.password = this.script.hashPassword(username, password);
-	}
+    public ScriptUser(Script script, String username, String password) {
+        this.script = script;
+        this.username = username;
+        this.password = this.script.hashPassword(username, password);
+    }
 
     @Override
     public String getUsername() {
@@ -56,10 +55,10 @@ public class ScriptUser implements ScriptUserInterface {
         return this.userid;
     }
 
-	@Override
-	public void setID(int id) {
-		this.userid = id;
-	}
+    @Override
+    public void setID(int id) {
+        this.userid = id;
+    }
 
     @Override
     public Date getRegDate() {
@@ -161,20 +160,20 @@ public class ScriptUser implements ScriptUserInterface {
         return this.password;
     }
 
-	@Override
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@Override
-	public String getPasswordSalt() {
-		return this.passwordsalt;
-	}
+    @Override
+    public String getPasswordSalt() {
+        return this.passwordsalt;
+    }
 
-	@Override
-	public void setPasswordSalt(String passwordsalt) {
-		this.passwordsalt = passwordsalt;
-	}
+    @Override
+    public void setPasswordSalt(String passwordsalt) {
+        this.passwordsalt = passwordsalt;
+    }
 
     @Override
     public Date getBirthday() {
@@ -204,7 +203,7 @@ public class ScriptUser implements ScriptUserInterface {
     @Override
     public void setStatusMessage(String message) {
         this.statusmessage = message;
-	}
+    }
 
     @Override
     public Image getAvatar() {
@@ -261,78 +260,78 @@ public class ScriptUser implements ScriptUserInterface {
         this.activated = activated;
     }
 
-	@Override
-	public List<PrivateMessage> getPMsFromUser(int limit) {
-		return this.script.getPMsFromUser(this.username, limit);
-	}
+    @Override
+    public List<PrivateMessage> getPMsFromUser(int limit) {
+        return this.script.getPMsSent(this.username, limit);
+    }
 
-	@Override
-	public List<PrivateMessage> getPMsToUser(int limit) {
-		return this.script.getPMsToUser(this.username, limit);
-	}
+    @Override
+    public List<PrivateMessage> getPMsToUser(int limit) {
+        return this.script.getPMsReceived(this.username, limit);
+    }
 
-	@Override
-	public int getPMSentCount() {
-		return this.script.getPMSentCount(this.username);
-	}
+    @Override
+    public int getPMSentCount() {
+        return this.script.getPMSentCount(this.username);
+    }
 
-	@Override
-	public int getPMReceivedCount() {
-		return this.script.getPMReceivedCount(this.username);
-	}
+    @Override
+    public int getPMReceivedCount() {
+        return this.script.getPMReceivedCount(this.username);
+    }
 
-	@Override
-	public int getPostCount() {
-		return this.script.getPostCount(this.username);
-	}
+    @Override
+    public int getPostCount() {
+        return this.script.getPostCount(this.username);
+    }
 
-	@Override
-	public int getThreadCount() {
-		return this.script.getThreadCount(this.username);
-	}
+    @Override
+    public int getThreadCount() {
+        return this.script.getThreadCount(this.username);
+    }
 
-	@Override
-	public boolean isBanned() {
-		if(this.script.isBanned(this.username))    {
-			return true;
-		} else if(this.script.isBanned(this.email))    {
-			return true;
-		} else if(this.script.isBanned(this.lastip))    {
-			return true;
-		} else if(this.script.isBanned(this.regip))    {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public boolean isBanned() {
+        if (this.script.isBanned(this.username)) {
+            return true;
+        } else if (this.script.isBanned(this.email)) {
+            return true;
+        } else if (this.script.isBanned(this.lastip)) {
+            return true;
+        } else if (this.script.isBanned(this.regip)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	@Override
-	public boolean isRegistered() {
-		return this.script.isRegistered(this.username);
-	}
+    @Override
+    public boolean isRegistered() {
+        return this.script.isRegistered(this.username);
+    }
 
-	@Override
-	public List<String> getIPs() {
-		return this.script.getIPs(this.username);
-	}
+    @Override
+    public List<String> getIPs() {
+        return this.script.getIPs(this.username);
+    }
 
-	@Override
-	public Thread getLastThread() {
-		return this.script.getLastUserThread(this.username);
-	}
+    @Override
+    public Thread getLastThread() {
+        return this.script.getLastUserThread(this.username);
+    }
 
-	@Override
-	public Post getLastPost() {
-		return this.script.getLastUserPost(this.username);
-	}
+    @Override
+    public Post getLastPost() {
+        return this.script.getLastUserPost(this.username);
+    }
 
-	@Override
-	public void updateUser() {
-		this.script.updateUser(this);
-	}
+    @Override
+    public void updateUser() {
+        this.script.updateUser(this);
+    }
 
-	@Override
-	public void createUser() {
-		this.script.createUser(this);
-	}
+    @Override
+    public void createUser() {
+        this.script.createUser(this);
+    }
 }
