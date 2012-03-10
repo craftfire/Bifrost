@@ -19,7 +19,9 @@ package com.craftfire.authapi;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.craftfire.authapi.classes.Ban;
 import com.craftfire.authapi.classes.Group;
@@ -169,16 +171,16 @@ public class AuthDebug {
         printResult("getHomeURL", tscript.getHomeURL());
         printResult("getLastThread", "" + tscript.getLastThread());
         printResult("getBanCount", "" + tscript.getBanCount());
-        printResult("getBans", "" + tscript.getBans(1));
+        printResult("getBans", "" + tscript.getBans(0));
         printResult("getGroupCount", "" + tscript.getGroupCount());
-        printResult("getGroups", "" + tscript.getGroups(1));
+        printResult("getGroups", "" + tscript.getGroups(0));
         printResult("getLastThread", "" + tscript.getLastThread());
         printResult("getLastPost", "" + tscript.getLastPost());
         printResult("getLastRegUser", "" + tscript.getLastRegUser());
         printResult("getTotalPostCount", "" + tscript.getTotalPostCount());
         printResult("getTotalThreadCount", "" + tscript.getTotalThreadCount());
-        printResult("getThreads", "" + tscript.getThreads(1));
-        printResult("getPosts", "" + tscript.getPosts(1));
+        printResult("getThreads", "" + tscript.getThreads(0));
+        printResult("getPosts", "" + tscript.getPosts(0));
         printResult("getUserCount", "" + tscript.getUserCount());
         printResult("isBanned", "" + tscript.isBanned("test"));
 
@@ -334,9 +336,9 @@ public class AuthDebug {
         print(script.toString() + " - " + version + " - PRIVATEMESSAGE CLASS");
         PrivateMessage pm = user.getPMsFromUser(1).get(0);
         printResult("getBody", pm.getBody());
-        printResult("getFromUser", "" + pm.getFromUser());
+        printResult("getSubject", "" + pm.getSubject());
         printResult("getSubject", pm.getSubject());
-        printResult("getToUser", "" + pm.getToUser());
+        printResult("getRecipients", "" + pm.getRecipients());
         printResult("getDate", "" + pm.getDate());
         printResult("getID", "" + pm.getID());
 
@@ -353,11 +355,13 @@ public class AuthDebug {
 
         print(script.toString() + " - " + version + " - PRIVATEMESSAGE CREATE");
         ScriptUser from = authAPI.getUser("Contex");
-        ScriptUser to = authAPI.getUser("Craftfire");
-        PrivateMessage newPM = new PrivateMessage(authAPI.getScript(), from, to);
+        List<ScriptUser> recipients = new ArrayList<ScriptUser>();
+        recipients.add(authAPI.getUser("Craftfire"));
+        recipients.add(authAPI.getUser("Testing"));
+        PrivateMessage newPM = new PrivateMessage(authAPI.getScript(), from, recipients);
         newPM.setBody("This is an example body");
         newPM.setSubject("This is an example subject");
-        newPM.setNew(true);
+        newPM.setNew(authAPI.getUser("Craftfire"), true);
         //newPM.createPrivateMessage();
 
         print(seperate);

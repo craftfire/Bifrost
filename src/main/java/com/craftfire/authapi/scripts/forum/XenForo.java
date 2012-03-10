@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,6 +120,70 @@ public class XenForo extends Script {
         return this.dataManager.getIntegerField("user", "username", "`username` = '" + username + "'");
     }
 
+    public ScriptUser getLastRegUser() {
+        /*TODO*/
+        return null;
+    }
+
+    public ScriptUser getUser(String username) {
+        return getUser(getUserID(username));
+    }
+
+    public ScriptUser getUser(int userid) {
+        /*TODO*/
+        if (isRegistered(getUsername(userid))) {
+            ScriptUser user = new ScriptUser(this, userid, null, null);
+            HashMap<String, Object> array = this.dataManager.getArray(
+                    "SELECT * FROM `" + this.dataManager.getPrefix() + "user` WHERE `user_id` = '" +
+                    userid + "' LIMIT 1");
+            if (array.size() > 0) {
+                if (array.get("user_state").toString().equalsIgnoreCase("valid")) {
+                    user.setActivated(true);
+                } else {
+                    user.setActivated(false);
+                }
+                if (!array.get("gravatar").toString().isEmpty()) {
+                    user.setAvatarURL("http://www.gravatar.com/avatar/" + CraftCommons.md5(array.get("gravatar").toString().toLowerCase()));
+                }
+                user.setEmail(array.get("email").toString());
+                user.setFirstName();
+                user.setGender();
+                user.setGroups(getUserGroups(array.get("username").toString()));
+                user.setLastIP();
+                user.setLastLogin(new Date(Long.parseLong(array.get("last_activity").toString()) * 1000));
+                user.setLastName();
+                user.setNickname();
+                user.setPassword();
+                user.setPasswordSalt();
+                user.setRealName();
+                user.setRegDate(new Date(Long.parseLong(array.get("register_date").toString()) * 1000));
+                user.setRegIP();
+                user.setUsername(array.get("username").toString());
+                user.setUserTitle(array.get("custom_title").toString());
+            }
+
+            array = this.dataManager.getArray(
+                    "SELECT * FROM `" + this.dataManager.getPrefix() + "user_profile` WHERE `user_id` = '" +
+                    userid + "' LIMIT 1");
+            if (array.size() > 0) {
+                String bdate = array.get("dob_day").toString() + " " + array.get("dob_month").toString() + " " +
+                               array.get("dob_year").toString();
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("d M yyyy");
+                    user.setBirthday(format.parse(bdate));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (!array.get("status").toString().isEmpty()) {
+                    user.setStatusMessage(array.get("status").toString());
+                }
+            }
+
+            return user;
+        }
+        return null;
+    }
+
     public void updateUser(ScriptUser user) {
         /*TODO*/
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -131,6 +196,13 @@ public class XenForo extends Script {
         } else {
             data.put("gender", "");
         }
+        
+        if (user.isActivated()) {
+            data.put("user_state", "valid");
+        } else {
+            data.put("user_state", "email_confirm");
+        }
+        
         data.put("custom_title", user.getUserTitle());
         data.put("register_date", user.getRegDate().getTime() / 1000);
         data.put("last_activity", user.getLastLogin().getTime() / 1000);
@@ -638,8 +710,39 @@ public class XenForo extends Script {
     }
 
     public List<Ban> getBans(int limit) {
-        /*TODO*/
-        return null;
+        String limitstring = "";
+        if (limit > 0) {
+            limitstring = " LIMIT 0 , " + limit;
+        }
+        List<Ban> bans = new ArrayList<Ban>();
+        List<HashMap<String, Object>> array = this.dataManager.getArrayList(
+                "SELECT * FROM `" + this.dataManager.getPrefix() +
+                "ban_email` " + limitstring);
+        for (HashMap<String, Object> map : array) {
+            bans.add(new Ban(this, null, map.get("banned_email").toString(), null));
+        }
+        array = this.dataManager.getArrayList(
+                "SELECT * FROM `" + this.dataManager.getPrefix() +
+                "ip_match` " + limitstring);
+        for (HashMap<String, Object> map : array) {
+            bans.add(new Ban(this, null, null, map.get("ip").toString()));
+        }
+        array = this.dataManager.getArrayList(
+                "SELECT * FROM `" + this.dataManager.getPrefix() +
+                "user_ban` " + limitstring);
+        for (HashMap<String, Object> map : array) {
+            Ban ban = new Ban(this, null, null, null);
+            ban.setUserID(Integer.parseInt(map.get("ban_user_id").toString()));
+            ban.setReason(map.get("user_reason").toString());
+            ban.setStartDate(new Date(Long.parseLong(map.get("ban_date").toString()) * 1000));
+            if (map.get("end_date").toString().equalsIgnoreCase("0")) {
+                ban.setEndDate(null);
+            } else {
+                ban.setStartDate(new Date(Long.parseLong(map.get("end_date").toString()) * 1000));
+            }
+            bans.add(ban);
+        }
+        return bans;
     }
 
     public void updateBan(Ban ban) {
@@ -651,17 +754,28 @@ public class XenForo extends Script {
     }
 
     public int getBanCount() {
-        /*TODO*/
-        return 0;
+        return this.dataManager.getCount("ip_match") + this.dataManager.getCount("user_ban") + this.dataManager.getCount("ban_email");
     }
 
     public boolean isBanned(String string) {
-        /*TODO*/
+        if (CraftCommons.isEmail(string)) {
+            if (this.dataManager.exist("ban_email", "banned_email", string)) {
+                return true;
+            }
+        } else if (CraftCommons.isIP(string)) {
+            if (this.dataManager.exist("ip_match", "ip", string)) {
+                return true;
+            }
+        } else {
+            if (isRegistered(string)) {
+                ScriptUser user = getUser(string);
+                return this.dataManager.exist("user_ban", "user_id", user.getID());
+            }
+        }
         return false;
     }
 
     public boolean isRegistered(String username) {
-        /*TODO*/
-        return false;
+        return this.dataManager.exist("user", "username", username);
     }
 }

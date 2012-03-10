@@ -88,6 +88,21 @@ public class Joomla extends Script {
         /*TODO*/
     }
 
+    public ScriptUser getLastRegUser() {
+        /*TODO*/
+        return null;
+    }
+
+    public ScriptUser getUser(String username) {
+        /*TODO*/
+        return null;
+    }
+
+    public ScriptUser getUser(int userid) {
+        /*TODO*/
+        return null;
+    }
+
     public void createUser(ScriptUser user) {
         /*TODO*/
     }

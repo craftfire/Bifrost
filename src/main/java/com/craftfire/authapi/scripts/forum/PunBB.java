@@ -84,6 +84,21 @@ public class PunBB extends Script {
         return 0;
     }
 
+    public ScriptUser getLastRegUser() {
+        /*TODO*/
+        return null;
+    }
+
+    public ScriptUser getUser(String username) {
+        /*TODO*/
+        return null;
+    }
+
+    public ScriptUser getUser(int userid) {
+        /*TODO*/
+        return null;
+    }
+
     public void updateUser(ScriptUser user) {
         /*TODO*/
     }
