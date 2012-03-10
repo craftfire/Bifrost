@@ -374,8 +374,56 @@ public class SMF extends Script {
     }
 
     public PrivateMessage getPM(int pmid) {
-        /*TODO*/
-        return null;
+        PrivateMessage pm = new PrivateMessage(this, pmid);
+        HashMap<String, Object> array = this.dataManager.getArray(
+                "SELECT * FROM `" + this.dataManager.getPrefix() + "personal_messages` WHERE `id_pm` = '" + 
+                pmid + "' LIMIT 1");
+        for (int i = 0; array.size() > i; i++) {
+            pm.setDate(new Date(Long.parseLong(array.get("msgtime").toString()) * 1000));
+            pm.setBody(array.get("body").toString());
+            pm.setSubject(array.get("subject").toString());
+            pm.setSender(getUser(Integer.parseInt(array.get("id_member_from").toString())));
+            if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+                if (array.get("deleted_by_sender").toString().equalsIgnoreCase("0")) {
+                    pm.setDeletedBySender(false);
+                } else {
+                    pm.setDeletedBySender(true);
+                }
+            } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
+                if (array.get("deletedbysender").toString().equalsIgnoreCase("0")) {
+                    pm.setDeletedBySender(false);
+                } else {
+                    pm.setDeletedBySender(true);
+                }
+            }
+            List<ScriptUser> recipients = new ArrayList<ScriptUser>();
+            List<HashMap<String, Object>> recipientsArray = this.dataManager.getArrayList(
+                    "SELECT * FROM `" + this.dataManager.getPrefix() +
+                    "pm_recipients` WHERE `id_pm` = '" + pm.getID() + "'");
+            for (HashMap<String, Object> map : recipientsArray) {
+                ScriptUser recipient = getUser(Integer.parseInt(map.get("id_member").toString()));
+                recipients.add(recipient);
+                if (map.get("is_read").toString().equalsIgnoreCase("0")) {
+                    pm.setRead(recipient, false);
+                } else {
+                    pm.setRead(recipient, true);
+                }
+                if (map.get("deleted").toString().equalsIgnoreCase("0")) {
+                    pm.setDeleted(recipient, false);
+                } else {
+                    pm.setRead(recipient, true);
+                }
+                if (!CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
+                    if (map.get("is_new").toString().equalsIgnoreCase("0")) {
+                        pm.setNew(recipient, false);
+                    } else {
+                        pm.setNew(recipient, true);
+                    }
+                }
+            }
+            pm.setRecipients(recipients);
+        }
+        return pm;
     }
 
     public List<PrivateMessage> getPMsSent(String username, int limit) {
@@ -388,73 +436,7 @@ public class SMF extends Script {
                 getUserID(username) + "' ORDER BY `id_pm` ASC" + limitstring));
         List<PrivateMessage> pms = new ArrayList<PrivateMessage>();
         for (int i = 0; pmTable.getRowCount() > i; i++) {
-            int pmid = 0, fromuserid = 0, touserid = 0;
-            boolean deletedbysender = false, isread = false, isnew = false, isdeleted = false;
-            String subject = null, body = null;
-            Date pmdate = null;
-            if (pmTable.getRowCount() == 1) {
-                int temp;
-                pmid = Integer.parseInt(pmTable.getModel().getValueAt(0, 0).toString());
-                if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-                    fromuserid = Integer.parseInt(pmTable.getModel().getValueAt(0, 1).toString());
-                    temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 2).toString());
-                    if (temp == 1) {
-                        deletedbysender = true;
-                    }
-                    pmdate = new Date(Long.parseLong(pmTable.getModel().getValueAt(0, 4).toString()) * 1000);
-                    subject = pmTable.getModel().getValueAt(0, 5).toString();
-                    body = pmTable.getModel().getValueAt(0, 6).toString();
-                } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
-                    fromuserid = Integer.parseInt(pmTable.getModel().getValueAt(0, 2).toString());
-                    temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 3).toString());
-                    if (temp == 1) {
-                        deletedbysender = true;
-                    }
-                    pmdate = new Date(Long.parseLong(pmTable.getModel().getValueAt(0, 5).toString()) * 1000);
-                    subject = pmTable.getModel().getValueAt(0, 6).toString();
-                    body = pmTable.getModel().getValueAt(0, 7).toString();
-                }
-                JTable pmeTable = new JTable(this.dataManager.resultSetToTableModel(
-                        "SELECT * FROM `" + this.dataManager.getPrefix() + "pm_recipients` WHERE `id_pm` = '" + pmid +
-                        "' LIMIT 1"));
-                if (pmeTable.getRowCount() == 1) {
-                    touserid = Integer.parseInt(pmeTable.getModel().getValueAt(0, 1).toString());
-                    temp = Integer.parseInt(pmeTable.getModel().getValueAt(0, 4).toString());
-                    if (temp > 0) {
-                        isread = true;
-                    }
-                    if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-                        temp = Integer.parseInt(pmeTable.getModel().getValueAt(0, 4).toString());
-                        if (temp == 1) {
-                            isnew = true;
-                        }
-                        temp = Integer.parseInt(pmeTable.getModel().getValueAt(0, 5).toString());
-                        if (temp == 1) {
-                            isdeleted = true;
-                        }
-                    } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
-                        temp = Integer.parseInt(pmeTable.getModel().getValueAt(0, 5).toString());
-                        if (temp == 1) {
-                            isnew = true;
-                        }
-                        temp = Integer.parseInt(pmeTable.getModel().getValueAt(0, 6).toString());
-                        if (temp == 1) {
-                            isdeleted = true;
-                        }
-                    }
-                }
-            }
-            PrivateMessage pm = new PrivateMessage(this, pmid);
-            pm.setSender(getUser(fromuserid));
-            pm.setToUser(getUser(touserid));
-            pm.setDate(pmdate);
-            pm.setSubject(subject);
-            pm.setBody(body);
-            pm.setDeletedBySender(deletedbysender);
-            pm.setDeleted(isdeleted);
-            pm.setRead(isread);
-            pm.setNew(isnew);
-            pms.add(pm);
+            pms.add(getPM(Integer.parseInt(pmTable.getModel().getValueAt(0, 1).toString())));
         }
         return pms;
     }
@@ -469,72 +451,7 @@ public class SMF extends Script {
                 getUserID(username) + "' ORDER BY `id_pm` ASC" + limitstring));
         List<PrivateMessage> pms = new ArrayList<PrivateMessage>();
         for (int i = 0; pmTable.getRowCount() > i; i++) {
-            int pmid = 0, fromuserid = 0, touserid = 0;
-            boolean deletedbysender = false, isread = false, isnew = false, isdeleted = false;
-            String subject = null, body = null;
-            Date pmdate = null;
-            if (pmTable.getRowCount() == 1) {
-                touserid = Integer.parseInt(pmTable.getModel().getValueAt(0, 1).toString());
-                int temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 4).toString());
-                if (temp > 0) {
-                    isread = true;
-                }
-                if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-                    temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 4).toString());
-                    if (temp == 1) {
-                        isnew = true;
-                    }
-                    temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 5).toString());
-                    if (temp == 1) {
-                        isdeleted = true;
-                    }
-                } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
-                    temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 5).toString());
-                    if (temp == 1) {
-                        isnew = true;
-                    }
-                    temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 6).toString());
-                    if (temp == 1) {
-                        isdeleted = true;
-                    }
-                }
-                JTable pmeTable = new JTable(this.dataManager.resultSetToTableModel(
-                        "SELECT * FROM `" + this.dataManager.getPrefix() + "personal_messages` WHERE `id_pm` = '" +
-                        pmid + "' LIMIT 1"));
-                if (pmeTable.getRowCount() == 1) {
-                    pmid = Integer.parseInt(pmeTable.getModel().getValueAt(0, 0).toString());
-                    if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-                        fromuserid = Integer.parseInt(pmTable.getModel().getValueAt(0, 1).toString());
-                        temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 2).toString());
-                        if (temp == 1) {
-                            deletedbysender = true;
-                        }
-                        pmdate = new Date(Long.parseLong(pmTable.getModel().getValueAt(0, 4).toString()) * 1000);
-                        subject = pmTable.getModel().getValueAt(0, 5).toString();
-                        body = pmTable.getModel().getValueAt(0, 6).toString();
-                    } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
-                        fromuserid = Integer.parseInt(pmTable.getModel().getValueAt(0, 2).toString());
-                        temp = Integer.parseInt(pmTable.getModel().getValueAt(0, 3).toString());
-                        if (temp == 1) {
-                            deletedbysender = true;
-                        }
-                        pmdate = new Date(Long.parseLong(pmTable.getModel().getValueAt(0, 5).toString()) * 1000);
-                        subject = pmTable.getModel().getValueAt(0, 6).toString();
-                        body = pmTable.getModel().getValueAt(0, 7).toString();
-                    }
-                }
-            }
-            PrivateMessage pm = new PrivateMessage(this, pmid);
-            pm.setSender(getUser(fromuserid));
-            pm.setToUser(getUser(touserid));
-            pm.setDate(pmdate);
-            pm.setSubject(subject);
-            pm.setBody(body);
-            pm.setDeletedBySender(deletedbysender);
-            pm.setDeleted(isdeleted);
-            pm.setRead(isread);
-            pm.setNew(isnew);
-            pms.add(pm);
+            pms.add(getPM(Integer.parseInt(pmTable.getModel().getValueAt(0, 1).toString())));
         }
         return pms;
     }
@@ -572,29 +489,32 @@ public class SMF extends Script {
         data.put("body", pm.getBody());
         this.dataManager.updateFields(data, "personal_messages", "`id_pm` = '" + pm.getID() + "'");
 
-        data = new HashMap<String, Object>();
-        data.put("id_member", pm.getToUser().getID());
-        if (pm.isRead()) {
-            temp = "1";
-        } else {
-            temp = "0";
-        }
-        data.put("is_read", temp);
-        if (pm.isDeleted()) {
-            temp = "1";
-        } else {
-            temp = "0";
-        }
-        data.put("deleted", temp);
-        if (! CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-            if (pm.isNew()) {
+        for (ScriptUser recipient : pm.getRecipients()) {
+            data = new HashMap<String, Object>();
+            data.put("id_member", recipient.getID());
+            if (pm.isRead(recipient)) {
                 temp = "1";
             } else {
                 temp = "0";
             }
-            data.put("is_new", temp);
+            data.put("is_read", temp);
+            if (pm.isDeleted(recipient)) {
+                temp = "1";
+            } else {
+                temp = "0";
+            }
+            data.put("deleted", temp);
+            if (!CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+                if (pm.isNew(recipient)) {
+                    temp = "1";
+                } else {
+                    temp = "0";
+                }
+                data.put("is_new", temp);
+            }
+            this.dataManager.updateFields(data, "pm_recipients", "`id_pm` = '" + pm.getID() + "' AND `id_member` = '" + recipient.getID() + "'");
         }
-        this.dataManager.updateFields(data, "pm_recipients", "`id_pm` = '" + pm.getID() + "'");
+        data.clear();
     }
 
     public void createPrivateMessage(PrivateMessage pm) {
@@ -625,27 +545,30 @@ public class SMF extends Script {
             data.put("id_pm_head", pm.getID());
             this.dataManager.updateFields(data, "personal_messages", "`id_pm` = '" + pm.getID() + "'");
         }
-        data = new HashMap<String, Object>();
-        data.put("id_pm", pm.getID());
-        data.put("id_member", pm.getToUser().getID());
-        temp = 0;
-        if (pm.isRead()) {
-            temp = 1;
-        }
-        data.put("is_read", temp);
-        temp = 0;
-        if (pm.isDeleted()) {
-            temp = 1;
-        }
-        data.put("deleted", temp);
-        if (! CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+        for (ScriptUser recipient : pm.getRecipients()) {
+            data = new HashMap<String, Object>();
+            data.put("id_pm", pm.getID());
+            data.put("id_member", recipient.getID());
             temp = 0;
-            if (pm.isNew()) {
+            if (pm.isRead(recipient)) {
                 temp = 1;
             }
-            data.put("is_new", temp);
+            data.put("is_read", temp);
+            temp = 0;
+            if (pm.isDeleted(recipient)) {
+                temp = 1;
+            }
+            data.put("deleted", temp);
+            if (!CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+                temp = 0;
+                if (pm.isNew(recipient)) {
+                    temp = 1;
+                }
+                data.put("is_new", temp);
+            }
+            this.dataManager.insertFields(data, "pm_recipients");
         }
-        this.dataManager.insertFields(data, "pm_recipients");
+        data.clear();
     }
 
     public int getTotalPostCount() {

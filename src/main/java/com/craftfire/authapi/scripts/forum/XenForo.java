@@ -238,7 +238,8 @@ public class XenForo extends Script {
                 HashMap<String, Object> data2 = new HashMap<String, Object>();
                 data2.put("user_id", user.getID());
                 data2.put("default_watch_state", "watch_email");
-                this.dataManager.insertFields(data, "user_option");
+                this.dataManager.insertFields(data2, "user_option");
+                data2.clear();
             }
         }
         this.dataManager.insertFields(data, "user_profile");
@@ -266,8 +267,8 @@ public class XenForo extends Script {
         List<HashMap<String, Object>> array = this.dataManager.getArrayList(
                 "SELECT `user_group_id` FROM `" + this.dataManager.getPrefix() +
                 "user_group` ORDER BY `user_group_id` ASC" + limitstring);
-        for (int i = 0; array.size() > i; i++) {
-            groups.add(getGroup(Integer.parseInt(array.get(i).get("user_group_id").toString())));
+        for (HashMap<String, Object> map : array) {
+            groups.add(getGroup(Integer.parseInt(map.get("user_group_id").toString())));
         }
         return groups;
     }
@@ -280,8 +281,8 @@ public class XenForo extends Script {
         List<HashMap<String, Object>> arrayList = this.dataManager.getArrayList(
                 "SELECT `username` FROM `" + this.dataManager.getPrefix() + "user` WHERE `user_group_id` = '" +
                 groupid + "' ORDER BY `user_id` ASC");
-        for (int i = 0; arrayList.size() > i; i++) {
-            String username = arrayList.get(0).get("username").toString();
+        for (HashMap<String, Object> map : arrayList) {
+            String username = map.get("username").toString();
             if (this.currentUsername != null && ! this.currentUsername.equalsIgnoreCase(username)) {
                 users.add(getUser(username));
             }
@@ -348,15 +349,15 @@ public class XenForo extends Script {
                     "SELECT `user_id`, `recipient_state`, `last_read_date` FROM `" + this.dataManager.getPrefix() +
                     "conversation_recipient` WHERE `conversation_id` = '" + conversationID +
                     "' AND `user_id` != '" + pm.getSender().getID() + "'");
-            for (int a = 0; recipientsArray.size() > a; a++) {
-                ScriptUser recipient = getUser(Integer.parseInt(recipientsArray.get(a).get("user_id").toString()));
+            for (HashMap<String, Object> map : recipientsArray) {
+                ScriptUser recipient = getUser(Integer.parseInt(map.get("user_id").toString()));
                 recipients.add(recipient);
-                if (recipientsArray.get(a).get("last_read_date").toString() == "0") {
+                if (map.get("last_read_date").toString().equalsIgnoreCase("0")) {
                     pm.setRead(recipient, false);
                 } else {
                     pm.setRead(recipient, true);
                 }
-                if (recipientsArray.get(a).get("recipient_state").toString() == "active") {
+                if (map.get("recipient_state").toString().equalsIgnoreCase("0")) {
                     pm.setDeleted(recipient, false);
                 } else {
                     pm.setRead(recipient, true);
@@ -364,7 +365,7 @@ public class XenForo extends Script {
             }
             pm.setRecipients(recipients);
         }
-        return null;
+        return pm;
     }
 
     public List<PrivateMessage> getPMsSent(String username, int limit) {
@@ -377,8 +378,8 @@ public class XenForo extends Script {
                 "SELECT `message_id` FROM `" + this.dataManager.getPrefix() +
                 "conversation_message` WHERE `user_id` = '" + getUserID(username) + "' ORDER BY `message_id` ASC" +
                 limitstring);
-        for (int i = 0; array.size() > i; i++) {
-            pms.add(getPM(Integer.parseInt(array.get(i).get("message_id").toString())));
+        for (HashMap<String, Object> map : array) {
+            pms.add(getPM(Integer.parseInt(map.get("message_id").toString())));
         }
         return pms;
     }
@@ -394,8 +395,8 @@ public class XenForo extends Script {
                 "SELECT `conversation_id` FROM `" + this.dataManager.getPrefix() +
                 "conversation_recipient` WHERE `user_id` = '" + userID + "' ORDER BY `conversation_id` ASC" +
                 limitstring);
-        for (int i = 0; array.size() > i; i++) {
-            int conversationID = Integer.parseInt(array.get(0).get("conversation_id").toString());
+        for (HashMap<String, Object> map : array) {
+            int conversationID = Integer.parseInt(map.get("conversation_id").toString());
             List<HashMap<String, Object>> pmsArray = this.dataManager.getArrayList(
                     "SELECT `message_id` FROM `" + this.dataManager.getPrefix() +
                     "conversation_message` WHERE `conversation_id` = '" + conversationID +
