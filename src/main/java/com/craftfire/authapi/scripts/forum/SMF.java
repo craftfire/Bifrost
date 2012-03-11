@@ -340,6 +340,7 @@ public class SMF extends Script {
                 if (additional.contains(",")) {
                     String[] split = userTable.getModel().getValueAt(0, 1).toString().split("\\,");
                     for (int i = 0; split.length > i; i++) {
+                        this.currentUsername = username;
                         groups.add(getGroup(Integer.parseInt(split[i])));
                     }
                 } else {
@@ -376,7 +377,7 @@ public class SMF extends Script {
     public PrivateMessage getPM(int pmid) {
         PrivateMessage pm = new PrivateMessage(this, pmid);
         HashMap<String, Object> array = this.dataManager.getArray(
-                "SELECT * FROM `" + this.dataManager.getPrefix() + "personal_messages` WHERE `id_pm` = '" + 
+                "SELECT * FROM `" + this.dataManager.getPrefix() + "personal_messages` WHERE `id_pm` = '" +
                 pmid + "' LIMIT 1");
         for (int i = 0; array.size() > i; i++) {
             pm.setDate(new Date(Long.parseLong(array.get("msgtime").toString()) * 1000));
@@ -397,9 +398,9 @@ public class SMF extends Script {
                 }
             }
             List<ScriptUser> recipients = new ArrayList<ScriptUser>();
-            List<HashMap<String, Object>> recipientsArray = this.dataManager.getArrayList(
-                    "SELECT * FROM `" + this.dataManager.getPrefix() +
-                    "pm_recipients` WHERE `id_pm` = '" + pm.getID() + "'");
+            List<HashMap<String, Object>> recipientsArray =
+                    this.dataManager.getArrayList("SELECT * FROM `" + this.dataManager.getPrefix() +
+                                                  "pm_recipients` WHERE `id_pm` = '" + pm.getID() + "'");
             for (HashMap<String, Object> map : recipientsArray) {
                 ScriptUser recipient = getUser(Integer.parseInt(map.get("id_member").toString()));
                 recipients.add(recipient);
@@ -413,7 +414,7 @@ public class SMF extends Script {
                 } else {
                     pm.setRead(recipient, true);
                 }
-                if (!CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
+                if (! CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
                     if (map.get("is_new").toString().equalsIgnoreCase("0")) {
                         pm.setNew(recipient, false);
                     } else {
@@ -504,7 +505,7 @@ public class SMF extends Script {
                 temp = "0";
             }
             data.put("deleted", temp);
-            if (!CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+            if (! CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
                 if (pm.isNew(recipient)) {
                     temp = "1";
                 } else {
@@ -512,7 +513,9 @@ public class SMF extends Script {
                 }
                 data.put("is_new", temp);
             }
-            this.dataManager.updateFields(data, "pm_recipients", "`id_pm` = '" + pm.getID() + "' AND `id_member` = '" + recipient.getID() + "'");
+            this.dataManager.updateFields(data, "pm_recipients",
+                                          "`id_pm` = '" + pm.getID() + "' AND `id_member` = '" + recipient.getID() +
+                                          "'");
         }
         data.clear();
     }
@@ -559,7 +562,7 @@ public class SMF extends Script {
                 temp = 1;
             }
             data.put("deleted", temp);
-            if (!CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+            if (! CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
                 temp = 0;
                 if (pm.isNew(recipient)) {
                     temp = 1;

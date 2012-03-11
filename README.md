@@ -1,6 +1,6 @@
 [![AuthAPI][Project Logo]][Website]
 AuthAPI
-======
+=======
 Authentication API library for connecting to various sites and databases.
 
 Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com>
@@ -34,7 +34,7 @@ Coding and Pull Request Conventions
 -----------------------------------
 * Generally follow the Oracle coding standards.
 * 80 column limit.
-* Use tabs, no spaces.
+* Use spaces, no tabs.
 * No trailing whitespaces.
 * Pull requests must compile and work.
 * Pull requests must be formatted properly.

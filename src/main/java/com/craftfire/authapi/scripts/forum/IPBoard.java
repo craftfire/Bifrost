@@ -28,16 +28,16 @@ import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.classes.Thread;
 import com.craftfire.commons.DataManager;
 
-public class IPB extends Script {
-    private final String scriptName = "xenforo"; /*TODO*/
-    private final String shortName = "xf"; /*TODO*/
+public class IPBoard extends Script {
+    private final String scriptName = "ipboard";
+    private final String shortName = "ipb";
     private final String encryption = "sha1"; /*TODO*/
     private final String[] versionRanges = {"1.0.4"}; /*TODO*/
     private final String userVersion;
     private final DataManager dataManager;
     private String currentUsername = null;
 
-    public IPB(ScriptAPI.Scripts script, String version, DataManager dataManager) {
+    public IPBoard(ScriptAPI.Scripts script, String version, DataManager dataManager) {
         super(script, version);
         this.userVersion = version;
         this.dataManager = dataManager;

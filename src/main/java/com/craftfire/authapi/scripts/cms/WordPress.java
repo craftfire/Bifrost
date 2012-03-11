@@ -29,8 +29,8 @@ import com.craftfire.authapi.classes.Thread;
 import com.craftfire.commons.DataManager;
 
 public class WordPress extends Script {
-    private final String scriptName = "xenforo"; /*TODO*/
-    private final String shortName = "xf"; /*TODO*/
+    private final String scriptName = "wordpress";
+    private final String shortName = "wp";
     private final String encryption = "sha1"; /*TODO*/
     private final String[] versionRanges = {"1.0.4"}; /*TODO*/
     private final String userVersion;
