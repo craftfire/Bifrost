@@ -107,9 +107,9 @@ public abstract interface ScriptUserInterface {
 
     public void setActivated(boolean activated);
 
-    public List<PrivateMessage> getPMsFromUser(int limit);
+    public List<PrivateMessage> getPMsSent(int limit);
 
-    public List<PrivateMessage> getPMsToUser(int limit);
+    public List<PrivateMessage> getPMsReceived(int limit);
 
     public int getPMSentCount();
 

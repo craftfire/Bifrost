@@ -261,12 +261,12 @@ public class ScriptUser implements ScriptUserInterface {
     }
 
     @Override
-    public List<PrivateMessage> getPMsFromUser(int limit) {
+    public List<PrivateMessage> getPMsSent(int limit) {
         return this.script.getPMsSent(this.username, limit);
     }
 
     @Override
-    public List<PrivateMessage> getPMsToUser(int limit) {
+    public List<PrivateMessage> getPMsReceived(int limit) {
         return this.script.getPMsReceived(this.username, limit);
     }
 
