@@ -16,7 +16,6 @@
  */
 package com.craftfire.authapi.scripts.forum;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -259,11 +258,7 @@ public class XenForo extends Script {
         String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
                 "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
-        byte[] bArr = stringdata.getBytes();
-        ByteArrayInputStream bIn = new ByteArrayInputStream(bArr);
-        data = new HashMap<String, Object>();
-        data.put("data", bIn);
-        this.dataManager.updateFields(data, "user_authenticate", "`user_id` = '" + user.getID() + "'");
+        this.dataManager.updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
         data.clear();
     }
 
@@ -308,11 +303,7 @@ public class XenForo extends Script {
 
         data = new HashMap<String, Object>();
         /*TODO: Make sure Blob works*/
-        String stringdata = "a:0:{}";
-        byte[] bArr = stringdata.getBytes();
-        ByteArrayInputStream bIn = new ByteArrayInputStream(bArr);
         data.put("user_id", user.getID());
-        data.put("identities", bIn);
         if (user.getBirthday() != null) {
             SimpleDateFormat format = new SimpleDateFormat("d");
             data.put("dob_day", format.format(user.getBirthday()));
@@ -337,19 +328,17 @@ public class XenForo extends Script {
                 data2.clear();
             }
         }
-        this.dataManager.insertFields(data, "user_profile");
+        this.dataManager.updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
 
         /*TODO: Make sure Blob works*/
-        stringdata =
+        String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
                 "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
-        bArr = stringdata.getBytes();
-        bIn = new ByteArrayInputStream(bArr);
         data = new HashMap<String, Object>();
         data.put("user_id", user.getID());
         data.put("scheme_class", "XenForo_Authentication_Core");
-        data.put("data", bIn);
         this.dataManager.insertFields(data, "user_authenticate");
+        this.dataManager.updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
         data.clear();
     }
 
