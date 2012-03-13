@@ -205,8 +205,8 @@ public class AuthDebug {
         printResult("getPasswordSalt", user.getPasswordSalt());
         printResult("getPMReceivedCount", "" + user.getPMReceivedCount());
         printResult("getPMSentCount", "" + user.getPMSentCount());
-        printResult("getPMsFromUser", "" + user.getPMsFromUser(0));
-        printResult("getPMsToUser", "" + user.getPMsToUser(0));
+        printResult("getPMsSent", "" + user.getPMsSent(0));
+        printResult("getPMsReceived", "" + user.getPMsReceived(0));
         printResult("getPostCount", "" + user.getPostCount());
         printResult("getRealName", user.getRealName());
         printResult("getRegIP", user.getRegIP());
@@ -334,7 +334,7 @@ public class AuthDebug {
         print(seperate);
 
         print(script.toString() + " - " + version + " - PRIVATEMESSAGE CLASS");
-        PrivateMessage pm = user.getPMsFromUser(1).get(0);
+        PrivateMessage pm = user.getPMsSent(1).get(0);
         printResult("getBody", pm.getBody());
         printResult("getSubject", "" + pm.getSubject());
         printResult("getSubject", pm.getSubject());
