@@ -17,15 +17,18 @@
 package com.craftfire.authapi.exceptions;
 
 public class UnsupportedFunction extends Exception {
+    private String message;
+
     public UnsupportedFunction() {
-
-    }
-
-    public UnsupportedFunction(Throwable cause) {
-        super(cause);
+        this.message = "This function is not supported by this script.";
     }
 
     public UnsupportedFunction(String message) {
         super(message);
+        this.message = message;
+    }
+    
+    public String getError() {
+        return this.message;
     }
 }
