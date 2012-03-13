@@ -743,6 +743,22 @@ public class XenForo extends Script {
         data.put("last_post_user_id", post.getAuthor().getID());
         data.put("last_post_username", post.getAuthor().getUsername());
         this.dataManager.updateFields(data, "thread", "`thread_id` = '" + post.getThreadID() + "'");
+        if (this.dataManager.exist("thread_user_post", "user_id", post.getAuthor().getID())) {
+            data = new HashMap<String, Object>();
+            int postCount = this.dataManager.getIntegerField("thread_user_post", "post_count",
+                                                             "`thread_id` = '" + post.getThreadID() +
+                                                             "' AND `user_id` = '" + post.getAuthor().getID() + "'");
+            data.put("post_count", postCount + 1);
+            this.dataManager.updateFields(data, "thread_user_post", "`thread_id` = '" +
+                                                                    post.getThreadID() + "' AND `user_id` = '" +
+                                                                    post.getAuthor().getID() + "'");
+        } else {
+            data = new HashMap<String, Object>();
+            data.put("thread_id", post.getThreadID());
+            data.put("user_id", post.getAuthor().getID());
+            data.put("post_count", 1);
+            this.dataManager.insertFields(data, "thread_user_post");
+        }
         data.clear();
     }
 
@@ -836,7 +852,30 @@ public class XenForo extends Script {
     }
 
     public void createThread(Thread thread) {
-        /*TODO*/
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("node_id", thread.getBoardID());
+        data.put("title", thread.getSubject());
+        data.put("reply_count", thread.getReplies());
+        data.put("view_count", thread.getViews());
+        data.put("user_id", thread.getAuthor().getID());
+        data.put("username", thread.getAuthor().getUsername());
+        data.put("post_date", thread.getThreadDate().getTime() / 1000);
+        if (thread.isSticky()) {
+            data.put("sticky", "1");
+        } else {
+            data.put("sticky", "0");
+        }
+        if (thread.isLocked()) {
+            data.put("discussion_open", "0");
+        } else {
+            data.put("discussion_open", "1");
+        }
+        data.put("first_post_id", thread.getFirstPost().getID());
+        data.put("last_post_date", thread.getLastPost().getPostDate().getTime() / 1000);
+        data.put("last_post_id", thread.getLastPost().getID());
+        data.put("last_post_user_id", thread.getLastPost().getAuthor().getID());
+        data.put("last_post_username", thread.getLastPost().getAuthor().getUsername());
+        this.dataManager.updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
     }
 
     public int getUserCount() {
