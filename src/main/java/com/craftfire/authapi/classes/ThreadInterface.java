@@ -19,7 +19,7 @@ package com.craftfire.authapi.classes;
 import java.util.Date;
 import java.util.List;
 
-public interface ThreadInterface {
+public abstract interface ThreadInterface {
     public Post getFirstPost();
 
     public Post getLastPost();

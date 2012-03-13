@@ -19,7 +19,7 @@ package com.craftfire.authapi.classes;
 import java.util.Date;
 import java.util.List;
 
-public interface PrivateMessageInterface {
+public abstract interface PrivateMessageInterface {
     public int getID();
 
     public void setID(int id);

@@ -18,7 +18,7 @@ package com.craftfire.authapi.classes;
 
 import java.util.Date;
 
-public interface PostInterface {
+public abstract interface PostInterface {
     public int getID();
 
     public void setID(int id);

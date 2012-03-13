@@ -20,7 +20,7 @@ import java.awt.Image;
 import java.util.Date;
 import java.util.List;
 
-public interface ScriptUserInterface {
+public abstract interface ScriptUserInterface {
     public int getID();
 
     public void setID(int id);

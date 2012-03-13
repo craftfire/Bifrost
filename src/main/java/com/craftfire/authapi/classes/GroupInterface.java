@@ -18,7 +18,7 @@ package com.craftfire.authapi.classes;
 
 import java.util.List;
 
-public interface GroupInterface {
+public abstract interface GroupInterface {
     public int getID();
 
     public void setID(int id);

@@ -18,7 +18,7 @@ package com.craftfire.authapi.classes;
 
 import java.util.List;
 
-public interface ScriptInterface {
+public abstract interface ScriptInterface {
     /**
      * Returns the latest version which is supported by the script.
      *

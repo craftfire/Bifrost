@@ -18,7 +18,7 @@ package com.craftfire.authapi.classes;
 
 import java.util.Date;
 
-public interface BanInterface {
+public abstract interface BanInterface {
     public int getID();
 
     public void setID(int id);
