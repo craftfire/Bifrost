@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import com.craftfire.authapi.classes.Ban;
 import com.craftfire.authapi.classes.Group;
@@ -226,6 +227,7 @@ public class AuthDebug {
         print(script.toString() + " - " + version + " - USER UPDATING");
         temp = user.getUsername();
         user.setUsername("Debug");
+        user.setPassword("craftfire");
         user.updateUser();
         user.setUsername(temp);
         user.updateUser();
@@ -233,8 +235,10 @@ public class AuthDebug {
         print(seperate);
 
         print(script.toString() + " - " + version + " - USER CREATE");
-        ScriptUser newUser = new ScriptUser(authAPI.getScript(), "testing", "craftfire");
-        newUser.setNickname("testing");
+        Random randomGenerator = new Random();
+        int randomInt = randomGenerator.nextInt();
+        ScriptUser newUser = new ScriptUser(authAPI.getScript(), "testing" + randomInt, "craftfire");
+        newUser.setNickname("testing" + randomInt);
         newUser.setUserTitle("title");
         newUser.setRegIP("127.0.0.1");
         newUser.setLastIP("127.0.0.1");
