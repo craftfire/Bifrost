@@ -115,7 +115,10 @@ public class PrivateMessage implements PrivateMessageInterface {
 
     @Override
     public boolean isRead(ScriptUser recipient) {
-        return this.read.get(recipient);
+        if (this.read.containsKey(recipient)) {
+            return this.read.get(recipient);
+        }
+        return false;
     }
 
     @Override
@@ -125,7 +128,10 @@ public class PrivateMessage implements PrivateMessageInterface {
 
     @Override
     public boolean isNew(ScriptUser recipient) {
-        return this.isnew.get(recipient);
+        if (this.isnew.containsKey(recipient)) {
+            return this.isnew.get(recipient);
+        }
+        return false;
     }
 
     @Override
@@ -135,7 +141,10 @@ public class PrivateMessage implements PrivateMessageInterface {
 
     @Override
     public boolean isDeleted(ScriptUser recipient) {
-        return this.deleted.get(recipient);
+        if (this.deleted.containsKey(recipient)) {
+            return this.deleted.get(recipient);
+        }
+        return false;
     }
 
     @Override
