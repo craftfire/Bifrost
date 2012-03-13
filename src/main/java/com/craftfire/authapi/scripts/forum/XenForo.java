@@ -572,10 +572,11 @@ public class XenForo extends Script {
         data.put("last_message_username", pm.getSender().getUsername());
         this.dataManager.insertFields(data, "conversation_master");
         int conversationID = this.dataManager.getLastID("conversation_id", "conversation_master");
+        int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + pm.getSender().getID() + "'");
         data = new HashMap<String, Object>();
         data.put("user_id", pm.getSender().getID());
         data.put("content_type", "conversation_message");
-        data.put("content_id", 4);
+        data.put("content_id", lastIPID + 1);
         data.put("action", "insert");
         data.put("ip", CraftCommons.ip2long(pm.getSender().getLastIP()));
         data.put("log_date", timestamp);
@@ -702,7 +703,6 @@ public class XenForo extends Script {
         data.put("thread_id", post.getThreadID());
         data.put("user_id", post.getAuthor().getID());
         data.put("username", post.getAuthor().getUsername());
-        data.put("post_date", post.getThreadID());
         data.put("post_date", post.getPostDate().getTime() / 1000);
         data.put("message", post.getBody());
         this.dataManager.updateFields(data, "post", "`post_id` = '" + post.getID() + "'");
@@ -713,7 +713,37 @@ public class XenForo extends Script {
     }
 
     public void createPost(Post post) {
-        /*TODO*/
+        int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + post.getAuthor().getID() + "'");
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("thread_id", post.getThreadID());
+        data.put("user_id", post.getAuthor().getID());
+        data.put("username", post.getAuthor().getUsername());
+        data.put("post_date", new Date().getTime() / 1000);
+        data.put("message", post.getBody());
+        data.put("ip_id", lastIPID);
+        data.put("position", 0);
+        this.dataManager.insertFields(data, "post");
+        int postID = this.dataManager.getLastID("post_id", "post");
+        data = new HashMap<String, Object>();
+        data.put("user_id", post.getAuthor().getID());
+        data.put("content_type", "post");
+        data.put("content_id", lastIPID + 1);
+        data.put("action", "insert");
+        data.put("ip", CraftCommons.ip2long(post.getAuthor().getLastIP()));
+        data.put("log_date", new Date().getTime() / 1000);
+        this.dataManager.insertFields(data, "ip");
+        int replyCount = this.dataManager.getIntegerField("thread", "reply_count",
+                                                          "`thread_id` = '" + post.getThreadID() + "'");
+        this.dataManager.updateBlob("post", "like_users", "`post_id` = '" + postID + "'", "a:0:{}");
+        data = new HashMap<String, Object>();
+        data.put("node_id", post.getBoardID());
+        data.put("reply_count", replyCount + 1);
+        data.put("last_post_date", new Date().getTime() / 1000);
+        data.put("last_post_id", postID);
+        data.put("last_post_user_id", post.getAuthor().getID());
+        data.put("last_post_username", post.getAuthor().getUsername());
+        this.dataManager.updateFields(data, "thread", "`thread_id` = '" + post.getThreadID() + "'");
+        data.clear();
     }
 
     public int getThreadCount(String username) {
