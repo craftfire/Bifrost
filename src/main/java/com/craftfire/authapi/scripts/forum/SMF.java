@@ -207,7 +207,7 @@ public class SMF extends Script {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         data.put("birthdate", format.format(user.getBirthday()));
         int genderID = 0;
-        if (user.getGender() == Gender.FEMALE) {
+        if (user.getGender() != null && user.getGender() == Gender.FEMALE) {
             genderID = 1;
         }
         data.put("gender", genderID);

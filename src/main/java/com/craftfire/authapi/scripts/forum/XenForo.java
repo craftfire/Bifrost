@@ -17,7 +17,6 @@
 package com.craftfire.authapi.scripts.forum;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.sql.Blob;
@@ -272,9 +271,9 @@ public class XenForo extends Script {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("username", user.getUsername());
         data.put("email", user.getEmail());
-        if (user.getGender().equals(Gender.MALE)) {
+        if (user.getGender() != null && user.getGender().equals(Gender.MALE)) {
             data.put("gender", "male");
-        } else if (user.getGender().equals(Gender.FEMALE)) {
+        } else if (user.getGender() != null && user.getGender().equals(Gender.FEMALE)) {
             data.put("gender", "female");
         } else {
             data.put("gender", "");
