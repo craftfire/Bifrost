@@ -327,7 +327,8 @@ public class XenForo extends Script {
                 data2.clear();
             }
         }
-        this.dataManager.updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
+        /*TODO: Status field, see profile_post and user_status*/
+        //this.dataManager.updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
 
         String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
@@ -337,6 +338,12 @@ public class XenForo extends Script {
         data.put("scheme_class", "XenForo_Authentication_Core");
         this.dataManager.insertFields(data, "user_authenticate");
         this.dataManager.updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
+
+        data = new HashMap<String, Object>();
+        data.put("user_id", user.getID());
+        data.put("user_group_id", 2);
+        data.put("is_primary", 1);
+        this.dataManager.insertFields(data, "user_group_relation");
         data.clear();
     }
 
