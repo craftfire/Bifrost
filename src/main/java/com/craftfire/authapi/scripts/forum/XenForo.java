@@ -852,14 +852,13 @@ public class XenForo extends Script {
     }
 
     public void createThread(Thread thread) {
+        long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
         data.put("title", thread.getSubject());
-        data.put("reply_count", thread.getReplies());
-        data.put("view_count", thread.getViews());
         data.put("user_id", thread.getAuthor().getID());
         data.put("username", thread.getAuthor().getUsername());
-        data.put("post_date", thread.getThreadDate().getTime() / 1000);
+        data.put("post_date", timestamp);
         if (thread.isSticky()) {
             data.put("sticky", "1");
         } else {
@@ -870,12 +869,22 @@ public class XenForo extends Script {
         } else {
             data.put("discussion_open", "1");
         }
-        data.put("first_post_id", thread.getFirstPost().getID());
-        data.put("last_post_date", thread.getLastPost().getPostDate().getTime() / 1000);
-        data.put("last_post_id", thread.getLastPost().getID());
-        data.put("last_post_user_id", thread.getLastPost().getAuthor().getID());
-        data.put("last_post_username", thread.getLastPost().getAuthor().getUsername());
+        data.put("last_post_date", timestamp);
+        data.put("last_post_user_id", thread.getAuthor().getID());
+        data.put("last_post_username", thread.getAuthor().getUsername());
+        this.dataManager.insertFields(data, "thread");
+        int threadID = this.dataManager.getLastID("thread_id", "thread");
+        thread.setID(threadID);
+        Post post = new Post(this, thread.getID(), thread.getBoardID());
+        post.setAuthor(thread.getAuthor());
+        post.setBody(thread.getBody());
+        post.setSubject(thread.getSubject());
+        post.createPost();
+        data = new HashMap<String, Object>();
+        data.put("first_post_id", post.getID());
+        data.put("last_post_id", post.getID());
         this.dataManager.updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
+        data.clear();
     }
 
     public int getUserCount() {
