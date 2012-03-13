@@ -121,8 +121,8 @@ public class XenForo extends Script {
     }
 
     public ScriptUser getLastRegUser() {
-        /*TODO*/
-        return null;
+        return getUser(this.dataManager.getIntegerField("SELECT `user_id` FROM `" + this.dataManager.getPrefix() +
+                                                        "user` ORDER BY `user_id` ASC LIMIT 1"));
     }
 
     public ScriptUser getUser(String username) {
@@ -415,7 +415,6 @@ public class XenForo extends Script {
     }
 
     public void updateGroup(Group group) {
-        /*TODO*/
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("title", group.getName());
         this.dataManager.updateFields(data, "user_group", "`user_group_id` = '" + group.getID() + "'");
@@ -561,7 +560,75 @@ public class XenForo extends Script {
     }
 
     public void createPrivateMessage(PrivateMessage pm) {
-        /*TODO*/
+        Long timestamp = new Date().getTime() / 1000;
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("title", pm.getSubject());
+        data.put("user_id", pm.getSender().getID());
+        data.put("username", pm.getSender().getUsername());
+        data.put("start_date", timestamp);
+        data.put("recipient_count", pm.getRecipients().size());
+        data.put("last_message_date", timestamp);
+        data.put("last_message_user_id", pm.getSender().getID());
+        data.put("last_message_username", pm.getSender().getUsername());
+        this.dataManager.insertFields(data, "conversation_master");
+        int conversationID = this.dataManager.getLastID("conversation_id", "conversation_master");
+        data = new HashMap<String, Object>();
+        data.put("user_id", pm.getSender().getID());
+        data.put("content_type", "conversation_message");
+        data.put("content_id", 4);
+        data.put("action", "insert");
+        data.put("ip", CraftCommons.ip2long(pm.getSender().getLastIP()));
+        data.put("log_date", timestamp);
+        this.dataManager.insertFields(data, "ip");
+        int ipID = this.dataManager.getLastID("ip_id", "ip");
+        data = new HashMap<String, Object>();
+        data.put("conversation_id", conversationID);
+        data.put("message_date", timestamp);
+        data.put("user_id", pm.getSender().getID());
+        data.put("username", pm.getSender().getUsername());
+        data.put("message", pm.getBody());
+        data.put("ip_id", ipID);
+        this.dataManager.insertFields(data, "conversation_message");
+        int messageID = this.dataManager.getLastID("message_id", "conversation_message");
+        data = new HashMap<String, Object>();
+        data.put("first_message_id", messageID);
+        data.put("last_message_id", messageID);
+        this.dataManager.updateFields(data, "conversation_master", "`conversation_id` = '" + conversationID + "'");
+        data = new HashMap<String, Object>();
+        data.put("conversation_id", conversationID);
+        data.put("user_id", pm.getSender().getID());
+        data.put("recipient_state", "active");
+        data.put("last_read_date", timestamp);
+        this.dataManager.insertFields(data, "conversation_recipient");
+        data = new HashMap<String, Object>();
+        data.put("conversation_id", conversationID);
+        data.put("owner_user_id", pm.getSender().getID());
+        data.put("is_unread", 0);
+        data.put("reply_count", 0);
+        data.put("last_message_date", timestamp);
+        data.put("last_message_id", messageID);
+        data.put("last_message_user_id", pm.getSender().getID());
+        data.put("last_message_username", pm.getSender().getUsername());
+        this.dataManager.insertFields(data, "conversation_user");
+        for (ScriptUser recipient : pm.getRecipients()) {
+            data = new HashMap<String, Object>();
+            data.put("conversation_id", conversationID);
+            data.put("user_id", recipient.getID());
+            data.put("recipient_state", "active");
+            data.put("last_read_date", 0);
+            this.dataManager.insertFields(data, "conversation_recipient");
+            data = new HashMap<String, Object>();
+            data.put("conversation_id", conversationID);
+            data.put("owner_user_id", recipient.getID());
+            data.put("is_unread", 1);
+            data.put("reply_count", 0);
+            data.put("last_message_date", timestamp);
+            data.put("last_message_id", messageID);
+            data.put("last_message_user_id", pm.getSender().getID());
+            data.put("last_message_username", pm.getSender().getUsername());
+            this.dataManager.insertFields(data, "conversation_user");
+        }
+        data.clear();
     }
 
     public int getPostCount(String username) {
@@ -796,35 +863,7 @@ public class XenForo extends Script {
     }
 
     public void updateBan(Ban ban) {
-        /*TODO*/
-        /*
-        if (ban.getEmail() != null && ! ban.getEmail().isEmpty()) {
-            HashMap<String, Object> data = new HashMap<String, Object>();
-            data.put("node_id", thread.getBoardID());
-            data.put("title", thread.getSubject());
-            data.put("reply_count", thread.getReplies());
-            data.put("view_count", thread.getViews());
-            data.put("user_id", thread.getAuthor().getID());
-            data.put("username", thread.getAuthor().getUsername());
-            data.put("post_date", thread.getThreadDate().getTime() / 1000);
-            if (thread.isSticky()) {
-                data.put("sticky", "1");
-            } else {
-                data.put("sticky", "0");
-            }
-            if (thread.isLocked()) {
-                data.put("discussion_open", "0");
-            } else {
-                data.put("discussion_open", "1");
-            }
-            data.put("first_post_id", thread.getFirstPost().getID());
-            data.put("last_post_date", thread.getLastPost().getPostDate().getTime() / 1000);
-            data.put("last_post_id", thread.getLastPost().getID());
-            data.put("last_post_user_id", thread.getLastPost().getAuthor().getID());
-            data.put("last_post_username", thread.getLastPost().getAuthor().getUsername());
-            this.dataManager.updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
-        }
-        */
+        /* TODO: Make it possible to update email bans, user and IP bans. */
     }
 
     public void addBan(Ban ban) {
