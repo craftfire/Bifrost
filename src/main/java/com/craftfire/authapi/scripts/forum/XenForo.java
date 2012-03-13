@@ -17,6 +17,7 @@
 package com.craftfire.authapi.scripts.forum;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.sql.Blob;
@@ -368,8 +369,9 @@ public class XenForo extends Script {
         for (HashMap<String, Object> map : arrayList) {
             String username = map.get("username").toString();
             if (this.currentUsername != null && ! this.currentUsername.equalsIgnoreCase(username)) {
-                System.out.println("user: " + this.currentUsername + " - " + username);
-                users.add(getUser(username));
+                /* TODO: Fix loop */
+                //System.out.println("user: " + this.currentUsername + " - " + username);
+                //users.add(getUser(username));
             }
         }
         this.currentUsername = null;
@@ -388,7 +390,7 @@ public class XenForo extends Script {
                 "SELECT `user_group_id`, `secondary_group_ids` FROM `" + this.dataManager.getPrefix() +
                 "user` WHERE `user_id` = '" + getUserID(username) + "' LIMIT 1");
         groups.add(getGroup(Integer.parseInt(array.get("user_group_id").toString())));
-        String additional = array.get("secondary_group_ids").toString();
+        String additional = this.dataManager.getBinaryField("user", "secondary_group_ids", "`user_id` = '" + getUserID(username) + "'");
         if (! additional.isEmpty()) {
             if (additional.contains(",")) {
                 String[] split = additional.split("\\,");
@@ -496,7 +498,7 @@ public class XenForo extends Script {
                                                          "conversation_master` WHERE `conversation_id` = '" +
                                                          conversationID + "'");
                 if (userID != conversationStarterID) {
-                    pms.add(getPM(Integer.parseInt(array.get(a).get("message_id").toString())));
+                    pms.add(getPM(Integer.parseInt(pmsArray.get(a).get("message_id").toString())));
                 }
             }
         }
