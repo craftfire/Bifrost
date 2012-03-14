@@ -143,7 +143,7 @@ public class AuthDebug {
 
     public static void runTests() {
         Random randomGenerator = new Random();
-        int randomInt = randomGenerator.nextInt();
+        int randomInt = randomGenerator.nextInt(1000000);
         String temp = "";
         print(seperate);
         print("DATAMANAGER");
@@ -329,9 +329,9 @@ public class AuthDebug {
         print(seperate);
 
         print(script.toString() + " - " + version + " - POST CREATE");
-        Post newPost = new Post(authAPI.getScript(), 1, 1);
+        Post newPost = new Post(authAPI.getScript(), 1, 2);
         newPost.setBody("Test: This it the body of the post?!");
-        newPost.setAuthor(authAPI.getUser("Craftfire"));
+        newPost.setAuthor(authAPI.getUser("craftfire" + randomInt));
         newPost.setSubject("Test " + randomInt + ": This is the subject of the post!");
         newPost.createPost();
 
@@ -396,9 +396,9 @@ public class AuthDebug {
         print(seperate);
 
         print(script.toString() + " - " + version + " - THREAD CREATE");
-        Thread newThread = new Thread(authAPI.getScript(), 1);
+        Thread newThread = new Thread(authAPI.getScript(), 2);
         newThread.setBody("Test: " + randomInt + " This it the body of the thread?!");
-        newThread.setAuthor(authAPI.getUser("Craftfire"));
+        newThread.setAuthor(authAPI.getUser("craftfire" + randomInt));
         newThread.setSubject("Test: " + randomInt + " This is the subject of the thread!");
         newThread.createThread();
 

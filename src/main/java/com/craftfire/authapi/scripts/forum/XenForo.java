@@ -215,7 +215,7 @@ public class XenForo extends Script {
     }
 
     public void updateUser(ScriptUser user) {
-        /*TODO*/
+        long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("username", user.getUsername());
         data.put("email", user.getEmail());
@@ -253,12 +253,31 @@ public class XenForo extends Script {
             String temp =
                     this.dataManager.getStringField("user_profile", "status", "`user_id` = '" + user.getID() + "'");
             if (! temp.equalsIgnoreCase(user.getStatusMessage())) {
+                int ipID = insertIP(user, "profile_post");
+                data = new HashMap<String, Object>();
+                data.put("profile_user_id", user.getID());
+                data.put("user_id", user.getID());
+                data.put("username", user.getUsername());
+                data.put("post_date", timestamp);
+                data.put("message", user.getStatusMessage());
+                data.put("ip_id", ipID);
+                this.dataManager.insertFields(data, "profile_post");
+
+                int profilePostID = this.dataManager.getLastID("profile_post_id", "profile_post");
+
+                this.dataManager.updateBlob("profile_post", "like_users", "`profile_post_id` = '" + profilePostID + "'", "a:0:{}");
+
+                data = new HashMap<String, Object>();
+                data.put("profile_post_id", profilePostID);
+                data.put("user_id", user.getID());
+                data.put("post_date", timestamp);
+                this.dataManager.insertFields(data, "user_status");
+
                 data = new HashMap<String, Object>();
                 data.put("status", user.getStatusMessage());
-                data.put("status_date", new Date().getTime() / 1000);
+                data.put("status_date", timestamp);
+                data.put("status_profile_post_id", profilePostID);
                 this.dataManager.updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
-
-                /*TODO: Status field, see profile_post and user_status*/
             }
         }
 
@@ -750,7 +769,8 @@ public class XenForo extends Script {
         data.put("last_post_user_id", post.getAuthor().getID());
         data.put("last_post_username", post.getAuthor().getUsername());
         this.dataManager.updateFields(data, "thread", "`thread_id` = '" + post.getThreadID() + "'");
-        if (this.dataManager.exist("thread_user_post", "user_id", post.getAuthor().getID())) {
+        if (this.dataManager.exist("thread_user_post", "user_id", post.getAuthor().getID()) &&
+            this.dataManager.exist("thread_user_post", "thread_id", post.getID())) {
             data = new HashMap<String, Object>();
             int postCount = this.dataManager.getIntegerField("thread_user_post", "post_count",
                                                              "`thread_id` = '" + post.getThreadID() +
