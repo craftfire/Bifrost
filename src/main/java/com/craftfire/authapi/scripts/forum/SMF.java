@@ -202,7 +202,9 @@ public class SMF extends Script {
             data.put("last_login", user.getLastLogin().getTime() / 1000);
         }
         data.put("avatar", user.getAvatarURL());
-        data.put("passwd", user.getPassword());
+        if (user.getPassword().length() != 40) {
+            data.put("passwd", hashPassword(user.getUsername(), user.getPassword()));
+        }
         data.put("usertitle", user.getUserTitle());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         data.put("birthdate", format.format(user.getBirthday()));
@@ -218,6 +220,7 @@ public class SMF extends Script {
         data.put("is_activated", activated);
         this.dataManager.updateFields(data, "members", "`" + this.membernamefield + "` = '" + user.getUsername() +
                                                        "'");
+        data.clear();
     }
 
     public void createUser(ScriptUser user) {
