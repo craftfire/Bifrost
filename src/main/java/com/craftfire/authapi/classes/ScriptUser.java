@@ -42,7 +42,7 @@ public class ScriptUser implements ScriptUserInterface {
     public ScriptUser(Script script, String username, String password) {
         this.script = script;
         this.username = username;
-        this.password = this.script.hashPassword(username, password);
+        this.password = password;
     }
 
     @Override

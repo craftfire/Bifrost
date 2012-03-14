@@ -264,8 +264,8 @@ public class XenForo extends Script {
 
     public void createUser(ScriptUser user) {
         Random r = new Random();
-        int randint = r.nextInt(1000000);
-        user.setPasswordSalt(CraftCommons.sha256(CraftCommons.md5("" + randint).substring(0, 10)));
+        user.setPasswordSalt(CraftCommons.sha256(CraftCommons.md5("" + r.nextInt(1000000)).substring(0, 10)));
+        user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
         user.setRegDate(new Date());
         user.setLastLogin(new Date());
         HashMap<String, Object> data = new HashMap<String, Object>();
