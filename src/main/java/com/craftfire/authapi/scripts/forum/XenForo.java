@@ -354,12 +354,6 @@ public class XenForo extends Script {
             this.dataManager.updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
         }
 
-        data = new HashMap<String, Object>();
-        data.put("user_id", user.getID());
-        data.put("default_watch_state", "watch_email");
-        this.dataManager.insertFields(data, "user_option");
-        //this.dataManager.updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
-
         String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
                 "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
