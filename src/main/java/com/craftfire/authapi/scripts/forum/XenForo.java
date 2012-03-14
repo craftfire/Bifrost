@@ -618,14 +618,16 @@ public class XenForo extends Script {
         data.put("last_message_username", pm.getSender().getUsername());
         this.dataManager.insertFields(data, "conversation_master");
         int conversationID = this.dataManager.getLastID("conversation_id", "conversation_master");
-        int ipID = this.insertIP(pm.getSender(), "conversation_message");
         data = new HashMap<String, Object>();
         data.put("conversation_id", conversationID);
         data.put("message_date", timestamp);
         data.put("user_id", pm.getSender().getID());
         data.put("username", pm.getSender().getUsername());
         data.put("message", pm.getBody());
-        data.put("ip_id", ipID);
+        if (!CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+            int ipID = this.insertIP(pm.getSender(), "conversation_message");
+            data.put("ip_id", ipID);
+        }
         this.dataManager.insertFields(data, "conversation_message");
         int messageID = this.dataManager.getLastID("message_id", "conversation_message");
         data = new HashMap<String, Object>();
