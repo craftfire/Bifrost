@@ -743,6 +743,7 @@ public class XenForo extends Script {
         data.put("position", 0);
         this.dataManager.insertFields(data, "post");
         int postID = this.dataManager.getLastID("post_id", "post");
+        post.setID(postID);
         this.insertIP(post.getAuthor(), "post");
         int replyCount = this.dataManager.getIntegerField("thread", "reply_count",
                                                           "`thread_id` = '" + post.getThreadID() + "'");
