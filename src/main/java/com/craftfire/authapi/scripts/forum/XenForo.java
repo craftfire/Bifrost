@@ -185,11 +185,11 @@ public class XenForo extends Script {
                 user.setLastIP(CraftCommons.long2ip((long)this.dataManager.getIntegerField(
                                                                      "ip",
                                                                      "ip",
-                                                                     "`user_id` = '" + user.getID() + "' LIMIT 1")));
+                                                                     "`user_id` = '" + user.getID() + "'")));
                 user.setRegIP(CraftCommons.long2ip((long)this.dataManager.getIntegerField(
                         "ip",
                         "ip",
-                        "`user_id` = '" + user.getID() + "' AND `action` = 'register' LIMIT 1")));
+                        "`user_id` = '" + user.getID() + "' AND `action` = 'register'")));
             }
 
             array = this.dataManager.getArray(
