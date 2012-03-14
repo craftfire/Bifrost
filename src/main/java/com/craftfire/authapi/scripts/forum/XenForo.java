@@ -253,7 +253,7 @@ public class XenForo extends Script {
             String temp =
                     this.dataManager.getStringField("user_profile", "status", "`user_id` = '" + user.getID() + "'");
             if (! temp.equalsIgnoreCase(user.getStatusMessage())) {
-                int ipID = this.insertIP(user, "profile_post");
+                int ipID = this.insertIP(user, "profile_post", "insert");
                 data = new HashMap<String, Object>();
                 data.put("profile_user_id", user.getID());
                 data.put("user_id", user.getID());
@@ -352,7 +352,7 @@ public class XenForo extends Script {
             this.dataManager.updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
         }
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
-            int ipID = insertIP(user, "profile_post");
+            int ipID = insertIP(user, "profile_post", "insert");
             data = new HashMap<String, Object>();
             data.put("profile_user_id", user.getID());
             data.put("user_id", user.getID());
@@ -394,7 +394,7 @@ public class XenForo extends Script {
         data.put("is_primary", 1);
         this.dataManager.insertFields(data, "user_group_relation");
 
-        insertIP(user, "register");
+        insertIP(user, "user", "register");
         data.clear();
     }
 
@@ -618,6 +618,7 @@ public class XenForo extends Script {
         data.put("last_message_username", pm.getSender().getUsername());
         this.dataManager.insertFields(data, "conversation_master");
         int conversationID = this.dataManager.getLastID("conversation_id", "conversation_master");
+        int ipID = this.insertIP(pm.getSender(), "conversation_message", "insert");
         data = new HashMap<String, Object>();
         data.put("conversation_id", conversationID);
         data.put("message_date", timestamp);
@@ -625,7 +626,6 @@ public class XenForo extends Script {
         data.put("username", pm.getSender().getUsername());
         data.put("message", pm.getBody());
         if (!CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-            int ipID = this.insertIP(pm.getSender(), "conversation_message");
             data.put("ip_id", ipID);
         }
         this.dataManager.insertFields(data, "conversation_message");
@@ -752,7 +752,7 @@ public class XenForo extends Script {
     }
 
     public void createPost(Post post) {
-        int ipID = this.insertIP(post.getAuthor(), "post");
+        int ipID = this.insertIP(post.getAuthor(), "post", "insert");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
         data.put("user_id", post.getAuthor().getID());
@@ -767,7 +767,6 @@ public class XenForo extends Script {
         } else {
             data.put("position", 0);
         }
-        this.dataManager.insertFields(data, "post");
         int postID = this.dataManager.getLastID("post_id", "post");
         post.setID(postID);
         int replyCount = this.dataManager.getIntegerField("thread", "reply_count",
@@ -893,7 +892,7 @@ public class XenForo extends Script {
     }
 
     public void createThread(Thread thread) {
-        this.insertIP(thread.getAuthor(), "thread");
+        this.insertIP(thread.getAuthor(), "thread", "insert");
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
@@ -1019,13 +1018,14 @@ public class XenForo extends Script {
         return this.dataManager.exist("user", "username", username);
     }
     
-    private int insertIP(ScriptUser user, String content) {
-        int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + user.getID() + "'");
+    private int insertIP(ScriptUser user, String content, String action) {
+        int lastIPID = this.dataManager.getLastID("content_id", "ip",
+                                                  "`content_type` = '" + content + "' AND `action` = '" + action + "'");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("user_id", user.getID());
         data.put("content_type", content);
         data.put("content_id", lastIPID + 1);
-        data.put("action", "insert");
+        data.put("action", action);
         data.put("ip", CraftCommons.ip2long(user.getLastIP()));
         data.put("log_date", new Date().getTime() / 1000);
         this.dataManager.insertFields(data, "ip");
@@ -1033,30 +1033,28 @@ public class XenForo extends Script {
     }
 
     private void addSearch(ScriptUser user, String type, int node, int discussionID, String title, String message) {
-        int contentID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + user.getID() +
-                                                  "' AND `content_type` = '" + type + "'");
+        int contentID = this.dataManager.getLastID("content_id", "ip", "`content_type` = '" + type + "'");
+        if (contentID == 0) {
+            contentID = 1;
+        }
         HashMap<String, Object> data = new HashMap<String, Object>();
         if (type.equalsIgnoreCase("profile_post")) {
-            data.put("content_type", type);
-            data.put("content_id", contentID);
             data.put("message", message);
             data.put("metadata", "_md_user_" + user.getID() + " _md_content_" + type +
                                  " _md_profile_user_" + user.getID());
-            data.put("user_id", user.getID());
-            data.put("item_date", new Date().getTime() / 1000);
-            data.put("discussion_id", discussionID); 
         } else {
-            data.put("content_type", type);
-            data.put("content_id", contentID);
+            if (type.equalsIgnoreCase("post")) {
+                data.put("message", message);
+            }
             data.put("title", title);
-            data.put("message", message);
             data.put("metadata", "_md_user_" + user.getID() + " _md_content_" + type + " _md_node_" + node +
                                  " _md_thread_" + discussionID);
-            data.put("user_id", user.getID());
-            data.put("item_date", new Date().getTime() / 1000);
-            data.put("discussion_id", discussionID);
         }
+        data.put("content_type", type);
+        data.put("content_id", contentID);
+        data.put("user_id", user.getID());
+        data.put("item_date", new Date().getTime() / 1000);
+        data.put("discussion_id", discussionID);
         this.dataManager.insertFields(data, "search_index");
-
     }
 }
