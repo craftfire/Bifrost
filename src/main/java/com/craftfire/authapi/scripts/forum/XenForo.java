@@ -255,12 +255,14 @@ public class XenForo extends Script {
         }
 
         if (user.getPassword().length() != 64) {
-            user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
-        }
-        String stringdata =
+            Random r = new Random();
+            user.setPasswordSalt(CraftCommons.sha256(CraftCommons.md5("" + r.nextInt(1000000)).substring(0, 10)));
+            String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
                 "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
-        this.dataManager.updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
+            this.dataManager.updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
+            user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
+        }
         data.clear();
     }
 
@@ -317,17 +319,7 @@ public class XenForo extends Script {
         this.dataManager.insertFields(data, "user_profile");
         this.dataManager.updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
-            int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + user.getID() + "'");
-            data = new HashMap<String, Object>();
-            data.put("user_id", user.getID());
-            data.put("content_type", "profile_post");
-            data.put("content_id", lastIPID + 1);
-            data.put("action", "insert");
-            data.put("ip", CraftCommons.ip2long(user.getLastIP()));
-            data.put("log_date", timestamp);
-            this.dataManager.insertFields(data, "ip");
-            int ipID = this.dataManager.getLastID("ip_id", "ip");
-
+            int ipID = insertIP(user, "profile_post");
             data = new HashMap<String, Object>();
             data.put("profile_user_id", user.getID());
             data.put("user_id", user.getID());
@@ -597,16 +589,7 @@ public class XenForo extends Script {
         data.put("last_message_username", pm.getSender().getUsername());
         this.dataManager.insertFields(data, "conversation_master");
         int conversationID = this.dataManager.getLastID("conversation_id", "conversation_master");
-        int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + pm.getSender().getID() + "'");
-        data = new HashMap<String, Object>();
-        data.put("user_id", pm.getSender().getID());
-        data.put("content_type", "conversation_message");
-        data.put("content_id", lastIPID + 1);
-        data.put("action", "insert");
-        data.put("ip", CraftCommons.ip2long(pm.getSender().getLastIP()));
-        data.put("log_date", timestamp);
-        this.dataManager.insertFields(data, "ip");
-        int ipID = this.dataManager.getLastID("ip_id", "ip");
+        int ipID = this.insertIP(pm.getSender(), "conversation_message");
         data = new HashMap<String, Object>();
         data.put("conversation_id", conversationID);
         data.put("message_date", timestamp);
@@ -739,25 +722,18 @@ public class XenForo extends Script {
 
     public void createPost(Post post) {
         /*TODO: search_index*/
-        int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + post.getAuthor().getID() + "'");
+        int ipID = this.insertIP(post.getAuthor(), "post");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
         data.put("user_id", post.getAuthor().getID());
         data.put("username", post.getAuthor().getUsername());
         data.put("post_date", new Date().getTime() / 1000);
         data.put("message", post.getBody());
-        data.put("ip_id", lastIPID);
+        data.put("ip_id", ipID);
         data.put("position", 0);
         this.dataManager.insertFields(data, "post");
         int postID = this.dataManager.getLastID("post_id", "post");
-        data = new HashMap<String, Object>();
-        data.put("user_id", post.getAuthor().getID());
-        data.put("content_type", "post");
-        data.put("content_id", lastIPID + 1);
-        data.put("action", "insert");
-        data.put("ip", CraftCommons.ip2long(post.getAuthor().getLastIP()));
-        data.put("log_date", new Date().getTime() / 1000);
-        this.dataManager.insertFields(data, "ip");
+        this.insertIP(post.getAuthor(), "post");
         int replyCount = this.dataManager.getIntegerField("thread", "reply_count",
                                                           "`thread_id` = '" + post.getThreadID() + "'");
         this.dataManager.updateBlob("post", "like_users", "`post_id` = '" + postID + "'", "a:0:{}");
@@ -1000,5 +976,18 @@ public class XenForo extends Script {
 
     public boolean isRegistered(String username) {
         return this.dataManager.exist("user", "username", username);
+    }
+    
+    private int insertIP(ScriptUser user, String content) {
+        int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + user.getID() + "'");
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("user_id", user.getID());
+        data.put("content_type", content);
+        data.put("content_id", lastIPID + 1);
+        data.put("action", "insert");
+        data.put("ip", CraftCommons.ip2long(user.getLastIP()));
+        data.put("log_date", new Date().getTime() / 1000);
+        this.dataManager.insertFields(data, "ip");
+        return this.dataManager.getLastID("ip_id", "ip");
     }
 }
