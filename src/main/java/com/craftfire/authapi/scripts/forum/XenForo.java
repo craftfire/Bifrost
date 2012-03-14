@@ -186,10 +186,10 @@ public class XenForo extends Script {
                                                                      "ip",
                                                                      "ip",
                                                                      "`user_id` = '" + user.getID() + "'")));
-                user.setRegIP(CraftCommons.long2ip((long)this.dataManager.getIntegerField(
-                        "ip",
-                        "ip",
-                        "`user_id` = '" + user.getID() + "' AND `action` = 'register'")));
+                user.setRegIP(CraftCommons.long2ip((long) this.dataManager.getIntegerField("ip", "ip", 
+                                                                                           "`user_id` = '" +
+                                                                                                       user.getID() +
+                                                                                                       "' AND `action` = 'register'")));
             }
 
             array = this.dataManager.getArray(
@@ -253,7 +253,7 @@ public class XenForo extends Script {
             String temp =
                     this.dataManager.getStringField("user_profile", "status", "`user_id` = '" + user.getID() + "'");
             if (! temp.equalsIgnoreCase(user.getStatusMessage())) {
-                int ipID = insertIP(user, "profile_post");
+                int ipID = this.insertIP(user, "profile_post");
                 data = new HashMap<String, Object>();
                 data.put("profile_user_id", user.getID());
                 data.put("user_id", user.getID());
@@ -264,6 +264,8 @@ public class XenForo extends Script {
                 this.dataManager.insertFields(data, "profile_post");
 
                 int profilePostID = this.dataManager.getLastID("profile_post_id", "profile_post");
+
+                this.addSearch(user, "profile_post", 0, profilePostID, null, user.getStatusMessage());
 
                 this.dataManager.updateBlob("profile_post", "like_users", "`profile_post_id` = '" + profilePostID + "'", "a:0:{}");
 
@@ -744,7 +746,6 @@ public class XenForo extends Script {
     }
 
     public void createPost(Post post) {
-        /*TODO: search_index*/
         int ipID = this.insertIP(post.getAuthor(), "post");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
@@ -757,9 +758,9 @@ public class XenForo extends Script {
         this.dataManager.insertFields(data, "post");
         int postID = this.dataManager.getLastID("post_id", "post");
         post.setID(postID);
-        this.insertIP(post.getAuthor(), "post");
         int replyCount = this.dataManager.getIntegerField("thread", "reply_count",
                                                           "`thread_id` = '" + post.getThreadID() + "'");
+        this.addSearch(post.getAuthor(), "post", post.getBoardID(), post.getID(), post.getSubject(), post.getBody());
         this.dataManager.updateBlob("post", "like_users", "`post_id` = '" + postID + "'", "a:0:{}");
         data = new HashMap<String, Object>();
         data.put("node_id", post.getBoardID());
@@ -786,6 +787,7 @@ public class XenForo extends Script {
             data.put("post_count", 1);
             this.dataManager.insertFields(data, "thread_user_post");
         }
+        this.dataManager.increaseField("user", "message_count", "`user_id` = '" + post.getAuthor().getID() + "'");
         data.clear();
     }
 
@@ -879,7 +881,7 @@ public class XenForo extends Script {
     }
 
     public void createThread(Thread thread) {
-        /*TODO: search_index*/
+        this.insertIP(thread.getAuthor(), "thread");
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
@@ -903,6 +905,8 @@ public class XenForo extends Script {
         this.dataManager.insertFields(data, "thread");
         int threadID = this.dataManager.getLastID("thread_id", "thread");
         thread.setID(threadID);
+        this.addSearch(thread.getAuthor(), "thread", thread.getBoardID(), thread.getID(),
+                  thread.getSubject(), thread.getBody());
         Post post = new Post(this, thread.getID(), thread.getBoardID());
         post.setAuthor(thread.getAuthor());
         post.setBody(thread.getBody());
@@ -1014,5 +1018,33 @@ public class XenForo extends Script {
         data.put("log_date", new Date().getTime() / 1000);
         this.dataManager.insertFields(data, "ip");
         return this.dataManager.getLastID("ip_id", "ip");
+    }
+
+    private void addSearch(ScriptUser user, String type, int node, int discussionID, String title, String message) {
+        int contentID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + user.getID() +
+                                                  "' AND `content_type` = '" + type + "'");
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        if (type.equalsIgnoreCase("profile_post")) {
+            data.put("content_type", type);
+            data.put("content_id", contentID);
+            data.put("message", message);
+            data.put("metadata", "_md_user_" + user.getID() + " _md_content_" + type +
+                                 " _md_profile_user_" + user.getID());
+            data.put("user_id", user.getID());
+            data.put("item_date", new Date().getTime() / 1000);
+            data.put("discussion_id", discussionID); 
+        } else {
+            data.put("content_type", type);
+            data.put("content_id", contentID);
+            data.put("title", title);
+            data.put("message", message);
+            data.put("metadata", "_md_user_" + user.getID() + " _md_content_" + type + " _md_node_" + node +
+                                 " _md_thread_" + discussionID);
+            data.put("user_id", user.getID());
+            data.put("item_date", new Date().getTime() / 1000);
+            data.put("discussion_id", discussionID);
+        }
+        this.dataManager.insertFields(data, "search_index");
+
     }
 }
