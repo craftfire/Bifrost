@@ -182,6 +182,14 @@ public class XenForo extends Script {
                 }
                 user.setUsername(array.get("username").toString());
                 user.setUserTitle(array.get("custom_title").toString());
+                user.setLastIP(CraftCommons.long2ip((long)this.dataManager.getIntegerField(
+                                                                     "ip",
+                                                                     "ip",
+                                                                     "`user_id` = '" + user.getID() + "' LIMIT 1")));
+                user.setRegIP(CraftCommons.long2ip((long)this.dataManager.getIntegerField(
+                        "ip",
+                        "ip",
+                        "`user_id` = '" + user.getID() + "' AND `action` = 'register' LIMIT 1")));
             }
 
             array = this.dataManager.getArray(
@@ -366,6 +374,8 @@ public class XenForo extends Script {
         data.put("user_group_id", 2);
         data.put("is_primary", 1);
         this.dataManager.insertFields(data, "user_group_relation");
+
+        insertIP(user, "register");
         data.clear();
     }
 
