@@ -142,6 +142,8 @@ public class AuthDebug {
     }
 
     public static void runTests() {
+        Random randomGenerator = new Random();
+        int randomInt = randomGenerator.nextInt();
         String temp = "";
         print(seperate);
         print("DATAMANAGER");
@@ -235,9 +237,7 @@ public class AuthDebug {
         print(seperate);
 
         print(script.toString() + " - " + version + " - USER CREATE");
-        Random randomGenerator = new Random();
-        int randomInt = randomGenerator.nextInt();
-        ScriptUser newUser = new ScriptUser(authAPI.getScript(), "testing" + randomInt, "craftfire");
+        ScriptUser newUser = new ScriptUser(authAPI.getScript(), "craftfire" + randomInt, "craftfire");
         newUser.setNickname("testing" + randomInt);
         newUser.setUserTitle("title");
         newUser.setRegIP("127.0.0.1");
@@ -274,7 +274,7 @@ public class AuthDebug {
         print(seperate);
 
         print(script.toString() + " - " + version + " - BAN CREATE");
-        Ban newBan = new Ban(authAPI.getScript(), "Craftfire", "dev@craftfire.com", "127.0.0.1");
+        Ban newBan = new Ban(authAPI.getScript(), "craftfire-ban-" + randomInt, "dev@craftfire.com", "127.0.0.1");
         newBan.setNotes("Staff notes");
         newBan.setReason("Hello world!");
         newBan.addBan();
@@ -301,9 +301,9 @@ public class AuthDebug {
         print(seperate);
 
         print(script.toString() + " - " + version + " - GROUP CREATE");
-        Group newGroup = new Group(authAPI.getScript(), "Example group");
+        Group newGroup = new Group(authAPI.getScript(), "craftfire_group_" + randomInt);
         newGroup.setDescription("Description is not needed!");
-        //newGroup.createGroup();
+        newGroup.createGroup();
 
         print(seperate);
 
@@ -332,8 +332,8 @@ public class AuthDebug {
         Post newPost = new Post(authAPI.getScript(), 1, 1);
         newPost.setBody("Test: This it the body of the post?!");
         newPost.setAuthor(authAPI.getUser("Craftfire"));
-        newPost.setSubject("Test: This is the subject of the post!");
-        //newPost.createPost();
+        newPost.setSubject("Test " + randomInt + ": This is the subject of the post!");
+        newPost.createPost();
 
         print(seperate);
 
@@ -361,12 +361,12 @@ public class AuthDebug {
         ScriptUser from = authAPI.getUser("Contex");
         List<ScriptUser> recipients = new ArrayList<ScriptUser>();
         recipients.add(authAPI.getUser("Craftfire"));
-        recipients.add(authAPI.getUser("Testing"));
+        recipients.add(authAPI.getUser("craftfire" + randomInt));
         PrivateMessage newPM = new PrivateMessage(authAPI.getScript(), from, recipients);
-        newPM.setBody("This is an example body");
-        newPM.setSubject("This is an example subject");
+        newPM.setBody("This is an example body: " + randomInt);
+        newPM.setSubject("This is an example subject: " + randomInt);
         newPM.setNew(authAPI.getUser("Craftfire"), true);
-        //newPM.createPrivateMessage();
+        newPM.createPrivateMessage();
 
         print(seperate);
 
@@ -397,10 +397,10 @@ public class AuthDebug {
 
         print(script.toString() + " - " + version + " - THREAD CREATE");
         Thread newThread = new Thread(authAPI.getScript(), 1);
-        newThread.setBody("Test: This it the body of the thread?!");
+        newThread.setBody("Test: " + randomInt + " This it the body of the thread?!");
         newThread.setAuthor(authAPI.getUser("Craftfire"));
-        newThread.setSubject("Test: This is the subject of the tgread!");
-        //newThread.createThread();
+        newThread.setSubject("Test: " + randomInt + " This is the subject of the thread!");
+        newThread.createThread();
 
         print(seperate);
     }

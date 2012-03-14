@@ -254,7 +254,9 @@ public class XenForo extends Script {
             }
         }
 
-        /*TODO: Make sure Blob works*/
+        if (user.getPassword().length() != 64) {
+            user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
+        }
         String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
                 "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
@@ -263,6 +265,7 @@ public class XenForo extends Script {
     }
 
     public void createUser(ScriptUser user) {
+        long timestamp = new Date().getTime() / 1000;
         Random r = new Random();
         user.setPasswordSalt(CraftCommons.sha256(CraftCommons.md5("" + r.nextInt(1000000)).substring(0, 10)));
         user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
@@ -279,8 +282,8 @@ public class XenForo extends Script {
             data.put("gender", "");
         }
         data.put("custom_title", user.getUserTitle());
-        data.put("register_date", user.getRegDate().getTime() / 1000);
-        data.put("last_activity", user.getLastLogin().getTime() / 1000);
+        data.put("register_date", timestamp);
+        data.put("last_activity", timestamp);
         data.put("language_id", 1);
         data.put("style_id", 0);
         data.put("timezone", "Europe/London");
@@ -311,23 +314,50 @@ public class XenForo extends Script {
             format = new SimpleDateFormat("yyyy");
             data.put("dob_year", format.format(user.getBirthday()));
         }
+        this.dataManager.insertFields(data, "user_profile");
+        this.dataManager.updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
-            String temp =
-                    this.dataManager.getStringField("user_profile", "status", "`user_id` = '" + user.getID() + "'");
-            if (! temp.equalsIgnoreCase(user.getStatusMessage())) {
-                data = new HashMap<String, Object>();
-                data.put("status", user.getStatusMessage());
-                data.put("status_date", new Date().getTime() / 1000);
+            int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + user.getID() + "'");
+            data = new HashMap<String, Object>();
+            data.put("user_id", user.getID());
+            data.put("content_type", "profile_post");
+            data.put("content_id", lastIPID + 1);
+            data.put("action", "insert");
+            data.put("ip", CraftCommons.ip2long(user.getLastIP()));
+            data.put("log_date", timestamp);
+            this.dataManager.insertFields(data, "ip");
+            int ipID = this.dataManager.getLastID("ip_id", "ip");
 
-                /*TODO: Status field, see profile_post and user_status*/
-                HashMap<String, Object> data2 = new HashMap<String, Object>();
-                data2.put("user_id", user.getID());
-                data2.put("default_watch_state", "watch_email");
-                this.dataManager.insertFields(data2, "user_option");
-                data2.clear();
-            }
+            data = new HashMap<String, Object>();
+            data.put("profile_user_id", user.getID());
+            data.put("user_id", user.getID());
+            data.put("username", user.getUsername());
+            data.put("post_date", timestamp);
+            data.put("message", user.getStatusMessage());
+            data.put("ip_id", ipID);
+            this.dataManager.insertFields(data, "profile_post");
+
+            int profilePostID = this.dataManager.getLastID("profile_post_id", "profile_post");
+
+            this.dataManager.updateBlob("profile_post", "like_users", "`profile_post_id` = '" + profilePostID + "'", "a:0:{}");
+
+            data = new HashMap<String, Object>();
+            data.put("profile_post_id", profilePostID);
+            data.put("user_id", user.getID());
+            data.put("post_date", timestamp);
+            this.dataManager.insertFields(data, "user_status");
+
+            data = new HashMap<String, Object>();
+            data.put("status", user.getStatusMessage());
+            data.put("status_date", timestamp);
+            data.put("status_profile_post_id", profilePostID);
+            this.dataManager.updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
         }
-        /*TODO: Status field, see profile_post and user_status*/
+
+        data = new HashMap<String, Object>();
+        data.put("user_id", user.getID());
+        data.put("default_watch_state", "watch_email");
+        this.dataManager.insertFields(data, "user_option");
         //this.dataManager.updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
 
         String stringdata =
@@ -496,13 +526,13 @@ public class XenForo extends Script {
                                                   "conversation_message` WHERE `conversation_id` = '" +
                                                   conversationID +
                                                   "' AND `user_id` != '" + userID + "'");
-            for (int a = 0; pmsArray.size() > a; a++) {
+            for (HashMap<String, Object> pm : pmsArray) {
                 int conversationStarterID =
                         this.dataManager.getIntegerField("SELECT `user_id` FROM `" + this.dataManager.getPrefix() +
                                                          "conversation_master` WHERE `conversation_id` = '" +
                                                          conversationID + "'");
                 if (userID != conversationStarterID) {
-                    pms.add(getPM(Integer.parseInt(pmsArray.get(a).get("message_id").toString())));
+                    pms.add(getPM(Integer.parseInt(pm.get("message_id").toString())));
                 }
             }
         }
@@ -708,6 +738,7 @@ public class XenForo extends Script {
     }
 
     public void createPost(Post post) {
+        /*TODO: search_index*/
         int lastIPID = this.dataManager.getLastID("content_id", "ip", "`user_id` = '" + post.getAuthor().getID() + "'");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
@@ -847,6 +878,7 @@ public class XenForo extends Script {
     }
 
     public void createThread(Thread thread) {
+        /*TODO: search_index*/
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
@@ -940,7 +972,7 @@ public class XenForo extends Script {
     }
 
     public void addBan(Ban ban) {
-        /*TODO*/
+        /* TODO: Make it possible to add email bans, user and IP bans. */
     }
 
     public int getBanCount() {
