@@ -286,11 +286,11 @@ public class XenForo extends Script {
         if (user.getPassword().length() != 64) {
             Random r = new Random();
             user.setPasswordSalt(CraftCommons.sha256(CraftCommons.md5("" + r.nextInt(1000000)).substring(0, 10)));
+            user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
             String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
                 "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
             this.dataManager.updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
-            user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
         }
         data.clear();
     }
@@ -346,7 +346,11 @@ public class XenForo extends Script {
             data.put("dob_year", format.format(user.getBirthday()));
         }
         this.dataManager.insertFields(data, "user_profile");
-        this.dataManager.updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
+        if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+            this.dataManager.updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
+        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
+            this.dataManager.updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
+        }
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
             int ipID = insertIP(user, "profile_post");
             data = new HashMap<String, Object>();
@@ -754,7 +758,13 @@ public class XenForo extends Script {
         data.put("post_date", new Date().getTime() / 1000);
         data.put("message", post.getBody());
         data.put("ip_id", ipID);
-        data.put("position", 0);
+        if (this.dataManager.exist("post", "thread_id", post.getThreadID())) {
+            data.put("position", this.dataManager.getLastID("position",
+                                                            "post",
+                                                            "`thread_id` = '" + post.getThreadID() + "'") + 1);
+        } else {
+            data.put("position", 0);
+        }
         this.dataManager.insertFields(data, "post");
         int postID = this.dataManager.getLastID("post_id", "post");
         post.setID(postID);
