@@ -19,6 +19,8 @@ package com.craftfire.authapi;
 import com.craftfire.authapi.ScriptAPI.Scripts;
 import com.craftfire.authapi.classes.Script;
 import com.craftfire.authapi.classes.ScriptUser;
+import com.craftfire.authapi.exceptions.UnsupportedScript;
+import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.commons.DataManager;
 
 public class AuthAPI {
@@ -27,26 +29,27 @@ public class AuthAPI {
     private final DataManager dataManager;
 
     public AuthAPI(Scripts script, String version, String host, int port, String database, String username,
-                   String password, String prefix) {
+                   String password, String prefix) throws UnsupportedVersion {
         this.dataManager = new DataManager(host, port, database, username, password, prefix);
         this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
         this.script = this.scriptAPI.getScript();
     }
 
-    public AuthAPI(Scripts script, String version, DataManager dataManager) {
+    public AuthAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.scriptAPI = new ScriptAPI(script, version, dataManager);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
     }
 
     public AuthAPI(String script, String version, String host, int port, String database, String username,
-                   String password, String prefix) {
+                   String password, String prefix) throws UnsupportedScript, UnsupportedVersion {
         this.dataManager = new DataManager(host, port, database, username, password, prefix);
         this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
         this.script = this.scriptAPI.getScript();
     }
 
-    public AuthAPI(String script, String version, DataManager dataManager) {
+    public AuthAPI(String script, String version, DataManager dataManager) throws UnsupportedScript,
+                                                                                  UnsupportedVersion {
         this.scriptAPI = new ScriptAPI(script, version, dataManager);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;

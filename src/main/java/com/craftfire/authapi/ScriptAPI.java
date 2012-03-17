@@ -18,6 +18,7 @@ package com.craftfire.authapi;
 
 import com.craftfire.authapi.classes.Script;
 import com.craftfire.authapi.exceptions.UnsupportedScript;
+import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.authapi.scripts.forum.SMF;
 import com.craftfire.authapi.scripts.forum.XenForo;
 import com.craftfire.commons.DataManager;
@@ -41,24 +42,33 @@ public class ScriptAPI {
     /**
      * @param script  The script using the enum list, for example: Scripts.SMF.
      * @param version The version that the user has set in his config.
+     * @throws UnsupportedVersion if the input version is not found in the list of supported versions.
      */
-    public ScriptAPI(Scripts script, String version, DataManager dataManager) {
+    public ScriptAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.scriptName = script;
         this.version = version;
         this.dataManager = dataManager;
         setScript();
+        if (! this.script.isSupportedVersion()) {
+            throw new UnsupportedVersion();
+        }
     }
 
     /**
      * @param script  The script in a string, for example: smf.
      * @param version The version that the user has set in his config.
      * @throws UnsupportedScript if the input string is not found in the list of supported scripts.
+     * @throws UnsupportedVersion if the input version is not found in the list of supported versions.
      */
-    public ScriptAPI(String script, String version, DataManager dataManager) throws UnsupportedScript {
+    public ScriptAPI(String script, String version, DataManager dataManager) throws UnsupportedScript,
+                                                                                    UnsupportedVersion {
         this.scriptName = stringToScript(script);
         this.version = version;
         this.dataManager = dataManager;
         setScript();
+        if (! this.script.isSupportedVersion()) {
+            throw new UnsupportedVersion();
+        }
     }
 
     /**
