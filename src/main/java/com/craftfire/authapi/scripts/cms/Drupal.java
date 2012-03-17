@@ -43,6 +43,10 @@ public class Drupal extends Script {
         this.dataManager = dataManager;
     }
 
+    public String[] getVersionRanges() {
+        return this.versionRanges;
+    }
+
     public String getLatestVersion() {
         /*TODO*/
         return this.versionRanges[0];

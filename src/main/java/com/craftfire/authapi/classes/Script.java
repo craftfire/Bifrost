@@ -19,6 +19,7 @@ package com.craftfire.authapi.classes;
 import java.util.List;
 
 import com.craftfire.authapi.ScriptAPI.Scripts;
+import com.craftfire.commons.CraftCommons;
 
 public class Script implements ScriptInterface {
     private final String version;
@@ -51,8 +52,23 @@ public class Script implements ScriptInterface {
     }
 
     @Override
+    public boolean isSupportedVersion() {
+        for (int i=0; this.getVersionRanges().length > i; i++) {
+            if (CraftCommons.inVersionRange(this.getVersionRanges()[i], this.version)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public String getVersion() {
         return this.version;
+    }
+
+    @Override
+    public String[] getVersionRanges() {
+        return null;
     }
 
     @Override

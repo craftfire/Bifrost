@@ -17,6 +17,7 @@
 package com.craftfire.authapi;
 
 import com.craftfire.authapi.classes.Script;
+import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.scripts.forum.SMF;
 import com.craftfire.authapi.scripts.forum.XenForo;
 import com.craftfire.commons.DataManager;
@@ -28,7 +29,13 @@ public class ScriptAPI {
     private final String version;
 
     public enum Scripts {
-        SMF, XF
+        SMF("simplemachines"),
+        XF("xenforo");
+        
+        public String alias;
+        Scripts(String alias) {
+            this.alias = alias;
+        }
     }
 
     /**
@@ -45,8 +52,9 @@ public class ScriptAPI {
     /**
      * @param script  The script in a string, for example: smf.
      * @param version The version that the user has set in his config.
+     * @throws UnsupportedScript if the input string is not found in the list of supported scripts.
      */
-    public ScriptAPI(String script, String version, DataManager dataManager) {
+    public ScriptAPI(String script, String version, DataManager dataManager) throws UnsupportedScript {
         this.scriptName = stringToScript(script);
         this.version = version;
         this.dataManager = dataManager;
@@ -58,16 +66,6 @@ public class ScriptAPI {
      */
     public Script getScript() {
         return this.script;
-    }
-
-    /**
-     * @param username The username of the player.
-     * @param password The password of the player.
-     * @return A hash encrypted with the script's encryption
-     */
-    public String hashPassword(String username, String password) {
-        return "";
-        //return this.script.hashPassword(username, password);
     }
 
     /**
@@ -83,12 +81,25 @@ public class ScriptAPI {
     }
 
     /**
-     * Converts a string into a script.
+     * Converts a string into a script enum.
      *
-     * @param string The string which
+     * @param string The string which contains the script name
      * @return The script for the string, if none are found it returns null.
+     * @throws UnsupportedScript if the input string is not found in the list of supported scripts.
      */
-    private Scripts stringToScript(String string) {
-        return Scripts.SMF;
+    private Scripts stringToScript(String string) throws UnsupportedScript {
+        for (Scripts script : Scripts.values()) {
+            if (string.equalsIgnoreCase(script.toString()) || string.equalsIgnoreCase(script.alias)) {
+                return script;
+            } else if (script.alias.contains(",")) {
+                String[] aliases = script.alias.split(",");
+                for (int i=0; aliases.length>i; i++) {
+                    if (string.equalsIgnoreCase(aliases[i])) {
+                        return script;
+                    }
+                }
+            }
+        }
+        throw new UnsupportedScript();
     }
 }

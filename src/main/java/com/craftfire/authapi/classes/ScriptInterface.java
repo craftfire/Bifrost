@@ -27,11 +27,25 @@ public abstract interface ScriptInterface {
     public String getLatestVersion();
 
     /**
+     * Returns true if the user version is supported by the script.
+     *
+     * @return true if supported, false if not.
+     */
+    public boolean isSupportedVersion();
+
+    /**
      * Returns the version which the script has been set to, this is usually the user's version.
      *
      * @return the version.
      */
     public String getVersion();
+
+    /**
+     * Returns an array of version ranges which the script supports.
+     *
+     * @return the version ranges.
+     */
+    public String[] getVersionRanges();
 
     /**
      * Returns which encryption method is used by the script to hash the passwords.

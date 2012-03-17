@@ -57,6 +57,10 @@ public class SMF extends Script {
         }
     }
 
+    public String[] getVersionRanges() {
+        return this.versionRanges;
+    }
+
     public String getLatestVersion() {
         return this.versionRanges[1];
     }
