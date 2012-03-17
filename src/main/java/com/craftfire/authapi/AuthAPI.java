@@ -39,6 +39,19 @@ public class AuthAPI {
         this.dataManager = dataManager;
     }
 
+    public AuthAPI(String script, String version, String host, int port, String database, String username,
+                   String password, String prefix) {
+        this.dataManager = new DataManager(host, port, database, username, password, prefix);
+        this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
+        this.script = this.scriptAPI.getScript();
+    }
+
+    public AuthAPI(String script, String version, DataManager dataManager) {
+        this.scriptAPI = new ScriptAPI(script, version, dataManager);
+        this.script = this.scriptAPI.getScript();
+        this.dataManager = dataManager;
+    }
+
     public Script getScript() {
         return this.script;
     }
