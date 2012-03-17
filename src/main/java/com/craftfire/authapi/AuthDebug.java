@@ -31,6 +31,7 @@ import com.craftfire.authapi.classes.PrivateMessage;
 import com.craftfire.authapi.classes.Script;
 import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.commons.DataManager;
 
 public class AuthDebug {
@@ -112,7 +113,11 @@ public class AuthDebug {
             dataManager =
                     new DataManager(keepalive, timeout, data.get("mysql_host"), port, data.get("mysql_database"),
                                     data.get("mysql_username"), data.get("mysql_password"), data.get("mysql_prefix"));
-            authAPI = new AuthAPI(script, version, dataManager);
+            try {
+                authAPI = new AuthAPI(script, version, dataManager);
+            } catch (UnsupportedVersion unsupportedVersion) {
+                unsupportedVersion.printStackTrace();
+            }
             runTests();
         } catch (IOException ioe) {
             System.out.println("IO exception = " + ioe);
