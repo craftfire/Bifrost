@@ -333,6 +333,11 @@ public class SMF extends Script {
         return group;
     }
 
+    public Group getGroup(String group) {
+        /* TODO */
+        return null;
+    }
+
     public List<Group> getUserGroups(String username) {
         this.currentUsername = username;
         JTable userTable = new JTable(this.dataManager.resultSetToTableModel(

@@ -121,6 +121,11 @@ public class PhpBB extends Script {
         return null;
     }
 
+    public Group getGroup(String group) {
+        /* TODO */
+        return null;
+    }
+
     public List<Group> getUserGroups(String username) {
         /*TODO*/
         return null;

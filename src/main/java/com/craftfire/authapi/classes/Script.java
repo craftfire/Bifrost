@@ -125,6 +125,11 @@ public class Script implements ScriptInterface {
     }
 
     @Override
+    public Group getGroup(String group) {
+        return null;
+    }
+
+    @Override
     public List<Group> getUserGroups(String username) {
         return null;
     }

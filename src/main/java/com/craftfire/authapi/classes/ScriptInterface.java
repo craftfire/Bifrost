@@ -170,6 +170,15 @@ public abstract interface ScriptInterface {
     public Group getGroup(int groupid);
 
     /**
+     * Returns a Group object of the given group name, if nothing is found it returns null.
+     *
+     * @param group The group name.
+     * @return Group object, null if nothing was found.
+     * @see Group
+     */
+    public Group getGroup(String group);
+
+    /**
      * Returns a List with the Group objects that the user is a part of.
      * If none are found, the List will be empty.
      *
