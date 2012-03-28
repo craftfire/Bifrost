@@ -259,17 +259,17 @@ public class SMF extends Script {
 
 		user.setID(getUserID(user.getUsername()));
 
-		this.dataManager.executeSQLQuery("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
+		this.dataManager.executeQueryVoid("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
 				" '" + user.getUsername() + "' WHERE `variable` = 'latestRealName'");
 
-		this.dataManager.executeSQLQuery("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
+		this.dataManager.executeQueryVoid("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
 				" '" + user.getID() + "' WHERE `variable` = 'latestMember'");
 
-		this.dataManager.executeSQLQuery("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
+		this.dataManager.executeQueryVoid("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
 				" '" + (user.getRegDate().getTime() / 1000) +
 				"' WHERE `variable` = 'memberlist_updated'");
 
-		this.dataManager.executeSQLQuery("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
+		this.dataManager.executeQueryVoid("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
 				" value + 1 WHERE `variable` = 'totalMembers'");
 	}
 
@@ -709,33 +709,33 @@ public class SMF extends Script {
 		data = new HashMap<String, Object>();
 		data.put("id_msg_modified", post.getID());
 		this.dataManager.updateFields(data, "messages", "`id_msg` = '" + post.getID() + "'");
-		this.dataManager.executeSQLQuery("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
+		this.dataManager.executeQueryVoid("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
 				" value + 1, `value` = '" + post.getID() + "' WHERE `variable` = 'maxMsgID'");
 		data = new HashMap<String, Object>();
 		data.put("id_last_msg", post.getID());
 		data.put("id_member_updated", post.getAuthor().getID());
 		this.dataManager.updateFields(data, "topics", "`id_topic` = '" + post.getThreadID() + "'");
 		if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-			this.dataManager.executeSQLQuery(
+			this.dataManager.executeQueryVoid(
 					"UPDATE `" + this.dataManager.getPrefix() + "topics" + "` SET `numreplies` =" +
 							" numreplies + 1 WHERE `id_topic` = '" + post.getThreadID() + "'");
 		} else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
-			this.dataManager.executeSQLQuery(
+			this.dataManager.executeQueryVoid(
 					"UPDATE `" + this.dataManager.getPrefix() + "topics" + "` SET `num_replies` =" +
 							" num_replies + 1 WHERE `id_topic` = '" + post.getThreadID() + "'");
 		}
-		this.dataManager.executeSQLQuery("UPDATE `" + this.dataManager.getPrefix() + "members" + "` SET `posts` =" +
+		this.dataManager.executeQueryVoid("UPDATE `" + this.dataManager.getPrefix() + "members" + "` SET `posts` =" +
 				" posts + 1 WHERE `id_member` = '" + post.getAuthor().getID() + "'");
-		this.dataManager.executeSQLQuery(
+		this.dataManager.executeQueryVoid(
 				"UPDATE `" + this.dataManager.getPrefix() + "boards" + "` SET `id_last_msg` =" +
 						" '" + post.getID() + "', `id_msg_updated` = '" + post.getID() + "' WHERE `id_board` = '" +
 						post.getBoardID() + "'");
 		if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-			this.dataManager.executeSQLQuery(
+			this.dataManager.executeQueryVoid(
 					"UPDATE `" + this.dataManager.getPrefix() + "boards" + "` SET `numposts` =" +
 							" numposts + 1 WHERE `id_board` = '" + post.getBoardID() + "'");
 		} else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
-			this.dataManager.executeSQLQuery(
+			this.dataManager.executeQueryVoid(
 					"UPDATE `" + this.dataManager.getPrefix() + "boards" + "` SET `num_posts` =" +
 							" num_posts + 1 WHERE `id_board` = '" + post.getBoardID() + "'");
 		}
@@ -912,17 +912,17 @@ public class SMF extends Script {
 		this.dataManager.updateFields(data, "topics", "`id_topic` = '" + thread.getID() + "'");
 
 		if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-			this.dataManager.executeSQLQuery(
+			this.dataManager.executeQueryVoid(
 					"UPDATE `" + this.dataManager.getPrefix() + "boards" + "` SET `numtopics` =" +
 							" numtopics + 1 WHERE `id_board` = '" + post.getBoardID() + "'");
-			this.dataManager.executeSQLQuery(
+			this.dataManager.executeQueryVoid(
 					"UPDATE `" + this.dataManager.getPrefix() + "topics" + "` SET `numreplies` =" +
 							" '0' WHERE `id_topic` = '" + post.getThreadID() + "'");
 		} else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
-			this.dataManager.executeSQLQuery(
+			this.dataManager.executeQueryVoid(
 					"UPDATE `" + this.dataManager.getPrefix() + "boards" + "` SET `num_topics` =" +
 							" num_topics + 1 WHERE `id_board` = '" + post.getBoardID() + "'");
-			this.dataManager.executeSQLQuery(
+			this.dataManager.executeQueryVoid(
 					"UPDATE `" + this.dataManager.getPrefix() + "topics" + "` SET `num_replies` =" +
 							" '0' WHERE `id_topic` = '" + post.getThreadID() + "'");
 		}
@@ -1081,7 +1081,7 @@ public class SMF extends Script {
 			this.dataManager.insertFields(data, "ban_items");
 		}
 
-		this.dataManager.executeSQLQuery("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
+		this.dataManager.executeQueryVoid("UPDATE `" + this.dataManager.getPrefix() + "settings" + "` SET `value` =" +
 				" '" + (ban.getStartDate().getTime() / 1000) +
 				"' WHERE `variable` = 'banLastUpdated'");
 	}
