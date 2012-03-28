@@ -33,6 +33,7 @@ import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.classes.Thread;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.commons.DataManager;
+import com.craftfire.commons.DataType;
 
 public class AuthDebug {
     static AuthAPI authAPI;
@@ -110,9 +111,13 @@ public class AuthDebug {
             if (temptimeout > 0) {
                 timeout = temptimeout;
             }
-            dataManager =
-                    new DataManager(keepalive, timeout, data.get("mysql_host"), port, data.get("mysql_database"),
-                                    data.get("mysql_username"), data.get("mysql_password"), data.get("mysql_prefix"));
+            dataManager = new DataManager(DataType.MYSQL, data.get("mysql_username"), data.get("mysql_password"));
+			dataManager.setHost(data.get("mysql_host"));
+			dataManager.setPort(port);
+			dataManager.setDatabase(data.get("mysql_database"));
+			dataManager.setPrefix(data.get("mysql_prefix"));
+			dataManager.setTimeout(timeout);
+			dataManager.setKeepAlive(keepalive);
             try {
                 authAPI = new AuthAPI(script, version, dataManager);
             } catch (UnsupportedVersion unsupportedVersion) {

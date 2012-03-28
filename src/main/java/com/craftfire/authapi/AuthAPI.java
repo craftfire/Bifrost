@@ -22,6 +22,7 @@ import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.commons.DataManager;
+import com.craftfire.commons.DataType;
 
 public class AuthAPI {
     private final ScriptAPI scriptAPI;
@@ -30,7 +31,11 @@ public class AuthAPI {
 
     public AuthAPI(Scripts script, String version, String host, int port, String database, String username,
                    String password, String prefix) throws UnsupportedVersion {
-        this.dataManager = new DataManager(host, port, database, username, password, prefix);
+        this.dataManager = new DataManager(DataType.MYSQL, username, password);
+		this.dataManager.setHost(host);
+		this.dataManager.setPort(port);
+		this.dataManager.setDatabase(database);
+		this.dataManager.setPrefix(prefix);
         this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
         this.script = this.scriptAPI.getScript();
     }
@@ -43,7 +48,11 @@ public class AuthAPI {
 
     public AuthAPI(String script, String version, String host, int port, String database, String username,
                    String password, String prefix) throws UnsupportedScript, UnsupportedVersion {
-        this.dataManager = new DataManager(host, port, database, username, password, prefix);
+		this.dataManager = new DataManager(DataType.MYSQL, username, password);
+		this.dataManager.setHost(host);
+		this.dataManager.setPort(port);
+		this.dataManager.setDatabase(database);
+		this.dataManager.setPrefix(prefix);
         this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
         this.script = this.scriptAPI.getScript();
     }
