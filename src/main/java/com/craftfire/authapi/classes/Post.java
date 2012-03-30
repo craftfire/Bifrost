@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Post implements PostInterface {
@@ -105,12 +106,12 @@ public class Post implements PostInterface {
     }
 
     @Override
-    public void updatePost() {
+    public void updatePost() throws SQLException {
         this.script.updatePost(this);
     }
 
     @Override
-    public void createPost() {
+    public void createPost() throws SQLException {
         this.script.createPost(this);
     }
 }

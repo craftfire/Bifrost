@@ -17,6 +17,7 @@
 package com.craftfire.authapi.classes;
 
 import java.awt.Image;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -326,12 +327,12 @@ public class ScriptUser implements ScriptUserInterface {
     }
 
     @Override
-    public void updateUser() {
+    public void updateUser() throws SQLException {
         this.script.updateUser(this);
     }
 
     @Override
-    public void createUser() {
+    public void createUser() throws SQLException {
         this.script.createUser(this);
     }
 }

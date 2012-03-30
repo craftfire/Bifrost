@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Ban implements BanInterface {
@@ -145,19 +146,16 @@ public class Ban implements BanInterface {
 
     @Override
     public boolean isPermanent() {
-        if (getEndDate() == null) {
-            return true;
-        }
-        return false;
+        return getEndDate() == null;
     }
 
     @Override
-    public void updateBan() {
+    public void updateBan() throws SQLException {
         this.script.updateBan(this);
     }
 
     @Override
-    public void addBan() {
+    public void addBan() throws SQLException {
         this.script.addBan(this);
     }
 }

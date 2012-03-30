@@ -19,6 +19,7 @@ package com.craftfire.authapi;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -126,8 +127,10 @@ public class AuthDebug {
             runTests();
         } catch (IOException ioe) {
             System.out.println("IO exception = " + ioe);
-        }
-    }
+        } catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
     public static void ask(String name, String key, String defaultvalue) {
         String line = null;
@@ -151,7 +154,7 @@ public class AuthDebug {
         }
     }
 
-    public static void runTests() {
+    public static void runTests() throws SQLException {
         Random randomGenerator = new Random();
         int randomInt = randomGenerator.nextInt(1000000);
         String temp = "";

@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public abstract interface GroupInterface {
@@ -39,7 +40,7 @@ public abstract interface GroupInterface {
 
     public void setUserCount(int usercount);
 
-    public void updateGroup();
+    public void updateGroup() throws SQLException;
 
-    public void createGroup();
+    public void createGroup() throws SQLException;
 }

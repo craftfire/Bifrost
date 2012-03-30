@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public abstract interface ScriptInterface {
@@ -137,7 +138,7 @@ public abstract interface ScriptInterface {
      * @param user The ScriptUser object.
      * @see ScriptUser
      */
-    public void updateUser(ScriptUser user);
+    public void updateUser(ScriptUser user) throws SQLException;
 
     /**
      * Creates a ScriptUser object with whatever values set by the user.
@@ -145,7 +146,7 @@ public abstract interface ScriptInterface {
      * @param user The ScriptUser object.
      * @see ScriptUser
      */
-    public void createUser(ScriptUser user);
+    public void createUser(ScriptUser user) throws SQLException;
 
     /**
      * Returns a List with Group objects.
@@ -158,7 +159,7 @@ public abstract interface ScriptInterface {
      * @see Group
      * @see List
      */
-    public List<Group> getGroups(int limit);
+    public List<Group> getGroups(int limit) throws SQLException;
 
     /**
      * Returns a Group object of the given group id, if nothing is found it returns null.
@@ -195,7 +196,7 @@ public abstract interface ScriptInterface {
      * @param group The Group object.
      * @see Group
      */
-    public void updateGroup(Group group);
+    public void updateGroup(Group group) throws SQLException;
 
     /**
      * Creates the Group object with whatever values set by the user.
@@ -203,7 +204,7 @@ public abstract interface ScriptInterface {
      * @param group The Group object.
      * @see Group
      */
-    public void createGroup(Group group);
+    public void createGroup(Group group) throws SQLException;
 
     /**
      * Returns a PrivateMessage object of the given private message id, if nothing is found it returns null.
@@ -264,7 +265,7 @@ public abstract interface ScriptInterface {
      * @param privateMessage The PrivateMessage object.
      * @see PrivateMessage
      */
-    public void updatePrivateMessage(PrivateMessage privateMessage);
+    public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException;
 
     /**
      * Creates the PrivateMessage object with whatever values set by the user.
@@ -272,7 +273,7 @@ public abstract interface ScriptInterface {
      * @param privateMessage The PrivateMessage object.
      * @see PrivateMessage
      */
-    public void createPrivateMessage(PrivateMessage privateMessage);
+    public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException;
 
     /**
      * Returns a Post object of the given post id, if nothing is found it returns null.
@@ -316,7 +317,7 @@ public abstract interface ScriptInterface {
      * @param post The Post object.
      * @see Post
      */
-    public void updatePost(Post post);
+    public void updatePost(Post post) throws SQLException;
 
     /**
      * Creates the Post object with whatever values set by the user.
@@ -324,7 +325,7 @@ public abstract interface ScriptInterface {
      * @param post The Post object.
      * @see Post
      */
-    public void createPost(Post post);
+    public void createPost(Post post) throws SQLException;
 
     /**
      * Returns an amount of how many posts {@param username} has made.
@@ -418,7 +419,7 @@ public abstract interface ScriptInterface {
      * @param thread The Thread object.
      * @see Thread
      */
-    public void updateThread(Thread thread);
+    public void updateThread(Thread thread) throws SQLException;
 
     /**
      * Creates the Thread object with whatever values set by the user.
@@ -426,7 +427,7 @@ public abstract interface ScriptInterface {
      * @param thread The Thread object.
      * @see Thread
      */
-    public void createThread(Thread thread);
+    public void createThread(Thread thread) throws SQLException;
 
     /**
      * Returns the complete count of how many users the script has registered.
@@ -484,7 +485,7 @@ public abstract interface ScriptInterface {
      * @param ban The Ban object.
      * @see Ban
      */
-    public void updateBan(Ban ban);
+    public void updateBan(Ban ban) throws SQLException;
 
     /**
      * Creates the Ban object with whatever values set by the user.
@@ -492,7 +493,7 @@ public abstract interface ScriptInterface {
      * @param ban The Ban object.
      * @see Ban
      */
-    public void addBan(Ban ban);
+    public void addBan(Ban ban) throws SQLException;
 
     /**
      * Returns the complete count of how many bans that have been made.

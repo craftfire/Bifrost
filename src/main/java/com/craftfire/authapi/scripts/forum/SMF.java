@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.scripts.forum;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -186,7 +187,7 @@ public class SMF extends Script {
 		return user;
 	}
 
-	public void updateUser(ScriptUser user) {
+	public void updateUser(ScriptUser user) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
 			data.put("membername", user.getUsername());
@@ -227,7 +228,7 @@ public class SMF extends Script {
 		data.clear();
 	}
 
-	public void createUser(ScriptUser user) {
+	public void createUser(ScriptUser user) throws SQLException {
 		if (isRegistered(user.getUsername())) {
 			return;
 		}
@@ -363,7 +364,7 @@ public class SMF extends Script {
 		return groups;
 	}
 
-	public void updateGroup(Group group) {
+	public void updateGroup(Group group) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
 			data.put("groupname", group.getName());
@@ -374,7 +375,7 @@ public class SMF extends Script {
 		this.dataManager.updateFields(data, "membergroups", "`id_group` = '" + group.getID() + "'");
 	}
 
-	public void createGroup(Group group) {
+	public void createGroup(Group group) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
 			data.put("groupName", group.getName());
@@ -481,7 +482,7 @@ public class SMF extends Script {
 						getUserID(username) + "'");
 	}
 
-	public void updatePrivateMessage(PrivateMessage pm) {
+	public void updatePrivateMessage(PrivateMessage pm) throws SQLException {
 		String temp;
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		data.put("id_member_from", pm.getSender().getID());
@@ -532,7 +533,7 @@ public class SMF extends Script {
 		data.clear();
 	}
 
-	public void createPrivateMessage(PrivateMessage pm) {
+	public void createPrivateMessage(PrivateMessage pm) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		pm.setDate(new Date());
 		int temp = 1;
@@ -661,7 +662,7 @@ public class SMF extends Script {
 		return posts;
 	}
 
-	public void updatePost(Post post) {
+	public void updatePost(Post post) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		data.put("id_topic", post.getThreadID());
 		data.put("id_board", post.getBoardID());
@@ -682,7 +683,7 @@ public class SMF extends Script {
 		this.dataManager.updateFields(data, "messages", "`id_msg` = '" + post.getID() + "'");
 	}
 
-	public void createPost(Post post) {
+	public void createPost(Post post) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		post.setPostDate(new Date());
 		data.put("id_topic", post.getThreadID());
@@ -838,7 +839,7 @@ public class SMF extends Script {
 		return threads;
 	}
 
-	public void updateThread(Thread thread) {
+	public void updateThread(Thread thread) throws SQLException {
 		String temp;
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		data.put("id_board", thread.getBoardID());
@@ -879,7 +880,7 @@ public class SMF extends Script {
 		this.dataManager.updateFields(data, "topics", "`id_topic` = '" + thread.getID() + "'");
 	}
 
-	public void createThread(Thread thread) {
+	public void createThread(Thread thread) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		thread.setThreadDate(new Date());
 		data.put("id_board", thread.getBoardID());
@@ -1003,7 +1004,7 @@ public class SMF extends Script {
 		return bans;
 	}
 
-	public void updateBan(Ban ban) {
+	public void updateBan(Ban ban) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		data.put("name", ban.getName());
 		data.put("ban_time", ban.getStartDate().getTime() / 1000);
@@ -1041,7 +1042,7 @@ public class SMF extends Script {
 		}
 	}
 
-	public void addBan(Ban ban) {
+	public void addBan(Ban ban) throws SQLException {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		ban.setStartDate(new Date());
 		data.put("name", ban.getName());

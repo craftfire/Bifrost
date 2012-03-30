@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 public abstract interface BanInterface {
@@ -61,7 +62,7 @@ public abstract interface BanInterface {
 
     public boolean isPermanent();
 
-    public void updateBan();
+    public void updateBan() throws SQLException;
 
-    public void addBan();
+    public void addBan() throws SQLException;
 }

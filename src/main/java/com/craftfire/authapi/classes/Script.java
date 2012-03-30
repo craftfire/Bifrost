@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.authapi.ScriptAPI.Scripts;
@@ -107,11 +108,11 @@ public class Script implements ScriptInterface {
     }
 
     @Override
-    public void updateUser(ScriptUser user) {
+    public void updateUser(ScriptUser user) throws SQLException {
     }
 
     @Override
-    public void createUser(ScriptUser user) {
+    public void createUser(ScriptUser user) throws SQLException {
     }
 
     @Override
@@ -135,11 +136,11 @@ public class Script implements ScriptInterface {
     }
 
     @Override
-    public void updateGroup(Group group) {
+    public void updateGroup(Group group) throws SQLException {
     }
 
     @Override
-    public void createGroup(Group group) {
+    public void createGroup(Group group) throws SQLException {
     }
     @Override
     public PrivateMessage getPM(int pmid) {
@@ -167,11 +168,11 @@ public class Script implements ScriptInterface {
     }
 
     @Override
-    public void updatePrivateMessage(PrivateMessage privateMessage) {
+    public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException {
     }
 
     @Override
-    public void createPrivateMessage(PrivateMessage privateMessage) {
+    public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException {
     }
 
     @Override
@@ -210,11 +211,11 @@ public class Script implements ScriptInterface {
     }
 
     @Override
-    public void updatePost(Post post) {
+    public void updatePost(Post post) throws SQLException {
     }
 
     @Override
-    public void createPost(Post post) {
+    public void createPost(Post post) throws SQLException {
     }
 
     @Override
@@ -248,11 +249,11 @@ public class Script implements ScriptInterface {
     }
 
     @Override
-    public void updateThread(Thread thread) {
+    public void updateThread(Thread thread) throws SQLException {
     }
 
     @Override
-    public void createThread(Thread thread) {
+    public void createThread(Thread thread) throws SQLException {
     }
 
     @Override
@@ -286,11 +287,11 @@ public class Script implements ScriptInterface {
     }
 
     @Override
-    public void updateBan(Ban ban) {
+    public void updateBan(Ban ban) throws SQLException {
     }
 
     @Override
-    public void addBan(Ban ban) {
+    public void addBan(Ban ban) throws SQLException {
     }
 
     @Override

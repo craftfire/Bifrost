@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 public abstract interface PostInterface {
@@ -45,7 +46,7 @@ public abstract interface PostInterface {
 
     public void setBody(String body);
 
-    public void updatePost();
+    public void updatePost() throws SQLException;
 
-    public void createPost();
+    public void createPost() throws SQLException;
 }

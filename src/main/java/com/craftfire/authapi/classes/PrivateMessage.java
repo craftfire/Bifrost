@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -153,12 +154,12 @@ public class PrivateMessage implements PrivateMessageInterface {
     }
 
     @Override
-    public void updatePrivateMessage() {
+    public void updatePrivateMessage() throws SQLException {
         this.script.updatePrivateMessage(this);
     }
 
     @Override
-    public void createPrivateMessage() {
+    public void createPrivateMessage() throws SQLException {
         this.script.createPrivateMessage(this);
     }
 }

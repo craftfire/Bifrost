@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Group implements GroupInterface {
@@ -86,12 +87,12 @@ public class Group implements GroupInterface {
     }
 
     @Override
-    public void updateGroup() {
+    public void updateGroup() throws SQLException {
         this.script.updateGroup(this);
     }
 
     @Override
-    public void createGroup() {
+    public void createGroup() throws SQLException {
         this.script.createGroup(this);
     }
 }

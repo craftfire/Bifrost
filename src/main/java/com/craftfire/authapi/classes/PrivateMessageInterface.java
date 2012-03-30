@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public abstract interface PrivateMessageInterface {
 
     public void setDeleted(ScriptUser recipient, boolean deleted);
 
-    public void updatePrivateMessage();
+    public void updatePrivateMessage() throws SQLException;
 
-    public void createPrivateMessage();
+    public void createPrivateMessage() throws SQLException;
 }

@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -163,12 +164,12 @@ public class Thread implements ThreadInterface {
     }
 
     @Override
-    public void updateThread() {
+    public void updateThread() throws SQLException {
         this.script.updateThread(this);
     }
 
     @Override
-    public void createThread() {
+    public void createThread() throws SQLException {
         this.script.createThread(this);
     }
 }

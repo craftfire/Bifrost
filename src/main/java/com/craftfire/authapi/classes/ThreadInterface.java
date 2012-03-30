@@ -16,6 +16,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public abstract interface ThreadInterface {
 
     public void setSticky(boolean isSticky);
 
-    public void updateThread();
+    public void updateThread() throws SQLException;
 
-    public void createThread();
+    public void createThread() throws SQLException;
 }

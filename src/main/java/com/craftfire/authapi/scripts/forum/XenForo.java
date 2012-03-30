@@ -218,7 +218,7 @@ public class XenForo extends Script {
         return null;
     }
 
-    public void updateUser(ScriptUser user) {
+    public void updateUser(ScriptUser user) throws SQLException {
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("username", user.getUsername());
@@ -299,7 +299,7 @@ public class XenForo extends Script {
         data.clear();
     }
 
-    public void createUser(ScriptUser user) {
+    public void createUser(ScriptUser user) throws SQLException {
         long timestamp = new Date().getTime() / 1000;
         Random r = new Random();
         user.setPasswordSalt(CraftCommons.sha256(CraftCommons.md5("" + r.nextInt(1000000)).substring(0, 10)));
@@ -471,14 +471,14 @@ public class XenForo extends Script {
         return groups;
     }
 
-    public void updateGroup(Group group) {
+    public void updateGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("title", group.getName());
         this.dataManager.updateFields(data, "user_group", "`user_group_id` = '" + group.getID() + "'");
         data.clear();
     }
 
-    public void createGroup(Group group) {
+    public void createGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("title", group.getName());
         this.dataManager.insertFields(data, "user_group");
@@ -584,7 +584,7 @@ public class XenForo extends Script {
                                                 "'");
     }
 
-    public void updatePrivateMessage(PrivateMessage pm) {
+    public void updatePrivateMessage(PrivateMessage pm) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("message", pm.getBody());
         data.put("message_date", pm.getDate().getTime() / 1000);
@@ -616,7 +616,7 @@ public class XenForo extends Script {
         data.clear();
     }
 
-    public void createPrivateMessage(PrivateMessage pm) {
+    public void createPrivateMessage(PrivateMessage pm) throws SQLException {
         Long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("title", pm.getSubject());
@@ -748,7 +748,7 @@ public class XenForo extends Script {
         return post;
     }
 
-    public void updatePost(Post post) {
+    public void updatePost(Post post) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
         data.put("user_id", post.getAuthor().getID());
@@ -762,7 +762,7 @@ public class XenForo extends Script {
         data.clear();
     }
 
-    public void createPost(Post post) {
+    public void createPost(Post post) throws SQLException {
         int ipID = this.insertIP(post.getAuthor(), "post", "insert");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
@@ -875,7 +875,7 @@ public class XenForo extends Script {
         return threads;
     }
 
-    public void updateThread(Thread thread) {
+    public void updateThread(Thread thread) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
         data.put("title", thread.getSubject());
@@ -902,7 +902,7 @@ public class XenForo extends Script {
         this.dataManager.updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
     }
 
-    public void createThread(Thread thread) {
+    public void createThread(Thread thread) throws SQLException {
         this.insertIP(thread.getAuthor(), "thread", "insert");
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -1029,7 +1029,7 @@ public class XenForo extends Script {
         return this.dataManager.exist("user", "username", username);
     }
     
-    private int insertIP(ScriptUser user, String content, String action) {
+    private int insertIP(ScriptUser user, String content, String action) throws SQLException {
         int lastIPID = this.dataManager.getLastID("content_id", "ip",
                                                   "`content_type` = '" + content + "' AND `action` = '" + action + "'");
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -1043,7 +1043,8 @@ public class XenForo extends Script {
         return this.dataManager.getLastID("ip_id", "ip");
     }
 
-    private void addSearch(ScriptUser user, String type, int node, int discussionID, String title, String message) {
+    private void addSearch(ScriptUser user, String type, int node, int discussionID, String title, String message)
+				 throws SQLException {
         int contentID = this.dataManager.getLastID("content_id", "ip", "`content_type` = '" + type + "'");
         if (contentID == 0) {
             contentID = 1;
