@@ -19,6 +19,9 @@ package com.craftfire.authapi.classes;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * This interface contains functions relevant to functions for each script.
+ */
 public abstract interface ScriptInterface {
     /**
      * Returns the latest version which is supported by the script.
