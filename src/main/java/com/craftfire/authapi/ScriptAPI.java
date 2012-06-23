@@ -49,7 +49,7 @@ public class ScriptAPI {
         this.version = version;
         this.dataManager = dataManager;
         setScript();
-        if (! this.script.isSupportedVersion()) {
+        if (!this.script.isSupportedVersion()) {
             throw new UnsupportedVersion();
         }
     }
@@ -66,7 +66,7 @@ public class ScriptAPI {
         this.version = version;
         this.dataManager = dataManager;
         setScript();
-        if (! this.script.isSupportedVersion()) {
+        if (!this.script.isSupportedVersion()) {
             throw new UnsupportedVersion();
         }
     }
