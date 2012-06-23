@@ -19,6 +19,8 @@ package com.craftfire.authapi.classes;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public abstract interface GroupInterface {
     public int getID();
 
@@ -40,7 +42,7 @@ public abstract interface GroupInterface {
 
     public void setUserCount(int usercount);
 
-    public void updateGroup() throws SQLException;
+    public void updateGroup() throws SQLException, UnsupportedFunction;
 
-    public void createGroup() throws SQLException;
+    public void createGroup() throws SQLException, UnsupportedFunction;
 }

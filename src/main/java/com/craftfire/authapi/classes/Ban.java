@@ -19,6 +19,8 @@ package com.craftfire.authapi.classes;
 import java.sql.SQLException;
 import java.util.Date;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public class Ban implements BanInterface {
     private final Script script;
     private String name, email, ip, reason, notes;
@@ -150,12 +152,12 @@ public class Ban implements BanInterface {
     }
 
     @Override
-    public void updateBan() throws SQLException {
+    public void updateBan() throws SQLException, UnsupportedFunction {
         this.script.updateBan(this);
     }
 
     @Override
-    public void addBan() throws SQLException {
+    public void addBan() throws SQLException, UnsupportedFunction {
         this.script.addBan(this);
     }
 }

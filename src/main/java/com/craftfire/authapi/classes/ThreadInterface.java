@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 /**
  * This interface contains functions that are related to a Thread.
  */
@@ -30,7 +32,7 @@ public abstract interface ThreadInterface {
 	 * @return first Post of the thread, null if error.
 	 * @see Post
 	 */
-    public Post getFirstPost();
+    public Post getFirstPost() throws UnsupportedFunction;
 
 	/**
 	 * Returns the last Post of the thread, null if error.
@@ -38,7 +40,7 @@ public abstract interface ThreadInterface {
 	 * @return last Post of the thread, null if error.
 	 * @see Post
 	 */
-    public Post getLastPost();
+    public Post getLastPost() throws UnsupportedFunction;
 
 	/**
 	 * Returns a List of Post's depending on the limit, limit = 0 returns all posts.
@@ -49,7 +51,7 @@ public abstract interface ThreadInterface {
 	 * @see List
 	 * @see Post
 	 */
-    public List<Post> getPosts(int limit);
+    public List<Post> getPosts(int limit) throws UnsupportedFunction;
 
 	/**
 	 * Returns the ID of the thread, 0 if error.
@@ -207,12 +209,12 @@ public abstract interface ThreadInterface {
 	 *
 	 * @throws SQLException if an error occurred.
 	 */
-    public void updateThread() throws SQLException;
+    public void updateThread() throws SQLException, UnsupportedFunction;
 
 	/**
 	 * Run this function if you create a thread with current values, make sure you know what you are doing!
 	 *
 	 * @throws SQLException if an error occurred.
 	 */
-    public void createThread() throws SQLException;
+    public void createThread() throws SQLException, UnsupportedFunction;
 }

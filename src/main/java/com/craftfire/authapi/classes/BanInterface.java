@@ -19,6 +19,8 @@ package com.craftfire.authapi.classes;
 import java.sql.SQLException;
 import java.util.Date;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public abstract interface BanInterface {
     public int getID();
 
@@ -62,7 +64,7 @@ public abstract interface BanInterface {
 
     public boolean isPermanent();
 
-    public void updateBan() throws SQLException;
+    public void updateBan() throws SQLException, UnsupportedFunction;
 
-    public void addBan() throws SQLException;
+    public void addBan() throws SQLException, UnsupportedFunction;
 }

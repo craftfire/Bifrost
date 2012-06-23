@@ -19,6 +19,8 @@ package com.craftfire.authapi.classes;
 import java.sql.SQLException;
 import java.util.Date;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public class Post implements PostInterface {
     private final Script script;
     private ScriptUser author;
@@ -61,7 +63,7 @@ public class Post implements PostInterface {
     }
 
     @Override
-    public Thread getThread() {
+    public Thread getThread() throws UnsupportedFunction {
         return this.script.getThread(this.threadid);
     }
 
@@ -106,12 +108,12 @@ public class Post implements PostInterface {
     }
 
     @Override
-    public void updatePost() throws SQLException {
+    public void updatePost() throws SQLException, UnsupportedFunction {
         this.script.updatePost(this);
     }
 
     @Override
-    public void createPost() throws SQLException {
+    public void createPost() throws SQLException, UnsupportedFunction {
         this.script.createPost(this);
     }
 }

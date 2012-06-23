@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public class PrivateMessage implements PrivateMessageInterface {
     private final Script script;
     private int pmid;
@@ -154,12 +156,12 @@ public class PrivateMessage implements PrivateMessageInterface {
     }
 
     @Override
-    public void updatePrivateMessage() throws SQLException {
+    public void updatePrivateMessage() throws SQLException, UnsupportedFunction {
         this.script.updatePrivateMessage(this);
     }
 
     @Override
-    public void createPrivateMessage() throws SQLException {
+    public void createPrivateMessage() throws SQLException, UnsupportedFunction {
         this.script.createPrivateMessage(this);
     }
 }

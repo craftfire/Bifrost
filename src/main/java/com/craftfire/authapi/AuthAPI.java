@@ -19,6 +19,7 @@ package com.craftfire.authapi;
 import com.craftfire.authapi.ScriptAPI.Scripts;
 import com.craftfire.authapi.classes.Script;
 import com.craftfire.authapi.classes.ScriptUser;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.commons.DataManager;
@@ -68,7 +69,7 @@ public class AuthAPI {
         return this.script;
     }
 
-    public ScriptUser getUser(String username) {
+    public ScriptUser getUser(String username) throws UnsupportedFunction {
         return this.script.getUser(username);
     }
 

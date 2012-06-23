@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public abstract interface PrivateMessageInterface {
     public int getID();
 
@@ -61,7 +63,7 @@ public abstract interface PrivateMessageInterface {
 
     public void setDeleted(ScriptUser recipient, boolean deleted);
 
-    public void updatePrivateMessage() throws SQLException;
+    public void updatePrivateMessage() throws SQLException, UnsupportedFunction;
 
-    public void createPrivateMessage() throws SQLException;
+    public void createPrivateMessage() throws SQLException, UnsupportedFunction;
 }

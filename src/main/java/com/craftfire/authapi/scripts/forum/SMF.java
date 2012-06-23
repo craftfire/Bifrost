@@ -70,16 +70,16 @@ public class SMF extends Script {
 		return this.userVersion;
 	}
 
-	public String getEncryption() {
-		return this.encryption;
-	}
-
 	public String getScriptName() {
 		return this.scriptName;
 	}
 
 	public String getScriptShortname() {
 		return this.shortName;
+	}
+
+	public String getEncryption() {
+		return this.encryption;
 	}
 
 	public boolean authenticate(String username, String password) {

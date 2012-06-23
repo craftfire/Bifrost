@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
 
 public class ScriptUser implements ScriptUserInterface {
@@ -262,37 +263,37 @@ public class ScriptUser implements ScriptUserInterface {
     }
 
     @Override
-    public List<PrivateMessage> getPMsSent(int limit) {
+    public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedFunction {
         return this.script.getPMsSent(this.username, limit);
     }
 
     @Override
-    public List<PrivateMessage> getPMsReceived(int limit) {
+    public List<PrivateMessage> getPMsReceived(int limit) throws UnsupportedFunction {
         return this.script.getPMsReceived(this.username, limit);
     }
 
     @Override
-    public int getPMSentCount() {
+    public int getPMSentCount() throws UnsupportedFunction {
         return this.script.getPMSentCount(this.username);
     }
 
     @Override
-    public int getPMReceivedCount() {
+    public int getPMReceivedCount() throws UnsupportedFunction {
         return this.script.getPMReceivedCount(this.username);
     }
 
     @Override
-    public int getPostCount() {
+    public int getPostCount() throws UnsupportedFunction {
         return this.script.getPostCount(this.username);
     }
 
     @Override
-    public int getThreadCount() {
+    public int getThreadCount() throws UnsupportedFunction {
         return this.script.getThreadCount(this.username);
     }
 
     @Override
-    public boolean isBanned() {
+    public boolean isBanned() throws UnsupportedFunction {
         if (this.script.isBanned(this.username)) {
             return true;
         } else if (this.script.isBanned(this.email)) {
@@ -307,32 +308,32 @@ public class ScriptUser implements ScriptUserInterface {
     }
 
     @Override
-    public boolean isRegistered() {
+    public boolean isRegistered() throws UnsupportedFunction {
         return this.script.isRegistered(this.username);
     }
 
     @Override
-    public List<String> getIPs() {
+    public List<String> getIPs() throws UnsupportedFunction {
         return this.script.getIPs(this.username);
     }
 
     @Override
-    public Thread getLastThread() {
+    public Thread getLastThread() throws UnsupportedFunction {
         return this.script.getLastUserThread(this.username);
     }
 
     @Override
-    public Post getLastPost() {
+    public Post getLastPost() throws UnsupportedFunction {
         return this.script.getLastUserPost(this.username);
     }
 
     @Override
-    public void updateUser() throws SQLException {
+    public void updateUser() throws SQLException, UnsupportedFunction {
         this.script.updateUser(this);
     }
 
     @Override
-    public void createUser() throws SQLException {
+    public void createUser() throws SQLException, UnsupportedFunction {
         this.script.createUser(this);
     }
 }

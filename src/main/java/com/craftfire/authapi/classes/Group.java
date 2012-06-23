@@ -19,6 +19,8 @@ package com.craftfire.authapi.classes;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public class Group implements GroupInterface {
     private final Script script;
     private int groupid, usercount;
@@ -87,12 +89,12 @@ public class Group implements GroupInterface {
     }
 
     @Override
-    public void updateGroup() throws SQLException {
+    public void updateGroup() throws SQLException, UnsupportedFunction {
         this.script.updateGroup(this);
     }
 
     @Override
-    public void createGroup() throws SQLException {
+    public void createGroup() throws SQLException, UnsupportedFunction {
         this.script.createGroup(this);
     }
 }

@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public abstract interface ScriptUserInterface {
     public int getID();
 
@@ -108,29 +110,29 @@ public abstract interface ScriptUserInterface {
 
     public void setActivated(boolean activated);
 
-    public List<PrivateMessage> getPMsSent(int limit);
+    public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedFunction;
 
-    public List<PrivateMessage> getPMsReceived(int limit);
+    public List<PrivateMessage> getPMsReceived(int limit) throws UnsupportedFunction;
 
-    public int getPMSentCount();
+    public int getPMSentCount() throws UnsupportedFunction;
 
-    public int getPMReceivedCount();
+    public int getPMReceivedCount() throws UnsupportedFunction;
 
-    public int getPostCount();
+    public int getPostCount() throws UnsupportedFunction;
 
-    public int getThreadCount();
+    public int getThreadCount() throws UnsupportedFunction;
 
-    public boolean isBanned();
+    public boolean isBanned() throws UnsupportedFunction;
 
-    public boolean isRegistered();
+    public boolean isRegistered() throws UnsupportedFunction;
 
-    public List<String> getIPs();
+    public List<String> getIPs() throws UnsupportedFunction;
 
-    public Thread getLastThread();
+    public Thread getLastThread() throws UnsupportedFunction;
 
-    public Post getLastPost();
+    public Post getLastPost() throws UnsupportedFunction;
 
-    public void updateUser() throws SQLException;
+    public void updateUser() throws SQLException, UnsupportedFunction;
 
-    public void createUser() throws SQLException;
+    public void createUser() throws SQLException, UnsupportedFunction;
 }

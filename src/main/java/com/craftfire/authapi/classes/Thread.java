@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public class Thread implements ThreadInterface {
     private final Script script;
     private ScriptUser author;
@@ -59,17 +61,17 @@ public class Thread implements ThreadInterface {
     }
 
     @Override
-    public List<Post> getPosts(int limit) {
+    public List<Post> getPosts(int limit) throws UnsupportedFunction {
         return this.script.getPostsFromThread(this.threadid, limit);
     }
 
     @Override
-    public Post getFirstPost() {
+    public Post getFirstPost() throws UnsupportedFunction {
         return this.script.getPost(this.firstpostid);
     }
 
     @Override
-    public Post getLastPost() {
+    public Post getLastPost() throws UnsupportedFunction {
         return this.script.getPost(this.lastpostid);
     }
 
@@ -164,12 +166,12 @@ public class Thread implements ThreadInterface {
     }
 
     @Override
-    public void updateThread() throws SQLException {
+    public void updateThread() throws SQLException, UnsupportedFunction {
         this.script.updateThread(this);
     }
 
     @Override
-    public void createThread() throws SQLException {
+    public void createThread() throws SQLException, UnsupportedFunction {
         this.script.createThread(this);
     }
 }

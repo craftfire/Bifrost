@@ -19,6 +19,8 @@ package com.craftfire.authapi.classes;
 import java.sql.SQLException;
 import java.util.Date;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 public abstract interface PostInterface {
     public int getID();
 
@@ -26,7 +28,7 @@ public abstract interface PostInterface {
 
     public int getThreadID();
 
-    public Thread getThread();
+    public Thread getThread() throws UnsupportedFunction;
 
     public int getBoardID();
 
@@ -46,7 +48,7 @@ public abstract interface PostInterface {
 
     public void setBody(String body);
 
-    public void updatePost() throws SQLException;
+    public void updatePost() throws SQLException, UnsupportedFunction;
 
-    public void createPost() throws SQLException;
+    public void createPost() throws SQLException, UnsupportedFunction;
 }
