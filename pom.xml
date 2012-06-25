@@ -5,8 +5,9 @@
     <name>AuthAPI</name>
     <groupId>com.craftfire</groupId>
     <artifactId>authapi</artifactId>
-    <version>dev-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <url>http://www.craftfire.com</url>
+    <inceptionYear>2011</inceptionYear>
     <description>Authentication API library for connecting to various sites and databases.</description>
 
     <properties>
@@ -15,6 +16,12 @@
         <commonsVersion>dev-SNAPSHOT</commonsVersion>
         <buildNumber>0</buildNumber>
     </properties>
+
+    <!-- Organization -->
+    <organization>
+        <name>CraftFire</name>
+        <url>http://www.craftfire.com</url>
+    </organization>
 
     <!-- License -->
     <licenses>
@@ -45,6 +52,12 @@
             <url>http://repo.craftfire.com</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>craftfire-repo</id>
+            <url>http://repo.craftfire.com</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <!-- Dependencies -->
     <dependencies>
@@ -59,6 +72,7 @@
     <!-- Build settings -->
     <build>
         <defaultGoal>clean install</defaultGoal>
+
         <!-- Resources -->
         <resources>
             <resource>
@@ -70,8 +84,65 @@
                 </includes>
             </resource>
         </resources>
-        <!-- Build plugins -->
+
+        <!-- Plugins -->
         <plugins>
+            <!-- License header formatting plugin -->
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.10.b1</version>
+                <executions>
+                    <execution>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <quiet>true</quiet>
+                    <encoding>UTF-8</encoding>
+                    <strictCheck>true</strictCheck>
+                    <header>${basedir}/HEADER.txt</header>
+                    <keywords>
+                        <keyword>${project.name}</keyword>
+                        <keyword>license</keyword>
+                    </keywords>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <properties>
+                        <name>${project.name}</name>
+                        <url>${project.organization.url}</url>
+                        <license>GNU Lesser General Public License</license>
+                        <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+                        <copyright>Copyright (c) ${project.inceptionYear}-2012, ${project.organization.name}</copyright>
+                    </properties>
+                    <includes>
+                        <include>src/main/java/**</include>
+                        <include>src/test/java/**</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <!-- Version strip plugin -->
+            <plugin>
+                <groupId>com.sourcesense.maven</groupId>
+                <artifactId>maven-nosnapshot-plugin</artifactId>
+                <version>0.0.7-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>strip</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <version>${project.version}</version>
+                    <propertyName>releaseVersion</propertyName>
+                </configuration>
+            </plugin>
             <!-- Compile plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -117,6 +188,37 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <!-- Plugin management -->
+        <pluginManagement>
+            <plugins>
+                <!-- Eclipse exclusions -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>com.sourcesense.maven</groupId>
+                                        <artifactId>maven-nosnapshot-plugin</artifactId>
+                                        <versionRange>[0.0.7-SNAPSHOT,)</versionRange>
+                                        <goals>
+                                            <goal>strip</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

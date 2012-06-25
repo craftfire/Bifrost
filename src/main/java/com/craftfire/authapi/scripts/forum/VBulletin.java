@@ -1,5 +1,8 @@
 /*
- * This file is part of AuthAPI <http://www.craftfire.com/>.
+ * This file is part of AuthAPI.
+ *
+ * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
+ * AuthAPI is licensed under the GNU Lesser General Public License.
  *
  * AuthAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
