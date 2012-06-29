@@ -38,8 +38,10 @@ import com.craftfire.authapi.classes.PrivateMessage;
 import com.craftfire.authapi.classes.Script;
 import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.DataManager;
+import com.craftfire.commons.enums.Encryption;
 
 public class XenForo extends Script {
     private final String scriptName = "xenforo";
@@ -112,7 +114,7 @@ public class XenForo extends Script {
     }
 
     public String hashPassword(String salt, String password) {
-        return CraftCommons.sha256(CraftCommons.sha256(password) + salt);
+        return CraftCommons.encrypt(Encryption.SHA256, CraftCommons.encrypt(Encryption.SHA256, password) + salt);
     }
 
     public String getUsername(int userid) {
@@ -146,7 +148,7 @@ public class XenForo extends Script {
                 }
                 if (! array.get("gravatar").toString().isEmpty()) {
                     user.setAvatarURL("http://www.gravatar.com/avatar/" +
-                                      CraftCommons.md5(array.get("gravatar").toString().toLowerCase()));
+                                      CraftCommons.encrypt(Encryption.MD5, array.get("gravatar").toString().toLowerCase()));
                 }
                 user.setEmail(array.get("email").toString());
                 if (array.get("gender").toString().equalsIgnoreCase("male")) {
@@ -289,7 +291,7 @@ public class XenForo extends Script {
 
         if (user.getPassword().length() != 64) {
             Random r = new Random();
-            user.setPasswordSalt(CraftCommons.sha256(CraftCommons.md5("" + r.nextInt(1000000)).substring(0, 10)));
+            user.setPasswordSalt(CraftCommons.encrypt(Encryption.SHA256, CraftCommons.encrypt(Encryption.MD5, r.nextInt(1000000)).substring(0, 10)));
             user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
             String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
@@ -302,7 +304,7 @@ public class XenForo extends Script {
     public void createUser(ScriptUser user) throws SQLException {
         long timestamp = new Date().getTime() / 1000;
         Random r = new Random();
-        user.setPasswordSalt(CraftCommons.sha256(CraftCommons.md5("" + r.nextInt(1000000)).substring(0, 10)));
+		user.setPasswordSalt(CraftCommons.encrypt(Encryption.SHA256, CraftCommons.encrypt(Encryption.MD5, r.nextInt(1000000)).substring(0, 10)));
         user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
         user.setRegDate(new Date());
         user.setLastLogin(new Date());
@@ -875,7 +877,7 @@ public class XenForo extends Script {
         return threads;
     }
 
-    public void updateThread(Thread thread) throws SQLException {
+    public void updateThread(Thread thread) throws SQLException, UnsupportedFunction {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
         data.put("title", thread.getSubject());
@@ -902,7 +904,7 @@ public class XenForo extends Script {
         this.dataManager.updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
     }
 
-    public void createThread(Thread thread) throws SQLException {
+    public void createThread(Thread thread) throws SQLException, UnsupportedFunction {
         this.insertIP(thread.getAuthor(), "thread", "insert");
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();

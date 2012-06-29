@@ -73,7 +73,7 @@ public class AuthAPI {
         return this.script.getUser(username);
     }
 
-    public boolean authenticate(String username, String password) {
+    public boolean authenticate(String username, String password) throws UnsupportedFunction {
         return this.script.authenticate(username, password);
     }
 }

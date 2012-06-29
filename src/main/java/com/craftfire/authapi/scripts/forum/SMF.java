@@ -35,8 +35,10 @@ import com.craftfire.authapi.classes.PrivateMessage;
 import com.craftfire.authapi.classes.Script;
 import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.DataManager;
+import com.craftfire.commons.enums.Encryption;
 
 public class SMF extends Script {
 	private final String scriptName = "simplemachines";
@@ -90,7 +92,7 @@ public class SMF extends Script {
 	}
 
 	public String hashPassword(String username, String password) {
-		return CraftCommons.sha1(username.toLowerCase() + password);
+		return CraftCommons.encrypt(Encryption.SHA1, username.toLowerCase() + password);
 	}
 
 	public ScriptUser getLastRegUser() {
@@ -234,7 +236,7 @@ public class SMF extends Script {
 		}
 		Random r = new Random();
 		int rand = r.nextInt(1000000);
-		String salt = CraftCommons.md5("" + rand).substring(0, 4);
+		String salt = CraftCommons.encrypt(Encryption.MD5, rand).substring(0, 4);
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		user.setPasswordSalt(salt);
 		user.setRegDate(new Date());
@@ -839,7 +841,7 @@ public class SMF extends Script {
 		return threads;
 	}
 
-	public void updateThread(Thread thread) throws SQLException {
+	public void updateThread(Thread thread) throws SQLException, UnsupportedFunction {
 		String temp;
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		data.put("id_board", thread.getBoardID());
@@ -880,7 +882,7 @@ public class SMF extends Script {
 		this.dataManager.updateFields(data, "topics", "`id_topic` = '" + thread.getID() + "'");
 	}
 
-	public void createThread(Thread thread) throws SQLException {
+	public void createThread(Thread thread) throws SQLException, UnsupportedFunction {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		thread.setThreadDate(new Date());
 		data.put("id_board", thread.getBoardID());
