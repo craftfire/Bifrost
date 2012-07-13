@@ -13,7 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>${project.groupId}.${project.artifactId}.AuthDebug</mainClass>
-        <commonsVersion>dev-SNAPSHOT</commonsVersion>
+        <commonsVersion>0.0.1-SNAPSHOT</commonsVersion>
         <buildNumber>0</buildNumber>
     </properties>
 
