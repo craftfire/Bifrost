@@ -113,10 +113,12 @@ public class Script implements ScriptInterface {
 
 	@Override
 	public void updateUser(ScriptUser user) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
 	public void createUser(ScriptUser user) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
@@ -141,11 +143,14 @@ public class Script implements ScriptInterface {
 
 	@Override
 	public void updateGroup(Group group) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
 	public void createGroup(Group group) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
+
 	@Override
 	public PrivateMessage getPM(int pmid) throws UnsupportedFunction {
 		throw new UnsupportedFunction();
@@ -173,10 +178,12 @@ public class Script implements ScriptInterface {
 
 	@Override
 	public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
 	public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
@@ -216,10 +223,12 @@ public class Script implements ScriptInterface {
 
 	@Override
 	public void updatePost(Post post) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
 	public void createPost(Post post) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
@@ -254,10 +263,12 @@ public class Script implements ScriptInterface {
 
 	@Override
 	public void updateThread(Thread thread) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
 	public void createThread(Thread thread) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
@@ -292,10 +303,12 @@ public class Script implements ScriptInterface {
 
 	@Override
 	public void updateBan(Ban ban) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override
 	public void addBan(Ban ban) throws SQLException, UnsupportedFunction {
+		throw new UnsupportedFunction();
 	}
 
 	@Override

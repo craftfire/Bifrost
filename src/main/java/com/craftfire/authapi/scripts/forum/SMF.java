@@ -40,6 +40,7 @@ import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
+//TODO: Convert arrays to use Result class
 public class SMF extends Script {
 	private final String scriptName = "simplemachines";
 	private final String shortName = "smf";

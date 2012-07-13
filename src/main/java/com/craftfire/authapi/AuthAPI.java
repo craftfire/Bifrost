@@ -22,7 +22,6 @@ import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
-import com.craftfire.commons.enums.DataType;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
@@ -33,35 +32,12 @@ public class AuthAPI {
     private final DataManager dataManager;
 	private final LoggingManager loggingManager;
 
-    public AuthAPI(Scripts script, String version, String host, int port, String database, String username,
-                   String password, String prefix) throws UnsupportedVersion {
-        this.dataManager = new DataManager(DataType.MYSQL, username, password);
-		this.dataManager.setHost(host);
-		this.dataManager.setPort(port);
-		this.dataManager.setDatabase(database);
-		this.dataManager.setPrefix(prefix);
-        this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
-        this.script = this.scriptAPI.getScript();
-		this.loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
-    }
-
     public AuthAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.scriptAPI = new ScriptAPI(script, version, dataManager);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
 		this.loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
-    }
-
-    public AuthAPI(String script, String version, String host, int port, String database, String username,
-                   String password, String prefix) throws UnsupportedScript, UnsupportedVersion {
-		this.dataManager = new DataManager(DataType.MYSQL, username, password);
-		this.dataManager.setHost(host);
-		this.dataManager.setPort(port);
-		this.dataManager.setDatabase(database);
-		this.dataManager.setPrefix(prefix);
-        this.scriptAPI = new ScriptAPI(script, version, this.dataManager);
-        this.script = this.scriptAPI.getScript();
-		this.loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
+		this.loggingManager.debug("Initialized AuthAPI");
     }
 
     public AuthAPI(String script, String version, DataManager dataManager) throws UnsupportedScript,
@@ -70,6 +46,7 @@ public class AuthAPI {
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
 		this.loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
+		this.loggingManager.debug("Initialized AuthAPI");
     }
 
     public Script getScript() {
