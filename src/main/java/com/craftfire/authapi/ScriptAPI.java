@@ -24,7 +24,7 @@ import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.authapi.scripts.forum.SMF;
 import com.craftfire.authapi.scripts.forum.XenForo;
-import com.craftfire.commons.DataManager;
+import com.craftfire.commons.managers.DataManager;
 
 public class ScriptAPI {
     private Script script;

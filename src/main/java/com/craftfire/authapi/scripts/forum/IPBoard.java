@@ -29,7 +29,7 @@ import com.craftfire.authapi.classes.PrivateMessage;
 import com.craftfire.authapi.classes.Script;
 import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.classes.Thread;
-import com.craftfire.commons.DataManager;
+import com.craftfire.commons.managers.DataManager;
 
 public class IPBoard extends Script {
     private final String scriptName = "ipboard";
