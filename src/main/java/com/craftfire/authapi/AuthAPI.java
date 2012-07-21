@@ -30,13 +30,12 @@ public class AuthAPI {
     private final ScriptAPI scriptAPI;
     private final Script script;
     private final DataManager dataManager;
-	private final LoggingManager loggingManager;
+	private final LoggingManager loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
 
     public AuthAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.scriptAPI = new ScriptAPI(script, version, dataManager);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
-		this.loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
 		this.loggingManager.debug("Initialized AuthAPI");
     }
 
@@ -45,7 +44,6 @@ public class AuthAPI {
         this.scriptAPI = new ScriptAPI(script, version, dataManager);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
-		this.loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
 		this.loggingManager.debug("Initialized AuthAPI");
     }
 
