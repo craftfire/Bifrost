@@ -24,6 +24,7 @@ import com.craftfire.commons.CraftCommons;
 
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class ScriptUser implements ScriptUserInterface {
     private String username, title, nickname, realname, firstname, lastname, email, password, passwordsalt,
             statusmessage, avatarurl, profileurl, regip, lastip;
     private boolean activated;
-    private List<Group> groups;
+    private List<Group> groups = new ArrayList<Group>();
 
     public ScriptUser(Script script, int userid, String username, String password) {
         this.script = script;
@@ -141,9 +142,12 @@ public class ScriptUser implements ScriptUserInterface {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Group> getUserGroups() throws UnsupportedFunction {
         List<Group> temp;
-        if (this.script.getAuthAPI().getCacheManager().contains("userGroups", getID())) {
+        if (this.groups.size() > 0) {
+            return this.groups;
+        } else if (this.script.getAuthAPI().getCacheManager().contains("userGroups", getID())) {
             temp = (List<Group>) this.script.getAuthAPI().getCacheManager().get("userGroups", getID());
         } else {
             temp = this.script.getUserGroups(this.username);
