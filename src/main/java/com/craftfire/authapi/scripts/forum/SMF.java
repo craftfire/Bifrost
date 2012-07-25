@@ -16,29 +16,20 @@
  */
 package com.craftfire.authapi.scripts.forum;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import javax.swing.JTable;
-
-import com.craftfire.authapi.ScriptAPI.Scripts;
-import com.craftfire.authapi.classes.Ban;
-import com.craftfire.authapi.classes.Gender;
-import com.craftfire.authapi.classes.Group;
-import com.craftfire.authapi.classes.Post;
-import com.craftfire.authapi.classes.PrivateMessage;
-import com.craftfire.authapi.classes.Script;
-import com.craftfire.authapi.classes.ScriptUser;
+import com.craftfire.authapi.AuthAPI;
+import com.craftfire.authapi.ScriptAPI;
+import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
+
+import javax.swing.*;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 //TODO: Convert arrays to use Result class
 public class SMF extends Script {
@@ -51,10 +42,10 @@ public class SMF extends Script {
 	private String currentUsername = null;
 	private String membernamefield = "member_name", groupfield = "additional_groups";
 
-	public SMF(Scripts script, String version, DataManager dataManager) {
-		super(script, version);
-		this.userVersion = version;
-		this.dataManager = dataManager;
+    public SMF(AuthAPI authAPI, ScriptAPI.Scripts script, String version) {
+        super(authAPI, script, version);
+        this.userVersion = version;
+        this.dataManager = authAPI.getDataManager();
 		if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
 			this.membernamefield = this.membernamefield.replace("_", "");
 			this.groupfield = this.groupfield.replace("_", "");

@@ -16,6 +16,15 @@
  */
 package com.craftfire.authapi.scripts.forum;
 
+import com.craftfire.authapi.AuthAPI;
+import com.craftfire.authapi.ScriptAPI;
+import com.craftfire.authapi.classes.*;
+import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -23,25 +32,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-import com.craftfire.authapi.ScriptAPI;
-import com.craftfire.authapi.classes.Ban;
-import com.craftfire.authapi.classes.Gender;
-import com.craftfire.authapi.classes.Group;
-import com.craftfire.authapi.classes.Post;
-import com.craftfire.authapi.classes.PrivateMessage;
-import com.craftfire.authapi.classes.Script;
-import com.craftfire.authapi.classes.ScriptUser;
-import com.craftfire.authapi.classes.Thread;
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
-import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
+import java.util.*;
 
 //TODO: Convert arrays to use Result class
 public class XenForo extends Script {
@@ -53,10 +44,10 @@ public class XenForo extends Script {
     private final DataManager dataManager;
     private String currentUsername = null;
 
-    public XenForo(ScriptAPI.Scripts script, String version, DataManager dataManager) {
-        super(script, version);
+    public XenForo(AuthAPI authAPI, ScriptAPI.Scripts script, String version) {
+        super(authAPI, script, version);
         this.userVersion = version;
-        this.dataManager = dataManager;
+        this.dataManager = authAPI.getDataManager();
     }
 
     public String[] getVersionRanges() {
@@ -159,7 +150,6 @@ public class XenForo extends Script {
                 } else {
                     user.setGender(Gender.UNKNOWN);
                 }
-                user.setGroups(getUserGroups(array.get("username").toString()));
                 user.setLastLogin(new Date(Long.parseLong(array.get("last_activity").toString()) * 1000));
                 user.setRegDate(new Date(Long.parseLong(array.get("register_date").toString()) * 1000));
                 Blob hashBlob =

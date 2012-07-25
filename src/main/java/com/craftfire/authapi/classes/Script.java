@@ -19,22 +19,32 @@
  */
 package com.craftfire.authapi.classes;
 
-import java.sql.SQLException;
-import java.util.List;
-
+import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.ScriptAPI.Scripts;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class Script implements ScriptInterface {
+    private final AuthAPI authAPI;
 	private final String version;
 	private final Scripts script;
-	private ScriptUser user;
 
-	protected Script(Scripts script, String version) {
+    protected Script(AuthAPI authAPI, Scripts script, String version) {
+        this.authAPI = authAPI;
 		this.version = version;
 		this.script = script;
 	}
+    
+    public AuthAPI getAuthAPI() {
+        return this.authAPI;
+    }
+    
+    public Scripts getScript() {
+        return this.script;
+    }
 
 	@Override
 	public ScriptUser getUser(String username) throws UnsupportedFunction {

@@ -21,6 +21,7 @@ package com.craftfire.authapi.scripts.forum;
 
 import java.util.List;
 
+import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.ScriptAPI;
 import com.craftfire.authapi.classes.Ban;
 import com.craftfire.authapi.classes.Group;
@@ -40,10 +41,10 @@ public class PhpBB extends Script {
     private final DataManager dataManager;
     private String currentUsername = null;
 
-    public PhpBB(ScriptAPI.Scripts script, String version, DataManager dataManager) {
-        super(script, version);
+    public PhpBB(AuthAPI authAPI, ScriptAPI.Scripts script, String version) {
+        super(authAPI, script, version);
         this.userVersion = version;
-        this.dataManager = dataManager;
+        this.dataManager = authAPI.getDataManager();
     }
 
     public String[] getVersionRanges() {

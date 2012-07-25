@@ -19,13 +19,13 @@
  */
 package com.craftfire.authapi.classes;
 
-import java.awt.Image;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+import com.craftfire.commons.CraftCommons;
+
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
-import com.craftfire.commons.CraftCommons;
 
 public class ScriptUser implements ScriptUserInterface {
     private final Script script;
@@ -141,8 +141,15 @@ public class ScriptUser implements ScriptUserInterface {
     }
 
     @Override
-    public List<Group> getUserGroups() {
-        return this.groups;
+    public List<Group> getUserGroups() throws UnsupportedFunction {
+        List<Group> temp;
+        if (this.script.getAuthAPI().getCacheManager().contains("userGroups", getID())) {
+            temp = (List<Group>) this.script.getAuthAPI().getCacheManager().get("userGroups", getID());
+        } else {
+            temp = this.script.getUserGroups(this.username);
+            this.script.getAuthAPI().getCacheManager().put("userGroups", userid, temp);
+        }
+        return temp;
     }
 
     @Override

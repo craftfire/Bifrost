@@ -24,11 +24,10 @@ import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.authapi.scripts.forum.SMF;
 import com.craftfire.authapi.scripts.forum.XenForo;
-import com.craftfire.commons.managers.DataManager;
 
 public class ScriptAPI {
+    private AuthAPI authAPI;
     private Script script;
-    private final DataManager dataManager;
     private final Scripts scriptName;
     private final String version;
 
@@ -47,10 +46,10 @@ public class ScriptAPI {
      * @param version The version that the user has set in his config.
      * @throws UnsupportedVersion if the input version is not found in the list of supported versions.
      */
-    public ScriptAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+    public ScriptAPI(AuthAPI authAPI, Scripts script, String version) throws UnsupportedVersion {
+        this.authAPI = authAPI;
         this.scriptName = script;
         this.version = version;
-        this.dataManager = dataManager;
         setScript();
         if (!this.script.isSupportedVersion()) {
             throw new UnsupportedVersion();
@@ -63,11 +62,10 @@ public class ScriptAPI {
      * @throws UnsupportedScript if the input string is not found in the list of supported scripts.
      * @throws UnsupportedVersion if the input version is not found in the list of supported versions.
      */
-    public ScriptAPI(String script, String version, DataManager dataManager) throws UnsupportedScript,
-                                                                                    UnsupportedVersion {
+    public ScriptAPI(AuthAPI authAPI, String script, String version) throws UnsupportedScript, UnsupportedVersion {
+        this.authAPI = authAPI;
         this.scriptName = stringToScript(script);
         this.version = version;
-        this.dataManager = dataManager;
         setScript();
         if (!this.script.isSupportedVersion()) {
             throw new UnsupportedVersion();
@@ -87,9 +85,9 @@ public class ScriptAPI {
     private void setScript() {
         switch (this.scriptName) {
             case SMF:
-                this.script = new SMF(this.scriptName, this.version, this.dataManager);
+                this.script = new SMF(this.authAPI, this.scriptName, this.version);
             case XF:
-                this.script = new XenForo(this.scriptName, this.version, this.dataManager);
+                this.script = new XenForo(this.authAPI, this.scriptName, this.version);
         }
     }
 

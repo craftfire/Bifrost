@@ -22,6 +22,7 @@ import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
+import com.craftfire.commons.managers.CacheManager;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
@@ -30,30 +31,41 @@ public class AuthAPI {
     private final ScriptAPI scriptAPI;
     private final Script script;
     private final DataManager dataManager;
+    private final CacheManager cacheManager;
 	private final LoggingManager loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
 
     public AuthAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        this.scriptAPI = new ScriptAPI(script, version, dataManager);
+        this.scriptAPI = new ScriptAPI(this, script, version);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
-		this.loggingManager.debug("Initialized AuthAPI");
+        this.cacheManager = new CacheManager();
+        this.loggingManager.debug("Initialized AuthAPI");
     }
 
     public AuthAPI(String script, String version, DataManager dataManager) throws UnsupportedScript,
                                                                                   UnsupportedVersion {
-        this.scriptAPI = new ScriptAPI(script, version, dataManager);
+        this.scriptAPI = new ScriptAPI(this, script, version);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
-		this.loggingManager.debug("Initialized AuthAPI");
+        this.cacheManager = new CacheManager();
+        this.loggingManager.debug("Initialized AuthAPI");
     }
 
     public Script getScript() {
         return this.script;
     }
 
+    public DataManager getDataManager() {
+        return this.dataManager;
+    }
+
 	public LoggingManager getLoggingManager() {
 		return this.loggingManager;
 	}
+
+    public CacheManager getCacheManager() {
+        return this.cacheManager;
+    }
 
     public ScriptUser getUser(String username) throws UnsupportedFunction {
         return this.script.getUser(username);

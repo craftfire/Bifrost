@@ -19,17 +19,13 @@
  */
 package com.craftfire.authapi.scripts.forum;
 
-import java.util.List;
-
+import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.ScriptAPI;
-import com.craftfire.authapi.classes.Ban;
-import com.craftfire.authapi.classes.Group;
-import com.craftfire.authapi.classes.Post;
-import com.craftfire.authapi.classes.PrivateMessage;
-import com.craftfire.authapi.classes.Script;
-import com.craftfire.authapi.classes.ScriptUser;
+import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
 import com.craftfire.commons.managers.DataManager;
+
+import java.util.List;
 
 public class BBPress extends Script {
     private final String scriptName = "bbpress";
@@ -40,11 +36,12 @@ public class BBPress extends Script {
     private final DataManager dataManager;
     private String currentUsername = null;
 
-    public BBPress(ScriptAPI.Scripts script, String version, DataManager dataManager) {
-        super(script, version);
+    public BBPress(AuthAPI authAPI, ScriptAPI.Scripts script, String version) {
+        super(authAPI, script, version);
         this.userVersion = version;
-        this.dataManager = dataManager;
+        this.dataManager = authAPI.getDataManager();
     }
+
     public String[] getVersionRanges() {
         return this.versionRanges;
     }
