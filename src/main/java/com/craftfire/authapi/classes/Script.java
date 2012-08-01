@@ -31,34 +31,32 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Script implements ScriptInterface {
-    private final AuthAPI authAPI;
 	private final String version;
 	private final Scripts script;
 
     protected Script(Scripts script, String version) {
-        this.authAPI = AuthAPI.getInstance();
 		this.version = version;
 		this.script = script;
 	}
     
     public AuthAPI getAuthAPI() {
-        return this.authAPI;
+        return AuthAPI.getInstance();
     }
     
     public LoggingManager getLoggingManager() {
-        return this.authAPI.getLoggingManager();
+        return AuthAPI.getInstance().getLoggingManager();
     }
 
     public CacheManager getCacheManager() {
-        return this.authAPI.getCacheManager();
+        return AuthAPI.getInstance().getCacheManager();
     }
 
     public Cache getCache() {
-        return this.authAPI.getCache();
+        return AuthAPI.getInstance().getCache();
     }
     
     public DataManager getDataManager() {
-        return this.authAPI.getDataManager();
+        return AuthAPI.getInstance().getDataManager();
     }
     
     public Scripts getScript() {

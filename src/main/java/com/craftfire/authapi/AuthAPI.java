@@ -19,8 +19,6 @@ package com.craftfire.authapi;
 import com.craftfire.authapi.ScriptAPI.Scripts;
 import com.craftfire.authapi.classes.Cache;
 import com.craftfire.authapi.classes.Script;
-import com.craftfire.authapi.classes.ScriptUser;
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.commons.managers.CacheManager;
@@ -80,13 +78,5 @@ public class AuthAPI {
 
     public Cache getCache() {
         return this.cache;
-    }
-
-    public ScriptUser getUser(String username) throws UnsupportedFunction {
-        return this.script.getUser(username);
-    }
-
-    public boolean authenticate(String username, String password) throws UnsupportedFunction {
-        return this.script.authenticate(username, password);
     }
 }
