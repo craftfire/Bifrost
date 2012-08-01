@@ -19,7 +19,6 @@
  */
 package com.craftfire.authapi.scripts.cms;
 
-import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.ScriptAPI;
 import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
@@ -34,8 +33,8 @@ public class Drupal extends Script {
     private final String userVersion;
     private String currentUsername = null;
 
-    public Drupal(AuthAPI authAPI, ScriptAPI.Scripts script, String version) {
-        super(authAPI, script, version);
+    public Drupal(ScriptAPI.Scripts script, String version) {
+        super(script, version);
         this.userVersion = version;
     }
 

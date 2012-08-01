@@ -16,14 +16,12 @@
  */
 package com.craftfire.authapi.scripts.forum;
 
-import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.ScriptAPI;
 import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,13 +39,11 @@ public class XenForo extends Script {
     private final String encryption = "sha1";
     private final String[] versionRanges = {"1.0.4", "1.1.2"};
     private final String userVersion;
-    private final DataManager dataManager;
     private String currentUsername = null;
 
-    public XenForo(AuthAPI authAPI, ScriptAPI.Scripts script, String version) {
-        super(authAPI, script, version);
+    public XenForo(ScriptAPI.Scripts script, String version) {
+        super(script, version);
         this.userVersion = version;
-        this.dataManager = authAPI.getDataManager();
     }
 
     public String[] getVersionRanges() {
@@ -76,8 +72,8 @@ public class XenForo extends Script {
 
     public boolean authenticate(String username, String password) {
         Blob hashBlob =
-                this.dataManager.getBlobField("user_authenticate", "data", "`user_id` = '" + getUserID(username) +
-                                                                           "'");
+                this.getDataManager().getBlobField("user_authenticate", "data", "`user_id` = '" + getUserID(username) +
+                        "'");
         String hash = "", salt = "";
         if (hashBlob != null) {
             int offset = - 1;
@@ -110,16 +106,16 @@ public class XenForo extends Script {
     }
 
     public String getUsername(int userid) {
-        return this.dataManager.getStringField("user", "username", "`user_id` = '" + userid + "'");
+        return this.getDataManager().getStringField("user", "username", "`user_id` = '" + userid + "'");
     }
 
     public int getUserID(String username) {
-        return this.dataManager.getIntegerField("user", "user_id", "`username` = '" + username + "'");
+        return this.getDataManager().getIntegerField("user", "user_id", "`username` = '" + username + "'");
     }
 
     public ScriptUser getLastRegUser() {
-        return getUser(this.dataManager.getIntegerField("SELECT `user_id` FROM `" + this.dataManager.getPrefix() +
-                                                        "user` ORDER BY `user_id` ASC LIMIT 1"));
+        return getUser(this.getDataManager().getIntegerField("SELECT `user_id` FROM `" + this.getDataManager().getPrefix() +
+                "user` ORDER BY `user_id` ASC LIMIT 1"));
     }
 
     public ScriptUser getUser(String username) {
@@ -131,9 +127,9 @@ public class XenForo extends Script {
             return ScriptUser.getCache(userid);
         } else if (isRegistered(getUsername(userid))) {
             ScriptUser user = new ScriptUser(this, userid, null, null);
-            HashMap<String, Object> array = this.dataManager.getArray(
-                    "SELECT * FROM `" + this.dataManager.getPrefix() + "user` WHERE `user_id` = '" +
-                    userid + "' LIMIT 1");
+            HashMap<String, Object> array = this.getDataManager().getArray(
+                    "SELECT * FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_id` = '" +
+                            userid + "' LIMIT 1");
             if (array.size() > 0) {
                 if (array.get("user_state").toString().equalsIgnoreCase("valid")) {
                     user.setActivated(true);
@@ -142,7 +138,7 @@ public class XenForo extends Script {
                 }
                 if (! array.get("gravatar").toString().isEmpty()) {
                     user.setAvatarURL("http://www.gravatar.com/avatar/" +
-                                      CraftCommons.encrypt(Encryption.MD5, array.get("gravatar").toString().toLowerCase()));
+                            CraftCommons.encrypt(Encryption.MD5, array.get("gravatar").toString().toLowerCase()));
                 }
                 user.setEmail(array.get("email").toString());
                 if (array.get("gender").toString().equalsIgnoreCase("male")) {
@@ -155,7 +151,7 @@ public class XenForo extends Script {
                 user.setLastLogin(new Date(Long.parseLong(array.get("last_activity").toString()) * 1000));
                 user.setRegDate(new Date(Long.parseLong(array.get("register_date").toString()) * 1000));
                 Blob hashBlob =
-                        this.dataManager.getBlobField("user_authenticate", "data", "`user_id` = '" + userid + "'");
+                        this.getDataManager().getBlobField("user_authenticate", "data", "`user_id` = '" + userid + "'");
                 if (hashBlob != null) {
                     int offset = - 1;
                     int chunkSize = 1024;
@@ -181,22 +177,22 @@ public class XenForo extends Script {
                 }
                 user.setUsername(array.get("username").toString());
                 user.setUserTitle(array.get("custom_title").toString());
-                user.setLastIP(CraftCommons.long2ip((long)this.dataManager.getIntegerField(
-                                                                     "ip",
-                                                                     "ip",
-                                                                     "`user_id` = '" + user.getID() + "'")));
-                user.setRegIP(CraftCommons.long2ip((long) this.dataManager.getIntegerField("ip", "ip", 
-                                                                                           "`user_id` = '" +
-                                                                                                       user.getID() +
-                                                                                                       "' AND `action` = 'register'")));
+                user.setLastIP(CraftCommons.long2ip((long)this.getDataManager().getIntegerField(
+                        "ip",
+                        "ip",
+                        "`user_id` = '" + user.getID() + "'")));
+                user.setRegIP(CraftCommons.long2ip((long) this.getDataManager().getIntegerField("ip", "ip",
+                        "`user_id` = '" +
+                                user.getID() +
+                                "' AND `action` = 'register'")));
             }
 
-            array = this.dataManager.getArray(
-                    "SELECT * FROM `" + this.dataManager.getPrefix() + "user_profile` WHERE `user_id` = '" +
-                    userid + "' LIMIT 1");
+            array = this.getDataManager().getArray(
+                    "SELECT * FROM `" + this.getDataManager().getPrefix() + "user_profile` WHERE `user_id` = '" +
+                            userid + "' LIMIT 1");
             if (array.size() > 0) {
                 String bdate = array.get("dob_day").toString() + " " + array.get("dob_month").toString() + " " +
-                               array.get("dob_year").toString();
+                        array.get("dob_year").toString();
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("d M yyyy");
                     user.setBirthday(format.parse(bdate));
@@ -235,7 +231,7 @@ public class XenForo extends Script {
         data.put("custom_title", user.getUserTitle());
         data.put("register_date", user.getRegDate().getTime() / 1000);
         data.put("last_activity", user.getLastLogin().getTime() / 1000);
-        this.dataManager.updateFields(data, "user", "`user_id` = '" + user.getID() + "'");
+        this.getDataManager().updateFields(data, "user", "`user_id` = '" + user.getID() + "'");
 
         if (user.getBirthday() != null) {
             data = new HashMap<String, Object>();
@@ -245,12 +241,12 @@ public class XenForo extends Script {
             data.put("dob_month", format.format(user.getBirthday()));
             format = new SimpleDateFormat("yyyy");
             data.put("dob_year", format.format(user.getBirthday()));
-            this.dataManager.updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
+            this.getDataManager().updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
         }
 
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
             String temp =
-                    this.dataManager.getStringField("user_profile", "status", "`user_id` = '" + user.getID() + "'");
+                    this.getDataManager().getStringField("user_profile", "status", "`user_id` = '" + user.getID() + "'");
             if (! temp.equalsIgnoreCase(user.getStatusMessage())) {
                 int ipID = this.insertIP(user, "profile_post", "insert");
                 data = new HashMap<String, Object>();
@@ -260,25 +256,25 @@ public class XenForo extends Script {
                 data.put("post_date", timestamp);
                 data.put("message", user.getStatusMessage());
                 data.put("ip_id", ipID);
-                this.dataManager.insertFields(data, "profile_post");
+                this.getDataManager().insertFields(data, "profile_post");
 
-                int profilePostID = this.dataManager.getLastID("profile_post_id", "profile_post");
+                int profilePostID = this.getDataManager().getLastID("profile_post_id", "profile_post");
 
                 this.addSearch(user, "profile_post", 0, profilePostID, null, user.getStatusMessage());
 
-                this.dataManager.updateBlob("profile_post", "like_users", "`profile_post_id` = '" + profilePostID + "'", "a:0:{}");
+                this.getDataManager().updateBlob("profile_post", "like_users", "`profile_post_id` = '" + profilePostID + "'", "a:0:{}");
 
                 data = new HashMap<String, Object>();
                 data.put("profile_post_id", profilePostID);
                 data.put("user_id", user.getID());
                 data.put("post_date", timestamp);
-                this.dataManager.insertFields(data, "user_status");
+                this.getDataManager().insertFields(data, "user_status");
 
                 data = new HashMap<String, Object>();
                 data.put("status", user.getStatusMessage());
                 data.put("status_date", timestamp);
                 data.put("status_profile_post_id", profilePostID);
-                this.dataManager.updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
+                this.getDataManager().updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
             }
         }
 
@@ -287,9 +283,9 @@ public class XenForo extends Script {
             user.setPasswordSalt(CraftCommons.encrypt(Encryption.SHA256, CraftCommons.encrypt(Encryption.MD5, r.nextInt(1000000)).substring(0, 10)));
             user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
             String stringdata =
-                "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
-                "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
-            this.dataManager.updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
+                    "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
+                            "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
+            this.getDataManager().updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
         }
         data.clear();
     }
@@ -297,7 +293,7 @@ public class XenForo extends Script {
     public void createUser(ScriptUser user) throws SQLException {
         long timestamp = new Date().getTime() / 1000;
         Random r = new Random();
-		user.setPasswordSalt(CraftCommons.encrypt(Encryption.SHA256, CraftCommons.encrypt(Encryption.MD5, r.nextInt(1000000)).substring(0, 10)));
+        user.setPasswordSalt(CraftCommons.encrypt(Encryption.SHA256, CraftCommons.encrypt(Encryption.MD5, r.nextInt(1000000)).substring(0, 10)));
         user.setPassword(hashPassword(user.getPasswordSalt(), user.getPassword()));
         user.setRegDate(new Date());
         user.setLastLogin(new Date());
@@ -320,19 +316,19 @@ public class XenForo extends Script {
         data.put("user_group_id", 2);
         data.put("display_style_group_id", 2);
         data.put("permission_combination_id", 2);
-        this.dataManager.insertFields(data, "user");
-        user.setID(this.dataManager.getLastID("user_id", "user"));
+        this.getDataManager().insertFields(data, "user");
+        user.setID(this.getDataManager().getLastID("user_id", "user"));
 
         data = new HashMap<String, Object>();
         data.put("user_id", user.getID());
         data.put("allow_post_profile", "members");
         data.put("allow_send_personal_conversation", "members");
-        this.dataManager.insertFields(data, "user_privacy");
+        this.getDataManager().insertFields(data, "user_privacy");
 
         data = new HashMap<String, Object>();
         data.put("user_id", user.getID());
         data.put("default_watch_state", "watch_email");
-        this.dataManager.insertFields(data, "user_option");
+        this.getDataManager().insertFields(data, "user_option");
 
         data = new HashMap<String, Object>();
         data.put("user_id", user.getID());
@@ -344,11 +340,11 @@ public class XenForo extends Script {
             format = new SimpleDateFormat("yyyy");
             data.put("dob_year", format.format(user.getBirthday()));
         }
-        this.dataManager.insertFields(data, "user_profile");
+        this.getDataManager().insertFields(data, "user_profile");
         if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
-            this.dataManager.updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
+            this.getDataManager().updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
         } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
-            this.dataManager.updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
+            this.getDataManager().updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
         }
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
             int ipID = insertIP(user, "profile_post", "insert");
@@ -359,39 +355,39 @@ public class XenForo extends Script {
             data.put("post_date", timestamp);
             data.put("message", user.getStatusMessage());
             data.put("ip_id", ipID);
-            this.dataManager.insertFields(data, "profile_post");
+            this.getDataManager().insertFields(data, "profile_post");
 
-            int profilePostID = this.dataManager.getLastID("profile_post_id", "profile_post");
+            int profilePostID = this.getDataManager().getLastID("profile_post_id", "profile_post");
 
-            this.dataManager.updateBlob("profile_post", "like_users", "`profile_post_id` = '" + profilePostID + "'", "a:0:{}");
+            this.getDataManager().updateBlob("profile_post", "like_users", "`profile_post_id` = '" + profilePostID + "'", "a:0:{}");
 
             data = new HashMap<String, Object>();
             data.put("profile_post_id", profilePostID);
             data.put("user_id", user.getID());
             data.put("post_date", timestamp);
-            this.dataManager.insertFields(data, "user_status");
+            this.getDataManager().insertFields(data, "user_status");
 
             data = new HashMap<String, Object>();
             data.put("status", user.getStatusMessage());
             data.put("status_date", timestamp);
             data.put("status_profile_post_id", profilePostID);
-            this.dataManager.updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
+            this.getDataManager().updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
         }
 
         String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
-                "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
+                        "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
         data = new HashMap<String, Object>();
         data.put("user_id", user.getID());
         data.put("scheme_class", "XenForo_Authentication_Core");
-        this.dataManager.insertFields(data, "user_authenticate");
-        this.dataManager.updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
+        this.getDataManager().insertFields(data, "user_authenticate");
+        this.getDataManager().updateBlob("user_authenticate", "data", "`user_id` = '" + user.getID() + "'", stringdata);
 
         data = new HashMap<String, Object>();
         data.put("user_id", user.getID());
         data.put("user_group_id", 2);
         data.put("is_primary", 1);
-        this.dataManager.insertFields(data, "user_group_relation");
+        this.getDataManager().insertFields(data, "user_group_relation");
 
         insertIP(user, "user", "register");
         data.clear();
@@ -404,8 +400,8 @@ public class XenForo extends Script {
         }
         List<Group> groups = new ArrayList<Group>();
         List<HashMap<String, Object>> array =
-                this.dataManager.getArrayList("SELECT `user_group_id` FROM `" + this.dataManager.getPrefix() +
-                                              "user_group` ORDER BY `user_group_id` ASC" + limitstring);
+                this.getDataManager().getArrayList("SELECT `user_group_id` FROM `" + this.getDataManager().getPrefix() +
+                        "user_group` ORDER BY `user_group_id` ASC" + limitstring);
         for (HashMap<String, Object> map : array) {
             groups.add(getGroup(Integer.parseInt(map.get("user_group_id").toString())));
         }
@@ -413,13 +409,13 @@ public class XenForo extends Script {
     }
 
     public Group getGroup(int groupid) {
-        HashMap<String, Object> array = this.dataManager.getArray(
-                "SELECT * FROM `" + this.dataManager.getPrefix() + "user_group` WHERE `user_group_id` = '" + groupid +
-                "'");
+        HashMap<String, Object> array = this.getDataManager().getArray(
+                "SELECT * FROM `" + this.getDataManager().getPrefix() + "user_group` WHERE `user_group_id` = '" + groupid +
+                        "'");
         List<ScriptUser> users = new ArrayList<ScriptUser>();
-        List<HashMap<String, Object>> arrayList = this.dataManager.getArrayList(
-                "SELECT `username` FROM `" + this.dataManager.getPrefix() + "user` WHERE `user_group_id` = '" +
-                groupid + "' ORDER BY `user_id` ASC");
+        List<HashMap<String, Object>> arrayList = this.getDataManager().getArrayList(
+                "SELECT `username` FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_group_id` = '" +
+                        groupid + "' ORDER BY `user_id` ASC");
         for (HashMap<String, Object> map : arrayList) {
             String username = map.get("username").toString();
             if (this.currentUsername != null && ! this.currentUsername.equalsIgnoreCase(username)) {
@@ -431,27 +427,27 @@ public class XenForo extends Script {
         this.currentUsername = null;
         Group group =
                 new Group(this, Integer.parseInt(array.get("user_group_id").toString()),
-                          array.get("title").toString());
-        group.setUserCount(this.dataManager.getCount("user", "`user_group_id` = '" + groupid + "'"));
+                        array.get("title").toString());
+        group.setUserCount(this.getDataManager().getCount("user", "`user_group_id` = '" + groupid + "'"));
         group.setUsers(users);
         return group;
     }
 
     public Group getGroup(String group) {
-        HashMap<String, Object> array = this.dataManager.getArray(
-                "SELECT `user_group_id` FROM `" + this.dataManager.getPrefix() +
-                "user_group` WHERE `title` = '" + group + "'");
+        HashMap<String, Object> array = this.getDataManager().getArray(
+                "SELECT `user_group_id` FROM `" + this.getDataManager().getPrefix() +
+                        "user_group` WHERE `title` = '" + group + "'");
         return getGroup(Integer.parseInt(array.get("user_group_id").toString()));
     }
 
     public List<Group> getUserGroups(String username) {
         this.currentUsername = username;
         List<Group> groups = new ArrayList<Group>();
-        HashMap<String, Object> array = this.dataManager.getArray(
-                "SELECT `user_group_id`, `secondary_group_ids` FROM `" + this.dataManager.getPrefix() +
-                "user` WHERE `user_id` = '" + getUserID(username) + "' LIMIT 1");
+        HashMap<String, Object> array = this.getDataManager().getArray(
+                "SELECT `user_group_id`, `secondary_group_ids` FROM `" + this.getDataManager().getPrefix() +
+                        "user` WHERE `user_id` = '" + getUserID(username) + "' LIMIT 1");
         groups.add(getGroup(Integer.parseInt(array.get("user_group_id").toString())));
-        String additional = this.dataManager.getBinaryField("user", "secondary_group_ids", "`user_id` = '" + getUserID(username) + "'");
+        String additional = this.getDataManager().getBinaryField("user", "secondary_group_ids", "`user_id` = '" + getUserID(username) + "'");
         if (! additional.isEmpty()) {
             if (additional.contains(",")) {
                 String[] split = additional.split("\\,");
@@ -469,35 +465,35 @@ public class XenForo extends Script {
     public void updateGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("title", group.getName());
-        this.dataManager.updateFields(data, "user_group", "`user_group_id` = '" + group.getID() + "'");
+        this.getDataManager().updateFields(data, "user_group", "`user_group_id` = '" + group.getID() + "'");
         data.clear();
     }
 
     public void createGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("title", group.getName());
-        this.dataManager.insertFields(data, "user_group");
-        group.setID(this.dataManager.getLastID("user_group_id", "user_group"));
+        this.getDataManager().insertFields(data, "user_group");
+        group.setID(this.getDataManager().getLastID("user_group_id", "user_group"));
         data.clear();
     }
 
     public PrivateMessage getPM(int pmid) {
         PrivateMessage pm = new PrivateMessage(this, pmid);
-        HashMap<String, Object> array = this.dataManager.getArray(
-                "SELECT * FROM `" + this.dataManager.getPrefix() + "conversation_message` WHERE `message_id` = '" +
-                pmid + "' LIMIT 1");
+        HashMap<String, Object> array = this.getDataManager().getArray(
+                "SELECT * FROM `" + this.getDataManager().getPrefix() + "conversation_message` WHERE `message_id` = '" +
+                        pmid + "' LIMIT 1");
         for (int i = 0; array.size() > i; i++) {
             pm.setDate(new Date(Long.parseLong(array.get("message_date").toString()) * 1000));
             pm.setBody(array.get("message").toString());
             pm.setSender(getUser(Integer.parseInt(array.get("user_id").toString())));
             int conversationID = Integer.parseInt(array.get("conversation_id").toString());
-            pm.setSubject(this.dataManager.getStringField("conversation_master", "title",
-                                                          "`conversation_id` = '" + conversationID + "'"));
+            pm.setSubject(this.getDataManager().getStringField("conversation_master", "title",
+                    "`conversation_id` = '" + conversationID + "'"));
             List<ScriptUser> recipients = new ArrayList<ScriptUser>();
-            List<HashMap<String, Object>> recipientsArray = this.dataManager.getArrayList(
-                    "SELECT `user_id`, `recipient_state`, `last_read_date` FROM `" + this.dataManager.getPrefix() +
-                    "conversation_recipient` WHERE `conversation_id` = '" + conversationID +
-                    "' AND `user_id` != '" + pm.getSender().getID() + "'");
+            List<HashMap<String, Object>> recipientsArray = this.getDataManager().getArrayList(
+                    "SELECT `user_id`, `recipient_state`, `last_read_date` FROM `" + this.getDataManager().getPrefix() +
+                            "conversation_recipient` WHERE `conversation_id` = '" + conversationID +
+                            "' AND `user_id` != '" + pm.getSender().getID() + "'");
             for (HashMap<String, Object> map : recipientsArray) {
                 ScriptUser recipient = getUser(Integer.parseInt(map.get("user_id").toString()));
                 recipients.add(recipient);
@@ -524,10 +520,10 @@ public class XenForo extends Script {
         }
         List<PrivateMessage> pms = new ArrayList<PrivateMessage>();
         List<HashMap<String, Object>> array =
-                this.dataManager.getArrayList("SELECT `message_id` FROM `" + this.dataManager.getPrefix() +
-                                              "conversation_message` WHERE `user_id` = '" + getUserID(username) +
-                                              "' ORDER BY `message_id` ASC" +
-                                              limitstring);
+                this.getDataManager().getArrayList("SELECT `message_id` FROM `" + this.getDataManager().getPrefix() +
+                        "conversation_message` WHERE `user_id` = '" + getUserID(username) +
+                        "' ORDER BY `message_id` ASC" +
+                        limitstring);
         for (HashMap<String, Object> map : array) {
             pms.add(getPM(Integer.parseInt(map.get("message_id").toString())));
         }
@@ -542,22 +538,22 @@ public class XenForo extends Script {
         }
         List<PrivateMessage> pms = new ArrayList<PrivateMessage>();
         List<HashMap<String, Object>> array =
-                this.dataManager.getArrayList("SELECT `conversation_id` FROM `" + this.dataManager.getPrefix() +
-                                              "conversation_recipient` WHERE `user_id` = '" + userID +
-                                              "' ORDER BY `conversation_id` ASC" +
-                                              limitstring);
+                this.getDataManager().getArrayList("SELECT `conversation_id` FROM `" + this.getDataManager().getPrefix() +
+                        "conversation_recipient` WHERE `user_id` = '" + userID +
+                        "' ORDER BY `conversation_id` ASC" +
+                        limitstring);
         for (HashMap<String, Object> map : array) {
             int conversationID = Integer.parseInt(map.get("conversation_id").toString());
             List<HashMap<String, Object>> pmsArray =
-                    this.dataManager.getArrayList("SELECT `message_id` FROM `" + this.dataManager.getPrefix() +
-                                                  "conversation_message` WHERE `conversation_id` = '" +
-                                                  conversationID +
-                                                  "' AND `user_id` != '" + userID + "'");
+                    this.getDataManager().getArrayList("SELECT `message_id` FROM `" + this.getDataManager().getPrefix() +
+                            "conversation_message` WHERE `conversation_id` = '" +
+                            conversationID +
+                            "' AND `user_id` != '" + userID + "'");
             for (HashMap<String, Object> pm : pmsArray) {
                 int conversationStarterID =
-                        this.dataManager.getIntegerField("SELECT `user_id` FROM `" + this.dataManager.getPrefix() +
-                                                         "conversation_master` WHERE `conversation_id` = '" +
-                                                         conversationID + "'");
+                        this.getDataManager().getIntegerField("SELECT `user_id` FROM `" + this.getDataManager().getPrefix() +
+                                "conversation_master` WHERE `conversation_id` = '" +
+                                conversationID + "'");
                 if (userID != conversationStarterID) {
                     pms.add(getPM(Integer.parseInt(pm.get("message_id").toString())));
                 }
@@ -567,26 +563,26 @@ public class XenForo extends Script {
     }
 
     public int getPMSentCount(String username) {
-        return this.dataManager.getIntegerField("SELECT COUNT(*) FROM `" + this.dataManager.getPrefix() +
-                                                "conversation_message` WHERE `user_id` = '" + getUserID(username) +
-                                                "'");
+        return this.getDataManager().getIntegerField("SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() +
+                "conversation_message` WHERE `user_id` = '" + getUserID(username) +
+                "'");
     }
 
     public int getPMReceivedCount(String username) {
         /*TODO*/
-        return this.dataManager.getIntegerField("SELECT COUNT(*) FROM `" + this.dataManager.getPrefix() +
-                                                "conversation_recipient` WHERE `user_id` = '" + getUserID(username) +
-                                                "'");
+        return this.getDataManager().getIntegerField("SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() +
+                "conversation_recipient` WHERE `user_id` = '" + getUserID(username) +
+                "'");
     }
 
     public void updatePrivateMessage(PrivateMessage pm) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("message", pm.getBody());
         data.put("message_date", pm.getDate().getTime() / 1000);
-        this.dataManager.updateFields(data, "conversation_message", "`message_id` = '" + pm.getID() + "'");
+        this.getDataManager().updateFields(data, "conversation_message", "`message_id` = '" + pm.getID() + "'");
         List<ScriptUser> recipients = pm.getRecipients();
-        int conversationID = this.dataManager.getIntegerField("conversation_message", "conversation_id",
-                                                              "`message_id` = '" + pm.getID() + "'");
+        int conversationID = this.getDataManager().getIntegerField("conversation_message", "conversation_id",
+                "`message_id` = '" + pm.getID() + "'");
         for (ScriptUser rec : recipients) {
             data = new HashMap<String, Object>();
             if (pm.isDeleted(rec)) {
@@ -595,18 +591,18 @@ public class XenForo extends Script {
                 data.put("recipient_state", "active");
             }
             if (pm.isRead(rec)) {
-                int read = this.dataManager.getIntegerField("conversation_recipient", "last_read_date",
-                                                            "`user_id` = '" + rec.getID() +
-                                                            "' AND `conversation_id` = '" + conversationID + "'");
+                int read = this.getDataManager().getIntegerField("conversation_recipient", "last_read_date",
+                        "`user_id` = '" + rec.getID() +
+                                "' AND `conversation_id` = '" + conversationID + "'");
                 if (read == 0) {
                     data.put("last_read_date", new Date().getTime() / 1000);
                 }
             } else {
                 data.put("last_read_date", "0");
             }
-            this.dataManager.updateFields(data, "conversation_recipient",
-                                          "`user_id` = '" + rec.getID() + "' AND `conversation_id` = '" +
-                                          conversationID + "'");
+            this.getDataManager().updateFields(data, "conversation_recipient",
+                    "`user_id` = '" + rec.getID() + "' AND `conversation_id` = '" +
+                            conversationID + "'");
         }
         data.clear();
     }
@@ -622,8 +618,8 @@ public class XenForo extends Script {
         data.put("last_message_date", timestamp);
         data.put("last_message_user_id", pm.getSender().getID());
         data.put("last_message_username", pm.getSender().getUsername());
-        this.dataManager.insertFields(data, "conversation_master");
-        int conversationID = this.dataManager.getLastID("conversation_id", "conversation_master");
+        this.getDataManager().insertFields(data, "conversation_master");
+        int conversationID = this.getDataManager().getLastID("conversation_id", "conversation_master");
         int ipID = this.insertIP(pm.getSender(), "conversation_message", "insert");
         data = new HashMap<String, Object>();
         data.put("conversation_id", conversationID);
@@ -634,18 +630,18 @@ public class XenForo extends Script {
         if (!CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
             data.put("ip_id", ipID);
         }
-        this.dataManager.insertFields(data, "conversation_message");
-        int messageID = this.dataManager.getLastID("message_id", "conversation_message");
+        this.getDataManager().insertFields(data, "conversation_message");
+        int messageID = this.getDataManager().getLastID("message_id", "conversation_message");
         data = new HashMap<String, Object>();
         data.put("first_message_id", messageID);
         data.put("last_message_id", messageID);
-        this.dataManager.updateFields(data, "conversation_master", "`conversation_id` = '" + conversationID + "'");
+        this.getDataManager().updateFields(data, "conversation_master", "`conversation_id` = '" + conversationID + "'");
         data = new HashMap<String, Object>();
         data.put("conversation_id", conversationID);
         data.put("user_id", pm.getSender().getID());
         data.put("recipient_state", "active");
         data.put("last_read_date", timestamp);
-        this.dataManager.insertFields(data, "conversation_recipient");
+        this.getDataManager().insertFields(data, "conversation_recipient");
         data = new HashMap<String, Object>();
         data.put("conversation_id", conversationID);
         data.put("owner_user_id", pm.getSender().getID());
@@ -655,14 +651,14 @@ public class XenForo extends Script {
         data.put("last_message_id", messageID);
         data.put("last_message_user_id", pm.getSender().getID());
         data.put("last_message_username", pm.getSender().getUsername());
-        this.dataManager.insertFields(data, "conversation_user");
+        this.getDataManager().insertFields(data, "conversation_user");
         for (ScriptUser recipient : pm.getRecipients()) {
             data = new HashMap<String, Object>();
             data.put("conversation_id", conversationID);
             data.put("user_id", recipient.getID());
             data.put("recipient_state", "active");
             data.put("last_read_date", 0);
-            this.dataManager.insertFields(data, "conversation_recipient");
+            this.getDataManager().insertFields(data, "conversation_recipient");
             data = new HashMap<String, Object>();
             data.put("conversation_id", conversationID);
             data.put("owner_user_id", recipient.getID());
@@ -672,28 +668,28 @@ public class XenForo extends Script {
             data.put("last_message_id", messageID);
             data.put("last_message_user_id", pm.getSender().getID());
             data.put("last_message_username", pm.getSender().getUsername());
-            this.dataManager.insertFields(data, "conversation_user");
+            this.getDataManager().insertFields(data, "conversation_user");
         }
         data.clear();
     }
 
     public int getPostCount(String username) {
-        return this.dataManager.getCount("post", "`user_id` = '" + getUserID(username) + "' AND `position` != '0'");
+        return this.getDataManager().getCount("post", "`user_id` = '" + getUserID(username) + "' AND `position` != '0'");
     }
 
     public int getTotalPostCount() {
-        return this.dataManager.getCount("post", "`position` != '0'");
+        return this.getDataManager().getCount("post", "`position` != '0'");
     }
 
     public Post getLastPost() {
-        return getPost(this.dataManager.getIntegerField(
-                "SELECT `post_id` FROM `" + this.dataManager.getPrefix() + "post` ORDER BY `post_id` ASC LIMIT 1"));
+        return getPost(this.getDataManager().getIntegerField(
+                "SELECT `post_id` FROM `" + this.getDataManager().getPrefix() + "post` ORDER BY `post_id` ASC LIMIT 1"));
     }
 
     public Post getLastUserPost(String username) {
-        return getPost(this.dataManager.getIntegerField(
-                "SELECT `post_id` FROM `" + this.dataManager.getPrefix() + "post` WHERE `user_id` = '" +
-                getUserID(username) + "' AND `position` != '0' ORDER BY `post_id` ASC LIMIT 1"));
+        return getPost(this.getDataManager().getIntegerField(
+                "SELECT `post_id` FROM `" + this.getDataManager().getPrefix() + "post` WHERE `user_id` = '" +
+                        getUserID(username) + "' AND `position` != '0' ORDER BY `post_id` ASC LIMIT 1"));
     }
 
     public List<Post> getPosts(int limit) {
@@ -702,8 +698,8 @@ public class XenForo extends Script {
             limitstring = " LIMIT 0 , " + limit;
         }
         List<HashMap<String, Object>> array =
-                this.dataManager.getArrayList("SELECT `post_id` FROM `" + this.dataManager.getPrefix() +
-                                              "post` ORDER BY `post_id` ASC" + limitstring);
+                this.getDataManager().getArrayList("SELECT `post_id` FROM `" + this.getDataManager().getPrefix() +
+                        "post` ORDER BY `post_id` ASC" + limitstring);
         List<Post> posts = new ArrayList<Post>();
         for (HashMap<String, Object> map : array) {
             posts.add(getPost(Integer.parseInt(map.get("post_id").toString())));
@@ -717,9 +713,9 @@ public class XenForo extends Script {
             limitstring = " LIMIT 0 , " + limit;
         }
         List<HashMap<String, Object>> array =
-                this.dataManager.getArrayList("SELECT `post_id` FROM `" + this.dataManager.getPrefix() +
-                                              "post` WHERE `thread_id` = '" + threadid + "' ORDER BY `post_id` ASC" +
-                                              limitstring);
+                this.getDataManager().getArrayList("SELECT `post_id` FROM `" + this.getDataManager().getPrefix() +
+                        "post` WHERE `thread_id` = '" + threadid + "' ORDER BY `post_id` ASC" +
+                        limitstring);
         List<Post> posts = new ArrayList<Post>();
         for (HashMap<String, Object> map : array) {
             posts.add(getPost(Integer.parseInt(map.get("post_id").toString())));
@@ -728,15 +724,15 @@ public class XenForo extends Script {
     }
 
     public Post getPost(int postid) {
-        HashMap<String, Object> array = this.dataManager.getArray(
-                "SELECT * FROM `" + this.dataManager.getPrefix() + "post` WHERE `post_id` = '" + postid + "' LIMIT 1");
-        int nodeID = this.dataManager.getIntegerField("thread", "node_id", "`thread_id` = '" +
-                                                                           Integer.parseInt(array.get("thread_id")
-                                                                                                 .toString()) +
-                                                                           "'");
+        HashMap<String, Object> array = this.getDataManager().getArray(
+                "SELECT * FROM `" + this.getDataManager().getPrefix() + "post` WHERE `post_id` = '" + postid + "' LIMIT 1");
+        int nodeID = this.getDataManager().getIntegerField("thread", "node_id", "`thread_id` = '" +
+                Integer.parseInt(array.get("thread_id")
+                        .toString()) +
+                "'");
         Post post =
                 new Post(this, Integer.parseInt(array.get("post_id").toString()),
-                         Integer.parseInt(array.get("thread_id").toString()), nodeID);
+                        Integer.parseInt(array.get("thread_id").toString()), nodeID);
         post.setBody(array.get("message").toString());
         post.setAuthor(getUser(Integer.parseInt(array.get("user_id").toString())));
         post.setPostDate(new Date(Long.parseLong(array.get("post_date").toString()) * 1000));
@@ -750,10 +746,10 @@ public class XenForo extends Script {
         data.put("username", post.getAuthor().getUsername());
         data.put("post_date", post.getPostDate().getTime() / 1000);
         data.put("message", post.getBody());
-        this.dataManager.updateFields(data, "post", "`post_id` = '" + post.getID() + "'");
+        this.getDataManager().updateFields(data, "post", "`post_id` = '" + post.getID() + "'");
         data = new HashMap<String, Object>();
         data.put("node_id", post.getBoardID());
-        this.dataManager.updateFields(data, "thread", "`thread_id` = '" + post.getThreadID() + "'");
+        this.getDataManager().updateFields(data, "thread", "`thread_id` = '" + post.getThreadID() + "'");
         data.clear();
     }
 
@@ -766,19 +762,19 @@ public class XenForo extends Script {
         data.put("post_date", new Date().getTime() / 1000);
         data.put("message", post.getBody());
         data.put("ip_id", ipID);
-        if (this.dataManager.exist("post", "thread_id", post.getThreadID())) {
-            data.put("position", this.dataManager.getLastID("position",
-                                                            "post",
-                                                            "`thread_id` = '" + post.getThreadID() + "'") + 1);
+        if (this.getDataManager().exist("post", "thread_id", post.getThreadID())) {
+            data.put("position", this.getDataManager().getLastID("position",
+                    "post",
+                    "`thread_id` = '" + post.getThreadID() + "'") + 1);
         } else {
             data.put("position", 0);
         }
-        int postID = this.dataManager.getLastID("post_id", "post");
+        int postID = this.getDataManager().getLastID("post_id", "post");
         post.setID(postID);
-        int replyCount = this.dataManager.getIntegerField("thread", "reply_count",
-                                                          "`thread_id` = '" + post.getThreadID() + "'");
+        int replyCount = this.getDataManager().getIntegerField("thread", "reply_count",
+                "`thread_id` = '" + post.getThreadID() + "'");
         this.addSearch(post.getAuthor(), "post", post.getBoardID(), post.getID(), post.getSubject(), post.getBody());
-        this.dataManager.updateBlob("post", "like_users", "`post_id` = '" + postID + "'", "a:0:{}");
+        this.getDataManager().updateBlob("post", "like_users", "`post_id` = '" + postID + "'", "a:0:{}");
         data = new HashMap<String, Object>();
         data.put("node_id", post.getBoardID());
         data.put("reply_count", replyCount + 1);
@@ -786,56 +782,56 @@ public class XenForo extends Script {
         data.put("last_post_id", postID);
         data.put("last_post_user_id", post.getAuthor().getID());
         data.put("last_post_username", post.getAuthor().getUsername());
-        this.dataManager.updateFields(data, "thread", "`thread_id` = '" + post.getThreadID() + "'");
-        if (this.dataManager.exist("thread_user_post", "user_id", post.getAuthor().getID()) &&
-            this.dataManager.exist("thread_user_post", "thread_id", post.getID())) {
+        this.getDataManager().updateFields(data, "thread", "`thread_id` = '" + post.getThreadID() + "'");
+        if (this.getDataManager().exist("thread_user_post", "user_id", post.getAuthor().getID()) &&
+                this.getDataManager().exist("thread_user_post", "thread_id", post.getID())) {
             data = new HashMap<String, Object>();
-            int postCount = this.dataManager.getIntegerField("thread_user_post", "post_count",
-                                                             "`thread_id` = '" + post.getThreadID() +
-                                                             "' AND `user_id` = '" + post.getAuthor().getID() + "'");
+            int postCount = this.getDataManager().getIntegerField("thread_user_post", "post_count",
+                    "`thread_id` = '" + post.getThreadID() +
+                            "' AND `user_id` = '" + post.getAuthor().getID() + "'");
             data.put("post_count", postCount + 1);
-            this.dataManager.updateFields(data, "thread_user_post", "`thread_id` = '" +
-                                                                    post.getThreadID() + "' AND `user_id` = '" +
-                                                                    post.getAuthor().getID() + "'");
+            this.getDataManager().updateFields(data, "thread_user_post", "`thread_id` = '" +
+                    post.getThreadID() + "' AND `user_id` = '" +
+                    post.getAuthor().getID() + "'");
         } else {
             data = new HashMap<String, Object>();
             data.put("thread_id", post.getThreadID());
             data.put("user_id", post.getAuthor().getID());
             data.put("post_count", 1);
-            this.dataManager.insertFields(data, "thread_user_post");
+            this.getDataManager().insertFields(data, "thread_user_post");
         }
-        this.dataManager.increaseField("user", "message_count", "`user_id` = '" + post.getAuthor().getID() + "'");
+        this.getDataManager().increaseField("user", "message_count", "`user_id` = '" + post.getAuthor().getID() + "'");
         data.clear();
     }
 
     public int getThreadCount(String username) {
-        return this.dataManager.getCount("thread", "`user_id` = '" + getUserID(username) + "'");
+        return this.getDataManager().getCount("thread", "`user_id` = '" + getUserID(username) + "'");
     }
 
     public int getTotalThreadCount() {
-        return this.dataManager.getCount("thread");
+        return this.getDataManager().getCount("thread");
     }
 
     public Thread getLastThread() {
-        return getThread(this.dataManager.getIntegerField("SELECT `thread_id` FROM `" + this.dataManager.getPrefix() +
-                                                          "thread` ORDER BY `thread_id` ASC LIMIT 1"));
+        return getThread(this.getDataManager().getIntegerField("SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() +
+                "thread` ORDER BY `thread_id` ASC LIMIT 1"));
     }
 
     public Thread getLastUserThread(String username) {
-        return getThread(this.dataManager.getIntegerField(
-                "SELECT `thread_id` FROM `" + this.dataManager.getPrefix() + "thread` WHERE `user_id` = '" +
-                getUserID(username) + "' ORDER BY `thread_id` ASC LIMIT 1"));
+        return getThread(this.getDataManager().getIntegerField(
+                "SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `user_id` = '" +
+                        getUserID(username) + "' ORDER BY `thread_id` ASC LIMIT 1"));
     }
 
     public Thread getThread(int threadid) {
-        HashMap<String, Object> array = this.dataManager.getArray(
-                "SELECT * FROM `" + this.dataManager.getPrefix() + "thread` WHERE `thread_id` = '" + threadid +
-                "' LIMIT 1");
+        HashMap<String, Object> array = this.getDataManager().getArray(
+                "SELECT * FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `thread_id` = '" + threadid +
+                        "' LIMIT 1");
         Thread thread =
                 new Thread(this, Integer.parseInt(array.get("first_post_id").toString()),
-                           Integer.parseInt(array.get("last_post_id").toString()),
-                           Integer.parseInt(array.get("thread_id").toString()), Integer.parseInt(array.get("node_id")
-                                                                                                      .toString()));
+                        Integer.parseInt(array.get("last_post_id").toString()),
+                        Integer.parseInt(array.get("thread_id").toString()), Integer.parseInt(array.get("node_id")
+                        .toString()));
         thread.setThreadDate(new Date(Long.parseLong(array.get("post_date").toString()) * 1000));
         thread.setAuthor(getUser(Integer.parseInt(array.get("user_id").toString())));
         thread.setBody(getPost(Integer.parseInt(array.get("first_post_id").toString())).getBody());
@@ -861,8 +857,8 @@ public class XenForo extends Script {
             limitstring = " LIMIT 0 , " + limit;
         }
         List<HashMap<String, Object>> array =
-                this.dataManager.getArrayList("SELECT `thread_id` FROM `" + this.dataManager.getPrefix() +
-                                              "thread` ORDER BY `thread_id` ASC" + limitstring);
+                this.getDataManager().getArrayList("SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() +
+                        "thread` ORDER BY `thread_id` ASC" + limitstring);
         List<Thread> threads = new ArrayList<Thread>();
         for (HashMap<String, Object> map : array) {
             threads.add(getThread(Integer.parseInt(map.get("thread_id").toString())));
@@ -894,7 +890,7 @@ public class XenForo extends Script {
         data.put("last_post_id", thread.getLastPost().getID());
         data.put("last_post_user_id", thread.getLastPost().getAuthor().getID());
         data.put("last_post_username", thread.getLastPost().getAuthor().getUsername());
-        this.dataManager.updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
+        this.getDataManager().updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
     }
 
     public void createThread(Thread thread) throws SQLException, UnsupportedFunction {
@@ -919,11 +915,11 @@ public class XenForo extends Script {
         data.put("last_post_date", timestamp);
         data.put("last_post_user_id", thread.getAuthor().getID());
         data.put("last_post_username", thread.getAuthor().getUsername());
-        this.dataManager.insertFields(data, "thread");
-        int threadID = this.dataManager.getLastID("thread_id", "thread");
+        this.getDataManager().insertFields(data, "thread");
+        int threadID = this.getDataManager().getLastID("thread_id", "thread");
         thread.setID(threadID);
         this.addSearch(thread.getAuthor(), "thread", thread.getBoardID(), thread.getID(),
-                  thread.getSubject(), thread.getBody());
+                thread.getSubject(), thread.getBody());
         Post post = new Post(this, thread.getID(), thread.getBoardID());
         post.setAuthor(thread.getAuthor());
         post.setBody(thread.getBody());
@@ -932,23 +928,23 @@ public class XenForo extends Script {
         data = new HashMap<String, Object>();
         data.put("first_post_id", post.getID());
         data.put("last_post_id", post.getID());
-        this.dataManager.updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
+        this.getDataManager().updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
         data.clear();
     }
 
     public int getUserCount() {
-        return this.dataManager.getCount("user");
+        return this.getDataManager().getCount("user");
     }
 
     public int getGroupCount() {
-        return this.dataManager.getCount("user_group");
+        return this.getDataManager().getCount("user_group");
     }
 
     public List<String> getIPs(String username) {
         List<String> ips = new ArrayList<String>();
         List<HashMap<String, Object>> array =
-                this.dataManager.getArrayList("SELECT `ip` FROM `" + this.dataManager.getPrefix() +
-                                              "ip` WHERE `user_id` = '" + getUserID(username) + "' GROUP BY `ip`");
+                this.getDataManager().getArrayList("SELECT `ip` FROM `" + this.getDataManager().getPrefix() +
+                        "ip` WHERE `user_id` = '" + getUserID(username) + "' GROUP BY `ip`");
         for (HashMap<String, Object> map : array) {
             ips.add(CraftCommons.long2ip(Long.parseLong(map.get("ip").toString())));
         }
@@ -962,18 +958,18 @@ public class XenForo extends Script {
         }
         List<Ban> bans = new ArrayList<Ban>();
         List<HashMap<String, Object>> array =
-                this.dataManager.getArrayList("SELECT * FROM `" + this.dataManager.getPrefix() +
-                                              "ban_email` " + limitstring);
+                this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
+                        "ban_email` " + limitstring);
         for (HashMap<String, Object> map : array) {
             bans.add(new Ban(this, null, map.get("banned_email").toString(), null));
         }
-        array = this.dataManager.getArrayList("SELECT * FROM `" + this.dataManager.getPrefix() +
-                                              "ip_match` " + limitstring);
+        array = this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
+                "ip_match` " + limitstring);
         for (HashMap<String, Object> map : array) {
             bans.add(new Ban(this, null, null, map.get("ip").toString()));
         }
-        array = this.dataManager.getArrayList("SELECT * FROM `" + this.dataManager.getPrefix() +
-                                              "user_ban` " + limitstring);
+        array = this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
+                "user_ban` " + limitstring);
         for (HashMap<String, Object> map : array) {
             Ban ban = new Ban(this, null, null, null);
             ban.setUserID(Integer.parseInt(map.get("ban_user_id").toString()));
@@ -998,35 +994,35 @@ public class XenForo extends Script {
     }
 
     public int getBanCount() {
-        return this.dataManager.getCount("ip_match") + this.dataManager.getCount("user_ban") +
-               this.dataManager.getCount("ban_email");
+        return this.getDataManager().getCount("ip_match") + this.getDataManager().getCount("user_ban") +
+                this.getDataManager().getCount("ban_email");
     }
 
     public boolean isBanned(String string) {
         if (CraftCommons.isEmail(string)) {
-            if (this.dataManager.exist("ban_email", "banned_email", string)) {
+            if (this.getDataManager().exist("ban_email", "banned_email", string)) {
                 return true;
             }
         } else if (CraftCommons.isIP(string)) {
-            if (this.dataManager.exist("ip_match", "ip", string)) {
+            if (this.getDataManager().exist("ip_match", "ip", string)) {
                 return true;
             }
         } else {
             if (isRegistered(string)) {
                 ScriptUser user = getUser(string);
-                return this.dataManager.exist("user_ban", "user_id", user.getID());
+                return this.getDataManager().exist("user_ban", "user_id", user.getID());
             }
         }
         return false;
     }
 
     public boolean isRegistered(String username) {
-        return this.dataManager.exist("user", "username", username);
+        return this.getDataManager().exist("user", "username", username);
     }
-    
+
     private int insertIP(ScriptUser user, String content, String action) throws SQLException {
-        int lastIPID = this.dataManager.getLastID("content_id", "ip",
-                                                  "`content_type` = '" + content + "' AND `action` = '" + action + "'");
+        int lastIPID = this.getDataManager().getLastID("content_id", "ip",
+                "`content_type` = '" + content + "' AND `action` = '" + action + "'");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("user_id", user.getID());
         data.put("content_type", content);
@@ -1034,13 +1030,13 @@ public class XenForo extends Script {
         data.put("action", action);
         data.put("ip", CraftCommons.ip2long(user.getLastIP()));
         data.put("log_date", new Date().getTime() / 1000);
-        this.dataManager.insertFields(data, "ip");
-        return this.dataManager.getLastID("ip_id", "ip");
+        this.getDataManager().insertFields(data, "ip");
+        return this.getDataManager().getLastID("ip_id", "ip");
     }
 
     private void addSearch(ScriptUser user, String type, int node, int discussionID, String title, String message)
-				 throws SQLException {
-        int contentID = this.dataManager.getLastID("content_id", "ip", "`content_type` = '" + type + "'");
+            throws SQLException {
+        int contentID = this.getDataManager().getLastID("content_id", "ip", "`content_type` = '" + type + "'");
         if (contentID == 0) {
             contentID = 1;
         }
@@ -1048,20 +1044,20 @@ public class XenForo extends Script {
         if (type.equalsIgnoreCase("profile_post")) {
             data.put("message", message);
             data.put("metadata", "_md_user_" + user.getID() + " _md_content_" + type +
-                                 " _md_profile_user_" + user.getID());
+                    " _md_profile_user_" + user.getID());
         } else {
             if (type.equalsIgnoreCase("post")) {
                 data.put("message", message);
             }
             data.put("title", title);
             data.put("metadata", "_md_user_" + user.getID() + " _md_content_" + type + " _md_node_" + node +
-                                 " _md_thread_" + discussionID);
+                    " _md_thread_" + discussionID);
         }
         data.put("content_type", type);
         data.put("content_id", contentID);
         data.put("user_id", user.getID());
         data.put("item_date", new Date().getTime() / 1000);
         data.put("discussion_id", discussionID);
-        this.dataManager.insertFields(data, "search_index");
+        this.getDataManager().insertFields(data, "search_index");
     }
 }

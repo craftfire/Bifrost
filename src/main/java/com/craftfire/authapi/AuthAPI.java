@@ -29,6 +29,7 @@ import com.craftfire.commons.managers.LoggingManager;
 
 //TODO: Javadoc, analytics and logging.
 public class AuthAPI {
+    private static AuthAPI instance;
     private final ScriptAPI scriptAPI;
     private final Script script;
     private final DataManager dataManager;
@@ -41,7 +42,8 @@ public class AuthAPI {
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
         this.cacheManager = new CacheManager();
-        this.cache = new Cache(this.script, this.cacheManager);
+        this.cache = new Cache();
+        instance = this;
         this.loggingManager.debug("Initialized AuthAPI");
     }
 
@@ -51,8 +53,13 @@ public class AuthAPI {
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
         this.cacheManager = new CacheManager();
-        this.cache = new Cache(this.script, this.cacheManager);
+        this.cache = new Cache();
+        instance = this;
         this.loggingManager.debug("Initialized AuthAPI");
+    }
+
+    public static AuthAPI getInstance() {
+        return instance;
     }
 
     public Script getScript() {

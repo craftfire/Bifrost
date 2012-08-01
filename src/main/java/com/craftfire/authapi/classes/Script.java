@@ -35,8 +35,8 @@ public class Script implements ScriptInterface {
 	private final String version;
 	private final Scripts script;
 
-    protected Script(AuthAPI authAPI, Scripts script, String version) {
-        this.authAPI = authAPI;
+    protected Script(Scripts script, String version) {
+        this.authAPI = AuthAPI.getInstance();
 		this.version = version;
 		this.script = script;
 	}
