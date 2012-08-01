@@ -169,6 +169,10 @@ public class PrivateMessage implements PrivateMessageInterface {
         this.script.createPrivateMessage(this);
     }
 
+    public static boolean hasCache(int id) {
+        return Cache.contains(CacheGroup.PRIVATEMESSAGE, id);
+    }
+
     public static void addCache(PrivateMessage privateMessage) {
         Cache.put(CacheGroup.PRIVATEMESSAGE, privateMessage.getID(), privateMessage);
     }

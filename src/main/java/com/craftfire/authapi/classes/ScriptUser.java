@@ -352,6 +352,10 @@ public class ScriptUser implements ScriptUserInterface {
         this.script.createUser(this);
     }
 
+    public static boolean hasCache(int id) {
+        return Cache.contains(CacheGroup.SCRIPTUSER, id);
+    }
+
     public static void addCache(ScriptUser scriptUser) {
         Cache.put(CacheGroup.SCRIPTUSER, scriptUser.getID(), scriptUser);
     }

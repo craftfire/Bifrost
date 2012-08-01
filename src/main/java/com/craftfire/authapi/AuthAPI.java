@@ -32,14 +32,16 @@ public class AuthAPI {
     private final ScriptAPI scriptAPI;
     private final Script script;
     private final DataManager dataManager;
-    private final Cache cacheManager;
+    private final CacheManager cacheManager;
+    private final Cache cache;
 	private final LoggingManager loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
 
     public AuthAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.scriptAPI = new ScriptAPI(this, script, version);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
-        this.cacheManager = new Cache(this.script, new CacheManager());
+        this.cacheManager = new CacheManager();
+        this.cache = new Cache(this.script, this.cacheManager);
         this.loggingManager.debug("Initialized AuthAPI");
     }
 
@@ -48,7 +50,8 @@ public class AuthAPI {
         this.scriptAPI = new ScriptAPI(this, script, version);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
-        this.cacheManager = new Cache(this.script, new CacheManager());
+        this.cacheManager = new CacheManager();
+        this.cache = new Cache(this.script, this.cacheManager);
         this.loggingManager.debug("Initialized AuthAPI");
     }
 
@@ -64,8 +67,12 @@ public class AuthAPI {
 		return this.loggingManager;
 	}
 
-    public Cache getCacheManager() {
+    public CacheManager getCacheManager() {
         return this.cacheManager;
+    }
+
+    public Cache getCache() {
+        return this.cache;
     }
 
     public ScriptUser getUser(String username) throws UnsupportedFunction {

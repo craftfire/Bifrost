@@ -121,6 +121,10 @@ public class Post implements PostInterface {
         this.script.createPost(this);
     }
 
+    public static boolean hasCache(int id) {
+        return Cache.contains(CacheGroup.POST, id);
+    }
+
     public static void addCache(Post post) {
         Cache.put(CacheGroup.POST, post.getID(), post);
     }

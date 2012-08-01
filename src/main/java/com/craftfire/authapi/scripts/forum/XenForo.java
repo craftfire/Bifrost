@@ -127,7 +127,7 @@ public class XenForo extends Script {
     }
 
     public ScriptUser getUser(int userid) {
-        if (ScriptUser.getCache(userid) != null) {
+        if (ScriptUser.hasCache(userid)) {
             return ScriptUser.getCache(userid);
         } else if (isRegistered(getUsername(userid))) {
             ScriptUser user = new ScriptUser(this, userid, null, null);

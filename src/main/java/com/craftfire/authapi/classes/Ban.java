@@ -165,6 +165,10 @@ public class Ban implements BanInterface {
         this.script.addBan(this);
     }
 
+    public static boolean hasCache(int id) {
+        return Cache.contains(CacheGroup.BAN, id);
+    }
+
     public static void addCache(Ban ban) {
         Cache.put(CacheGroup.BAN, ban.getID(), ban);
     }

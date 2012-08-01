@@ -102,6 +102,10 @@ public class Group implements GroupInterface {
         this.script.createGroup(this);
     }
 
+    public static boolean hasCache(int id) {
+        return Cache.contains(CacheGroup.GROUP, id);
+    }
+
     public static void addCache(Group group) {
         Cache.put(CacheGroup.GROUP, group.getID(), group);
     }

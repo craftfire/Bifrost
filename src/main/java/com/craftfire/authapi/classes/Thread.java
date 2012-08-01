@@ -179,6 +179,10 @@ public class Thread implements ThreadInterface {
         this.script.createThread(this);
     }
 
+    public static boolean hasCache(int id) {
+        return Cache.contains(CacheGroup.THREAD, id);
+    }
+
     public static void addCache(Thread thread) {
         Cache.put(CacheGroup.THREAD, thread.getID(), thread);
     }

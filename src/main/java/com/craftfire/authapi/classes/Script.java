@@ -52,6 +52,10 @@ public class Script implements ScriptInterface {
     public CacheManager getCacheManager() {
         return this.authAPI.getCacheManager();
     }
+
+    public Cache getCache() {
+        return this.authAPI.getCache();
+    }
     
     public DataManager getDataManager() {
         return this.authAPI.getDataManager();
