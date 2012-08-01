@@ -19,6 +19,13 @@
  */
 package com.craftfire.authapi;
 
+import com.craftfire.authapi.classes.*;
+import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+import com.craftfire.authapi.exceptions.UnsupportedVersion;
+import com.craftfire.commons.enums.DataType;
+import com.craftfire.commons.managers.DataManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,18 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
-import com.craftfire.authapi.classes.Ban;
-import com.craftfire.authapi.classes.Group;
-import com.craftfire.authapi.classes.Post;
-import com.craftfire.authapi.classes.PrivateMessage;
-import com.craftfire.authapi.classes.Script;
-import com.craftfire.authapi.classes.ScriptUser;
-import com.craftfire.authapi.classes.Thread;
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
-import com.craftfire.authapi.exceptions.UnsupportedVersion;
-import com.craftfire.commons.enums.DataType;
-import com.craftfire.commons.managers.DataManager;
 
 public class AuthDebug {
     static AuthAPI authAPI;
@@ -237,7 +232,7 @@ public class AuthDebug {
 			printResult("getUsername", user.getUsername());
 			printResult("getUserTitle", user.getUserTitle());
 			printResult("getUserID", "" + user.getID());
-			printResult("getUserGroups", "" + user.getUserGroups());
+			printResult("getUserGroups", "" + user.getGroups());
 			printResult("isActivated", "" + user.isActivated());
 			printResult("isBanned", "" + user.isBanned());
 			printResult("isRegistered", "" + user.isRegistered());
@@ -300,7 +295,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - GROUP CLASS");
-			Group group = user.getUserGroups().get(0);
+			Group group = user.getGroups().get(0);
 			printResult("getName", group.getName());
 			printResult("getID", "" + group.getID());
 			printResult("getDescription", group.getDescription());
