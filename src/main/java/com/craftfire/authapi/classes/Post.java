@@ -19,10 +19,11 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.enums.CacheGroup;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 import java.sql.SQLException;
 import java.util.Date;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
 public class Post implements PostInterface {
     private final Script script;
@@ -118,5 +119,21 @@ public class Post implements PostInterface {
     @Override
     public void createPost() throws SQLException, UnsupportedFunction {
         this.script.createPost(this);
+    }
+
+    public static void addCache(Post post) {
+        Cache.put(CacheGroup.POST, post.getID(), post);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Post getCache(int id) throws UnsupportedFunction {
+        Post temp;
+        if (Cache.contains(CacheGroup.POST, id)) {
+            temp = (Post) Cache.get(CacheGroup.POST, id);
+        } else {
+            temp = Cache.getScript().getPost(id);
+            Cache.put(CacheGroup.POST, id, temp);
+        }
+        return temp;
     }
 }

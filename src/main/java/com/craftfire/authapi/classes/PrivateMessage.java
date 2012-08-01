@@ -19,12 +19,13 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.enums.CacheGroup;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
 public class PrivateMessage implements PrivateMessageInterface {
     private final Script script;
@@ -166,5 +167,21 @@ public class PrivateMessage implements PrivateMessageInterface {
     @Override
     public void createPrivateMessage() throws SQLException, UnsupportedFunction {
         this.script.createPrivateMessage(this);
+    }
+
+    public static void addCache(PrivateMessage privateMessage) {
+        Cache.put(CacheGroup.PRIVATEMESSAGE, privateMessage.getID(), privateMessage);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static PrivateMessage getCache(int id) throws UnsupportedFunction {
+        PrivateMessage temp;
+        if (Cache.contains(CacheGroup.PRIVATEMESSAGE, id)) {
+            temp = (PrivateMessage) Cache.get(CacheGroup.PRIVATEMESSAGE, id);
+        } else {
+            temp = Cache.getScript().getPM(id);
+            Cache.put(CacheGroup.PRIVATEMESSAGE, id, temp);
+        }
+        return temp;
     }
 }

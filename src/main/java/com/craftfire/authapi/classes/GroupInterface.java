@@ -19,10 +19,10 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 import java.sql.SQLException;
 import java.util.List;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
 public abstract interface GroupInterface {
     public int getID();

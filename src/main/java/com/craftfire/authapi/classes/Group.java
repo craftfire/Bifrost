@@ -19,10 +19,11 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.enums.CacheGroup;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 import java.sql.SQLException;
 import java.util.List;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
 public class Group implements GroupInterface {
     private final Script script;
@@ -99,5 +100,21 @@ public class Group implements GroupInterface {
     @Override
     public void createGroup() throws SQLException, UnsupportedFunction {
         this.script.createGroup(this);
+    }
+
+    public static void addCache(Group group) {
+        Cache.put(CacheGroup.GROUP, group.getID(), group);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Group getCache(int id) throws UnsupportedFunction {
+        Group temp;
+        if (Cache.contains(CacheGroup.GROUP, id)) {
+            temp = (Group) Cache.get(CacheGroup.GROUP, id);
+        } else {
+            temp = Cache.getScript().getGroup(id);
+            Cache.put(CacheGroup.GROUP, id, temp);
+        }
+        return temp;
     }
 }

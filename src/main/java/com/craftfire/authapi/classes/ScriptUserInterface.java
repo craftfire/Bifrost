@@ -19,12 +19,12 @@
  */
 package com.craftfire.authapi.classes;
 
-import java.awt.Image;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
 public abstract interface ScriptUserInterface {
     public int getID();
@@ -63,7 +63,7 @@ public abstract interface ScriptUserInterface {
 
     public void setLastName(String lastname);
 
-    public List<Group> getUserGroups() throws UnsupportedFunction;
+    public List<Group> getGroups() throws UnsupportedFunction;
 
     public void setGroups(List<Group> groups);
 

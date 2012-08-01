@@ -17,6 +17,7 @@
 package com.craftfire.authapi;
 
 import com.craftfire.authapi.ScriptAPI.Scripts;
+import com.craftfire.authapi.classes.Cache;
 import com.craftfire.authapi.classes.Script;
 import com.craftfire.authapi.classes.ScriptUser;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
@@ -31,14 +32,14 @@ public class AuthAPI {
     private final ScriptAPI scriptAPI;
     private final Script script;
     private final DataManager dataManager;
-    private final CacheManager cacheManager;
+    private final Cache cacheManager;
 	private final LoggingManager loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
 
     public AuthAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.scriptAPI = new ScriptAPI(this, script, version);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
-        this.cacheManager = new CacheManager();
+        this.cacheManager = new Cache(this.script, new CacheManager());
         this.loggingManager.debug("Initialized AuthAPI");
     }
 
@@ -47,7 +48,7 @@ public class AuthAPI {
         this.scriptAPI = new ScriptAPI(this, script, version);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
-        this.cacheManager = new CacheManager();
+        this.cacheManager = new Cache(this.script, new CacheManager());
         this.loggingManager.debug("Initialized AuthAPI");
     }
 
@@ -63,7 +64,7 @@ public class AuthAPI {
 		return this.loggingManager;
 	}
 
-    public CacheManager getCacheManager() {
+    public Cache getCacheManager() {
         return this.cacheManager;
     }
 

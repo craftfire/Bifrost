@@ -19,11 +19,12 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.enums.CacheGroup;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
 public class Thread implements ThreadInterface {
     private final Script script;
@@ -176,5 +177,21 @@ public class Thread implements ThreadInterface {
     @Override
     public void createThread() throws SQLException, UnsupportedFunction {
         this.script.createThread(this);
+    }
+
+    public static void addCache(Thread thread) {
+        Cache.put(CacheGroup.THREAD, thread.getID(), thread);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Thread getCache(int id) throws UnsupportedFunction {
+        Thread temp;
+        if (Cache.contains(CacheGroup.THREAD, id)) {
+            temp = (Thread) Cache.get(CacheGroup.THREAD, id);
+        } else {
+            temp = Cache.getScript().getThread(id);
+            Cache.put(CacheGroup.THREAD, id, temp);
+        }
+        return temp;
     }
 }

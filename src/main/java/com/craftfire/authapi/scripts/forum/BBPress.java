@@ -46,7 +46,6 @@ public class BBPress extends Script {
         return this.versionRanges;
     }
 
-
     public String getLatestVersion() {
         /*TODO*/
         return this.versionRanges[0];

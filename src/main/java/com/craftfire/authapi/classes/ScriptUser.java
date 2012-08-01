@@ -19,6 +19,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
 
@@ -143,15 +144,15 @@ public class ScriptUser implements ScriptUserInterface {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Group> getUserGroups() throws UnsupportedFunction {
+    public List<Group> getGroups() throws UnsupportedFunction {
         List<Group> temp;
         if (this.groups.size() > 0) {
             return this.groups;
-        } else if (this.script.getAuthAPI().getCacheManager().contains("userGroups", getID())) {
-            temp = (List<Group>) this.script.getAuthAPI().getCacheManager().get("userGroups", getID());
+        } else if (Cache.contains(CacheGroup.USERGROUP, getID())) {
+            temp = (List<Group>) Cache.get(CacheGroup.USERGROUP, getID());
         } else {
             temp = this.script.getUserGroups(this.username);
-            this.script.getAuthAPI().getCacheManager().put("userGroups", userid, temp);
+            Cache.put(CacheGroup.USERGROUP, userid, temp);
         }
         return temp;
     }
@@ -349,5 +350,21 @@ public class ScriptUser implements ScriptUserInterface {
     @Override
     public void createUser() throws SQLException, UnsupportedFunction {
         this.script.createUser(this);
+    }
+
+    public static void addCache(ScriptUser scriptUser) {
+        Cache.put(CacheGroup.SCRIPTUSER, scriptUser.getID(), scriptUser);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ScriptUser getCache(int id) throws UnsupportedFunction {
+        ScriptUser temp;
+        if (Cache.contains(CacheGroup.SCRIPTUSER, id)) {
+            temp = (ScriptUser) Cache.get(CacheGroup.SCRIPTUSER, id);
+        } else {
+            temp = Cache.getScript().getUser(id);
+            Cache.put(CacheGroup.SCRIPTUSER, id, temp);
+        }
+        return temp;
     }
 }

@@ -23,6 +23,9 @@ import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.ScriptAPI.Scripts;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.managers.CacheManager;
+import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.managers.LoggingManager;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -40,6 +43,18 @@ public class Script implements ScriptInterface {
     
     public AuthAPI getAuthAPI() {
         return this.authAPI;
+    }
+    
+    public LoggingManager getLoggingManager() {
+        return this.authAPI.getLoggingManager();
+    }
+
+    public CacheManager getCacheManager() {
+        return this.authAPI.getCacheManager();
+    }
+    
+    public DataManager getDataManager() {
+        return this.authAPI.getDataManager();
     }
     
     public Scripts getScript() {
