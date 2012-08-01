@@ -46,8 +46,7 @@ public class ScriptAPI {
      * @param version The version that the user has set in his config.
      * @throws UnsupportedVersion if the input version is not found in the list of supported versions.
      */
-    public ScriptAPI(AuthAPI authAPI, Scripts script, String version) throws UnsupportedVersion {
-        this.authAPI = authAPI;
+    public ScriptAPI(Scripts script, String version) throws UnsupportedVersion {
         this.scriptName = script;
         this.version = version;
         setScript();
@@ -62,8 +61,7 @@ public class ScriptAPI {
      * @throws UnsupportedScript if the input string is not found in the list of supported scripts.
      * @throws UnsupportedVersion if the input version is not found in the list of supported versions.
      */
-    public ScriptAPI(AuthAPI authAPI, String script, String version) throws UnsupportedScript, UnsupportedVersion {
-        this.authAPI = authAPI;
+    public ScriptAPI(String script, String version) throws UnsupportedScript, UnsupportedVersion {
         this.scriptName = stringToScript(script);
         this.version = version;
         setScript();
@@ -85,9 +83,9 @@ public class ScriptAPI {
     private void setScript() {
         switch (this.scriptName) {
             case SMF:
-                this.script = new SMF(this.authAPI, this.scriptName, this.version);
+                this.script = new SMF(this.scriptName, this.version);
             case XF:
-                this.script = new XenForo(this.authAPI, this.scriptName, this.version);
+                this.script = new XenForo(this.scriptName, this.version);
         }
     }
 

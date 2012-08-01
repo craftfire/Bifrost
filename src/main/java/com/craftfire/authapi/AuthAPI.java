@@ -38,7 +38,7 @@ public class AuthAPI {
 	private final LoggingManager loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
 
     public AuthAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        this.scriptAPI = new ScriptAPI(this, script, version);
+        this.scriptAPI = new ScriptAPI(script, version);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
         this.cacheManager = new CacheManager();
@@ -49,7 +49,7 @@ public class AuthAPI {
 
     public AuthAPI(String script, String version, DataManager dataManager) throws UnsupportedScript,
                                                                                   UnsupportedVersion {
-        this.scriptAPI = new ScriptAPI(this, script, version);
+        this.scriptAPI = new ScriptAPI(script, version);
         this.script = this.scriptAPI.getScript();
         this.dataManager = dataManager;
         this.cacheManager = new CacheManager();
