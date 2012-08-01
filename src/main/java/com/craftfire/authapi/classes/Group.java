@@ -107,13 +107,10 @@ public class Group implements GroupInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static Group getCache(int id) throws UnsupportedFunction {
-        Group temp;
+    public static Group getCache(int id) {
+        Group temp = null;
         if (Cache.contains(CacheGroup.GROUP, id)) {
             temp = (Group) Cache.get(CacheGroup.GROUP, id);
-        } else {
-            temp = Cache.getScript().getGroup(id);
-            Cache.put(CacheGroup.GROUP, id, temp);
         }
         return temp;
     }

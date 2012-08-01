@@ -174,13 +174,10 @@ public class PrivateMessage implements PrivateMessageInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static PrivateMessage getCache(int id) throws UnsupportedFunction {
-        PrivateMessage temp;
+    public static PrivateMessage getCache(int id) {
+        PrivateMessage temp = null;
         if (Cache.contains(CacheGroup.PRIVATEMESSAGE, id)) {
             temp = (PrivateMessage) Cache.get(CacheGroup.PRIVATEMESSAGE, id);
-        } else {
-            temp = Cache.getScript().getPM(id);
-            Cache.put(CacheGroup.PRIVATEMESSAGE, id, temp);
         }
         return temp;
     }

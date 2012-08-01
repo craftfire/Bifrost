@@ -357,13 +357,10 @@ public class ScriptUser implements ScriptUserInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static ScriptUser getCache(int id) throws UnsupportedFunction {
-        ScriptUser temp;
+    public static ScriptUser getCache(int id) {
+        ScriptUser temp = null;
         if (Cache.contains(CacheGroup.SCRIPTUSER, id)) {
             temp = (ScriptUser) Cache.get(CacheGroup.SCRIPTUSER, id);
-        } else {
-            temp = Cache.getScript().getUser(id);
-            Cache.put(CacheGroup.SCRIPTUSER, id, temp);
         }
         return temp;
     }

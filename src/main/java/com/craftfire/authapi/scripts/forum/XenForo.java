@@ -127,7 +127,9 @@ public class XenForo extends Script {
     }
 
     public ScriptUser getUser(int userid) {
-        if (isRegistered(getUsername(userid))) {
+        if (ScriptUser.getCache(userid) != null) {
+            return ScriptUser.getCache(userid);
+        } else if (isRegistered(getUsername(userid))) {
             ScriptUser user = new ScriptUser(this, userid, null, null);
             HashMap<String, Object> array = this.dataManager.getArray(
                     "SELECT * FROM `" + this.dataManager.getPrefix() + "user` WHERE `user_id` = '" +

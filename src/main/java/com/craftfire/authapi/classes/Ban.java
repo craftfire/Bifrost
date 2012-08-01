@@ -19,10 +19,11 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.enums.CacheGroup;
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 import java.sql.SQLException;
 import java.util.Date;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
 public class Ban implements BanInterface {
     private final Script script;
@@ -162,5 +163,18 @@ public class Ban implements BanInterface {
     @Override
     public void addBan() throws SQLException, UnsupportedFunction {
         this.script.addBan(this);
+    }
+
+    public static void addCache(Ban ban) {
+        Cache.put(CacheGroup.BAN, ban.getID(), ban);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Ban getCache(int id) {
+        Ban temp = null;
+        if (Cache.contains(CacheGroup.BAN, id)) {
+            temp = (Ban) Cache.get(CacheGroup.BAN, id);
+        }
+        return temp;
     }
 }

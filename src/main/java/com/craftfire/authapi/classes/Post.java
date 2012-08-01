@@ -126,13 +126,10 @@ public class Post implements PostInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static Post getCache(int id) throws UnsupportedFunction {
-        Post temp;
+    public static Post getCache(int id) {
+        Post temp = null;
         if (Cache.contains(CacheGroup.POST, id)) {
             temp = (Post) Cache.get(CacheGroup.POST, id);
-        } else {
-            temp = Cache.getScript().getPost(id);
-            Cache.put(CacheGroup.POST, id, temp);
         }
         return temp;
     }

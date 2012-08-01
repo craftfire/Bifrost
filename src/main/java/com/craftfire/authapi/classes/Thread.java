@@ -184,13 +184,10 @@ public class Thread implements ThreadInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static Thread getCache(int id) throws UnsupportedFunction {
-        Thread temp;
+    public static Thread getCache(int id) {
+        Thread temp = null;
         if (Cache.contains(CacheGroup.THREAD, id)) {
             temp = (Thread) Cache.get(CacheGroup.THREAD, id);
-        } else {
-            temp = Cache.getScript().getThread(id);
-            Cache.put(CacheGroup.THREAD, id, temp);
         }
         return temp;
     }
