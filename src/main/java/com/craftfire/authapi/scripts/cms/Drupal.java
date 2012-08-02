@@ -111,6 +111,11 @@ public class Drupal extends Script {
         return null;
     }
 
+    public int getGroupID(String group) {
+        /*TODO*/
+        return 0;
+    }
+
     public Group getGroup(int groupid) {
         /*TODO*/
         return null;

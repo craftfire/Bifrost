@@ -153,7 +153,12 @@ public class Script implements ScriptInterface {
 		throw new UnsupportedFunction();
 	}
 
-	@Override
+    @Override
+    public int getGroupID(String group) throws UnsupportedFunction {
+        throw new UnsupportedFunction();
+    }
+
+    @Override
 	public Group getGroup(int groupid) throws UnsupportedFunction {
 		throw new UnsupportedFunction();
 	}

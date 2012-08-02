@@ -19,10 +19,10 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.exceptions.UnsupportedFunction;
+
 import java.sql.SQLException;
 import java.util.List;
-
-import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
 /**
  * This interface contains functions relevant to functions for each script.
@@ -185,6 +185,15 @@ public abstract interface ScriptInterface {
 	 * @throws UnsupportedFunction if the function is not supported by the script.
 	 */
 	public List<Group> getGroups(int limit) throws SQLException, UnsupportedFunction;
+
+    /**
+     * Returns a Integer which holds the ID of the group.
+     *
+     * @param group name of the group
+     * @return group ID
+     * @throws UnsupportedFunction if the function is not supported by the script.
+     */
+    public int getGroupID(String group) throws UnsupportedFunction;
 
 	/**
 	 * Returns a Group object of the given group id, if nothing is found it returns null.

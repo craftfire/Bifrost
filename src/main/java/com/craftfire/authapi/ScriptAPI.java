@@ -21,6 +21,7 @@ package com.craftfire.authapi;
 
 import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
@@ -142,7 +143,7 @@ public class ScriptAPI implements ScriptInterface {
     @Override
     public ScriptUser getUser(String username) throws UnsupportedFunction {
         int id = this.script.getUserID(username);
-        return getUser(id);
+        return this.getUser(id);
     }
 
     @Override
@@ -157,56 +158,88 @@ public class ScriptAPI implements ScriptInterface {
 
     @Override
     public ScriptUser getLastRegUser() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.USER_LAST_REG)) {
+            return (ScriptUser) Cache.get(CacheGroup.USER_LAST_REG);
+        }
+        ScriptUser user = this.script.getLastRegUser();
+        Cache.put(CacheGroup.USER_LAST_REG, user);
+        return user;
     }
 
     @Override
     public void updateUser(ScriptUser user) throws SQLException, UnsupportedFunction {
-        ScriptUser.addCache(user);
         this.script.updateUser(user);
+        ScriptUser.addCache(user);
     }
 
     @Override
     public void createUser(ScriptUser user) throws SQLException, UnsupportedFunction {
-        ScriptUser.addCache(user);
         this.script.createUser(user);
+        ScriptUser.addCache(user);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Group> getGroups(int limit) throws SQLException, UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.GROUP_LIST)) {
+            return (List<Group>) Cache.get(CacheGroup.GROUP_LIST);
+        }
+        List<Group> groups = this.script.getGroups(limit);
+        Cache.put(CacheGroup.GROUP_LIST, groups);
+        return groups;
     }
 
     @Override
-    public Group getGroup(int groupid) throws UnsupportedFunction {
-        if (Group.hasCache(groupid)) {
-            return Group.getCache(groupid);
+    public int getGroupID(String group) throws UnsupportedFunction {
+        if (Cache.contains(CacheGroup.GROUP_ID, group)) {
+            return (Integer) Cache.get(CacheGroup.GROUP_ID, group);
         }
-        Group group = this.script.getGroup(groupid);
+        int groupID = this.getGroupID(group);
+        Cache.put(CacheGroup.GROUP_ID, groupID, group);
+        return groupID;
+    }
+
+    @Override
+    public Group getGroup(int groupID) throws UnsupportedFunction {
+        if (Group.hasCache(groupID)) {
+            return Group.getCache(groupID);
+        }
+        Group group = this.script.getGroup(groupID);
         Group.addCache(group);
         return group;
     }
 
     @Override
-    public Group getGroup(String group) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+    public Group getGroup(String groupString) throws UnsupportedFunction {
+        if (Group.hasCache(groupString)) {
+            return Group.getCache(groupString);
+        }
+        Group group = this.script.getGroup(groupString);
+        Group.addCache(group);
+        return group;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Group> getUserGroups(String username) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.USER_GROUP, username)) {
+            return (List<Group>) Cache.get(CacheGroup.USER_GROUP, username);
+        }
+        List<Group> groups = this.script.getUserGroups(username);
+        Cache.put(CacheGroup.USER_GROUP, username, groups);
+        return groups;
     }
 
     @Override
     public void updateGroup(Group group) throws SQLException, UnsupportedFunction {
-        Group.addCache(group);
         this.script.updateGroup(group);
+        Group.addCache(group);
     }
 
     @Override
     public void createGroup(Group group) throws SQLException, UnsupportedFunction {
-        Group.addCache(group);
         this.script.createGroup(group);
+        Group.addCache(group);
     }
 
     @Override
@@ -220,208 +253,353 @@ public class ScriptAPI implements ScriptInterface {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.PM_SENT, username)) {
+            return (List<PrivateMessage>) Cache.get(CacheGroup.PM_RECEIVED, username);
+        }
+        List<PrivateMessage> pms = this.script.getPMsSent(username, limit);
+        Cache.put(CacheGroup.PM_SENT, username, pms);
+        return pms;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.PM_RECEIVED, username)) {
+            return (List<PrivateMessage>) Cache.get(CacheGroup.PM_RECEIVED, username);
+        }
+        List<PrivateMessage> pms = this.script.getPMsSent(username, limit);
+        Cache.put(CacheGroup.PM_RECEIVED, username, pms);
+        return pms;
     }
 
     @Override
     public int getPMSentCount(String username) throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.PM_SENT_COUNT, username)) {
+            return (Integer) Cache.get(CacheGroup.PM_SENT_COUNT, username);
+        }
+        int count = this.script.getPMSentCount(username);
+        Cache.put(CacheGroup.PM_SENT_COUNT, username, count);
+        return count;
     }
 
     @Override
     public int getPMReceivedCount(String username) throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.PM_RECEIVED_COUNT, username)) {
+            return (Integer) Cache.get(CacheGroup.PM_RECEIVED_COUNT, username);
+        }
+        int count = this.script.getPMReceivedCount(username);
+        Cache.put(CacheGroup.PM_RECEIVED_COUNT, username, count);
+        return count;
     }
 
     @Override
     public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedFunction {
-        //TODO: Finish
+        this.script.updatePrivateMessage(privateMessage);
+        PrivateMessage.addCache(privateMessage);
     }
 
     @Override
     public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedFunction {
-        //TODO: Finish
+        this.script.createPrivateMessage(privateMessage);
+        PrivateMessage.addCache(privateMessage);
     }
 
     @Override
-    public Post getPost(int postid) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+    public Post getPost(int postID) throws UnsupportedFunction {
+        if (Post.hasCache(postID)) {
+            return Post.getCache(postID);
+        }
+        Post post = this.script.getPost(postID);
+        Post.addCache(post);
+        return post;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Post> getPosts(int limit) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.POST_LIST)) {
+            return (List<Post>) Cache.get(CacheGroup.POST_LIST);
+        }
+        List<Post> posts = this.script.getPosts(limit);
+        Cache.put(CacheGroup.POST_LIST, posts);
+        return posts;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Post> getPostsFromThread(int threadid, int limit) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.THREAD_POSTS, threadid)) {
+            return (List<Post>) Cache.get(CacheGroup.THREAD_POSTS, threadid);
+        }
+        List<Post> posts = this.script.getPostsFromThread(threadid, limit);
+        Cache.put(CacheGroup.THREAD_POSTS, posts);
+        return posts;
     }
 
     @Override
     public void updatePost(Post post) throws SQLException, UnsupportedFunction {
-        //TODO: Finish
+        this.script.updatePost(post);
+        Post.addCache(post);
     }
 
     @Override
     public void createPost(Post post) throws SQLException, UnsupportedFunction {
-        //TODO: Finish
+        this.script.createPost(post);
+        Post.addCache(post);
     }
 
     @Override
     public int getPostCount(String username) throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.POST_COUNT, username)) {
+            return (Integer) Cache.get(CacheGroup.POST_COUNT, username);
+        }
+        int count = this.script.getPostCount(username);
+        Cache.put(CacheGroup.POST_COUNT, username, count);
+        return count;
     }
 
     @Override
     public int getTotalPostCount() throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.POST_COUNT_TOTAL)) {
+            return (Integer) Cache.get(CacheGroup.POST_COUNT_TOTAL);
+        }
+        int count = this.script.getTotalPostCount();
+        Cache.put(CacheGroup.POST_COUNT_TOTAL, count);
+        return count;
     }
 
     @Override
     public Post getLastPost() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.POST_LAST)) {
+            return (Post) Cache.get(CacheGroup.POST_LAST);
+        }
+        Post post = this.script.getLastPost();
+        Cache.put(CacheGroup.POST_LAST, post);
+        return post;
     }
 
     @Override
     public Post getLastUserPost(String username) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.POST_LAST_USER, username)) {
+            return (Post) Cache.get(CacheGroup.POST_LAST_USER, username);
+        }
+        Post post = this.script.getLastUserPost(username);
+        Cache.put(CacheGroup.POST_LAST_USER, username, post);
+        return post;
     }
 
     @Override
     public int getTotalThreadCount() throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.THREAD_COUNT_TOTAL)) {
+            return (Integer) Cache.get(CacheGroup.THREAD_COUNT_TOTAL);
+        }
+        int count = this.script.getTotalThreadCount();
+        Cache.put(CacheGroup.THREAD_COUNT_TOTAL, count);
+        return count;
     }
 
     @Override
     public int getThreadCount(String username) throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.THREAD_COUNT, username)) {
+            return (Integer) Cache.get(CacheGroup.THREAD_COUNT, username);
+        }
+        int count = this.script.getThreadCount(username);
+        Cache.put(CacheGroup.THREAD_COUNT, username, count);
+        return count;
     }
 
     @Override
-    public com.craftfire.authapi.classes.Thread getLastThread() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+    public Thread getLastThread() throws UnsupportedFunction {
+        if (Cache.contains(CacheGroup.THREAD_LAST)) {
+            return (Thread) Cache.get(CacheGroup.THREAD_LAST);
+        }
+        Thread thread = this.script.getLastThread();
+        Cache.put(CacheGroup.THREAD_LAST, thread);
+        return thread;
     }
 
     @Override
-    public com.craftfire.authapi.classes.Thread getLastUserThread(String username) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+    public Thread getLastUserThread(String username) throws UnsupportedFunction {
+        if (Cache.contains(CacheGroup.THREAD_LAST_USER, username)) {
+            return (Thread) Cache.get(CacheGroup.THREAD_LAST_USER, username);
+        }
+        Thread thread = this.script.getLastUserThread(username);
+        Cache.put(CacheGroup.THREAD_LAST_USER, username, thread);
+        return thread;
     }
 
     @Override
-    public com.craftfire.authapi.classes.Thread getThread(int threadid) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+    public Thread getThread(int threadID) throws UnsupportedFunction {
+        if (Thread.hasCache(threadID)) {
+            return Thread.getCache(threadID);
+        }
+        Thread thread = this.script.getThread(threadID);
+        Thread.addCache(thread);
+        return thread;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Thread> getThreads(int limit) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.THREAD_LIST)) {
+            return (List<Thread>) Cache.get(CacheGroup.THREAD_LIST);
+        }
+        List<Thread> threads = this.script.getThreads(limit);
+        Cache.put(CacheGroup.THREAD_LIST, threads);
+        return threads;
     }
 
     @Override
     public void updateThread(Thread thread) throws SQLException, UnsupportedFunction {
-        //TODO: Finish
+        this.script.updateThread(thread);
+        Thread.addCache(thread);
     }
 
     @Override
     public void createThread(Thread thread) throws SQLException, UnsupportedFunction {
-        //TODO: Finish
+        this.script.createThread(thread);
+        Thread.addCache(thread);
     }
 
     @Override
     public int getUserCount() throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.USER_COUNT)) {
+            return (Integer) Cache.get(CacheGroup.USER_COUNT);
+        }
+        int count = this.script.getUserCount();
+        Cache.put(CacheGroup.USER_COUNT, count);
+        return count;
     }
 
     @Override
     public int getGroupCount() throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.GROUP_COUNT)) {
+            return (Integer) Cache.get(CacheGroup.GROUP_COUNT);
+        }
+        int count = this.script.getGroupCount();
+        Cache.put(CacheGroup.GROUP_COUNT, count);
+        return count;
     }
 
     @Override
     public String getHomeURL() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.URL_HOME)) {
+            return (String) Cache.get(CacheGroup.URL_HOME);
+        }
+        String url = this.script.getHomeURL();
+        Cache.put(CacheGroup.URL_HOME, url);
+        return url;
     }
 
     @Override
     public String getForumURL() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.URL_FORUM)) {
+            return (String) Cache.get(CacheGroup.URL_FORUM);
+        }
+        String url = this.script.getForumURL();
+        Cache.put(CacheGroup.URL_FORUM, url);
+        return url;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<String> getIPs(String username) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.USER_IP, username)) {
+            return (List<String>) Cache.get(CacheGroup.USER_IP, username);
+        }
+        List<String> ips = this.script.getIPs(username);
+        Cache.put(CacheGroup.USER_IP, ips, username);
+        return ips;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Ban> getBans(int limit) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.BAN_LIST)) {
+            return (List<Ban>) Cache.get(CacheGroup.BAN_LIST);
+        }
+        List<Ban> bans = this.script.getBans(limit);
+        Cache.put(CacheGroup.BAN_LIST, bans);
+        return bans;
     }
 
     @Override
     public void updateBan(Ban ban) throws SQLException, UnsupportedFunction {
-        //TODO: Finish
+        this.script.updateBan(ban);
+        Ban.addCache(ban);
     }
 
     @Override
     public void addBan(Ban ban) throws SQLException, UnsupportedFunction {
-        //TODO: Finish
+        this.script.addBan(ban);
+        Ban.addCache(ban);
     }
 
     @Override
     public int getBanCount() throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.BAN_COUNT)) {
+            return (Integer) Cache.get(CacheGroup.BAN_COUNT);
+        }
+        int count = this.script.getBanCount();
+        Cache.put(CacheGroup.BAN_COUNT, count);
+        return count;
     }
 
     @Override
     public boolean isBanned(String string) throws UnsupportedFunction {
-        return false;  //TODO: Finish
+        if (Cache.contains(CacheGroup.IS_BANNED, string)) {
+            return (Boolean) Cache.get(CacheGroup.IS_BANNED, string);
+        }
+        boolean banned = this.script.isBanned(string);
+        Cache.put(CacheGroup.IS_BANNED, banned, string);
+        return banned;
     }
 
     @Override
     public boolean isRegistered(String username) throws UnsupportedFunction {
-        return false;  //TODO: Finish
+        if (Cache.contains(CacheGroup.IS_REGISTERED, username)) {
+            return (Boolean) Cache.get(CacheGroup.IS_REGISTERED, username);
+        }
+        boolean registered = this.script.isRegistered(username);
+        Cache.put(CacheGroup.IS_REGISTERED, registered, username);
+        return registered;
     }
 
     @Override
     public String getLatestVersion() {
-        return null;  //TODO: Finish
+        return this.script.getLatestVersion();
     }
 
     @Override
     public boolean isSupportedVersion() {
-        return false;  //TODO: Finish
+        return this.script.isSupportedVersion();
     }
 
     @Override
     public String getVersion() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        return this.script.getVersion();
     }
 
     @Override
     public String[] getVersionRanges() {
-        return new String[0];  //TODO: Finish
+        return this.script.getVersionRanges();
     }
 
     @Override
     public String getEncryption() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        return this.script.getEncryption();
     }
 
     @Override
     public String getScriptName() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        return this.script.getScriptName();
     }
 
     @Override
     public String getScriptShortname() throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        return this.script.getScriptShortname();
     }
 
     public boolean authenticate(String username, String password) throws UnsupportedFunction {
@@ -430,16 +608,26 @@ public class ScriptAPI implements ScriptInterface {
 
     @Override
     public String hashPassword(String salt, String password) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        return this.script.hashPassword(salt, password);
     }
 
     @Override
     public String getUsername(int userid) throws UnsupportedFunction {
-        return null;  //TODO: Finish
+        if (Cache.contains(CacheGroup.USER_USERNAME, userid)) {
+            return (String) Cache.get(CacheGroup.USER_USERNAME, userid);
+        }
+        String username = this.script.getUsername(userid);
+        Cache.put(CacheGroup.USER_USERNAME, username, userid);
+        return username;
     }
 
     @Override
     public int getUserID(String username) throws UnsupportedFunction {
-        return 0;  //TODO: Finish
+        if (Cache.contains(CacheGroup.USER_ID, username)) {
+            return (Integer) Cache.get(CacheGroup.USER_ID, username);
+        }
+        int userID = this.script.getUserID(username);
+        Cache.put(CacheGroup.USER_ID, userID, username);
+        return userID;
     }
 }

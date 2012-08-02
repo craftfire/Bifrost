@@ -167,19 +167,19 @@ public class PrivateMessage implements PrivateMessageInterface {
         AuthAPI.getInstance().getScriptAPI().createPrivateMessage(this);
     }
 
-    public static boolean hasCache(int id) {
-        return Cache.contains(CacheGroup.PRIVATEMESSAGE, id);
+    public static boolean hasCache(Object id) {
+        return Cache.contains(CacheGroup.PM, id);
     }
 
     public static void addCache(PrivateMessage privateMessage) {
-        Cache.put(CacheGroup.PRIVATEMESSAGE, privateMessage.getID(), privateMessage);
+        Cache.put(CacheGroup.PM, privateMessage.getID(), privateMessage);
     }
 
     @SuppressWarnings("unchecked")
-    public static PrivateMessage getCache(int id) {
+    public static PrivateMessage getCache(Object id) {
         PrivateMessage temp = null;
-        if (Cache.contains(CacheGroup.PRIVATEMESSAGE, id)) {
-            temp = (PrivateMessage) Cache.get(CacheGroup.PRIVATEMESSAGE, id);
+        if (Cache.contains(CacheGroup.PM, id)) {
+            temp = (PrivateMessage) Cache.get(CacheGroup.PM, id);
         }
         return temp;
     }

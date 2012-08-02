@@ -163,7 +163,7 @@ public class Ban implements BanInterface {
         AuthAPI.getInstance().getScriptAPI().addBan(this);
     }
 
-    public static boolean hasCache(int id) {
+    public static boolean hasCache(Object id) {
         return Cache.contains(CacheGroup.BAN, id);
     }
 
@@ -172,7 +172,7 @@ public class Ban implements BanInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static Ban getCache(int id) {
+    public static Ban getCache(Object id) {
         Ban temp = null;
         if (Cache.contains(CacheGroup.BAN, id)) {
             temp = (Ban) Cache.get(CacheGroup.BAN, id);

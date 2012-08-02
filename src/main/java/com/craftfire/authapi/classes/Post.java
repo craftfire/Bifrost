@@ -119,7 +119,7 @@ public class Post implements PostInterface {
         AuthAPI.getInstance().getScriptAPI().createPost(this);
     }
 
-    public static boolean hasCache(int id) {
+    public static boolean hasCache(Object id) {
         return Cache.contains(CacheGroup.POST, id);
     }
 
@@ -128,7 +128,7 @@ public class Post implements PostInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static Post getCache(int id) {
+    public static Post getCache(Object id) {
         Post temp = null;
         if (Cache.contains(CacheGroup.POST, id)) {
             temp = (Post) Cache.get(CacheGroup.POST, id);

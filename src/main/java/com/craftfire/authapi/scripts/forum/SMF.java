@@ -294,6 +294,11 @@ public class SMF extends Script {
         return groups;
     }
 
+    public int getGroupID(String group) {
+        /*TODO*/
+        return 0;
+    }
+
     public Group getGroup(int groupid) {
         JTable groupTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "membergroups` WHERE `id_group` = '" + groupid +

@@ -177,7 +177,7 @@ public class Thread implements ThreadInterface {
         AuthAPI.getInstance().getScriptAPI().createThread(this);
     }
 
-    public static boolean hasCache(int id) {
+    public static boolean hasCache(Object id) {
         return Cache.contains(CacheGroup.THREAD, id);
     }
 
@@ -186,7 +186,7 @@ public class Thread implements ThreadInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static Thread getCache(int id) {
+    public static Thread getCache(Object id) {
         Thread temp = null;
         if (Cache.contains(CacheGroup.THREAD, id)) {
             temp = (Thread) Cache.get(CacheGroup.THREAD, id);

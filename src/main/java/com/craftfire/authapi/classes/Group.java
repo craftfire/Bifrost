@@ -100,7 +100,7 @@ public class Group implements GroupInterface {
         AuthAPI.getInstance().getScriptAPI().createGroup(this);
     }
 
-    public static boolean hasCache(int id) {
+    public static boolean hasCache(Object id) {
         return Cache.contains(CacheGroup.GROUP, id);
     }
 
@@ -109,7 +109,7 @@ public class Group implements GroupInterface {
     }
 
     @SuppressWarnings("unchecked")
-    public static Group getCache(int id) {
+    public static Group getCache(Object id) {
         Group temp = null;
         if (Cache.contains(CacheGroup.GROUP, id)) {
             temp = (Group) Cache.get(CacheGroup.GROUP, id);

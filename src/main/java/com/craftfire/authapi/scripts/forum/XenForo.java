@@ -433,6 +433,11 @@ public class XenForo extends Script {
         return group;
     }
 
+    public int getGroupID(String group) {
+        /*TODO*/
+        return 0;
+    }
+
     public Group getGroup(String group) {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT `user_group_id` FROM `" + this.getDataManager().getPrefix() +
