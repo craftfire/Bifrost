@@ -19,6 +19,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -26,19 +27,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Group implements GroupInterface {
-    private final Script script;
     private int groupid, usercount;
     private String groupname, groupdescription;
     private List<ScriptUser> users;
 
-    public Group(Script script, int groupid, String groupname) {
-        this.script = script;
+    public Group(int groupid, String groupname) {
         this.groupid = groupid;
         this.groupname = groupname;
     }
 
-    public Group(Script script, String groupname) {
-        this.script = script;
+    public Group(String groupname) {
         this.groupname = groupname;
     }
 
@@ -94,12 +92,12 @@ public class Group implements GroupInterface {
 
     @Override
     public void updateGroup() throws SQLException, UnsupportedFunction {
-        this.script.updateGroup(this);
+        AuthAPI.getInstance().getScriptAPI().updateGroup(this);
     }
 
     @Override
     public void createGroup() throws SQLException, UnsupportedFunction {
-        this.script.createGroup(this);
+        AuthAPI.getInstance().getScriptAPI().createGroup(this);
     }
 
     public static boolean hasCache(int id) {

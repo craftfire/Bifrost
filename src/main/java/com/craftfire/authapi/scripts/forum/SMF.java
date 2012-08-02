@@ -162,7 +162,7 @@ public class SMF extends Script {
                 }
             }
         }
-        ScriptUser user = new ScriptUser(this, userid, savedusername, password);
+        ScriptUser user = new ScriptUser(userid, savedusername, password);
         user.setPasswordSalt(passwordsalt);
         user.setUserTitle(title);
         user.setNickname(nickname);
@@ -317,7 +317,7 @@ public class SMF extends Script {
             }
         }
         this.currentUsername = null;
-        Group group = new Group(this, groupid, groupname);
+        Group group = new Group(groupid, groupname);
         group.setDescription(groupdescription);
         group.setUserCount(this.getDataManager().getIntegerField(
                 "SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "members` WHERE `id_group` = '" + groupid +
@@ -604,7 +604,7 @@ public class SMF extends Script {
             subject = postTable.getModel().getValueAt(0, 6).toString();
             body = postTable.getModel().getValueAt(0, 13).toString();
         }
-        Post post = new Post(this, postid, threadid, boardid);
+        Post post = new Post(postid, threadid, boardid);
         post.setPostDate(postdate);
         post.setAuthor(getUser(authorid));
         post.setSubject(subject);
@@ -803,7 +803,7 @@ public class SMF extends Script {
                 body = postTable.getModel().getValueAt(0, 13).toString();
             }
         }
-        Thread thread = new Thread(this, firstpostid, lastpostid, threadid, boardid);
+        Thread thread = new Thread(firstpostid, lastpostid, threadid, boardid);
         thread.setViews(numviews);
         thread.setReplies(numreplies);
         thread.setLocked(locked);
@@ -893,7 +893,7 @@ public class SMF extends Script {
         this.getDataManager().insertFields(data, "topics");
         thread.setID(this.getDataManager().getLastID("id_topic", "topics"));
 
-        Post post = new Post(this, thread.getID(), thread.getBoardID());
+        Post post = new Post(thread.getID(), thread.getBoardID());
         post.setAuthor(thread.getAuthor());
         post.setBody(thread.getBody());
         post.setSubject(thread.getSubject());
@@ -985,7 +985,7 @@ public class SMF extends Script {
             } else {
                 enddate = new Date(Long.parseLong(banTable.getModel().getValueAt(i, 3).toString()) * 1000);
             }
-            Ban ban = new Ban(this, banid, username, email, ip);
+            Ban ban = new Ban(banid, username, email, ip);
             ban.setReason(reason);
             ban.setNotes(notes);
             ban.setUserID(userid);

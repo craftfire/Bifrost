@@ -19,6 +19,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -26,22 +27,19 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class Post implements PostInterface {
-    private final Script script;
     private ScriptUser author;
     private String subject, body;
     private int postid;
     private final int threadid, boardid;
     private Date postdate;
 
-    public Post(Script script, int postid, int threadid, int boardid) {
-        this.script = script;
+    public Post(int postid, int threadid, int boardid) {
         this.postid = postid;
         this.threadid = threadid;
         this.boardid = boardid;
     }
 
-    public Post(Script script, int threadid, int boardid) {
-        this.script = script;
+    public Post(int threadid, int boardid) {
         this.threadid = threadid;
         this.boardid = boardid;
     }
@@ -68,7 +66,7 @@ public class Post implements PostInterface {
 
     @Override
     public Thread getThread() throws UnsupportedFunction {
-        return this.script.getThread(this.threadid);
+        return AuthAPI.getInstance().getScriptAPI().getThread(this.threadid);
     }
 
     @Override
@@ -113,12 +111,12 @@ public class Post implements PostInterface {
 
     @Override
     public void updatePost() throws SQLException, UnsupportedFunction {
-        this.script.updatePost(this);
+        AuthAPI.getInstance().getScriptAPI().updatePost(this);
     }
 
     @Override
     public void createPost() throws SQLException, UnsupportedFunction {
-        this.script.createPost(this);
+        AuthAPI.getInstance().getScriptAPI().createPost(this);
     }
 
     public static boolean hasCache(int id) {

@@ -126,7 +126,7 @@ public class XenForo extends Script {
         if (ScriptUser.hasCache(userid)) {
             return ScriptUser.getCache(userid);
         } else if (isRegistered(getUsername(userid))) {
-            ScriptUser user = new ScriptUser(this, userid, null, null);
+            ScriptUser user = new ScriptUser(userid, null, null);
             HashMap<String, Object> array = this.getDataManager().getArray(
                     "SELECT * FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_id` = '" +
                             userid + "' LIMIT 1");
@@ -426,7 +426,7 @@ public class XenForo extends Script {
         }
         this.currentUsername = null;
         Group group =
-                new Group(this, Integer.parseInt(array.get("user_group_id").toString()),
+                new Group(Integer.parseInt(array.get("user_group_id").toString()),
                         array.get("title").toString());
         group.setUserCount(this.getDataManager().getCount("user", "`user_group_id` = '" + groupid + "'"));
         group.setUsers(users);
@@ -731,7 +731,7 @@ public class XenForo extends Script {
                         .toString()) +
                 "'");
         Post post =
-                new Post(this, Integer.parseInt(array.get("post_id").toString()),
+                new Post(Integer.parseInt(array.get("post_id").toString()),
                         Integer.parseInt(array.get("thread_id").toString()), nodeID);
         post.setBody(array.get("message").toString());
         post.setAuthor(getUser(Integer.parseInt(array.get("user_id").toString())));
@@ -828,7 +828,7 @@ public class XenForo extends Script {
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `thread_id` = '" + threadid +
                         "' LIMIT 1");
         Thread thread =
-                new Thread(this, Integer.parseInt(array.get("first_post_id").toString()),
+                new Thread(Integer.parseInt(array.get("first_post_id").toString()),
                         Integer.parseInt(array.get("last_post_id").toString()),
                         Integer.parseInt(array.get("thread_id").toString()), Integer.parseInt(array.get("node_id")
                         .toString()));
@@ -920,7 +920,7 @@ public class XenForo extends Script {
         thread.setID(threadID);
         this.addSearch(thread.getAuthor(), "thread", thread.getBoardID(), thread.getID(),
                 thread.getSubject(), thread.getBody());
-        Post post = new Post(this, thread.getID(), thread.getBoardID());
+        Post post = new Post(thread.getID(), thread.getBoardID());
         post.setAuthor(thread.getAuthor());
         post.setBody(thread.getBody());
         post.setSubject(thread.getSubject());
@@ -961,17 +961,17 @@ public class XenForo extends Script {
                 this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                         "ban_email` " + limitstring);
         for (HashMap<String, Object> map : array) {
-            bans.add(new Ban(this, null, map.get("banned_email").toString(), null));
+            bans.add(new Ban(null, map.get("banned_email").toString(), null));
         }
         array = this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                 "ip_match` " + limitstring);
         for (HashMap<String, Object> map : array) {
-            bans.add(new Ban(this, null, null, map.get("ip").toString()));
+            bans.add(new Ban(null, null, map.get("ip").toString()));
         }
         array = this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                 "user_ban` " + limitstring);
         for (HashMap<String, Object> map : array) {
-            Ban ban = new Ban(this, null, null, null);
+            Ban ban = new Ban(null, null, null);
             ban.setUserID(Integer.parseInt(map.get("ban_user_id").toString()));
             ban.setReason(map.get("user_reason").toString());
             ban.setStartDate(new Date(Long.parseLong(map.get("ban_date").toString()) * 1000));

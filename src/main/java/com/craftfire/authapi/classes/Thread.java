@@ -19,6 +19,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -27,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 
 public class Thread implements ThreadInterface {
-    private final Script script;
     private ScriptUser author;
     private String subject, body;
     private int firstpostid, lastpostid, threadid;
@@ -36,8 +36,7 @@ public class Thread implements ThreadInterface {
     private Date threaddate;
     private boolean locked, poll, sticky;
 
-    public Thread(Script script, int firstpostid, int lastpostid, int threadid, int boardid) {
-        this.script = script;
+    public Thread(int firstpostid, int lastpostid, int threadid, int boardid) {
         this.firstpostid = firstpostid;
         this.lastpostid = lastpostid;
         this.threadid = threadid;
@@ -45,7 +44,6 @@ public class Thread implements ThreadInterface {
     }
 
     public Thread(Script script, int boardid) {
-        this.script = script;
         this.boardid = boardid;
     }
 
@@ -66,17 +64,17 @@ public class Thread implements ThreadInterface {
 
     @Override
     public List<Post> getPosts(int limit) throws UnsupportedFunction {
-        return this.script.getPostsFromThread(this.threadid, limit);
+        return AuthAPI.getInstance().getScriptAPI().getPostsFromThread(this.threadid, limit);
     }
 
     @Override
     public Post getFirstPost() throws UnsupportedFunction {
-        return this.script.getPost(this.firstpostid);
+        return AuthAPI.getInstance().getScriptAPI().getPost(this.firstpostid);
     }
 
     @Override
     public Post getLastPost() throws UnsupportedFunction {
-        return this.script.getPost(this.lastpostid);
+        return AuthAPI.getInstance().getScriptAPI().getPost(this.lastpostid);
     }
 
     @Override
@@ -171,12 +169,12 @@ public class Thread implements ThreadInterface {
 
     @Override
     public void updateThread() throws SQLException, UnsupportedFunction {
-        this.script.updateThread(this);
+        AuthAPI.getInstance().getScriptAPI().updateThread(this);
     }
 
     @Override
     public void createThread() throws SQLException, UnsupportedFunction {
-        this.script.createThread(this);
+        AuthAPI.getInstance().getScriptAPI().createThread(this);
     }
 
     public static boolean hasCache(int id) {

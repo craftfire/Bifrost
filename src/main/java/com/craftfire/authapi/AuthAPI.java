@@ -60,8 +60,12 @@ public class AuthAPI {
         return instance;
     }
 
-    public Script getScript() {
+    protected Script getScript() {
         return this.script;
+    }
+
+    public ScriptAPI getScriptAPI() {
+        return this.scriptAPI;
     }
 
     public DataManager getDataManager() {

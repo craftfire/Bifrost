@@ -19,6 +19,7 @@
  */
 package com.craftfire.authapi.classes;
 
+import com.craftfire.authapi.AuthAPI;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -28,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PrivateMessage implements PrivateMessageInterface {
-    private final Script script;
     private int pmid;
     private String subject, body;
     private ScriptUser sender;
@@ -40,12 +40,10 @@ public class PrivateMessage implements PrivateMessageInterface {
     private boolean deletedbysender;
 
     public PrivateMessage(Script script, int pmid) {
-        this.script = script;
         this.pmid = pmid;
     }
 
     public PrivateMessage(Script script, ScriptUser sender, List<ScriptUser> recipients) {
-        this.script = script;
         this.sender = sender;
         this.recipients = recipients;
     }
@@ -161,12 +159,12 @@ public class PrivateMessage implements PrivateMessageInterface {
 
     @Override
     public void updatePrivateMessage() throws SQLException, UnsupportedFunction {
-        this.script.updatePrivateMessage(this);
+        AuthAPI.getInstance().getScriptAPI().updatePrivateMessage(this);
     }
 
     @Override
     public void createPrivateMessage() throws SQLException, UnsupportedFunction {
-        this.script.createPrivateMessage(this);
+        AuthAPI.getInstance().getScriptAPI().createPrivateMessage(this);
     }
 
     public static boolean hasCache(int id) {
