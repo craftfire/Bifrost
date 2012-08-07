@@ -22,6 +22,7 @@ package com.craftfire.authapi.scripts.forum;
 import com.craftfire.authapi.ScriptAPI;
 import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.enums.Scripts;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class Vanilla extends Script {
         return this.encryption;
     }
 
-    public String getScriptName() {
+    public Scripts getScriptName() {
         return this.scriptName;
     }
 

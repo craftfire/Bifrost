@@ -20,10 +20,9 @@
 package com.craftfire.authapi.classes;
 
 import com.craftfire.authapi.AuthAPI;
-import com.craftfire.authapi.ScriptAPI.Scripts;
+import com.craftfire.authapi.enums.Scripts;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.managers.CacheManager;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
@@ -33,10 +32,14 @@ import java.util.List;
 public class Script implements ScriptInterface {
 	private final String version;
 	private final Scripts script;
+    private final DataManager dataManager;
+    private final Cache cache;
 
-    protected Script(Scripts script, String version) {
+    protected Script(Scripts script, String version, DataManager dataManager) {
 		this.version = version;
 		this.script = script;
+        this.dataManager = dataManager;
+        this.cache = new Cache();
 	}
     
     public AuthAPI getAuthAPI() {
@@ -47,16 +50,12 @@ public class Script implements ScriptInterface {
         return AuthAPI.getInstance().getLoggingManager();
     }
 
-    public CacheManager getCacheManager() {
-        return AuthAPI.getInstance().getCacheManager();
-    }
-
     public Cache getCache() {
-        return AuthAPI.getInstance().getCache();
+        return this.cache;
     }
     
     public DataManager getDataManager() {
-        return AuthAPI.getInstance().getDataManager();
+        return this.dataManager;
     }
     
     public Scripts getScript() {
@@ -110,10 +109,10 @@ public class Script implements ScriptInterface {
 
 	@Override
 	public String getScriptName() throws UnsupportedFunction {
-		throw new UnsupportedFunction();
+        throw new UnsupportedFunction();
 	}
 
-	@Override
+    @Override
 	public String getScriptShortname() throws UnsupportedFunction {
 		throw new UnsupportedFunction();
 	}

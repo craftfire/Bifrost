@@ -142,18 +142,8 @@ public class ScriptUser implements ScriptUserInterface {
 
     @Override
     @SuppressWarnings("unchecked")
-    //TODO
     public List<Group> getGroups() throws UnsupportedFunction {
-        List<Group> temp;
-        if (this.groups.size() > 0) {
-            return this.groups;
-        } else if (Cache.contains(CacheGroup.USER_GROUP, getID())) {
-            temp = (List<Group>) Cache.get(CacheGroup.USER_GROUP, getID());
-        } else {
-            temp = AuthAPI.getInstance().getScriptAPI().getUserGroups(this.username);
-            Cache.put(CacheGroup.USER_GROUP, userid, temp);
-        }
-        return temp;
+        return AuthAPI.getInstance().getScriptAPI().getUserGroups(this.username);
     }
 
     @Override
@@ -352,18 +342,18 @@ public class ScriptUser implements ScriptUserInterface {
     }
 
     public static boolean hasCache(Object id) {
-        return Cache.contains(CacheGroup.USER, id);
+        return AuthAPI.getInstance().getCache().contains(CacheGroup.USER, id);
     }
 
     public static void addCache(ScriptUser scriptUser) {
-        Cache.put(CacheGroup.USER, scriptUser.getID(), scriptUser);
+        AuthAPI.getInstance().getCache().put(CacheGroup.USER, scriptUser.getID(), scriptUser);
     }
 
     @SuppressWarnings("unchecked")
     public static ScriptUser getCache(Object id) {
         ScriptUser temp = null;
-        if (Cache.contains(CacheGroup.USER, id)) {
-            temp = (ScriptUser) Cache.get(CacheGroup.USER, id);
+        if (AuthAPI.getInstance().getCache().contains(CacheGroup.USER, id)) {
+            temp = (ScriptUser) AuthAPI.getInstance().getCache().get(CacheGroup.USER, id);
         }
         return temp;
     }

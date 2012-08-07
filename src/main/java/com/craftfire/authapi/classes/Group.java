@@ -101,18 +101,18 @@ public class Group implements GroupInterface {
     }
 
     public static boolean hasCache(Object id) {
-        return Cache.contains(CacheGroup.GROUP, id);
+        return AuthAPI.getInstance().getCache().contains(CacheGroup.GROUP, id);
     }
 
     public static void addCache(Group group) {
-        Cache.put(CacheGroup.GROUP, group.getID(), group);
+        AuthAPI.getInstance().getCache().put(CacheGroup.GROUP, group.getID(), group);
     }
 
     @SuppressWarnings("unchecked")
     public static Group getCache(Object id) {
         Group temp = null;
-        if (Cache.contains(CacheGroup.GROUP, id)) {
-            temp = (Group) Cache.get(CacheGroup.GROUP, id);
+        if (AuthAPI.getInstance().getCache().contains(CacheGroup.GROUP, id)) {
+            temp = (Group) AuthAPI.getInstance().getCache().get(CacheGroup.GROUP, id);
         }
         return temp;
     }

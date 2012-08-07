@@ -16,42 +16,16 @@
  */
 package com.craftfire.authapi;
 
-import com.craftfire.authapi.ScriptAPI.Scripts;
-import com.craftfire.authapi.classes.Cache;
-import com.craftfire.authapi.classes.Script;
-import com.craftfire.authapi.exceptions.UnsupportedScript;
-import com.craftfire.authapi.exceptions.UnsupportedVersion;
-import com.craftfire.commons.managers.CacheManager;
-import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
 //TODO: Javadoc, analytics and logging.
 public class AuthAPI {
     private static AuthAPI instance;
     private final ScriptAPI scriptAPI;
-    private final Script script;
-    private final DataManager dataManager;
-    private final CacheManager cacheManager;
-    private final Cache cache;
 	private final LoggingManager loggingManager = new LoggingManager("CraftFire.AuthAPI", "[AuthAPI]");
 
-    public AuthAPI(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        this.scriptAPI = new ScriptAPI(script, version);
-        this.script = this.scriptAPI.getScript();
-        this.dataManager = dataManager;
-        this.cacheManager = new CacheManager();
-        this.cache = new Cache();
-        instance = this;
-        this.loggingManager.debug("Initialized AuthAPI");
-    }
-
-    public AuthAPI(String script, String version, DataManager dataManager) throws UnsupportedScript,
-                                                                                  UnsupportedVersion {
-        this.scriptAPI = new ScriptAPI(script, version);
-        this.script = this.scriptAPI.getScript();
-        this.dataManager = dataManager;
-        this.cacheManager = new CacheManager();
-        this.cache = new Cache();
+    public AuthAPI() {
+        this.scriptAPI = new ScriptAPI();
         instance = this;
         this.loggingManager.debug("Initialized AuthAPI");
     }
@@ -60,27 +34,11 @@ public class AuthAPI {
         return instance;
     }
 
-    protected Script getScript() {
-        return this.script;
-    }
-
     public ScriptAPI getScriptAPI() {
         return this.scriptAPI;
-    }
-
-    public DataManager getDataManager() {
-        return this.dataManager;
     }
 
 	public LoggingManager getLoggingManager() {
 		return this.loggingManager;
 	}
-
-    public CacheManager getCacheManager() {
-        return this.cacheManager;
-    }
-
-    public Cache getCache() {
-        return this.cache;
-    }
 }

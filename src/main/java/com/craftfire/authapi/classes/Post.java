@@ -120,18 +120,18 @@ public class Post implements PostInterface {
     }
 
     public static boolean hasCache(Object id) {
-        return Cache.contains(CacheGroup.POST, id);
+        return AuthAPI.getInstance().getCache().contains(CacheGroup.POST, id);
     }
 
     public static void addCache(Post post) {
-        Cache.put(CacheGroup.POST, post.getID(), post);
+        AuthAPI.getInstance().getCache().put(CacheGroup.POST, post.getID(), post);
     }
 
     @SuppressWarnings("unchecked")
     public static Post getCache(Object id) {
         Post temp = null;
-        if (Cache.contains(CacheGroup.POST, id)) {
-            temp = (Post) Cache.get(CacheGroup.POST, id);
+        if (AuthAPI.getInstance().getCache().contains(CacheGroup.POST, id)) {
+            temp = (Post) AuthAPI.getInstance().getCache().get(CacheGroup.POST, id);
         }
         return temp;
     }

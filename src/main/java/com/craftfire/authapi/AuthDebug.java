@@ -21,7 +21,9 @@ package com.craftfire.authapi;
 
 import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.enums.Scripts;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
+import com.craftfire.authapi.exceptions.UnsupportedScript;
 import com.craftfire.authapi.exceptions.UnsupportedVersion;
 import com.craftfire.commons.enums.DataType;
 import com.craftfire.commons.managers.DataManager;
@@ -37,7 +39,7 @@ import java.util.Random;
 
 public class AuthDebug {
     static AuthAPI authAPI;
-    static ScriptAPI.Scripts script;
+    static Scripts script;
     static String version;
     static DataManager dataManager;
     static HashMap<String, String> data = new HashMap<String, String>();
@@ -47,8 +49,8 @@ public class AuthDebug {
 
     public static void main(String[] args) {
         int count = 1;
-        HashMap<Integer, ScriptAPI.Scripts> scriptsh = new HashMap<Integer, ScriptAPI.Scripts>();
-        for (ScriptAPI.Scripts s : ScriptAPI.Scripts.values()) {
+        HashMap<Integer, Scripts> scriptsh = new HashMap<Integer, Scripts>();
+        for (Scripts s : Scripts.values()) {
             System.out.println("#" + count + " - " + s.toString() + newline);
             scriptsh.put(count, s);
             count++;
@@ -60,7 +62,7 @@ public class AuthDebug {
         try {
             String s = buf_reader.readLine();
             tmp = Integer.parseInt(s.trim());
-            ScriptAPI.Scripts ss = scriptsh.get(tmp);
+            Scripts ss = scriptsh.get(tmp);
             script = ss;
             System.out.println(newline + "Selected " + ss.toString() + " as script." + newline);
             System.out.println(seperate);
@@ -119,9 +121,12 @@ public class AuthDebug {
 			dataManager.setTimeout(timeout);
 			dataManager.setKeepAlive(keepalive);
             try {
-                authAPI = new AuthAPI(script, version, dataManager);
+                authAPI = new AuthAPI();
+                authAPI.getScriptAPI().addScript(script, version, dataManager);
             } catch (UnsupportedVersion unsupportedVersion) {
                 unsupportedVersion.printStackTrace();
+            } catch (UnsupportedScript unsupportedScript) {
+                unsupportedScript.printStackTrace();
             }
             runTests();
         } catch (IOException ioe) {
@@ -177,7 +182,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - SCRIPT CLASS");
-			Script tscript = authAPI.getScript();
+			ScriptHandle tscript = authAPI.getScriptAPI().getScript(script);
 			printResult("getEncryption", tscript.getEncryption());
 			printResult("getLatestVersion", tscript.getLatestVersion());
 			printResult("getScriptName", tscript.getScriptName());
@@ -203,7 +208,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - USER CLASS - " + username);
-			ScriptUser user = authAPI.getScript().getUser(username);
+            ScriptUser user = authAPI.getScriptAPI().getScript(script).getUser(username);
 			printResult("getAvatarURL", user.getAvatarURL());
 			printResult("getBirthday", "" + user.getBirthday());
 			printResult("getEmail", user.getEmail());
@@ -261,7 +266,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - BAN CLASS");
-			Ban ban = authAPI.getScript().getBans(1).get(0);
+			Ban ban = authAPI.getScriptAPI().getScript(script).getBans(1).get(0);
 			printResult("getEmail", ban.getEmail());
 			printResult("getIP", ban.getIP());
 			printResult("getID", "" + ban.getID());
@@ -344,7 +349,7 @@ public class AuthDebug {
 			print(script.toString() + " - " + version + " - POST CREATE");
 			Post newPost = new Post(1, 2);
 			newPost.setBody("Test: This it the body of the post?!");
-			newPost.setAuthor(authAPI.getScriptAPI().getUser("craftfire" + randomInt));
+			newPost.setAuthor(authAPI.getScriptAPI().getScript(script).getUser("craftfire" + randomInt));
 			newPost.setSubject("Test " + randomInt + ": This is the subject of the post!");
 			newPost.createPost();
 
@@ -371,11 +376,11 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - PRIVATEMESSAGE CREATE");
-			ScriptUser from = authAPI.getScriptAPI().getUser("Contex");
+			ScriptUser from = authAPI.getScriptAPI().getScript(script).getUser("Contex");
 			List<ScriptUser> recipients = new ArrayList<ScriptUser>();
-			recipients.add(authAPI.getScriptAPI().getUser("Craftfire"));
-			recipients.add(authAPI.getScriptAPI().getUser("craftfire" + randomInt));
-			PrivateMessage newPM = new PrivateMessage(authAPI.getScript(), from, recipients);
+			recipients.add(authAPI.getScriptAPI().getScript(script).getUser("Craftfire"));
+			recipients.add(authAPI.getScriptAPI().getScript(script).getUser("craftfire" + randomInt));
+			PrivateMessage newPM = new PrivateMessage(from, recipients);
 			newPM.setBody("This is an example body: " + randomInt);
 			newPM.setSubject("This is an example subject: " + randomInt);
 			newPM.setNew(authAPI.getScriptAPI().getUser("Craftfire"), true);

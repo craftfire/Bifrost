@@ -164,18 +164,18 @@ public class Ban implements BanInterface {
     }
 
     public static boolean hasCache(Object id) {
-        return Cache.contains(CacheGroup.BAN, id);
+        return AuthAPI.getInstance().getCache().contains(CacheGroup.BAN, id);
     }
 
     public static void addCache(Ban ban) {
-        Cache.put(CacheGroup.BAN, ban.getID(), ban);
+        AuthAPI.getInstance().getCache().put(CacheGroup.BAN, ban.getID(), ban);
     }
 
     @SuppressWarnings("unchecked")
     public static Ban getCache(Object id) {
         Ban temp = null;
-        if (Cache.contains(CacheGroup.BAN, id)) {
-            temp = (Ban) Cache.get(CacheGroup.BAN, id);
+        if (AuthAPI.getInstance().getCache().contains(CacheGroup.BAN, id)) {
+            temp = (Ban) AuthAPI.getInstance().getCache().get(CacheGroup.BAN, id);
         }
         return temp;
     }

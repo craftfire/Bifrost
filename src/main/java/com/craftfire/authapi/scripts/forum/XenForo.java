@@ -16,12 +16,13 @@
  */
 package com.craftfire.authapi.scripts.forum;
 
-import com.craftfire.authapi.ScriptAPI;
 import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.enums.Scripts;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,12 +39,10 @@ public class XenForo extends Script {
     private final String shortName = "xf";
     private final String encryption = "sha1";
     private final String[] versionRanges = {"1.0.4", "1.1.2"};
-    private final String userVersion;
     private String currentUsername = null;
 
-    public XenForo(ScriptAPI.Scripts script, String version) {
-        super(script, version);
-        this.userVersion = version;
+    public XenForo(Scripts script, String version, DataManager dataManager) {
+        super(script, version, dataManager);
     }
 
     public String[] getVersionRanges() {
@@ -52,10 +51,6 @@ public class XenForo extends Script {
 
     public String getLatestVersion() {
         return this.versionRanges[0];
-    }
-
-    public String getVersion() {
-        return this.userVersion;
     }
 
     public String getEncryption() {
@@ -341,9 +336,9 @@ public class XenForo extends Script {
             data.put("dob_year", format.format(user.getBirthday()));
         }
         this.getDataManager().insertFields(data, "user_profile");
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
             this.getDataManager().updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.userVersion)) {
+        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
             this.getDataManager().updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
         }
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
@@ -632,7 +627,7 @@ public class XenForo extends Script {
         data.put("user_id", pm.getSender().getID());
         data.put("username", pm.getSender().getUsername());
         data.put("message", pm.getBody());
-        if (!CraftCommons.inVersionRange(this.versionRanges[0], this.userVersion)) {
+        if (!CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
             data.put("ip_id", ipID);
         }
         this.getDataManager().insertFields(data, "conversation_message");

@@ -39,11 +39,11 @@ public class PrivateMessage implements PrivateMessageInterface {
     private Date date;
     private boolean deletedbysender;
 
-    public PrivateMessage(Script script, int pmid) {
+    public PrivateMessage(int pmid) {
         this.pmid = pmid;
     }
 
-    public PrivateMessage(Script script, ScriptUser sender, List<ScriptUser> recipients) {
+    public PrivateMessage(ScriptUser sender, List<ScriptUser> recipients) {
         this.sender = sender;
         this.recipients = recipients;
     }
@@ -168,18 +168,18 @@ public class PrivateMessage implements PrivateMessageInterface {
     }
 
     public static boolean hasCache(Object id) {
-        return Cache.contains(CacheGroup.PM, id);
+        return AuthAPI.getInstance().getCache().contains(CacheGroup.PM, id);
     }
 
     public static void addCache(PrivateMessage privateMessage) {
-        Cache.put(CacheGroup.PM, privateMessage.getID(), privateMessage);
+        AuthAPI.getInstance().getCache().put(CacheGroup.PM, privateMessage.getID(), privateMessage);
     }
 
     @SuppressWarnings("unchecked")
     public static PrivateMessage getCache(Object id) {
         PrivateMessage temp = null;
-        if (Cache.contains(CacheGroup.PM, id)) {
-            temp = (PrivateMessage) Cache.get(CacheGroup.PM, id);
+        if (AuthAPI.getInstance().getCache().contains(CacheGroup.PM, id)) {
+            temp = (PrivateMessage) AuthAPI.getInstance().getCache().get(CacheGroup.PM, id);
         }
         return temp;
     }

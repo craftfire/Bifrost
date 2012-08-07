@@ -178,18 +178,18 @@ public class Thread implements ThreadInterface {
     }
 
     public static boolean hasCache(Object id) {
-        return Cache.contains(CacheGroup.THREAD, id);
+        return AuthAPI.getInstance().getCache().contains(CacheGroup.THREAD, id);
     }
 
     public static void addCache(Thread thread) {
-        Cache.put(CacheGroup.THREAD, thread.getID(), thread);
+        AuthAPI.getInstance().getCache().put(CacheGroup.THREAD, thread.getID(), thread);
     }
 
     @SuppressWarnings("unchecked")
     public static Thread getCache(Object id) {
         Thread temp = null;
-        if (Cache.contains(CacheGroup.THREAD, id)) {
-            temp = (Thread) Cache.get(CacheGroup.THREAD, id);
+        if (AuthAPI.getInstance().getCache().contains(CacheGroup.THREAD, id)) {
+            temp = (Thread) AuthAPI.getInstance().getCache().get(CacheGroup.THREAD, id);
         }
         return temp;
     }

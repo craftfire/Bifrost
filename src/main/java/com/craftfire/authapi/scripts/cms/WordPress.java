@@ -19,9 +19,10 @@
  */
 package com.craftfire.authapi.scripts.cms;
 
-import com.craftfire.authapi.ScriptAPI;
 import com.craftfire.authapi.classes.*;
 import com.craftfire.authapi.classes.Thread;
+import com.craftfire.authapi.enums.Scripts;
+import com.craftfire.commons.managers.DataManager;
 
 import java.util.List;
 
@@ -30,12 +31,10 @@ public class WordPress extends Script {
     private final String shortName = "wp";
     private final String encryption = "sha1"; /*TODO*/
     private final String[] versionRanges = {"1.0.4"}; /*TODO*/
-    private final String userVersion;
     private String currentUsername = null;
 
-    public WordPress(ScriptAPI.Scripts script, String version) {
-        super(script, version);
-        this.userVersion = version;
+    public WordPress(Scripts script, String version, DataManager dataManager) {
+        super(script, version, dataManager);
     }
 
     public String[] getVersionRanges() {
@@ -45,10 +44,6 @@ public class WordPress extends Script {
     public String getLatestVersion() {
         /*TODO*/
         return this.versionRanges[0];
-    }
-
-    public String getVersion() {
-        return this.userVersion;
     }
 
     public String getEncryption() {
