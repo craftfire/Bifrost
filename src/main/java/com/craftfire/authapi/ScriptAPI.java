@@ -32,6 +32,7 @@ import java.util.HashMap;
 
 public class ScriptAPI {
     private HashMap<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
+    private ScriptHandle lastHandle;
 
     /**
      * Converts a string into a script enum.
@@ -79,16 +80,25 @@ public class ScriptAPI {
         }
     }
 
+    public ScriptHandle getHandle() {
+        if (this.lastHandle != null) {
+            return this.lastHandle;
+        }
+        return null;
+    }
+
     public void addHandle(String script, String version, DataManager dataManager) throws UnsupportedScript,
                                                                                                     UnsupportedVersion {
         ScriptHandle handle = new ScriptHandle(script, version, dataManager);
         this.handles.put(handle.getScript().getScript(), handle);
+        this.lastHandle = handle;
     }
 
     public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript,
             UnsupportedVersion {
         ScriptHandle handle = new ScriptHandle(script, version, dataManager);
         this.handles.put(handle.getScript().getScript(), handle);
+        this.lastHandle = handle;
     }
 
     public AuthAPI getAuthAPI() {
