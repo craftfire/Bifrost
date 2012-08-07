@@ -20,6 +20,7 @@
 package com.craftfire.authapi.classes;
 
 import com.craftfire.authapi.AuthAPI;
+import com.craftfire.authapi.ScriptHandle;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -30,13 +31,16 @@ public class Group implements GroupInterface {
     private int groupid, usercount;
     private String groupname, groupdescription;
     private List<ScriptUser> users;
+    private final Script script;
 
-    public Group(int groupid, String groupname) {
+    public Group(Script script, int groupid, String groupname) {
+        this.script = script;
         this.groupid = groupid;
         this.groupname = groupname;
     }
 
-    public Group(String groupname) {
+    public Group(Script script, String groupname) {
+        this.script = script;
         this.groupname = groupname;
     }
 
@@ -92,27 +96,27 @@ public class Group implements GroupInterface {
 
     @Override
     public void updateGroup() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().updateGroup(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateGroup(this);
     }
 
     @Override
     public void createGroup() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().createGroup(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).createGroup(this);
     }
 
-    public static boolean hasCache(Object id) {
-        return AuthAPI.getInstance().getCache().contains(CacheGroup.GROUP, id);
+    public static boolean hasCache(ScriptHandle handle, Object id) {
+        return handle.getCache().contains(CacheGroup.GROUP, id);
     }
 
-    public static void addCache(Group group) {
-        AuthAPI.getInstance().getCache().put(CacheGroup.GROUP, group.getID(), group);
+    public static void addCache(ScriptHandle handle, Group group) {
+        handle.getCache().put(CacheGroup.GROUP, group.getID(), group);
     }
 
     @SuppressWarnings("unchecked")
-    public static Group getCache(Object id) {
+    public static Group getCache(ScriptHandle handle, Object id) {
         Group temp = null;
-        if (AuthAPI.getInstance().getCache().contains(CacheGroup.GROUP, id)) {
-            temp = (Group) AuthAPI.getInstance().getCache().get(CacheGroup.GROUP, id);
+        if (handle.getCache().contains(CacheGroup.GROUP, id)) {
+            temp = (Group) handle.getCache().get(CacheGroup.GROUP, id);
         }
         return temp;
     }

@@ -20,6 +20,7 @@
 package com.craftfire.authapi.classes;
 
 import com.craftfire.authapi.AuthAPI;
+import com.craftfire.authapi.ScriptHandle;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -32,14 +33,17 @@ public class Post implements PostInterface {
     private int postid;
     private final int threadid, boardid;
     private Date postdate;
+    private final Script script;
 
-    public Post(int postid, int threadid, int boardid) {
+    public Post(Script script, int postid, int threadid, int boardid) {
+        this.script = script;
         this.postid = postid;
         this.threadid = threadid;
         this.boardid = boardid;
     }
 
-    public Post(int threadid, int boardid) {
+    public Post(Script script, int threadid, int boardid) {
+        this.script = script;
         this.threadid = threadid;
         this.boardid = boardid;
     }
@@ -66,7 +70,7 @@ public class Post implements PostInterface {
 
     @Override
     public Thread getThread() throws UnsupportedFunction {
-        return AuthAPI.getInstance().getScriptAPI().getThread(this.threadid);
+        return AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).getThread(this.threadid);
     }
 
     @Override
@@ -111,27 +115,27 @@ public class Post implements PostInterface {
 
     @Override
     public void updatePost() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().updatePost(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).updatePost(this);
     }
 
     @Override
     public void createPost() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().createPost(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).createPost(this);
     }
 
-    public static boolean hasCache(Object id) {
-        return AuthAPI.getInstance().getCache().contains(CacheGroup.POST, id);
+    public static boolean hasCache(ScriptHandle handle, Object id) {
+        return handle.getCache().contains(CacheGroup.POST, id);
     }
 
-    public static void addCache(Post post) {
-        AuthAPI.getInstance().getCache().put(CacheGroup.POST, post.getID(), post);
+    public static void addCache(ScriptHandle handle, Post post) {
+        handle.getCache().put(CacheGroup.POST, post.getID(), post);
     }
 
     @SuppressWarnings("unchecked")
-    public static Post getCache(Object id) {
+    public static Post getCache(ScriptHandle handle, Object id) {
         Post temp = null;
-        if (AuthAPI.getInstance().getCache().contains(CacheGroup.POST, id)) {
-            temp = (Post) AuthAPI.getInstance().getCache().get(CacheGroup.POST, id);
+        if (handle.getCache().contains(CacheGroup.POST, id)) {
+            temp = (Post) handle.getCache().get(CacheGroup.POST, id);
         }
         return temp;
     }

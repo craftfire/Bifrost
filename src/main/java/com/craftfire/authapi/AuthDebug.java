@@ -122,7 +122,7 @@ public class AuthDebug {
 			dataManager.setKeepAlive(keepalive);
             try {
                 authAPI = new AuthAPI();
-                authAPI.getScriptAPI().addScript(script, version, dataManager);
+                authAPI.getScriptAPI().addHandle(script, version, dataManager);
             } catch (UnsupportedVersion unsupportedVersion) {
                 unsupportedVersion.printStackTrace();
             } catch (UnsupportedScript unsupportedScript) {
@@ -182,7 +182,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - SCRIPT CLASS");
-			ScriptHandle tscript = authAPI.getScriptAPI().getScript(script);
+			ScriptHandle tscript = authAPI.getScriptAPI().getHandle(script);
 			printResult("getEncryption", tscript.getEncryption());
 			printResult("getLatestVersion", tscript.getLatestVersion());
 			printResult("getScriptName", tscript.getScriptName());
@@ -208,7 +208,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - USER CLASS - " + username);
-            ScriptUser user = authAPI.getScriptAPI().getScript(script).getUser(username);
+            ScriptUser user = authAPI.getScriptAPI().getHandle(script).getUser(username);
 			printResult("getAvatarURL", user.getAvatarURL());
 			printResult("getBirthday", "" + user.getBirthday());
 			printResult("getEmail", user.getEmail());
@@ -255,7 +255,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - USER CREATE");
-			ScriptUser newUser = new ScriptUser("craftfire" + randomInt, "craftfire");
+			ScriptUser newUser = authAPI.getScriptAPI().getHandle(script).newScriptUser("craftfire" + randomInt, "craftfire");
 			newUser.setNickname("testing" + randomInt);
 			newUser.setUserTitle("title");
 			newUser.setRegIP("127.0.0.1");
@@ -266,7 +266,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - BAN CLASS");
-			Ban ban = authAPI.getScriptAPI().getScript(script).getBans(1).get(0);
+			Ban ban = authAPI.getScriptAPI().getHandle(script).getBans(1).get(0);
 			printResult("getEmail", ban.getEmail());
 			printResult("getIP", ban.getIP());
 			printResult("getID", "" + ban.getID());
@@ -292,7 +292,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - BAN CREATE");
-			Ban newBan = new Ban("craftfire-ban-" + randomInt, "dev@craftfire.com", "127.0.0.1");
+			Ban newBan = authAPI.getScriptAPI().getHandle(script).newBan("craftfire-ban-" + randomInt, "dev@craftfire.com", "127.0.0.1");
 			newBan.setNotes("Staff notes");
 			newBan.setReason("Hello world!");
 			newBan.addBan();
@@ -319,7 +319,7 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - GROUP CREATE");
-			Group newGroup = new Group("craftfire_group_" + randomInt);
+			Group newGroup = authAPI.getScriptAPI().getHandle(script).newGroup("craftfire_group_" + randomInt);
 			newGroup.setDescription("Description is not needed!");
 			newGroup.createGroup();
 
@@ -347,9 +347,9 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - POST CREATE");
-			Post newPost = new Post(1, 2);
+			Post newPost = authAPI.getScriptAPI().getHandle(script).newPost(1, 2);
 			newPost.setBody("Test: This it the body of the post?!");
-			newPost.setAuthor(authAPI.getScriptAPI().getScript(script).getUser("craftfire" + randomInt));
+			newPost.setAuthor(authAPI.getScriptAPI().getHandle(script).getUser("craftfire" + randomInt));
 			newPost.setSubject("Test " + randomInt + ": This is the subject of the post!");
 			newPost.createPost();
 
@@ -376,20 +376,20 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - PRIVATEMESSAGE CREATE");
-			ScriptUser from = authAPI.getScriptAPI().getScript(script).getUser("Contex");
+			ScriptUser from = authAPI.getScriptAPI().getHandle(script).getUser("Contex");
 			List<ScriptUser> recipients = new ArrayList<ScriptUser>();
-			recipients.add(authAPI.getScriptAPI().getScript(script).getUser("Craftfire"));
-			recipients.add(authAPI.getScriptAPI().getScript(script).getUser("craftfire" + randomInt));
-			PrivateMessage newPM = new PrivateMessage(from, recipients);
+			recipients.add(authAPI.getScriptAPI().getHandle(script).getUser("Craftfire"));
+			recipients.add(authAPI.getScriptAPI().getHandle(script).getUser("craftfire" + randomInt));
+			PrivateMessage newPM = authAPI.getScriptAPI().getHandle(script).newPrivateMessage(from, recipients);
 			newPM.setBody("This is an example body: " + randomInt);
 			newPM.setSubject("This is an example subject: " + randomInt);
-			newPM.setNew(authAPI.getScriptAPI().getUser("Craftfire"), true);
+			newPM.setNew(authAPI.getScriptAPI().getHandle(script).getUser("Craftfire"), true);
 			newPM.createPrivateMessage();
 
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - THREAD CLASS");
-			Thread thread = authAPI.getScript().getLastThread();
+			Thread thread = authAPI.getScriptAPI().getHandle(script).getLastThread();
 			printResult("getAuthor", "" + thread.getAuthor());
 			printResult("getBody", thread.getBody());
 			printResult("getSubject", thread.getSubject());
@@ -414,9 +414,9 @@ public class AuthDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - THREAD CREATE");
-			Thread newThread = new Thread(authAPI.getScript(), 2);
+			Thread newThread = authAPI.getScriptAPI().getHandle(script).newThread(2);
 			newThread.setBody("Test: " + randomInt + " This it the body of the thread?!");
-			newThread.setAuthor(authAPI.getScriptAPI().getUser("craftfire" + randomInt));
+			newThread.setAuthor(authAPI.getScriptAPI().getHandle(script).getUser("craftfire" + randomInt));
 			newThread.setSubject("Test: " + randomInt + " This is the subject of the thread!");
 			newThread.createThread();
 

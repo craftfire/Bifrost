@@ -20,6 +20,7 @@
 package com.craftfire.authapi.classes;
 
 import com.craftfire.authapi.AuthAPI;
+import com.craftfire.authapi.ScriptHandle;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -30,15 +31,18 @@ public class Ban implements BanInterface {
     private String name, email, ip, reason, notes;
     private int banid, userid;
     private Date startdate, enddate;
+    private final Script script;
 
-    public Ban(int banid, String name, String email, String ip) {
+    public Ban(Script script, int banid, String name, String email, String ip) {
+        this.script = script;
         this.banid = banid;
         this.name = name;
         this.email = email;
         this.ip = ip;
     }
 
-    public Ban(String name, String email, String ip) {
+    public Ban(Script script, String name, String email, String ip) {
+        this.script = script;
         this.name = name;
         this.email = email;
         this.ip = ip;
@@ -155,27 +159,27 @@ public class Ban implements BanInterface {
 
     @Override
     public void updateBan() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().updateBan(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateBan(this);
     }
 
     @Override
     public void addBan() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().addBan(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).addBan(this);
     }
 
-    public static boolean hasCache(Object id) {
-        return AuthAPI.getInstance().getCache().contains(CacheGroup.BAN, id);
+    public static boolean hasCache(ScriptHandle handle, Object id) {
+        return handle.getCache().contains(CacheGroup.BAN, id);
     }
 
-    public static void addCache(Ban ban) {
-        AuthAPI.getInstance().getCache().put(CacheGroup.BAN, ban.getID(), ban);
+    public static void addCache(ScriptHandle handle, Ban ban) {
+        handle.getCache().put(CacheGroup.BAN, ban.getID(), ban);
     }
 
     @SuppressWarnings("unchecked")
-    public static Ban getCache(Object id) {
+    public static Ban getCache(ScriptHandle handle, Object id) {
         Ban temp = null;
-        if (AuthAPI.getInstance().getCache().contains(CacheGroup.BAN, id)) {
-            temp = (Ban) AuthAPI.getInstance().getCache().get(CacheGroup.BAN, id);
+        if (handle.getCache().contains(CacheGroup.BAN, id)) {
+            temp = (Ban) handle.getCache().get(CacheGroup.BAN, id);
         }
         return temp;
     }

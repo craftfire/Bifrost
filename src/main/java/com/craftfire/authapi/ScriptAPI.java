@@ -71,7 +71,7 @@ public class ScriptAPI {
         return this.handles;
     }
 
-    public ScriptHandle getScript(Scripts script) {
+    public ScriptHandle getHandle(Scripts script) {
         if (this.handles.containsKey(script)) {
             return this.handles.get(script);
         } else {
@@ -79,13 +79,13 @@ public class ScriptAPI {
         }
     }
 
-    public void addScript(String script, String version, DataManager dataManager) throws UnsupportedScript,
+    public void addHandle(String script, String version, DataManager dataManager) throws UnsupportedScript,
                                                                                                     UnsupportedVersion {
         ScriptHandle handle = new ScriptHandle(script, version, dataManager);
         this.handles.put(handle.getScript().getScript(), handle);
     }
 
-    public void addScript(Scripts script, String version, DataManager dataManager) throws UnsupportedScript,
+    public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript,
             UnsupportedVersion {
         ScriptHandle handle = new ScriptHandle(script, version, dataManager);
         this.handles.put(handle.getScript().getScript(), handle);

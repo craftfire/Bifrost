@@ -76,6 +76,34 @@ public class ScriptHandle implements ScriptInterface {
         return this.script;
     }
 
+    public Cache getCache() {
+        return this.script.getCache();
+    }
+
+    public Ban newBan(String name, String email, String ip) {
+        return new Ban(this.script, name, email, ip);
+    }
+
+    public Group newGroup(String groupname) {
+        return new Group(this.script, groupname);
+    }
+
+    public Post newPost(int threadid, int boardid) {
+        return new Post(this.script, threadid, boardid);
+    }
+
+    public PrivateMessage newPrivateMessage(ScriptUser sender, List<ScriptUser> recipients) {
+        return new PrivateMessage(this.script, sender, recipients);
+    }
+
+    public ScriptUser newScriptUser(String username, String password) {
+        return new ScriptUser(this.script, username, password);
+    }
+
+    public Thread newThread(int boardid) {
+        return new Thread(this.script, boardid);
+    }
+
     @Override
     public ScriptUser getUser(String username) throws UnsupportedFunction {
         int id = this.script.getUserID(username);
@@ -84,11 +112,11 @@ public class ScriptHandle implements ScriptInterface {
 
     @Override
     public ScriptUser getUser(int userid) throws UnsupportedFunction {
-        if (ScriptUser.hasCache(userid)) {
-            return ScriptUser.getCache(userid);
+        if (ScriptUser.hasCache(this, userid)) {
+            return ScriptUser.getCache(this, userid);
         }
         ScriptUser user = this.script.getUser(userid);
-        ScriptUser.addCache(user);
+        ScriptUser.addCache(this, user);
         return user;
     }
 
@@ -105,13 +133,13 @@ public class ScriptHandle implements ScriptInterface {
     @Override
     public void updateUser(ScriptUser user) throws SQLException, UnsupportedFunction {
         this.script.updateUser(user);
-        ScriptUser.addCache(user);
+        ScriptUser.addCache(this, user);
     }
 
     @Override
     public void createUser(ScriptUser user) throws SQLException, UnsupportedFunction {
         this.script.createUser(user);
-        ScriptUser.addCache(user);
+        ScriptUser.addCache(this, user);
     }
 
     @Override
@@ -137,21 +165,21 @@ public class ScriptHandle implements ScriptInterface {
 
     @Override
     public Group getGroup(int groupID) throws UnsupportedFunction {
-        if (Group.hasCache(groupID)) {
-            return Group.getCache(groupID);
+        if (Group.hasCache(this, groupID)) {
+            return Group.getCache(this, groupID);
         }
         Group group = this.script.getGroup(groupID);
-        Group.addCache(group);
+        Group.addCache(this, group);
         return group;
     }
 
     @Override
     public Group getGroup(String groupString) throws UnsupportedFunction {
-        if (Group.hasCache(groupString)) {
-            return Group.getCache(groupString);
+        if (Group.hasCache(this, groupString)) {
+            return Group.getCache(this, groupString);
         }
         Group group = this.script.getGroup(groupString);
-        Group.addCache(group);
+        Group.addCache(this, group);
         return group;
     }
 
@@ -169,22 +197,22 @@ public class ScriptHandle implements ScriptInterface {
     @Override
     public void updateGroup(Group group) throws SQLException, UnsupportedFunction {
         this.script.updateGroup(group);
-        Group.addCache(group);
+        Group.addCache(this, group);
     }
 
     @Override
     public void createGroup(Group group) throws SQLException, UnsupportedFunction {
         this.script.createGroup(group);
-        Group.addCache(group);
+        Group.addCache(this, group);
     }
 
     @Override
     public PrivateMessage getPM(int pmid) throws UnsupportedFunction {
-        if (PrivateMessage.hasCache(pmid)) {
-            return PrivateMessage.getCache(pmid);
+        if (PrivateMessage.hasCache(this, pmid)) {
+            return PrivateMessage.getCache(this, pmid);
         }
         PrivateMessage pm = this.script.getPM(pmid);
-        PrivateMessage.addCache(pm);
+        PrivateMessage.addCache(this, pm);
         return pm;
     }
 
@@ -233,22 +261,22 @@ public class ScriptHandle implements ScriptInterface {
     @Override
     public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedFunction {
         this.script.updatePrivateMessage(privateMessage);
-        PrivateMessage.addCache(privateMessage);
+        PrivateMessage.addCache(this, privateMessage);
     }
 
     @Override
     public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedFunction {
         this.script.createPrivateMessage(privateMessage);
-        PrivateMessage.addCache(privateMessage);
+        PrivateMessage.addCache(this, privateMessage);
     }
 
     @Override
     public Post getPost(int postID) throws UnsupportedFunction {
-        if (Post.hasCache(postID)) {
-            return Post.getCache(postID);
+        if (Post.hasCache(this, postID)) {
+            return Post.getCache(this, postID);
         }
         Post post = this.script.getPost(postID);
-        Post.addCache(post);
+        Post.addCache(this, post);
         return post;
     }
 
@@ -277,13 +305,13 @@ public class ScriptHandle implements ScriptInterface {
     @Override
     public void updatePost(Post post) throws SQLException, UnsupportedFunction {
         this.script.updatePost(post);
-        Post.addCache(post);
+        Post.addCache(this, post);
     }
 
     @Override
     public void createPost(Post post) throws SQLException, UnsupportedFunction {
         this.script.createPost(post);
-        Post.addCache(post);
+        Post.addCache(this, post);
     }
 
     @Override
@@ -368,11 +396,11 @@ public class ScriptHandle implements ScriptInterface {
 
     @Override
     public Thread getThread(int threadID) throws UnsupportedFunction {
-        if (Thread.hasCache(threadID)) {
-            return Thread.getCache(threadID);
+        if (Thread.hasCache(this, threadID)) {
+            return Thread.getCache(this, threadID);
         }
         Thread thread = this.script.getThread(threadID);
-        Thread.addCache(thread);
+        Thread.addCache(this, thread);
         return thread;
     }
 
@@ -390,13 +418,13 @@ public class ScriptHandle implements ScriptInterface {
     @Override
     public void updateThread(Thread thread) throws SQLException, UnsupportedFunction {
         this.script.updateThread(thread);
-        Thread.addCache(thread);
+        Thread.addCache(this, thread);
     }
 
     @Override
     public void createThread(Thread thread) throws SQLException, UnsupportedFunction {
         this.script.createThread(thread);
-        Thread.addCache(thread);
+        Thread.addCache(this, thread);
     }
 
     @Override
@@ -464,13 +492,13 @@ public class ScriptHandle implements ScriptInterface {
     @Override
     public void updateBan(Ban ban) throws SQLException, UnsupportedFunction {
         this.script.updateBan(ban);
-        Ban.addCache(ban);
+        Ban.addCache(this, ban);
     }
 
     @Override
     public void addBan(Ban ban) throws SQLException, UnsupportedFunction {
         this.script.addBan(ban);
-        Ban.addCache(ban);
+        Ban.addCache(this, ban);
     }
 
     @Override

@@ -20,6 +20,7 @@
 package com.craftfire.authapi.classes;
 
 import com.craftfire.authapi.AuthAPI;
+import com.craftfire.authapi.ScriptHandle;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -38,12 +39,15 @@ public class PrivateMessage implements PrivateMessageInterface {
     private HashMap<ScriptUser, Boolean> deleted = new HashMap<ScriptUser, Boolean>();
     private Date date;
     private boolean deletedbysender;
+    private final Script script;
 
-    public PrivateMessage(int pmid) {
+    public PrivateMessage(Script script, int pmid) {
+        this.script = script;
         this.pmid = pmid;
     }
 
-    public PrivateMessage(ScriptUser sender, List<ScriptUser> recipients) {
+    public PrivateMessage(Script script, ScriptUser sender, List<ScriptUser> recipients) {
+        this.script = script;
         this.sender = sender;
         this.recipients = recipients;
     }
@@ -159,27 +163,27 @@ public class PrivateMessage implements PrivateMessageInterface {
 
     @Override
     public void updatePrivateMessage() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().updatePrivateMessage(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).updatePrivateMessage(this);
     }
 
     @Override
     public void createPrivateMessage() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().createPrivateMessage(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).createPrivateMessage(this);
     }
 
-    public static boolean hasCache(Object id) {
-        return AuthAPI.getInstance().getCache().contains(CacheGroup.PM, id);
+    public static boolean hasCache(ScriptHandle handle, Object id) {
+        return handle.getCache().contains(CacheGroup.PM, id);
     }
 
-    public static void addCache(PrivateMessage privateMessage) {
-        AuthAPI.getInstance().getCache().put(CacheGroup.PM, privateMessage.getID(), privateMessage);
+    public static void addCache(ScriptHandle handle, PrivateMessage privateMessage) {
+        handle.getCache().put(CacheGroup.PM, privateMessage.getID(), privateMessage);
     }
 
     @SuppressWarnings("unchecked")
-    public static PrivateMessage getCache(Object id) {
+    public static PrivateMessage getCache(ScriptHandle handle, Object id) {
         PrivateMessage temp = null;
-        if (AuthAPI.getInstance().getCache().contains(CacheGroup.PM, id)) {
-            temp = (PrivateMessage) AuthAPI.getInstance().getCache().get(CacheGroup.PM, id);
+        if (handle.getCache().contains(CacheGroup.PM, id)) {
+            temp = (PrivateMessage) handle.getCache().get(CacheGroup.PM, id);
         }
         return temp;
     }

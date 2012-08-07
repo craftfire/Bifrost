@@ -20,6 +20,7 @@
 package com.craftfire.authapi.classes;
 
 import com.craftfire.authapi.AuthAPI;
+import com.craftfire.authapi.ScriptHandle;
 import com.craftfire.authapi.enums.CacheGroup;
 import com.craftfire.authapi.exceptions.UnsupportedFunction;
 
@@ -32,11 +33,13 @@ public class Thread implements ThreadInterface {
     private String subject, body;
     private int firstpostid, lastpostid, threadid;
     private final int boardid;
+    private final Script script;
     private int threadviews, threadreplies;
     private Date threaddate;
     private boolean locked, poll, sticky;
 
-    public Thread(int firstpostid, int lastpostid, int threadid, int boardid) {
+    public Thread(Script script, int firstpostid, int lastpostid, int threadid, int boardid) {
+        this.script = script;
         this.firstpostid = firstpostid;
         this.lastpostid = lastpostid;
         this.threadid = threadid;
@@ -44,6 +47,7 @@ public class Thread implements ThreadInterface {
     }
 
     public Thread(Script script, int boardid) {
+        this.script = script;
         this.boardid = boardid;
     }
 
@@ -64,17 +68,18 @@ public class Thread implements ThreadInterface {
 
     @Override
     public List<Post> getPosts(int limit) throws UnsupportedFunction {
-        return AuthAPI.getInstance().getScriptAPI().getPostsFromThread(this.threadid, limit);
+        return AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript())
+                                                                            .getPostsFromThread(this.threadid, limit);
     }
 
     @Override
     public Post getFirstPost() throws UnsupportedFunction {
-        return AuthAPI.getInstance().getScriptAPI().getPost(this.firstpostid);
+        return AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPost(this.firstpostid);
     }
 
     @Override
     public Post getLastPost() throws UnsupportedFunction {
-        return AuthAPI.getInstance().getScriptAPI().getPost(this.lastpostid);
+        return AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPost(this.lastpostid);
     }
 
     @Override
@@ -169,27 +174,27 @@ public class Thread implements ThreadInterface {
 
     @Override
     public void updateThread() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().updateThread(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateThread(this);
     }
 
     @Override
     public void createThread() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().createThread(this);
+        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).createThread(this);
     }
 
-    public static boolean hasCache(Object id) {
-        return AuthAPI.getInstance().getCache().contains(CacheGroup.THREAD, id);
+    public static boolean hasCache(ScriptHandle handle, Object id) {
+        return handle.getCache().contains(CacheGroup.THREAD, id);
     }
 
-    public static void addCache(Thread thread) {
-        AuthAPI.getInstance().getCache().put(CacheGroup.THREAD, thread.getID(), thread);
+    public static void addCache(ScriptHandle handle,Thread thread) {
+        handle.getCache().put(CacheGroup.THREAD, thread.getID(), thread);
     }
 
     @SuppressWarnings("unchecked")
-    public static Thread getCache(Object id) {
+    public static Thread getCache(ScriptHandle handle, Object id) {
         Thread temp = null;
-        if (AuthAPI.getInstance().getCache().contains(CacheGroup.THREAD, id)) {
-            temp = (Thread) AuthAPI.getInstance().getCache().get(CacheGroup.THREAD, id);
+        if (handle.getCache().contains(CacheGroup.THREAD, id)) {
+            temp = (Thread) handle.getCache().get(CacheGroup.THREAD, id);
         }
         return temp;
     }
