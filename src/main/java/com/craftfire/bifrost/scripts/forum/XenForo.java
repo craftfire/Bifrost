@@ -500,7 +500,7 @@ public class XenForo extends Script {
                 if (map.get("recipient_state").toString().equalsIgnoreCase("0")) {
                     pm.setDeleted(recipient, false);
                 } else {
-                    pm.setRead(recipient, true);
+                    pm.setDeleted(recipient, true);
                 }
             }
             pm.setRecipients(recipients);
