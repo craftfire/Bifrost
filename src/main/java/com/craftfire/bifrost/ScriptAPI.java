@@ -113,5 +113,6 @@ public class ScriptAPI {
 
     public boolean convert(ScriptHandle from, ScriptHandle to) throws SQLException, UnsupportedFunction {
         //TODO: Create script converter, need to add methods to scripts
+        return false;
     }
 }
