@@ -21,6 +21,8 @@ import com.craftfire.bifrost.classes.Thread;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.database.DataList;
+import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
@@ -119,29 +121,30 @@ public class XenForo extends Script {
 
     public ScriptUser getUser(int userid) {
         ScriptUser user = new ScriptUser(this, userid, null, null);
-        HashMap<String, Object> array = this.getDataManager().getArray(
+        Results results = this.getDataManager().getResults(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_id` = '" +
                         userid + "' LIMIT 1");
-        if (array.size() > 0) {
-            if (array.get("user_state").toString().equalsIgnoreCase("valid")) {
+        DataList row = results.getFirstResult();
+        if (results.getRowsCount() > 0) {
+            if (row.getStringField("user_state").equalsIgnoreCase("valid")) {
                 user.setActivated(true);
             } else {
                 user.setActivated(false);
             }
-            if (! array.get("gravatar").toString().isEmpty()) {
+            if (!row.getStringField("gravatar").isEmpty()) {
                 user.setAvatarURL("http://www.gravatar.com/avatar/" +
-                        CraftCommons.encrypt(Encryption.MD5, array.get("gravatar").toString().toLowerCase()));
+                        CraftCommons.encrypt(Encryption.MD5, row.getStringField("gravatar").toLowerCase()));
             }
-            user.setEmail(array.get("email").toString());
-            if (array.get("gender").toString().equalsIgnoreCase("male")) {
+            user.setEmail(row.getStringField("email"));
+            if (row.getStringField("gender").equalsIgnoreCase("male")) {
                 user.setGender(Gender.MALE);
-            } else if (array.get("gender").toString().equalsIgnoreCase("female")) {
+            } else if (row.getStringField("gender").equalsIgnoreCase("female")) {
                 user.setGender(Gender.FEMALE);
             } else {
                 user.setGender(Gender.UNKNOWN);
             }
-            user.setLastLogin(new Date(Long.parseLong(array.get("last_activity").toString()) * 1000));
-            user.setRegDate(new Date(Long.parseLong(array.get("register_date").toString()) * 1000));
+            user.setLastLogin(new Date(row.getLongField("last_activity") * 1000));
+            user.setRegDate(new Date(row.getLongField("register_date") * 1000));
             Blob hashBlob =
                     this.getDataManager().getBlobField("user_authenticate", "data", "`user_id` = '" + userid + "'");
             if (hashBlob != null) {
@@ -164,11 +167,12 @@ public class XenForo extends Script {
                     e.printStackTrace();
                 }
                 String cache = stringBuffer.toString();
+                //TODO: php deserializer
                 user.setPassword(CraftCommons.forumCacheValue(cache, "hash"));
                 user.setPasswordSalt(CraftCommons.forumCacheValue(cache, "salt"));
             }
-            user.setUsername(array.get("username").toString());
-            user.setUserTitle(array.get("custom_title").toString());
+            user.setUsername(row.getStringField("username"));
+            user.setUserTitle(row.getStringField("custom_title"));
             user.setLastIP(CraftCommons.long2ip((long)this.getDataManager().getIntegerField(
                     "ip",
                     "ip",
@@ -179,20 +183,21 @@ public class XenForo extends Script {
                             "' AND `action` = 'register'")));
         }
 
-        array = this.getDataManager().getArray(
+        results = this.getDataManager().getResults(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "user_profile` WHERE `user_id` = '" +
                         userid + "' LIMIT 1");
-        if (array.size() > 0) {
-            String bdate = array.get("dob_day").toString() + " " + array.get("dob_month").toString() + " " +
-                    array.get("dob_year").toString();
+        row = results.getFirstResult();
+        if (results.getRowsCount() > 0) {
+            String bdate = row.getStringField("dob_day") + " " + row.getStringField("dob_month") + " " +
+                    row.getStringField("dob_year");
             try {
                 SimpleDateFormat format = new SimpleDateFormat("d M yyyy");
                 user.setBirthday(format.parse(bdate));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if (! array.get("status").toString().isEmpty()) {
-                user.setStatusMessage(array.get("status").toString());
+            if (!row.getStringField("status").isEmpty()) {
+                user.setStatusMessage(row.getStringField("status"));
             }
         }
 
@@ -364,6 +369,7 @@ public class XenForo extends Script {
             this.getDataManager().updateFields(data, "user_profile", "`user_id` = '" + user.getID() + "'");
         }
 
+        //TODO: PHP deserialize?
         String stringdata =
                 "a:3:{s:4:\"hash\";s:64:\"" + user.getPassword() + "\";s:4:\"salt\";s:64:\"" + user.getPasswordSalt() +
                         "\";s:8:\"hashFunc\";s:6:\"sha256\";}";
