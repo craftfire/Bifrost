@@ -1,15 +1,15 @@
 /*
- * This file is part of AuthAPI.
+ * This file is part of Bifrost.
  *
  * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
- * AuthAPI is licensed under the GNU Lesser General Public License.
+ * Bifrost is licensed under the GNU Lesser General Public License.
  *
- * AuthAPI is free software: you can redistribute it and/or modify
+ * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AuthAPI is distributed in the hope that it will be useful,
+ * Bifrost is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -22,15 +22,23 @@ package com.craftfire.bifrost.scripts.forum;
 import com.craftfire.bifrost.classes.*;
 import com.craftfire.bifrost.classes.Thread;
 import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.database.DataList;
+import com.craftfire.commons.database.Results;
+import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PhpBB extends Script {
     private final String scriptName = "phpbb";
     private final String shortName = "phpbb";
     private final String encryption = "sha1"; /*TODO*/
-    private final String[] versionRanges = {"1.0.4"}; /*TODO*/
+    private final String[] versionRanges = {"20.0.23", "3.0.10"};
+    private String membernamefield = "username", groupfield = "additional_groups";
     private String currentUsername = null;
 
     public PhpBB(Scripts script, String version, DataManager dataManager) {
@@ -42,8 +50,7 @@ public class PhpBB extends Script {
     }
 
     public String getLatestVersion() {
-        /*TODO*/
-        return this.versionRanges[0];
+        return this.versionRanges[1];
     }
 
     public String getEncryption() {
@@ -60,37 +67,54 @@ public class PhpBB extends Script {
 
     public boolean authenticate(String username, String password) {
         /*TODO*/
-        return false;
+        String passwordHash = this.getDataManager().getStringField("users",
+                                                "user_password", "`" + this.membernamefield + "` = '" + username + "'");
+        return hashPassword(username, password).equals(passwordHash);
     }
 
-    public String hashPassword(String salt, String password) {
+    public String hashPassword(String username, String password) {
         /*TODO*/
-        return null;
+        return CraftCommons.encrypt(Encryption.PHPASS, username.toLowerCase() + password, null, 0);
     }
 
     public String getUsername(int userid) {
-        /*TODO*/
-        return null;
+        return this.getDataManager().getStringField("users", "username", "`user_id` = '" + userid + "'");
     }
 
     public int getUserID(String username) {
         /*TODO*/
-        return 0;
+        return this.getDataManager().getIntegerField("users", "user_id", "`username` = '" + username + "'");
     }
 
-    public ScriptUser getLastRegUser() {
+    public ScriptUser getLastRegUser() throws SQLException {
         /*TODO*/
-        return null;
+        return getUser(this.getDataManager().getIntegerField("SELECT `user_id` FROM `" + 
+                this.getDataManager().getPrefix() + "users` ORDER BY `user_id` ASC LIMIT 1"));
     }
 
-    public ScriptUser getUser(String username) {
-        /*TODO*/
-        return null;
+    public ScriptUser getUser(String username) throws SQLException {
+        return getUser(getUserID(username));
     }
 
-    public ScriptUser getUser(int userid) {
+    public ScriptUser getUser(int userid) throws SQLException {
         /*TODO*/
-        return null;
+        Results results = this.getDataManager().getResults("SELECT * FROM `" + this.getDataManager().getPrefix() +
+                                                            "` WHERE `user_id` = " + userid);
+        DataList result = results.getFirstResult();
+        ScriptUser user = new ScriptUser(this, result.getIntField("user_id"), 
+                                        result.getStringField("username"), 
+                                        result.getStringField("user_password"));
+       // user.setActivated();
+        //user.setAvatarURL();
+        //user.setBirthday();
+        user.setEmail(result.getStringField("user_email"));
+        //user.setGender();
+        //user.setLastIP();
+        //user.setLastLogin();
+
+        user.setRegDate(new Date(result.getIntField("user_regdate")));
+        user.setRegIP(result.getStringField("user_regdate"));
+        return user;
     }
 
     public void updateUser(ScriptUser user) {
@@ -101,14 +125,24 @@ public class PhpBB extends Script {
         /*TODO*/
     }
 
-    public List<Group> getGroups(int limit) {
+    public List<Group> getGroups(int limit) throws SQLException {
         /*TODO*/
-        return null;
+        String limitstring = "";
+        if (limit > 0) {
+            limitstring = " LIMIT 0 , " + limit;
+        }
+        List<Group> groups = new ArrayList<Group>();
+        Results results = this.getDataManager().getResults("SELECT `group_id` FROM `" +
+                                this.getDataManager().getPrefix() + "groups` ORDER BY `group_id` ASC" + limitstring);
+        for (DataList dataList : results.getArray()) {
+            groups.add(getGroup(dataList.getIntField("group_id")));
+        }
+        return groups;
     }
 
     public int getGroupID(String group) {
         /*TODO*/
-        return 0;
+        return this.getDataManager().getIntegerField("groups", "group_id", "`group_name` = '" + group + "'");
     }
 
     public Group getGroup(int groupid) {
