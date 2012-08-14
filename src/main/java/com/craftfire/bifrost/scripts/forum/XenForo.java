@@ -21,7 +21,7 @@ import com.craftfire.bifrost.classes.Thread;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.database.DataList;
+import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
@@ -124,7 +124,7 @@ public class XenForo extends Script {
         Results results = this.getDataManager().getResults(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_id` = '" +
                         userid + "' LIMIT 1");
-        DataList row = results.getFirstResult();
+        DataRow row = results.getFirstResult();
         if (results.getRowsCount() > 0) {
             if (row.getStringField("user_state").equalsIgnoreCase("valid")) {
                 user.setActivated(true);

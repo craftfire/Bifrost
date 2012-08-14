@@ -23,7 +23,7 @@ import com.craftfire.bifrost.classes.*;
 import com.craftfire.bifrost.classes.Thread;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.database.DataList;
+import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
@@ -100,20 +100,20 @@ public class PhpBB extends Script {
         /*TODO*/
         Results results = this.getDataManager().getResults("SELECT * FROM `" + this.getDataManager().getPrefix() +
                                                             "` WHERE `user_id` = " + userid);
-        DataList result = results.getFirstResult();
-        ScriptUser user = new ScriptUser(this, result.getIntField("user_id"), 
-                                        result.getStringField("username"), 
-                                        result.getStringField("user_password"));
+        DataRow row = results.getFirstResult();
+        ScriptUser user = new ScriptUser(this, row.getIntField("user_id"),
+                                        row.getStringField("username"),
+                                        row.getStringField("user_password"));
        // user.setActivated();
         //user.setAvatarURL();
         //user.setBirthday();
-        user.setEmail(result.getStringField("user_email"));
+        user.setEmail(row.getStringField("user_email"));
         //user.setGender();
         //user.setLastIP();
         //user.setLastLogin();
 
-        user.setRegDate(new Date(result.getIntField("user_regdate")));
-        user.setRegIP(result.getStringField("user_regdate"));
+        user.setRegDate(new Date(row.getIntField("user_regdate")));
+        user.setRegIP(row.getStringField("user_regdate"));
         return user;
     }
 
@@ -134,8 +134,8 @@ public class PhpBB extends Script {
         List<Group> groups = new ArrayList<Group>();
         Results results = this.getDataManager().getResults("SELECT `group_id` FROM `" +
                                 this.getDataManager().getPrefix() + "groups` ORDER BY `group_id` ASC" + limitstring);
-        for (DataList dataList : results.getArray()) {
-            groups.add(getGroup(dataList.getIntField("group_id")));
+        for (DataRow row : results.getArray()) {
+            groups.add(getGroup(row.getIntField("group_id")));
         }
         return groups;
     }
