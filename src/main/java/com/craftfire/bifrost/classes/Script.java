@@ -1,15 +1,15 @@
 /*
- * This file is part of AuthAPI.
+ * This file is part of Bifrost.
  *
  * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
- * AuthAPI is licensed under the GNU Lesser General Public License.
+ * Bifrost is licensed under the GNU Lesser General Public License.
  *
- * AuthAPI is free software: you can redistribute it and/or modify
+ * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AuthAPI is distributed in the hope that it will be useful,
+ * Bifrost is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -19,7 +19,7 @@
  */
 package com.craftfire.bifrost.classes;
 
-import com.craftfire.bifrost.AuthAPI;
+import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.commons.CraftCommons;
@@ -42,12 +42,12 @@ public class Script implements ScriptInterface {
         this.cache = new Cache();
 	}
     
-    public AuthAPI getAuthAPI() {
-        return AuthAPI.getInstance();
+    public Bifrost getBifrost() {
+        return Bifrost.getInstance();
     }
     
     public LoggingManager getLoggingManager() {
-        return AuthAPI.getInstance().getLoggingManager();
+        return Bifrost.getInstance().getLoggingManager();
     }
 
     public Cache getCache() {
@@ -63,17 +63,17 @@ public class Script implements ScriptInterface {
     }
 
 	@Override
-	public ScriptUser getUser(String username) throws UnsupportedFunction {
+	public ScriptUser getUser(String username) throws UnsupportedFunction, SQLException {
 		throw new UnsupportedFunction();
 	}
 
 	@Override
-	public ScriptUser getUser(int userid) throws UnsupportedFunction {
+	public ScriptUser getUser(int userid) throws UnsupportedFunction, SQLException {
 		throw new UnsupportedFunction();
 	}
 
 	@Override
-	public ScriptUser getLastRegUser() throws UnsupportedFunction {
+	public ScriptUser getLastRegUser() throws UnsupportedFunction, SQLException {
 		throw new UnsupportedFunction();
 	}
 
@@ -128,7 +128,7 @@ public class Script implements ScriptInterface {
 	}
 
 	@Override
-	public String getUsername(int userid) throws UnsupportedFunction {
+	public String getUsername(int userid) throws UnsupportedFunction, SQLException {
 		throw new UnsupportedFunction();
 	}
 
@@ -148,7 +148,7 @@ public class Script implements ScriptInterface {
 	}
 
 	@Override
-	public List<Group> getGroups(int limit) throws UnsupportedFunction {
+	public List<Group> getGroups(int limit) throws UnsupportedFunction, SQLException {
 		throw new UnsupportedFunction();
 	}
 

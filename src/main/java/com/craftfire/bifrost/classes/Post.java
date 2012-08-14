@@ -1,15 +1,15 @@
 /*
- * This file is part of AuthAPI.
+ * This file is part of Bifrost.
  *
  * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
- * AuthAPI is licensed under the GNU Lesser General Public License.
+ * Bifrost is licensed under the GNU Lesser General Public License.
  *
- * AuthAPI is free software: you can redistribute it and/or modify
+ * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AuthAPI is distributed in the hope that it will be useful,
+ * Bifrost is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -19,7 +19,7 @@
  */
 package com.craftfire.bifrost.classes;
 
-import com.craftfire.bifrost.AuthAPI;
+import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.ScriptHandle;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
@@ -70,7 +70,7 @@ public class Post implements PostInterface {
 
     @Override
     public Thread getThread() throws UnsupportedFunction {
-        return AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).getThread(this.threadid);
+        return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getThread(this.threadid);
     }
 
     @Override
@@ -115,12 +115,12 @@ public class Post implements PostInterface {
 
     @Override
     public void updatePost() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).updatePost(this);
+        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updatePost(this);
     }
 
     @Override
     public void createPost() throws SQLException, UnsupportedFunction {
-        AuthAPI.getInstance().getScriptAPI().getHandle(this.script.getScript()).createPost(this);
+        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createPost(this);
     }
 
     public static boolean hasCache(ScriptHandle handle, Object id) {

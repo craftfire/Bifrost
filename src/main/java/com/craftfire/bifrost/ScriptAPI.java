@@ -1,15 +1,15 @@
 /*
- * This file is part of AuthAPI.
+ * This file is part of Bifrost.
  *
  * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
- * AuthAPI is licensed under the GNU Lesser General Public License.
+ * Bifrost is licensed under the GNU Lesser General Public License.
  *
- * AuthAPI is free software: you can redistribute it and/or modify
+ * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AuthAPI is distributed in the hope that it will be useful,
+ * Bifrost is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -21,6 +21,7 @@ package com.craftfire.bifrost;
 
 import com.craftfire.bifrost.classes.Script;
 import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.scripts.forum.SMF;
@@ -28,11 +29,20 @@ import com.craftfire.bifrost.scripts.forum.XenForo;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class ScriptAPI {
     private HashMap<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
     private ScriptHandle lastHandle;
+
+    public Bifrost getBifrost() {
+        return Bifrost.getInstance();
+    }
+
+    public LoggingManager getLoggingManager() {
+        return Bifrost.getInstance().getLoggingManager();
+    }
 
     /**
      * Converts a string into a script enum.
@@ -47,8 +57,8 @@ public class ScriptAPI {
                 return script;
             } else if (script.alias.contains(",")) {
                 String[] aliases = script.alias.split(",");
-                for (int i=0; aliases.length>i; i++) {
-                    if (string.equalsIgnoreCase(aliases[i])) {
+                for (String alias : aliases) {
+                    if (string.equalsIgnoreCase(alias)) {
                         return script;
                     }
                 }
@@ -101,12 +111,7 @@ public class ScriptAPI {
         this.lastHandle = handle;
     }
 
-    public AuthAPI getAuthAPI() {
-        return AuthAPI.getInstance();
+    public boolean convert(ScriptHandle from, ScriptHandle to) throws SQLException, UnsupportedFunction {
+        //TODO: Create script converter, need to add methods to scripts
     }
-
-    public LoggingManager getLoggingManager() {
-        return AuthAPI.getInstance().getLoggingManager();
-    }
-
 }

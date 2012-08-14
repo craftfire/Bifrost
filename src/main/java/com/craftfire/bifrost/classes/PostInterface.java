@@ -1,15 +1,15 @@
 /*
- * This file is part of AuthAPI.
+ * This file is part of Bifrost.
  *
  * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
- * AuthAPI is licensed under the GNU Lesser General Public License.
+ * Bifrost is licensed under the GNU Lesser General Public License.
  *
- * AuthAPI is free software: you can redistribute it and/or modify
+ * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AuthAPI is distributed in the hope that it will be useful,
+ * Bifrost is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -19,14 +19,25 @@
  */
 package com.craftfire.bifrost.classes;
 
+import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+
 import java.sql.SQLException;
 import java.util.Date;
 
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
-
 public abstract interface PostInterface {
+
+    /**
+     * Returns the id of the Post.
+     *
+     * @return the id of the Post.
+     */
     public int getID();
 
+    /**
+     * sets the id of the Post.
+     *
+     * @param id
+     */
     public void setID(int id);
 
     public int getThreadID();
