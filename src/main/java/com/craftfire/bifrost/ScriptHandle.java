@@ -105,13 +105,13 @@ public class ScriptHandle implements ScriptInterface {
     }
 
     @Override
-    public ScriptUser getUser(String username) throws UnsupportedFunction {
+    public ScriptUser getUser(String username) throws UnsupportedFunction, SQLException {
         int id = this.script.getUserID(username);
         return this.getUser(id);
     }
 
     @Override
-    public ScriptUser getUser(int userid) throws UnsupportedFunction {
+    public ScriptUser getUser(int userid) throws UnsupportedFunction, SQLException {
         if (ScriptUser.hasCache(this, userid)) {
             return ScriptUser.getCache(this, userid);
         }
@@ -121,7 +121,7 @@ public class ScriptHandle implements ScriptInterface {
     }
 
     @Override
-    public ScriptUser getLastRegUser() throws UnsupportedFunction {
+    public ScriptUser getLastRegUser() throws UnsupportedFunction, SQLException {
         if (this.script.getCache().contains(CacheGroup.USER_LAST_REG)) {
             return (ScriptUser) this.script.getCache().get(CacheGroup.USER_LAST_REG);
         }
@@ -576,7 +576,7 @@ public class ScriptHandle implements ScriptInterface {
     }
 
     @Override
-    public String getUsername(int userid) throws UnsupportedFunction {
+    public String getUsername(int userid) throws UnsupportedFunction, SQLException {
         if (this.script.getCache().contains(CacheGroup.USER_USERNAME, userid)) {
             return (String) this.script.getCache().get(CacheGroup.USER_USERNAME, userid);
         }
