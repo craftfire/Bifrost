@@ -19,6 +19,12 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import java.awt.Image;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
@@ -29,19 +35,13 @@ import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.CraftCommons;
 
-import java.awt.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 public class ScriptUser {
     private int userid;
     private Date regdate, lastlogin, birthday;
     private Gender gender;
     private String username, title, nickname, realname, firstname, lastname, email, password, passwordsalt,
             statusmessage, avatarurl, profileurl, regip, lastip;
-    private boolean activated;
+    private boolean activated, anonymous;
     private List<Group> groups = new ArrayList<Group>();
     private final Script script;
 
@@ -231,6 +231,14 @@ public class ScriptUser {
         this.activated = activated;
     }
 
+    public boolean isAnonymous() {
+        return this.anonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+
     public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedFunction {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMsSent(this.username, limit);
     }
@@ -262,7 +270,9 @@ public class ScriptUser {
             return true;
         } else if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.lastip)) {
             return true;
-        } else return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.regip);
+        } else {
+            return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.regip);
+        }
     }
 
     public boolean isRegistered() throws UnsupportedFunction {
