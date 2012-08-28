@@ -19,9 +19,15 @@
  */
 package com.craftfire.bifrost.scripts.cms;
 
-import com.craftfire.bifrost.classes.*;
-import com.craftfire.bifrost.classes.Thread;
+import com.craftfire.bifrost.classes.forum.ForumPost;
+import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.general.Ban;
+import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.PrivateMessage;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.bifrost.script.Script;
+import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
 import java.util.List;
@@ -29,7 +35,7 @@ import java.util.List;
 public class Joomla extends Script {
     private final String scriptName = "joomla";
     private final String shortName = "jom";
-    private final String encryption = "sha1"; /*TODO*/
+    private final Encryption encryption = Encryption.SHA1; /*TODO*/
     private final String[] versionRanges = {"1.0.4"}; /*TODO*/
     private String currentUsername = null;
 
@@ -45,7 +51,7 @@ public class Joomla extends Script {
         return this.versionRanges[0];
     }
 
-    public String getEncryption() {
+    public Encryption getEncryption() {
         return this.encryption;
     }
 
@@ -176,36 +182,36 @@ public class Joomla extends Script {
         return 0;
     }
 
-    public Post getLastPost() {
+    public ForumPost getLastPost() {
         /*TODO*/
         return null;
     }
 
-    public Post getLastUserPost(String username) {
+    public ForumPost getLastUserPost(String username) {
         /*TODO*/
         return null;
     }
 
-    public List<Post> getPosts(int limit) {
+    public List<ForumPost> getPosts(int limit) {
         /*TODO*/
         return null;
     }
 
-    public List<Post> getPostsFromThread(int threadid, int limit) {
+    public List<ForumPost> getPostsFromThread(int threadid, int limit) {
         /*TODO*/
         return null;
     }
 
-    public Post getPost(int postid) {
+    public ForumPost getPost(int postid) {
         /*TODO*/
         return null;
     }
 
-    public void updatePost(Post post) {
+    public void updatePost(ForumPost post) {
         /*TODO*/
     }
 
-    public void createPost(Post post) {
+    public void createPost(ForumPost post) {
         /*TODO*/
     }
 
@@ -219,17 +225,17 @@ public class Joomla extends Script {
         return 0;
     }
 
-    public com.craftfire.bifrost.classes.Thread getLastThread() {
+    public ForumThread getLastThread() {
         /*TODO*/
         return null;
     }
 
-    public Thread getLastUserThread(String username) {
+    public ForumThread getLastUserThread(String username) {
         /*TODO*/
         return null;
     }
 
-    public Thread getThread(int threadid) {
+    public ForumThread getThread(int threadid) {
         /*TODO*/
         return null;
     }
@@ -239,11 +245,11 @@ public class Joomla extends Script {
         return null;
     }
 
-    public void updateThread(Thread thread) {
+    public void updateThread(ForumThread thread) {
         /*TODO*/
     }
 
-    public void createThread(Thread thread) {
+    public void createThread(ForumThread thread) {
         /*TODO*/
     }
 

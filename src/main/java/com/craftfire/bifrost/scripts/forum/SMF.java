@@ -16,10 +16,16 @@
  */
 package com.craftfire.bifrost.scripts.forum;
 
-import com.craftfire.bifrost.classes.*;
-import com.craftfire.bifrost.classes.Thread;
+import com.craftfire.bifrost.classes.forum.ForumPost;
+import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.general.Ban;
+import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.PrivateMessage;
+import com.craftfire.bifrost.classes.general.ScriptUser;
+import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
@@ -34,7 +40,7 @@ import java.util.*;
 public class SMF extends Script {
     private final String scriptName = "simplemachines";
     private final String shortName = "smf";
-    private final String encryption = "sha1";
+    private final Encryption encryption = Encryption.SHA1;
     private final String[] versionRanges = {"1.1.16", "2.0.2"};
     private String currentUsername = null;
     private String membernamefield = "member_name", groupfield = "additional_groups";
@@ -63,7 +69,7 @@ public class SMF extends Script {
         return this.shortName;
     }
 
-    public String getEncryption() {
+    public Encryption getEncryption() {
         return this.encryption;
     }
 
@@ -587,7 +593,7 @@ public class SMF extends Script {
                         "` = '" + username + "'");
     }
 
-    public Post getPost(int postid) {
+    public ForumPost getPost(int postid) {
         JTable postTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "messages` WHERE `id_msg` = '" + postid +
                         "' LIMIT 1"));
@@ -602,7 +608,7 @@ public class SMF extends Script {
             subject = postTable.getModel().getValueAt(0, 6).toString();
             body = postTable.getModel().getValueAt(0, 13).toString();
         }
-        Post post = new Post(this, postid, threadid, boardid);
+        ForumPost post = new ForumPost(this, postid, threadid, boardid);
         post.setPostDate(postdate);
         post.setAuthor(getUser(authorid));
         post.setSubject(subject);
@@ -610,19 +616,19 @@ public class SMF extends Script {
         return post;
     }
 
-    public Post getLastUserPost(String username) {
+    public ForumPost getLastUserPost(String username) {
         int userid = getUserID(username);
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `id_msg` FROM `" + this.getDataManager().getPrefix() + "messages` WHERE `id_member` = '" + userid +
                         "' ORDER BY `id_msg` ASC LIMIT 1"));
     }
 
-    public Post getLastPost() {
+    public ForumPost getLastPost() {
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `id_msg` FROM `" + this.getDataManager().getPrefix() + "messages` ORDER BY `id_msg` ASC LIMIT 1"));
     }
 
-    public List<Post> getPosts(int limit) {
+    public List<ForumPost> getPosts(int limit) {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -630,14 +636,14 @@ public class SMF extends Script {
         JTable postTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT `id_msg` FROM `" + this.getDataManager().getPrefix() + "messages` ORDER BY `id_msg` ASC" +
                         limitstring));
-        List<Post> posts = new ArrayList<Post>();
+        List<ForumPost> posts = new ArrayList<ForumPost>();
         for (int i = 0; postTable.getRowCount() > i; i++) {
             posts.add(getPost(Integer.parseInt(postTable.getModel().getValueAt(0, 0).toString())));
         }
         return posts;
     }
 
-    public List<Post> getPostsFromThread(int threadid, int limit) {
+    public List<ForumPost> getPostsFromThread(int threadid, int limit) {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -645,14 +651,14 @@ public class SMF extends Script {
         JTable postTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT `id_msg` FROM `" + this.getDataManager().getPrefix() + "messages` WHERE `id_topic` = '" + threadid +
                         "' ORDER BY `id_msg` ASC" + limitstring));
-        List<Post> posts = new ArrayList<Post>();
+        List<ForumPost> posts = new ArrayList<ForumPost>();
         for (int i = 0; postTable.getRowCount() > i; i++) {
             posts.add(getPost(Integer.parseInt(postTable.getModel().getValueAt(0, 0).toString())));
         }
         return posts;
     }
 
-    public void updatePost(Post post) throws SQLException {
+    public void updatePost(ForumPost post) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("id_topic", post.getThreadID());
         data.put("id_board", post.getBoardID());
@@ -673,7 +679,7 @@ public class SMF extends Script {
         this.getDataManager().updateFields(data, "messages", "`id_msg` = '" + post.getID() + "'");
     }
 
-    public void createPost(Post post) throws SQLException {
+    public void createPost(ForumPost post) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         post.setPostDate(new Date());
         data.put("id_topic", post.getThreadID());
@@ -743,20 +749,20 @@ public class SMF extends Script {
                         userid + "'");
     }
 
-    public Thread getLastThread() {
+    public ForumThread getLastThread() {
         return getThread(this.getDataManager().getIntegerField(
                 "SELECT `id_topic` FROM `" + this.getDataManager().getPrefix() + "topics` ORDER BY `id_topic` ASC LIMIT " +
                         "1"));
     }
 
-    public Thread getLastUserThread(String username) {
+    public ForumThread getLastUserThread(String username) {
         int userid = getUserID(username);
         return getThread(this.getDataManager().getIntegerField(
                 "SELECT `id_topic` FROM `" + this.getDataManager().getPrefix() + "topics` WHERE `id_member_started` = '" +
                         userid + "' ORDER BY `id_topic` ASC LIMIT 1"));
     }
 
-    public Thread getThread(int threadid) {
+    public ForumThread getThread(int threadid) {
         JTable threadTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "topics` WHERE `id_topic` = '" + threadid +
                         "' LIMIT 1"));
@@ -801,9 +807,9 @@ public class SMF extends Script {
                 body = postTable.getModel().getValueAt(0, 13).toString();
             }
         }
-        Thread thread = new Thread(this, firstpostid, lastpostid, threadid, boardid);
-        thread.setViews(numviews);
-        thread.setReplies(numreplies);
+        ForumThread thread = new ForumThread(this, firstpostid, lastpostid, threadid, boardid);
+        thread.setViewsCount(numviews);
+        thread.setRepliesCount(numreplies);
         thread.setLocked(locked);
         thread.setSticky(sticky);
         thread.setPoll(poll);
@@ -814,7 +820,7 @@ public class SMF extends Script {
         return thread;
     }
 
-    public List<Thread> getThreads(int limit) {
+    public List<ForumThread> getThreads(int limit) {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -822,14 +828,14 @@ public class SMF extends Script {
         JTable postTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT `id_topic` FROM `" + this.getDataManager().getPrefix() + "topics` ORDER BY `id_topic` ASC" +
                         limitstring));
-        List<Thread> threads = new ArrayList<Thread>();
+        List<ForumThread> threads = new ArrayList<ForumThread>();
         for (int i = 0; postTable.getRowCount() > i; i++) {
             threads.add(getThread(Integer.parseInt(postTable.getModel().getValueAt(0, 0).toString())));
         }
         return threads;
     }
 
-    public void updateThread(Thread thread) throws SQLException, UnsupportedFunction {
+    public void updateThread(ForumThread thread) throws SQLException, UnsupportedFunction {
         String temp;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("id_board", thread.getBoardID());
@@ -849,8 +855,8 @@ public class SMF extends Script {
                 temp = "0";
             }
             data.put("issticky", temp);
-            data.put("numreplies", thread.getReplies());
-            data.put("numviews", thread.getViews());
+            data.put("numreplies", thread.getRepliesCount());
+            data.put("numviews", thread.getViewsCount());
         } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
             if (thread.isSticky()) {
                 temp = "1";
@@ -858,8 +864,8 @@ public class SMF extends Script {
                 temp = "0";
             }
             data.put("is_sticky", temp);
-            data.put("num_replies", thread.getReplies());
-            data.put("num_views", thread.getViews());
+            data.put("num_replies", thread.getRepliesCount());
+            data.put("num_views", thread.getViewsCount());
         }
         if (thread.isLocked()) {
             temp = "1";
@@ -870,7 +876,7 @@ public class SMF extends Script {
         this.getDataManager().updateFields(data, "topics", "`id_topic` = '" + thread.getID() + "'");
     }
 
-    public void createThread(Thread thread) throws SQLException, UnsupportedFunction {
+    public void createThread(ForumThread thread) throws SQLException, UnsupportedFunction {
         HashMap<String, Object> data = new HashMap<String, Object>();
         thread.setThreadDate(new Date());
         data.put("id_board", thread.getBoardID());
@@ -891,7 +897,7 @@ public class SMF extends Script {
         this.getDataManager().insertFields(data, "topics");
         thread.setID(this.getDataManager().getLastID("id_topic", "topics"));
 
-        Post post = new Post(this, thread.getID(), thread.getBoardID());
+        ForumPost post = new ForumPost(this, thread.getID(), thread.getBoardID());
         post.setAuthor(thread.getAuthor());
         post.setBody(thread.getBody());
         post.setSubject(thread.getSubject());

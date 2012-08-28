@@ -1,8 +1,5 @@
 /*
- * This file is part of Bifrost.
- *
- * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
- * Bifrost is licensed under the GNU Lesser General Public License.
+ * This file is part of Bifrost <http://www.craftfire.com/>.
  *
  * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,8 +14,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.classes;
+package com.craftfire.bifrost.script;
 
-public enum Gender {
-    MALE, FEMALE, UNKNOWN
+import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.commons.managers.DataManager;
+
+public class CMSScript extends Script {
+    protected CMSScript(Scripts script, String version, DataManager dataManager) {
+        super(script, version, dataManager);
+    }
 }

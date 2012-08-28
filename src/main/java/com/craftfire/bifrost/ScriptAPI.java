@@ -19,11 +19,13 @@
  */
 package com.craftfire.bifrost;
 
-import com.craftfire.bifrost.classes.Script;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
+import com.craftfire.bifrost.handles.ForumHandle;
+import com.craftfire.bifrost.handles.ScriptHandle;
+import com.craftfire.bifrost.script.Script;
 import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
 import com.craftfire.commons.managers.DataManager;
@@ -34,7 +36,7 @@ import java.util.HashMap;
 
 public class ScriptAPI {
     private HashMap<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
-    private ScriptHandle lastHandle;
+    private ScriptHandle lastHandle = null;
 
     public Bifrost getBifrost() {
         return Bifrost.getInstance();
@@ -53,10 +55,10 @@ public class ScriptAPI {
      */
     public static Scripts stringToScript(String string) throws UnsupportedScript {
         for (Scripts script : Scripts.values()) {
-            if (string.equalsIgnoreCase(script.toString()) || string.equalsIgnoreCase(script.alias)) {
+            if (string.equalsIgnoreCase(script.toString()) || string.equalsIgnoreCase(script.getAlias())) {
                 return script;
-            } else if (script.alias.contains(",")) {
-                String[] aliases = script.alias.split(",");
+            } else if (script.getAlias().contains(",")) {
+                String[] aliases = script.getAlias().split(",");
                 for (String alias : aliases) {
                     if (string.equalsIgnoreCase(alias)) {
                         return script;
@@ -83,18 +85,27 @@ public class ScriptAPI {
     }
 
     public ScriptHandle getHandle(Scripts script) {
-        if (this.handles.containsKey(script)) {
+        if (handleExists(script)) {
             return this.handles.get(script);
         } else {
             return null;
         }
     }
 
-    public ScriptHandle getHandle() {
-        if (this.lastHandle != null) {
-            return this.lastHandle;
+    public ForumHandle getForumHandle(Scripts script) {
+        if (handleExists(script)) {
+            return (ForumHandle) this.handles.get(script);
+        } else {
+            return null;
         }
-        return null;
+    }
+
+    public ScriptHandle getHandle() {
+        return this.lastHandle;
+    }
+
+    public ForumHandle getForumHandle() {
+        return (ForumHandle) this.lastHandle;
     }
 
     public void addHandle(String script, String version, DataManager dataManager) throws UnsupportedScript,
@@ -111,8 +122,19 @@ public class ScriptAPI {
         this.lastHandle = handle;
     }
 
+    public void addCustomHandle(Script script) throws UnsupportedScript, UnsupportedVersion {
+        ScriptHandle handle = new ScriptHandle(script);
+        this.handles.put(handle.getScript().getScript(), handle);
+        this.lastHandle = handle;
+    }
+
+
     public boolean convert(ScriptHandle from, ScriptHandle to) throws SQLException, UnsupportedFunction {
         //TODO: Create script converter, need to add methods to scripts
         return false;
+    }
+    
+    protected boolean handleExists(Scripts script) {
+        return this.handles.containsKey(script);
     }
 }

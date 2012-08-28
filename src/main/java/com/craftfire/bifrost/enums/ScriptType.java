@@ -19,23 +19,6 @@
  */
 package com.craftfire.bifrost.enums;
 
-public enum Scripts {
-    SMF("simplemachines", ScriptType.FORUM),
-    XF("xenforo", ScriptType.FORUM);
-
-    private final String alias;
-    private final ScriptType type;
-    
-    Scripts(String alias, ScriptType type) {
-        this.alias = alias;
-        this.type = type;
-    }
-    
-    public String getAlias() {
-        return this.alias;
-    }
-    
-    public ScriptType getType() {
-        return this.type;
-    }
+public enum ScriptType {
+    CMS, FORUM, ISSUE_TRACKER, WIKI
 }

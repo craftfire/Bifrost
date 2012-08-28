@@ -16,10 +16,16 @@
  */
 package com.craftfire.bifrost.scripts.forum;
 
-import com.craftfire.bifrost.classes.*;
-import com.craftfire.bifrost.classes.Thread;
+import com.craftfire.bifrost.classes.forum.ForumPost;
+import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.general.Ban;
+import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.PrivateMessage;
+import com.craftfire.bifrost.classes.general.ScriptUser;
+import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.script.ForumScript;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
@@ -36,10 +42,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 //TODO: Convert arrays to use Result class
-public class XenForo extends Script {
+public class XenForo extends ForumScript {
     private final String scriptName = "xenforo";
     private final String shortName = "xf";
-    private final String encryption = "sha1";
+    private final Encryption encryption = Encryption.SHA1;
     private final String[] versionRanges = {"1.0.4", "1.1.2"};
     private String currentUsername = null;
 
@@ -55,7 +61,7 @@ public class XenForo extends Script {
         return this.versionRanges[0];
     }
 
-    public String getEncryption() {
+    public Encryption getEncryption() {
         return this.encryption;
     }
 
@@ -682,18 +688,18 @@ public class XenForo extends Script {
         return this.getDataManager().getCount("post", "`position` != '0'");
     }
 
-    public Post getLastPost() {
+    public ForumPost getLastPost() {
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `post_id` FROM `" + this.getDataManager().getPrefix() + "post` ORDER BY `post_id` ASC LIMIT 1"));
     }
 
-    public Post getLastUserPost(String username) {
+    public ForumPost getLastUserPost(String username) {
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `post_id` FROM `" + this.getDataManager().getPrefix() + "post` WHERE `user_id` = '" +
                         getUserID(username) + "' AND `position` != '0' ORDER BY `post_id` ASC LIMIT 1"));
     }
 
-    public List<Post> getPosts(int limit) {
+    public List<ForumPost> getPosts(int limit) {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -701,14 +707,14 @@ public class XenForo extends Script {
         List<HashMap<String, Object>> array =
                 this.getDataManager().getArrayList("SELECT `post_id` FROM `" + this.getDataManager().getPrefix() +
                         "post` ORDER BY `post_id` ASC" + limitstring);
-        List<Post> posts = new ArrayList<Post>();
+        List<ForumPost> posts = new ArrayList<ForumPost>();
         for (HashMap<String, Object> map : array) {
             posts.add(getPost(Integer.parseInt(map.get("post_id").toString())));
         }
         return posts;
     }
 
-    public List<Post> getPostsFromThread(int threadid, int limit) {
+    public List<ForumPost> getPostsFromThread(int threadid, int limit) {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -717,22 +723,22 @@ public class XenForo extends Script {
                 this.getDataManager().getArrayList("SELECT `post_id` FROM `" + this.getDataManager().getPrefix() +
                         "post` WHERE `thread_id` = '" + threadid + "' ORDER BY `post_id` ASC" +
                         limitstring);
-        List<Post> posts = new ArrayList<Post>();
+        List<ForumPost> posts = new ArrayList<ForumPost>();
         for (HashMap<String, Object> map : array) {
             posts.add(getPost(Integer.parseInt(map.get("post_id").toString())));
         }
         return posts;
     }
 
-    public Post getPost(int postid) {
+    public ForumPost getPost(int postid) {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "post` WHERE `post_id` = '" + postid + "' LIMIT 1");
         int nodeID = this.getDataManager().getIntegerField("thread", "node_id", "`thread_id` = '" +
                 Integer.parseInt(array.get("thread_id")
                         .toString()) +
                 "'");
-        Post post =
-                new Post(this, Integer.parseInt(array.get("post_id").toString()),
+        ForumPost post =
+                new ForumPost(this, Integer.parseInt(array.get("post_id").toString()),
                         Integer.parseInt(array.get("thread_id").toString()), nodeID);
         post.setBody(array.get("message").toString());
         post.setAuthor(getUser(Integer.parseInt(array.get("user_id").toString())));
@@ -740,7 +746,7 @@ public class XenForo extends Script {
         return post;
     }
 
-    public void updatePost(Post post) throws SQLException {
+    public void updatePost(ForumPost post) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
         data.put("user_id", post.getAuthor().getID());
@@ -754,7 +760,7 @@ public class XenForo extends Script {
         data.clear();
     }
 
-    public void createPost(Post post) throws SQLException {
+    public void createPost(ForumPost post) throws SQLException {
         int ipID = this.insertIP(post.getAuthor(), "post", "insert");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
@@ -813,23 +819,23 @@ public class XenForo extends Script {
         return this.getDataManager().getCount("thread");
     }
 
-    public Thread getLastThread() {
+    public ForumThread getLastThread() {
         return getThread(this.getDataManager().getIntegerField("SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() +
                 "thread` ORDER BY `thread_id` ASC LIMIT 1"));
     }
 
-    public Thread getLastUserThread(String username) {
+    public ForumThread getLastUserThread(String username) {
         return getThread(this.getDataManager().getIntegerField(
                 "SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `user_id` = '" +
                         getUserID(username) + "' ORDER BY `thread_id` ASC LIMIT 1"));
     }
 
-    public Thread getThread(int threadid) {
+    public ForumThread getThread(int threadid) {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `thread_id` = '" + threadid +
                         "' LIMIT 1");
-        Thread thread =
-                new Thread(this, Integer.parseInt(array.get("first_post_id").toString()),
+        ForumThread thread =
+                new ForumThread(this, Integer.parseInt(array.get("first_post_id").toString()),
                         Integer.parseInt(array.get("last_post_id").toString()),
                         Integer.parseInt(array.get("thread_id").toString()), Integer.parseInt(array.get("node_id")
                         .toString()));
@@ -847,12 +853,12 @@ public class XenForo extends Script {
         } else {
             thread.setSticky(false);
         }
-        thread.setReplies(Integer.parseInt(array.get("reply_count").toString()));
-        thread.setViews(Integer.parseInt(array.get("view_count").toString()));
+        thread.setRepliesCount(Integer.parseInt(array.get("reply_count").toString()));
+        thread.setViewsCount(Integer.parseInt(array.get("view_count").toString()));
         return thread;
     }
 
-    public List<Thread> getThreads(int limit) {
+    public List<ForumThread> getThreads(int limit) {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -860,19 +866,19 @@ public class XenForo extends Script {
         List<HashMap<String, Object>> array =
                 this.getDataManager().getArrayList("SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() +
                         "thread` ORDER BY `thread_id` ASC" + limitstring);
-        List<Thread> threads = new ArrayList<Thread>();
+        List<ForumThread> threads = new ArrayList<ForumThread>();
         for (HashMap<String, Object> map : array) {
             threads.add(getThread(Integer.parseInt(map.get("thread_id").toString())));
         }
         return threads;
     }
 
-    public void updateThread(Thread thread) throws SQLException, UnsupportedFunction {
+    public void updateThread(ForumThread thread) throws SQLException, UnsupportedFunction {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
         data.put("title", thread.getSubject());
-        data.put("reply_count", thread.getReplies());
-        data.put("view_count", thread.getViews());
+        data.put("reply_count", thread.getRepliesCount());
+        data.put("view_count", thread.getViewsCount());
         data.put("user_id", thread.getAuthor().getID());
         data.put("username", thread.getAuthor().getUsername());
         data.put("post_date", thread.getThreadDate().getTime() / 1000);
@@ -894,7 +900,7 @@ public class XenForo extends Script {
         this.getDataManager().updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
     }
 
-    public void createThread(Thread thread) throws SQLException, UnsupportedFunction {
+    public void createThread(ForumThread thread) throws SQLException, UnsupportedFunction {
         this.insertIP(thread.getAuthor(), "thread", "insert");
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -921,7 +927,7 @@ public class XenForo extends Script {
         thread.setID(threadID);
         this.addSearch(thread.getAuthor(), "thread", thread.getBoardID(), thread.getID(),
                 thread.getSubject(), thread.getBody());
-        Post post = new Post(this, thread.getID(), thread.getBoardID());
+        ForumPost post = new ForumPost(this, thread.getID(), thread.getBoardID());
         post.setAuthor(thread.getAuthor());
         post.setBody(thread.getBody());
         post.setSubject(thread.getSubject());

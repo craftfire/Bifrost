@@ -19,12 +19,17 @@
  */
 package com.craftfire.bifrost;
 
-import com.craftfire.bifrost.classes.*;
-import com.craftfire.bifrost.classes.Thread;
+import com.craftfire.bifrost.classes.forum.ForumPost;
+import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.general.Ban;
+import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.PrivateMessage;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
+import com.craftfire.bifrost.handles.ForumHandle;
 import com.craftfire.commons.enums.DataType;
 import com.craftfire.commons.managers.DataManager;
 
@@ -182,8 +187,8 @@ public class BifrostDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - SCRIPT CLASS");
-			ScriptHandle tscript = bifrost.getScriptAPI().getHandle(script);
-			printResult("getEncryption", tscript.getEncryption());
+			ForumHandle tscript = bifrost.getScriptAPI().getForumHandle(script);
+			printResult("getEncryption", "" + tscript.getEncryption());
 			printResult("getLatestVersion", tscript.getLatestVersion());
 			printResult("getScriptName", tscript.getScriptName());
 			printResult("getScriptShortname", tscript.getScriptShortname());
@@ -292,7 +297,7 @@ public class BifrostDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - BAN CREATE");
-			Ban newBan = bifrost.getScriptAPI().getHandle(script).newBan("craftfire-ban-" + randomInt, "dev@craftfire.com", "127.0.0.1");
+			Ban newBan = bifrost.getScriptAPI().getForumHandle(script).newBan("craftfire-ban-" + randomInt, "dev@craftfire.com", "127.0.0.1");
 			newBan.setNotes("Staff notes");
 			newBan.setReason("Hello world!");
 			newBan.addBan();
@@ -319,14 +324,14 @@ public class BifrostDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - GROUP CREATE");
-			Group newGroup = bifrost.getScriptAPI().getHandle(script).newGroup("craftfire_group_" + randomInt);
+			Group newGroup = bifrost.getScriptAPI().getForumHandle(script).newGroup("craftfire_group_" + randomInt);
 			newGroup.setDescription("Description is not needed!");
 			newGroup.createGroup();
 
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - POST CLASS");
-			Post post = user.getLastPost();
+			ForumPost post = user.getLastPost();
 			printResult("getAuthor", "" + post.getAuthor());
 			printResult("getBody", post.getBody());
 			printResult("getSubject", post.getSubject());
@@ -347,7 +352,7 @@ public class BifrostDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - POST CREATE");
-			Post newPost = bifrost.getScriptAPI().getHandle(script).newPost(1, 2);
+            ForumPost newPost = bifrost.getScriptAPI().getForumHandle(script).newPost(1, 2);
 			newPost.setBody("Test: This it the body of the post?!");
 			newPost.setAuthor(bifrost.getScriptAPI().getHandle(script).getUser("craftfire" + randomInt));
 			newPost.setSubject("Test " + randomInt + ": This is the subject of the post!");
@@ -389,7 +394,7 @@ public class BifrostDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - THREAD CLASS");
-			Thread thread = bifrost.getScriptAPI().getHandle(script).getLastThread();
+			ForumThread thread = bifrost.getScriptAPI().getForumHandle(script).getLastThread();
 			printResult("getAuthor", "" + thread.getAuthor());
 			printResult("getBody", thread.getBody());
 			printResult("getSubject", thread.getSubject());
@@ -397,10 +402,10 @@ public class BifrostDebug {
 			printResult("getFirstPost", "" + thread.getFirstPost());
 			printResult("getLastPost", "" + thread.getLastPost());
 			printResult("getPosts", "" + thread.getPosts(0));
-			printResult("getReplies", "" + thread.getReplies());
+			printResult("getReplies", "" + thread.getRepliesCount());
 			printResult("getThreadDate", "" + thread.getThreadDate());
 			printResult("getThreadID", "" + thread.getID());
-			printResult("getViews", "" + thread.getViews());
+			printResult("getViews", "" + thread.getViewsCount());
 
 			print(seperate);
 
@@ -414,7 +419,7 @@ public class BifrostDebug {
 			print(seperate);
 
 			print(script.toString() + " - " + version + " - THREAD CREATE");
-			Thread newThread = bifrost.getScriptAPI().getHandle(script).newThread(2);
+            ForumThread newThread = bifrost.getScriptAPI().getForumHandle(script).newThread(2);
 			newThread.setBody("Test: " + randomInt + " This it the body of the thread?!");
 			newThread.setAuthor(bifrost.getScriptAPI().getHandle(script).getUser("craftfire" + randomInt));
 			newThread.setSubject("Test: " + randomInt + " This is the subject of the thread!");

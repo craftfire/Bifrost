@@ -17,19 +17,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.classes;
+package com.craftfire.bifrost.classes.general;
 
 import com.craftfire.bifrost.Bifrost;
-import com.craftfire.bifrost.ScriptHandle;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.handles.ScriptHandle;
+import com.craftfire.bifrost.script.Script;
 
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class PrivateMessage implements PrivateMessageInterface {
+public class PrivateMessage {
     private int pmid;
     private String subject, body;
     private ScriptUser sender;
@@ -52,77 +53,67 @@ public class PrivateMessage implements PrivateMessageInterface {
         this.recipients = recipients;
     }
 
-    @Override
+    /**
+     * Returns the ID of the PrivateMessage, this is unique per PrivateMessage.
+     *
+     * @return ID of the PrivateMessage
+     */
     public int getID() {
         return this.pmid;
     }
 
-    @Override
     public void setID(int id) {
         this.pmid = id;
     }
 
-    @Override
     public ScriptUser getSender() {
         return this.sender;
     }
 
-    @Override
     public void setSender(ScriptUser user) {
         this.sender = user;
     }
 
-    @Override
     public List<ScriptUser> getRecipients() {
         return this.recipients;
     }
 
-    @Override
     public void setRecipients(List<ScriptUser> users) {
         this.recipients = users;
     }
 
-    @Override
     public Date getDate() {
         return this.date;
     }
 
-    @Override
     public void setDate(Date date) {
         this.date = date;
     }
 
-    @Override
     public String getSubject() {
         return this.subject;
     }
 
-    @Override
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
-    @Override
     public String getBody() {
         return this.body;
     }
 
-    @Override
     public void setBody(String body) {
         this.body = body;
     }
 
-    @Override
     public boolean isDeletedBySender() {
         return this.deletedbysender;
     }
 
-    @Override
     public void setDeletedBySender(boolean deleted) {
         this.deletedbysender = deleted;
     }
 
-    @Override
     public boolean isRead(ScriptUser recipient) {
         if (this.read.containsKey(recipient)) {
             return this.read.get(recipient);
@@ -130,12 +121,10 @@ public class PrivateMessage implements PrivateMessageInterface {
         return false;
     }
 
-    @Override
     public void setRead(ScriptUser recipient, boolean read) {
         this.read.put(recipient, read);
     }
 
-    @Override
     public boolean isNew(ScriptUser recipient) {
         if (this.isnew.containsKey(recipient)) {
             return this.isnew.get(recipient);
@@ -143,12 +132,10 @@ public class PrivateMessage implements PrivateMessageInterface {
         return false;
     }
 
-    @Override
     public void setNew(ScriptUser recipient, boolean isnew) {
         this.isnew.put(recipient, isnew);
     }
 
-    @Override
     public boolean isDeleted(ScriptUser recipient) {
         if (this.deleted.containsKey(recipient)) {
             return this.deleted.get(recipient);
@@ -156,17 +143,14 @@ public class PrivateMessage implements PrivateMessageInterface {
         return false;
     }
 
-    @Override
     public void setDeleted(ScriptUser recipient, boolean deleted) {
         this.deleted.put(recipient, deleted);
     }
 
-    @Override
     public void updatePrivateMessage() throws SQLException, UnsupportedFunction {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updatePrivateMessage(this);
     }
 
-    @Override
     public void createPrivateMessage() throws SQLException, UnsupportedFunction {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createPrivateMessage(this);
     }
@@ -181,10 +165,9 @@ public class PrivateMessage implements PrivateMessageInterface {
 
     @SuppressWarnings("unchecked")
     public static PrivateMessage getCache(ScriptHandle handle, Object id) {
-        PrivateMessage temp = null;
         if (handle.getCache().contains(CacheGroup.PM, id)) {
-            temp = (PrivateMessage) handle.getCache().get(CacheGroup.PM, id);
+            return (PrivateMessage) handle.getCache().get(CacheGroup.PM, id);
         }
-        return temp;
+        return null;
     }
 }

@@ -28,7 +28,7 @@ public class Bifrost {
     public Bifrost() {
         this.scriptAPI = new ScriptAPI();
         instance = this;
-        this.loggingManager.debug("Initialized Bifrost version " + this.version);
+        this.loggingManager.info("Initialized Bifrost version " + this.version);  //TODO
     }
 
     public static Bifrost getInstance() {
