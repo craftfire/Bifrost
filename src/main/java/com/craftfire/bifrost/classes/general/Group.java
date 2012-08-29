@@ -19,16 +19,16 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
-import java.sql.SQLException;
-import java.util.List;
-
-public class Group {
+public class Group implements IDable {
     private int groupid, usercount;
     private String groupname, groupdescription;
     private List<ScriptUser> users;
@@ -45,6 +45,7 @@ public class Group {
         this.groupname = groupname;
     }
 
+    @Override
     public int getID() {
         return this.groupid;
     }

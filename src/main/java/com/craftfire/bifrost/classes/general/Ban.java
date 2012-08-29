@@ -19,16 +19,16 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import java.sql.SQLException;
+import java.util.Date;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
-import java.sql.SQLException;
-import java.util.Date;
-
-public class Ban {
+public class Ban implements IDable {
     private String name, email, ip, reason, notes;
     private int banid, userid;
     private Date startdate, enddate;
@@ -49,6 +49,7 @@ public class Ban {
         this.ip = ip;
     }
 
+    @Override
     public int getID() {
         return this.banid;
     }
