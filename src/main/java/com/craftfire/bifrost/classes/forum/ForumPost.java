@@ -30,7 +30,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
-public class ForumPost extends Message{
+public class ForumPost extends Message {
     private String subject;
     private final int threadid, boardid;
 
@@ -51,6 +51,7 @@ public class ForumPost extends Message{
         return super.getID();
     }
 
+    @Override
     public void setID(int id) {
         super.setID(id);
     }
