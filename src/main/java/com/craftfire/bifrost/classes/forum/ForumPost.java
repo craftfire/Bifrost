@@ -20,6 +20,7 @@
 package com.craftfire.bifrost.classes.forum;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
@@ -29,33 +30,28 @@ import com.craftfire.bifrost.script.Script;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class ForumPost {
-    private ScriptUser author;
-    private String subject, body;
-    private int postid;
+public class ForumPost extends Message{
+    private String subject;
     private final int threadid, boardid;
-    private Date postdate;
-    private final Script script;
 
     public ForumPost(Script script, int postid, int threadid, int boardid) {
-        this.script = script;
-        this.postid = postid;
+        super(script, postid);
         this.threadid = threadid;
         this.boardid = boardid;
     }
 
     public ForumPost(Script script, int threadid, int boardid) {
-        this.script = script;
+        super(script);
         this.threadid = threadid;
         this.boardid = boardid;
     }
 
     public int getID() {
-        return this.postid;
+        return super.getID();
     }
 
     public void setID(int id) {
-        this.postid = id;
+        super.setID(id);
     }
 
     public int getThreadID() {
@@ -67,23 +63,23 @@ public class ForumPost {
     }
 
     public ForumThread getThread() throws UnsupportedFunction {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getThread(this.threadid);
+        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThread(this.threadid);
     }
 
     public Date getPostDate() {
-        return this.postdate;
+        return getDate();
     }
 
     public void setPostDate(Date postdate) {
-        this.postdate = postdate;
+        setDate(postdate);
     }
 
     public ScriptUser getAuthor() {
-        return this.author;
+        return super.getAuthor();
     }
 
     public void setAuthor(ScriptUser author) {
-        this.author = author;
+        super.setAuthor(author);
     }
 
     public String getSubject() {
@@ -95,19 +91,19 @@ public class ForumPost {
     }
 
     public String getBody() {
-        return this.body;
+        return super.getBody();
     }
 
     public void setBody(String body) {
-        this.body = body;
+        super.setBody(body);
     }
 
     public void updatePost() throws SQLException, UnsupportedFunction {
-        Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).updatePost(this);
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updatePost(this);
     }
 
     public void createPost() throws SQLException, UnsupportedFunction {
-        Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).createPost(this);
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createPost(this);
     }
 
     public static boolean hasCache(ScriptHandle handle, Object id) {
@@ -118,7 +114,6 @@ public class ForumPost {
         handle.getCache().put(CacheGroup.POST, post.getID(), post);
     }
 
-    @SuppressWarnings("unchecked")
     public static ForumPost getCache(ScriptHandle handle, Object id) {
         ForumPost temp = null;
         if (handle.getCache().contains(CacheGroup.POST, id)) {
