@@ -19,22 +19,41 @@
  */
 package com.craftfire.bifrost.enums;
 
+/**
+ * This enum holds all the different supported scripts.
+ */
 public enum Scripts {
     SMF("simplemachines", ScriptType.FORUM),
     XF("xenforo", ScriptType.FORUM);
 
     private final String alias;
     private final ScriptType type;
-    
+
+    /**
+     * Construct the script, we have to define the alias and {@link ScriptType}  .
+     *
+     * @param alias the alias of the script
+     * @param type the {@link ScriptType} of the script
+     */
     Scripts(String alias, ScriptType type) {
         this.alias = alias;
         this.type = type;
     }
-    
+
+    /**
+     * Returns the alias of the script, the alias is the full length name of the script.
+     *
+     * @return alias of the script
+     */
     public String getAlias() {
         return this.alias;
     }
-    
+
+    /**
+     * Returns the {@link ScriptType} of the script.
+     *
+     * @return {@link ScriptType}
+     */
     public ScriptType getType() {
         return this.type;
     }

@@ -19,6 +19,9 @@
  */
 package com.craftfire.bifrost.enums;
 
+/**
+ * This enum holds all the different script types.
+ */
 public enum ScriptType {
     CMS, FORUM, ISSUE_TRACKER, WIKI
 }

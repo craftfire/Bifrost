@@ -37,6 +37,9 @@ import com.craftfire.commons.managers.DataManager;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * @see Script
+ */
 public class ScriptHandle {
     public Script script;
     public Scripts scriptName;

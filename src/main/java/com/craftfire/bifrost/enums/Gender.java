@@ -19,6 +19,9 @@
  */
 package com.craftfire.bifrost.enums;
 
+/**
+ * This enum holds all the different genders.
+ */
 public enum Gender {
     MALE, FEMALE, UNKNOWN
 }
