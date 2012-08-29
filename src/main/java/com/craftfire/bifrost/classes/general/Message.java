@@ -8,7 +8,7 @@ import com.craftfire.bifrost.script.Script;
  * Base class for all messages like Thread, Post, Article, Comment,
  * PrivateMessage, etc. Should not be instanced.
  */
-public abstract class Message {
+public abstract class Message implements IDable {
     private int msgid;
     private ScriptUser author;
     private Date date;
@@ -39,6 +39,7 @@ public abstract class Message {
      * 
      * @return the ID of the message
      */
+    @Override
     public int getID() {
         return this.msgid;
     }

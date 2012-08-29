@@ -19,6 +19,9 @@
  */
 package com.craftfire.bifrost.classes.forum;
 
+import java.sql.SQLException;
+import java.util.Date;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ScriptUser;
@@ -26,9 +29,6 @@ import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
-
-import java.sql.SQLException;
-import java.util.Date;
 
 public class ForumPost extends Message{
     private String subject;
@@ -46,6 +46,7 @@ public class ForumPost extends Message{
         this.boardid = boardid;
     }
 
+    @Override
     public int getID() {
         return super.getID();
     }
@@ -74,10 +75,12 @@ public class ForumPost extends Message{
         setDate(postdate);
     }
 
+    @Override
     public ScriptUser getAuthor() {
         return super.getAuthor();
     }
 
+    @Override
     public void setAuthor(ScriptUser author) {
         super.setAuthor(author);
     }
@@ -90,10 +93,12 @@ public class ForumPost extends Message{
         this.subject = subject;
     }
 
+    @Override
     public String getBody() {
         return super.getBody();
     }
 
+    @Override
     public void setBody(String body) {
         super.setBody(body);
     }

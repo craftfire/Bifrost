@@ -19,6 +19,9 @@
  */
 package com.craftfire.bifrost.handles;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.craftfire.bifrost.ScriptAPI;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -33,9 +36,6 @@ import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * @see Script
