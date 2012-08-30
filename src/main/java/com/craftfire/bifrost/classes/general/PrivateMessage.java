@@ -19,37 +19,32 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-public class PrivateMessage {
-    private int pmid;
-    private String subject, body;
-    private ScriptUser sender;
+public class PrivateMessage extends Message {
+    private String subject;
     private List<ScriptUser> recipients;
     private HashMap<ScriptUser, Boolean> isnew = new HashMap<ScriptUser, Boolean>();
     private HashMap<ScriptUser, Boolean> read = new HashMap<ScriptUser, Boolean>();
     private HashMap<ScriptUser, Boolean> deleted = new HashMap<ScriptUser, Boolean>();
-    private Date date;
     private boolean deletedbysender;
-    private final Script script;
 
     public PrivateMessage(Script script, int pmid) {
-        this.script = script;
-        this.pmid = pmid;
+        super(script, pmid);
     }
 
     public PrivateMessage(Script script, ScriptUser sender, List<ScriptUser> recipients) {
-        this.script = script;
-        this.sender = sender;
+        super(script);
+        setAuthor(sender);
         this.recipients = recipients;
     }
 
@@ -58,20 +53,22 @@ public class PrivateMessage {
      *
      * @return ID of the PrivateMessage
      */
+    @Override
     public int getID() {
-        return this.pmid;
+        return super.getID();
     }
 
+    @Override
     public void setID(int id) {
-        this.pmid = id;
+        super.setID(id);
     }
 
     public ScriptUser getSender() {
-        return this.sender;
+        return getAuthor();
     }
 
     public void setSender(ScriptUser user) {
-        this.sender = user;
+        setAuthor(user);
     }
 
     public List<ScriptUser> getRecipients() {
@@ -82,12 +79,14 @@ public class PrivateMessage {
         this.recipients = users;
     }
 
+    @Override
     public Date getDate() {
-        return this.date;
+        return super.getDate();
     }
 
+    @Override
     public void setDate(Date date) {
-        this.date = date;
+        super.setDate(date);
     }
 
     public String getSubject() {
@@ -98,12 +97,14 @@ public class PrivateMessage {
         this.subject = subject;
     }
 
+    @Override
     public String getBody() {
-        return this.body;
+        return super.getBody();
     }
 
+    @Override
     public void setBody(String body) {
-        this.body = body;
+        setBody(body);
     }
 
     public boolean isDeletedBySender() {
@@ -148,11 +149,11 @@ public class PrivateMessage {
     }
 
     public void updatePrivateMessage() throws SQLException, UnsupportedFunction {
-        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updatePrivateMessage(this);
+        Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).updatePrivateMessage(this);
     }
 
     public void createPrivateMessage() throws SQLException, UnsupportedFunction {
-        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createPrivateMessage(this);
+        Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).createPrivateMessage(this);
     }
 
     public static boolean hasCache(ScriptHandle handle, Object id) {

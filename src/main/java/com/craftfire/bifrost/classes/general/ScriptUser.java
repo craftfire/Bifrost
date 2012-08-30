@@ -35,7 +35,7 @@ import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.CraftCommons;
 
-public class ScriptUser {
+public class ScriptUser implements IDable {
     private int userid;
     private Date regdate, lastlogin, birthday;
     private Gender gender;
@@ -62,6 +62,7 @@ public class ScriptUser {
         return this.username;
     }
 
+    @Override
     public int getID() {
         return this.userid;
     }

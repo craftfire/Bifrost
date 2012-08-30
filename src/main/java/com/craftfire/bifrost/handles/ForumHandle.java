@@ -19,6 +19,9 @@
  */
 package com.craftfire.bifrost.handles;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -29,9 +32,6 @@ import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.ForumScript;
 import com.craftfire.commons.managers.DataManager;
-
-import java.sql.SQLException;
-import java.util.List;
 
 public class ForumHandle extends ScriptHandle {
 
