@@ -21,7 +21,6 @@ package com.craftfire.bifrost.classes.forum;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
-import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -32,15 +31,20 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class contains functions and data that are related to a thread/topic.
+ * This class should only be used with a forum thread/topic.
+ * <p>
+ * The first constructor should only be used by the script itself and not by the library user.
+ * To update any changed values in the thread, run {@see #updateThread()}.
+ * <p>
+ * When creating a new ForumThread make sure you use the correct constructor:
+ * {@see #ForumThread(com.craftfire.bifrost.script.Script, int)}.
+ * <p>
+ * Remember to run {@see #createThread()} after creating a thread to insert it into the script.
  */
 public class ForumThread extends Message {
-    private ScriptUser author;
-    private String subject;
     private int firstpostid, lastpostid;
     private final int boardid;
     private int threadviews, threadreplies;
-    private Date threaddate;
     private boolean locked, poll, sticky;
 
     public ForumThread(Script script, int firstpostid, int lastpostid, int threadid, int boardid) {
@@ -55,43 +59,33 @@ public class ForumThread extends Message {
         this.boardid = boardid;
     }
 
-    /**
-     * Returns the ID of the thread.
-     *
-     * @return ID of the thread
-     */
     @Override
     public int getID() {
-        return getID();
+        return super.getID();
     }
 
-    /**
-     * Sets the ID of the thread, should only be used when creating a new Thread.
-     *
-     * @param id the ID of the thread.
-     */
     @Override
     public void setID(int id) {
-        setID(id);
+        super.setID(id);
     }
 
     /**
-     * Gets the board/category ID of the thread.
+     * Returns the ID of the board that the thread is posted in.
      *
-     * @return board/category ID of the thread, 0 if error.
+     * @return the ID of the board
      */
     public int getBoardID() {
         return this.boardid;
     }
 
     /**
-     * Returns a List of Post's depending on the limit, limit = 0 returns all posts.
+     * Returns a List of {@link ForumPost}'s depending on the limit, <code>limit = 0</code> returns all the posts.
+     * <p>
      * List will be empty if there were no posts.
      *
-     * @param limit how many posts that should be returned, 0 = returns all.
-     * @return a List of Post's
-     * @see List
-     * @see ForumPost
+     * @param limit  how many ForumPosts that should be returned, 0 = returns all.
+     * @return       a List of ForumPost's
+     * @see          ForumPost
      */
     public List<ForumPost> getPosts(int limit) throws UnsupportedFunction {
         return Bifrost.getInstance().getScriptAPI()
@@ -100,10 +94,11 @@ public class ForumThread extends Message {
     }
 
     /**
-     * Returns the first Post of the thread, null if error.
+     * Returns the first Post of the thread.
      *
-     * @return first Post of the thread, null if error.
-     * @see ForumPost
+     * @return  first ForumPost of the thread
+     * @throws  UnsupportedFunction if the method is not supported by the script
+     * @see     ForumPost
      */
     public ForumPost getFirstPost() throws UnsupportedFunction {
         return Bifrost.getInstance().getScriptAPI()
@@ -112,10 +107,11 @@ public class ForumThread extends Message {
     }
 
     /**
-     * Returns the last Post of the thread, null if error.
+     * Returns the last Post of the thread.
      *
-     * @return last Post of the thread, null if error.
-     * @see ForumPost
+     * @return  last ForumPosts of the thread
+     * @throws  UnsupportedFunction if the method is not supported by the script
+     * @see     ForumPost
      */
     public ForumPost getLastPost() throws UnsupportedFunction {
         return Bifrost.getInstance().getScriptAPI()
@@ -124,88 +120,45 @@ public class ForumThread extends Message {
     }
 
     /**
-     * Returns the Date of when the thread was created.
+     * Returns the date when the thread was posted.
      *
-     * @return Date of thread creation date.
-     * @see Date
+     * @return  date of the thread
      */
     public Date getThreadDate() {
-        return getDate();
+        return super.getDate();
     }
 
     /**
-     * Sets the Date of the thread.
+     * Sets the date of the thread.
      *
-     * @param threaddate Date of thread creation date.
-     * @see Date
+     * @param threaddate date of the thread
      */
     public void setThreadDate(Date threaddate) {
-        setDate(threaddate);
+        super.setDate(threaddate);
     }
 
     /**
-     * Returns a ScriptUser object of the author, null if error.
+     * Returns the subject of the thread.
      *
-     * @return ScriptUser of the author, null if error.
-     * @see com.craftfire.bifrost.classes.general.ScriptUser
-     */
-    @Override
-    public ScriptUser getAuthor() {
-        return getAuthor();
-    }
-
-    /**
-     * Sets the author of the thread.
-     *
-     * @param author a ScriptUser object containing the author.
-     */
-    @Override
-    public void setAuthor(ScriptUser author) {
-        setAuthor(author);
-    }
-
-    /**
-     * Returns the subject/title of the thread, null if error.
-     *
-     * @return subject/title of the thread, null if error.
+     * @return subject of the thread
      */
     public String getSubject() {
-        return this.subject;
+        return super.getTitle();
     }
 
     /**
-     * Sets the subject/title of the thread.
+     * Sets the subject of the thread.
      *
-     * @param subject subject/title of the thread.
+     * @param subject subject of the thread
      */
     public void setSubject(String subject) {
-        this.subject = subject;
+        super.setTitle(subject);
     }
 
     /**
-     * Returns the body text of the thread, null if error.
+     * Returns number of views the thread has.
      *
-     * @return body text of the thread, null if error.
-     */
-    @Override
-    public String getBody() {
-        return super.getBody();
-    }
-
-    /**
-     * Sets the body text of the thread.
-     *
-     * @param body body text of the thread.
-     */
-    @Override
-    public void setBody(String body) {
-        super.setBody(body);
-    }
-
-    /**
-     * Returns number of views the thread has, 0 if error.
-     *
-     * @return number of views, 0 if error.
+     * @return number of views
      */
     public int getViewsCount() {
         return this.threadviews;
@@ -214,16 +167,16 @@ public class ForumThread extends Message {
     /**
      * Sets the number of views that the thread has.
      *
-     * @param threadviews number of views.
+     * @param threadviews  number of views
      */
     public void setViewsCount(int threadviews) {
         this.threadviews = threadviews;
     }
 
     /**
-     * Returns number of replies for the thread, 0 if error or none.
+     * Returns number of replies for the thread.
      *
-     * @return number of replies, 0 if error or none.
+     * @return number of replies
      */
     public int getRepliesCount() {
         return this.threadreplies;
@@ -232,52 +185,54 @@ public class ForumThread extends Message {
     /**
      * Sets the number of replies that the thread has.
      *
-     * @param threadreplies number of replies.
+     * @param threadreplies  number of replies
      */
     public void setRepliesCount(int threadreplies) {
         this.threadreplies = threadreplies;
     }
 
     /**
-     * Returns true if thread is locked, false if error or not locked.
+     * Returns <code>true</code> if thread is locked, <code>false</code> if not locked.
      *
-     * @return true if locked, false if error or not locked.
+     * @return <code>true</code> if locked, <code>false</code> if locked
      */
     public boolean isLocked() {
         return this.locked;
     }
 
     /**
-     * Sets the topic's lock to whatever Boolean the parameter has, true = locked and false = unlocked.
+     * Sets the topic's lock to whatever <code>Boolean</code> the <code>isLocked</code> parameter is.
+     * <p>
+     * <code>true</code> = locked and <code>false</code> = unlocked.
      *
-     * @param isLocked true for locked, false for not locked.
+     * @param isLocked  <code>true</code> for locked, <code>false</code> for not locked
      */
     public void setLocked(boolean isLocked) {
         this.locked = isLocked;
     }
 
     /**
-     * Returns true if thread is a poll, false if error not a poll.
+     * Returns <code>true</code> if thread is a poll, false if error not a poll.
      *
-     * @return true if poll, false if error nr not a poll.
+     * @return <code>true</code> if poll, false if error nr not a poll
      */
     public boolean isPoll() {
         return this.poll;
     }
 
     /**
-     * Sets the thread to a poll if parameter is true.
+     * Sets the thread to a poll if parameter <code>isPoll</code> is <code>true</code>.
      *
-     * @param isPoll true for poll, false for not a poll.
+     * @param isPoll  <code>true</code> for poll, <code>false</code> for not a poll
      */
     public void setPoll(boolean isPoll) {
         this.poll = isPoll;
     }
 
     /**
-     * Returns true if the thread is sticky, false if error or not sticky.
+     * Returns <code>true</code> if the thread is sticky, <code>false</code> if not sticky.
      *
-     * @return true if sticky, false if error not sticky.
+     * @return <code>true</code> if sticky, <code>false</code> if not sticky
      */
     public boolean isSticky() {
         return this.sticky;
@@ -286,17 +241,19 @@ public class ForumThread extends Message {
     /**
      * Sets the thread to be a sticky or not.
      *
-     * @param isSticky true if sticky, false if not sticky.
+     * @param isSticky  <code>true</code> if sticky, <code>false</code> if not sticky
      */
     public void setSticky(boolean isSticky) {
         this.sticky = isSticky;
     }
 
     /**
-     * Run this function if you want to update any changed values for the thread.
-     * NB! This has to be run if you want to "write" changed to the database.
+     * This method should be run after changing any thread values.
+     * <p>
+     * It should <b>not</b> be run when creating a new thread, only when editing an already existing thread.
      *
-     * @throws SQLException if an error occurred.
+     * @throws SQLException         if a SQL error concurs
+     * @throws UnsupportedFunction  if the method is not supported by the script
      */
     public void updateThread() throws SQLException, UnsupportedFunction {
         Bifrost.getInstance().getScriptAPI()
@@ -304,24 +261,47 @@ public class ForumThread extends Message {
     }
 
     /**
-     * Run this function if you create a thread with current values, make sure you know what you are doing!
+     * This method should be run after creating a new thread.
+     * <p>
+     * It should <b>not</b> be run when updating a thread, only when creating a new thread.
      *
-     * @throws SQLException if an error occurred.
+     * @throws SQLException         if a SQL error concurs
+     * @throws UnsupportedFunction  if the method is not supported by the script
      */
     public void createThread() throws SQLException, UnsupportedFunction {
         Bifrost.getInstance().getScriptAPI()
                 .getForumHandle(getScript().getScript()).createThread(this);
     }
 
+    /**
+     * Returns <code>true</code> if the handle contains a thread cache with the given id parameter,
+     * <code>false</code> if not.
+     *
+     * @param handle  the script handle
+     * @param id      the id of the object to look for
+     * @return        <code>true</code> if contains, <code>false</code> if not
+     */
     public static boolean hasCache(ScriptHandle handle, Object id) {
         return handle.getCache().contains(CacheGroup.THREAD, id);
     }
 
+    /**
+     * Adds a ForumThread to the cache with the given script handle
+     *
+     * @param handle  the script handle
+     * @param thread  the ForumThread object
+     */
     public static void addCache(ScriptHandle handle, ForumThread thread) {
         handle.getCache().put(CacheGroup.THREAD, thread.getID(), thread);
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Returns the ForumThread object by the given id if found, returns <code>null</code> if no cache was found.
+     *
+     * @param handle  the script handle
+     * @param id      the id of the thread
+     * @return        ForumThread object if cache was found, <code>null</code> if no cache was found
+     */
     public static ForumThread getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.THREAD, id)) {
             return (ForumThread) handle.getCache().get(CacheGroup.THREAD, id);

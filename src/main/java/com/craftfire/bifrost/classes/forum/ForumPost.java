@@ -21,7 +21,6 @@ package com.craftfire.bifrost.classes.forum;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
-import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -73,16 +72,6 @@ public class ForumPost extends Message {
         this.boardid = boardid;
     }
 
-    @Override
-    public int getID() {
-        return super.getID();
-    }
-
-    @Override
-    public void setID(int id) {
-        super.setID(id);
-    }
-
     /**
      * Returns the ID of the thread that the post is posted in.
      *
@@ -129,16 +118,6 @@ public class ForumPost extends Message {
         setDate(postdate);
     }
 
-    @Override
-    public ScriptUser getAuthor() {
-        return super.getAuthor();
-    }
-
-    @Override
-    public void setAuthor(ScriptUser author) {
-        super.setAuthor(author);
-    }
-
     /**
      * Returns the subject of the post.
      *
@@ -155,16 +134,6 @@ public class ForumPost extends Message {
      */
     public void setSubject(String subject) {
         super.setTitle(subject);
-    }
-
-    @Override
-    public String getBody() {
-        return super.getBody();
-    }
-
-    @Override
-    public void setBody(String body) {
-        super.setBody(body);
     }
 
     /**
@@ -204,21 +173,21 @@ public class ForumPost extends Message {
     }
 
     /**
-     * Adds a post to the cache with the given script handle
+     * Adds a ForumPost to the cache with the given script handle
      *
      * @param handle  the script handle
-     * @param post    the post object
+     * @param post    the ForumPost object
      */
     public static void addCache(ScriptHandle handle, ForumPost post) {
         handle.getCache().put(CacheGroup.POST, post.getID(), post);
     }
 
     /**
-     * Returns the post object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the ForumPost object by the given id if found, returns <code>null</code> if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the post
-     * @return        post object if cache was found, <code>null</code> if no cache was found
+     * @return        ForumPost object if cache was found, <code>null</code> if no cache was found
      */
     public static ForumPost getCache(ScriptHandle handle, Object id) {
         ForumPost temp = null;
