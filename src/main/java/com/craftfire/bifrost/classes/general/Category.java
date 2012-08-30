@@ -1,14 +1,15 @@
 package com.craftfire.bifrost.classes.general;
 
+import com.craftfire.bifrost.script.Script;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.craftfire.bifrost.script.Script;
-
 /**
- * Base class for all categories like ForumBoard, ArticleCategory, WikiCategory,
- * IssueCategory. Should not be instanced.
+ * Base class for all categories like ForumBoard, ArticleCategory, WikiCategory, IssueCategory.
+ * <p>
+ * Should <code>not</code> be instanced.
  * 
  */
 public class Category implements IDable {
@@ -19,7 +20,7 @@ public class Category implements IDable {
     private final Script script;
 
     /**
-     * @param script a Script Object of the script this category comes from.
+     * @param script a Script Object of the script this category comes from
      */
     protected Category(Script script) {
         this.script = script;
@@ -29,8 +30,8 @@ public class Category implements IDable {
      * This constructor should be used only when loading the category from a
      * database.
      * 
-     * @param script a Script Object of the script this category comes from.
-     * @param catid the ID of the category.
+     * @param script  a Script Object of the script this category comes from
+     * @param catid   the ID of the category
      */
     protected Category(Script script, int catid) {
         this.script = script;
@@ -40,10 +41,10 @@ public class Category implements IDable {
     /**
      * This constructor should be preferred when creating a new category.
      * 
-     * @param script a Script Object of the script this category comes from.
-     * @param name the name of the category.
-     * @param parent the parent category
-     * @param subcats the list of subcategories
+     * @param script   a Script Object of the script this category comes from
+     * @param name     the name of the category
+     * @param parent   the parent category
+     * @param subcats  the list of subcategories
      */
     protected Category(Script script, String name, Category parent, List<Category> subcats) {
         this.script = script;
@@ -66,10 +67,9 @@ public class Category implements IDable {
     }
 
     /**
-     * Sets the ID of the category, this should be used only when putting the
-     * category into a database.
+     * Sets the ID of the category, this should be used only when putting the category into a database.
      * 
-     * @param id the ID of the category.
+     * @param id  the ID of the category
      */
     public void setID(int id) {
         this.catid = id;
@@ -78,7 +78,7 @@ public class Category implements IDable {
     /**
      * Returns the name of the category.
      * 
-     * @return the name of the category.
+     * @return the name of the category
      */
     public String getName() {
         return this.name;
@@ -87,7 +87,7 @@ public class Category implements IDable {
     /**
      * Sets the name of the category.
      * 
-     * @param name name of the category.
+     * @param name  name of the category
      */
     public void setName(String name) {
         this.name = name;
@@ -96,7 +96,7 @@ public class Category implements IDable {
     /**
      * Returns the description of the category.
      * 
-     * @return the description of the category.
+     * @return the description of the category
      */
     public String getDescription() {
         return this.description;
@@ -105,7 +105,7 @@ public class Category implements IDable {
     /**
      * Sets the description of the category.
      * 
-     * @param desc description of the category.
+     * @param desc  description of the category
      */
     public void setDescription(String desc) {
         this.description = desc;
@@ -123,7 +123,7 @@ public class Category implements IDable {
     /**
      * Sets the parent category.
      * 
-     * @param parent the parent category
+     * @param parent  the parent category
      */
     public void setParent(Category parent) {
         this.parent = parent;
@@ -132,7 +132,7 @@ public class Category implements IDable {
     /**
      * Adds a subcategory for this category.
      * 
-     * @param cat a subcategory
+     * @param cat  a subcategory
      */
     public void addSubcategory(Category cat) {
         if (this.subcategories == null) {
@@ -144,7 +144,7 @@ public class Category implements IDable {
     /**
      * Adds multiple subcategories for this category.
      * 
-     * @param cats subcategories
+     * @param cats  subcategories
      */
     public void addSubcategories(Collection<Category> cats) {
         if (this.subcategories == null) {
@@ -156,7 +156,7 @@ public class Category implements IDable {
     /**
      * Sets the subcategory list of this category.
      * 
-     * @param cats subcategory list
+     * @param cats  subcategory list
      */
     public void setSubcategories(List<Category> cats) {
         this.subcategories = cats;

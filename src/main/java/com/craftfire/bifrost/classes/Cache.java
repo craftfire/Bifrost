@@ -25,8 +25,8 @@ public class Cache {
      * <p>
      * This will override any previous object in the specified {@link CacheGroup} per {@link CacheManager}.
      *
-     * @param group  the {@link CacheGroup} which the object should be placed in
-     * @param object the object that is going to be stored
+     * @param group   the {@link CacheGroup} which the object should be placed in
+     * @param object  the object that is going to be stored
      */
     public void put(CacheGroup group, Object object) {
         put(group, 1, object);
@@ -37,9 +37,9 @@ public class Cache {
      * <p>
      * The id parameter can be used to retrieve the object from the cache.
      *
-     * @param group  the {@link CacheGroup} which the object should be placed in
-     * @param id     the ID of the stored object.
-     * @param object the object that is going to be stored
+     * @param group   the {@link CacheGroup} which the object should be placed in
+     * @param id      the ID of the stored object.
+     * @param object  the object that is going to be stored
      */
     public void put(CacheGroup group, Object id, Object object) {
         this.cacheManager.put(group.toString(), id, object);
@@ -50,8 +50,8 @@ public class Cache {
      * <p>
      * This should only be used when retrieving an object which has been stored without an ID.
      *
-     * @param group the {@link CacheGroup} which the object should be grabbed from
-     * @return      the object that has been stored, returns null if no stored object could be found
+     * @param group  the {@link CacheGroup} which the object should be grabbed from
+     * @return       the object that has been stored, returns null if no stored object could be found
      */
     public Object get(CacheGroup group) {
         return get(group, 1);
@@ -60,9 +60,9 @@ public class Cache {
     /**
      * Returns the object of the specified {@link CacheGroup} group parameter by the id parameter.
      *
-     * @param group the {@link CacheGroup} which the object should be grabbed from
-     * @param id    the unique ID of the object
-     * @return      the object that has been stored, returns null if no stored object could be found
+     * @param group  the {@link CacheGroup} which the object should be grabbed from
+     * @param id     the unique ID of the object
+     * @return       the object that has been stored, returns null if no stored object could be found
      */
     public Object get(CacheGroup group, Object id) {
         return this.cacheManager.get(group.toString(), id);
@@ -74,8 +74,8 @@ public class Cache {
      * <p>
      * This should only be used when checking an object which has been stored without an ID.
      *
-     * @param group the {@link CacheGroup} to check
-     * @return <code>true</code> if contains <code>false</code> if not
+     * @param group  the {@link CacheGroup} to check
+     * @return       <code>true</code> if contains <code>false</code> if not
      */
     public boolean contains(CacheGroup group) {
         return contains(group, 1);
@@ -87,9 +87,9 @@ public class Cache {
      * <p>
      * The object id is specified by the id param and the group is specified by the group param.
      *
-     * @param group the {@link CacheGroup} to check
-     * @param id the ID of the object to check
-     * @return <code>true</code> if contains <code>false</code> if not
+     * @param group  the {@link CacheGroup} to check
+     * @param id     the ID of the object to check
+     * @return       <code>true</code> if contains <code>false</code> if not
      */
     public boolean contains(CacheGroup group, Object id) {
          return this.cacheManager.contains(group.toString(), id);

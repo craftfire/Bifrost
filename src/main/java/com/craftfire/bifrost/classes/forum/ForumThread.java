@@ -19,10 +19,6 @@
  */
 package com.craftfire.bifrost.classes.forum;
 
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ScriptUser;
@@ -30,6 +26,10 @@ import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
+
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 
 /**
  * This class contains functions and data that are related to a thread/topic.

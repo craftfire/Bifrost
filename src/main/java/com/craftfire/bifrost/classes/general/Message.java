@@ -1,18 +1,19 @@
 package com.craftfire.bifrost.classes.general;
 
-import java.util.Date;
-
 import com.craftfire.bifrost.script.Script;
 
+import java.util.Date;
+
 /**
- * Base class for all messages like Thread, Post, Article, Comment,
- * PrivateMessage, etc. Should not be instanced.
+ * Base class for all messages like Thread, Post, Article, Comment, PrivateMessage, etc.
+ * <p>
+ * Should <code>not</code> be instanced.
  */
 public abstract class Message implements IDable {
-    private int msgid;
+    private int id;
     private ScriptUser author;
     private Date date;
-    private String body;
+    private String title, body;
     private final Script script;
 
     protected Message(Script script) {
@@ -21,17 +22,16 @@ public abstract class Message implements IDable {
 
     protected Message(Script script, int id) {
         this.script = script;
-        this.msgid = id;
+        this.id = id;
     }
 
     /**
-     * Sets the ID of the message, should only be used when creating a new
-     * Message.
+     * Sets the ID of the message, should only be used when creating a new Message.
      * 
-     * @param id the ID of the message
+     * @param id  the ID of the message
      */
     public void setID(int id) {
-        this.msgid = id;
+        this.id = id;
     }
 
     /**
@@ -41,14 +41,14 @@ public abstract class Message implements IDable {
      */
     @Override
     public int getID() {
-        return this.msgid;
+        return this.id;
     }
 
     /**
      * Sets the message author.
      * 
-     * @param author a ScriptUser object containing the author.
-     * @see com.craftfire.bifrost.classes.general.ScriptUser
+     * @param author  a ScriptUser object containing the author
+     * @see           com.craftfire.bifrost.classes.general.ScriptUser
      */
     public void setAuthor(ScriptUser author) {
         this.author = author;
@@ -58,7 +58,7 @@ public abstract class Message implements IDable {
      * Returns a ScriptUser object of the author, null if error.
      * 
      * @return message author
-     * @see com.craftfire.bifrost.classes.general.ScriptUser
+     * @see    com.craftfire.bifrost.classes.general.ScriptUser
      */
     public ScriptUser getAuthor() {
         return this.author;
@@ -67,7 +67,7 @@ public abstract class Message implements IDable {
     /**
      * Sets date when this message was posted.
      * 
-     * @param date new message date
+     * @param date  new message date
      */
     public void setDate(Date date) {
         this.date = date;
@@ -85,7 +85,7 @@ public abstract class Message implements IDable {
     /**
      * Sets body text (a.k.a. content) of the message.
      * 
-     * @param body body text (a.k.a. content) of the message.
+     * @param body  body text (a.k.a. content) of the message
      */
     public void setBody(String body) {
         this.body = body;
@@ -94,16 +94,34 @@ public abstract class Message implements IDable {
     /**
      * Returns the body text (a.k.a. content) of the message, or null if error.
      * 
-     * @return body text of the message, or null if error.
+     * @return body text of the message, or null if error
      */
     public String getBody() {
         return this.body;
     }
 
     /**
+     * Sets title (a.k.a. subject) of the message.
+     *
+     * @param title  title (a.k.a. subject) of the message
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * Returns the title (a.k.a. subject) of the message, or null if error.
+     *
+     * @return title of the message, or null if error
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
      * Returns a Script object of the script this message comes from.
      * 
-     * @return Script object of the script this message comes from.
+     * @return Script object of the script this message comes from
      */
     public Script getScript() {
         return this.script;
@@ -116,6 +134,6 @@ public abstract class Message implements IDable {
      */
     @Override
     public String toString() {
-        return "Message " + this.msgid + " by " + this.author + " at " + this.date + " containing: " + this.body;
+        return "Message " + this.id + " by " + this.author + " at " + this.date + " containing: " + this.body;
     }
 }

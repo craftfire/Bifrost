@@ -7,7 +7,7 @@ public interface IDable {
     /**
      * Returns the ID.
      * 
-     * @return the ID.
+     * @return the ID
      */
     public int getID();
 }
