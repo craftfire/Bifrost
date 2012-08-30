@@ -79,7 +79,8 @@ public class ForumThread extends Message {
     }
 
     /**
-     * Returns a List of {@link ForumPost}'s depending on the limit, <code>limit = 0</code> returns all the posts.
+     * Returns a List of {@link ForumPost}'s depending on the limit,
+     * <code>limit = 0</code> returns all the posts.
      * <p>
      * List will be empty if there were no posts.
      *

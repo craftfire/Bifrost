@@ -97,7 +97,8 @@ public class ForumPost extends Message {
      * @throws UnsupportedFunction if the method is not supported by the script
      */
     public ForumThread getThread() throws UnsupportedFunction {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThread(this.threadid);
+        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript())
+                                                                                    .getThread(this.threadid);
     }
 
     /**
