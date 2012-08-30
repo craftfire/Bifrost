@@ -29,6 +29,17 @@ import com.craftfire.bifrost.script.Script;
 import java.sql.SQLException;
 import java.util.Date;
 
+/**
+ * This class should only be used with a forum post.
+ * <p>
+ * The first constructor should only be used by the script itself and not by the library user.
+ * To update any changed values in the post, run {@see #updatePost()}.
+ * <p>
+ * When creating a new ForumPost make sure you use the correct constructor:
+ * {@see #ForumPost(com.craftfire.bifrost.script.Script, int, int)}.
+ * <p>
+ * Remember to run {@see #createPost()} after creating a post to insert it into the script.
+ */
 public class ForumPost {
     private ScriptUser author;
     private String subject, body;
@@ -37,6 +48,14 @@ public class ForumPost {
     private Date postdate;
     private final Script script;
 
+    /**
+     * This constructor should only be used by the script and not by that library user.
+     *
+     * @param script   the script
+     * @param postid   the ID of the post
+     * @param threadid the ID of the thread which the post is posted in
+     * @param boardid  the ID of the board which the thread is posted in
+     */
     public ForumPost(Script script, int postid, int threadid, int boardid) {
         this.script = script;
         this.postid = postid;
@@ -44,6 +63,15 @@ public class ForumPost {
         this.boardid = boardid;
     }
 
+    /**
+     * This constructor should be used when creating a new post for the script.
+     * <p>
+     * Remember to run {@see #createPost()} after creating a post to insert it into the script.
+     *
+     * @param script   the script
+     * @param threadid the ID of the thread which the post is going to be posted in
+     * @param boardid  the ID of the board which the thread is posted in
+     */
     public ForumPost(Script script, int threadid, int boardid) {
         this.script = script;
         this.threadid = threadid;
