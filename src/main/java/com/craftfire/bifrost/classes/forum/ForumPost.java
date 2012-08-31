@@ -21,6 +21,7 @@ package com.craftfire.bifrost.classes.forum;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
@@ -220,5 +221,15 @@ public class ForumPost extends Message {
     @Override
     public ForumBoard getCategory() throws UnsupportedMethod {
         return getBoard();
+    }
+
+    @Override
+    public List<? extends Message> getSubMessages(int limit) throws UnsupportedMethod {
+        return null;
+    }
+
+    @Override
+    public ForumThread getParent() throws UnsupportedMethod {
+        return getThread();
     }
 }

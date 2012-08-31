@@ -269,6 +269,26 @@ public class ScriptHandle {
     }
 
     @SuppressWarnings("unchecked")
+    public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.PM_LIST)) {
+            return (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
+        }
+        List<PrivateMessage> pms = this.script.getPMs(limit);
+        getCache().put(CacheGroup.PM_LIST, pms);
+        return pms;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.PM_REPLIES, pmid)) {
+            return (List<PrivateMessage>) getCache().get(CacheGroup.PM_REPLIES, pmid);
+        }
+        List<PrivateMessage> pms = this.script.getPMReplies(pmid, limit);
+        getCache().put(CacheGroup.PM_REPLIES, pmid, pms);
+        return pms;
+    }
+
+    @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_SENT, username)) {
             return (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);

@@ -20,7 +20,6 @@
 package com.craftfire.bifrost.classes.general;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,7 +30,7 @@ import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
 public class PrivateMessage extends Message {
-    private String subject;
+    private int parentid;
     private List<ScriptUser> recipients;
     private HashMap<ScriptUser, Boolean> isnew = new HashMap<ScriptUser, Boolean>();
     private HashMap<ScriptUser, Boolean> read = new HashMap<ScriptUser, Boolean>();
@@ -46,6 +45,13 @@ public class PrivateMessage extends Message {
         super(script);
         setAuthor(sender);
         this.recipients = recipients;
+    }
+
+    public PrivateMessage(Script script, ScriptUser sender, List<ScriptUser> recipients, int parentid) {
+        super(script);
+        setAuthor(sender);
+        this.recipients = recipients;
+        this.parentid = parentid;
     }
 
     /**
@@ -79,32 +85,12 @@ public class PrivateMessage extends Message {
         this.recipients = users;
     }
 
-    @Override
-    public Date getDate() {
-        return super.getDate();
-    }
-
-    @Override
-    public void setDate(Date date) {
-        super.setDate(date);
-    }
-
     public String getSubject() {
-        return this.subject;
+        return getTitle();
     }
 
     public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    @Override
-    public String getBody() {
-        return super.getBody();
-    }
-
-    @Override
-    public void setBody(String body) {
-        setBody(body);
+        setTitle(subject);
     }
 
     public boolean isDeletedBySender() {
@@ -181,5 +167,44 @@ public class PrivateMessage extends Message {
     @Override
     public Category getCategory() {
         return null;
+    }
+
+    /**
+     * Returns the ID of the private message this message replies to.
+     * 
+     * @return the ID of the parent message.
+     */
+    public int getParentID() {
+        return this.parentid;
+    }
+
+    /**
+     * Sets the private message this message replies to.
+     * 
+     * @param parentid  the ID of the parent message
+     */
+    public void setParentID(int parentid) {
+        this.parentid = parentid;
+    }
+
+    /**
+     * Returns a PrivateMessage object for the private message this message replies to.
+     * Loads it from database if not cached.
+     * 
+     * @see Message#getParent()
+     */
+    @Override
+    public PrivateMessage getParent() throws UnsupportedMethod {
+        return Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).getPM(this.parentid);
+    }
+
+    /**
+     * Returns the list of PrivateMessages replying to this message.
+     * 
+     * @see com.craftfire.bifrost.classes.general.MessageParent#getSubMessages(int)
+     */
+    @Override
+    public List<PrivateMessage> getSubMessages(int limit) throws UnsupportedMethod {
+        return Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).getPMReplies(getID(), limit);
     }
 }

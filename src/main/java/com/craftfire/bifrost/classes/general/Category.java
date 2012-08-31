@@ -30,7 +30,7 @@ import com.craftfire.bifrost.script.Script;
  * Should <code>not</code> be instanced.
  * 
  */
-public abstract class Category implements IDable {
+public abstract class Category implements IDable, MessageParent {
     private int catid, parentid;
     private String name, description;
     private final Script script;
@@ -176,6 +176,14 @@ public abstract class Category implements IDable {
      * @throws UnsupportedMethod  if the method is not supported by script
      */
     public abstract List<? extends Message> getMessages(int limit) throws UnsupportedMethod;
+    
+    /* (non-Javadoc)
+     * @see MessageParent#getSubMessages(int)
+     */
+    @Override
+    public List<? extends Message> getSubMessages(int limit) throws UnsupportedMethod {
+        return getMessages(limit);
+    }
     
     /**
      * Returns a Script Object for the script this category comes from.

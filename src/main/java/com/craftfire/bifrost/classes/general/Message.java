@@ -29,7 +29,7 @@ import com.craftfire.bifrost.script.Script;
  * <p>
  * Should <code>not</code> be instanced.
  */
-public abstract class Message implements IDable {
+public abstract class Message implements IDable, MessageParent {
     private int id, catid;
     private ScriptUser author;
     private Date date;
@@ -165,6 +165,14 @@ public abstract class Message implements IDable {
     public String getTitle() {
         return this.title;
     }
+
+    /**
+     * Returns the parent of the message.
+     * 
+     * @return                    the parent of the message
+     * @throws UnsupportedMethod  if the method is not supported by script
+     */
+    public abstract MessageParent getParent() throws UnsupportedMethod;
 
     /**
      * Returns a Category object for the category of the message. Should be

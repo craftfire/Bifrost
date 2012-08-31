@@ -19,6 +19,9 @@
  */
 package com.craftfire.bifrost.script;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -32,9 +35,6 @@ import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
-
-import java.sql.SQLException;
-import java.util.List;
 
 public class Script {
     private final String version;
@@ -348,6 +348,39 @@ public class Script {
      * @throws     UnsupportedMethod if the function is not supported by the script.
      */
     public PrivateMessage getPM(int pmid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+    
+    /**
+     * Returns a List with PrivateMessage objects.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param  limit              The limit. Set to 0 if you want to return all.
+     * @return                    List with Group objects, if none are found it returns an empty List.
+     * @see                       PrivateMessage
+     * @see                       List
+     * @throws UnsupportedMethod  if the function is not supported by the script.
+     */
+    public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
+     * Returns a List with PrivateMessage objects replying to specified private message.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param  pmid               the ID of the PM
+     * @param  limit              The limit. Set to 0 if you want to return all.
+     * @return                    List with Group objects, if none are found it returns an empty List.
+     * @see                       PrivateMessage
+     * @see                       List
+     * @throws UnsupportedMethod  if the function is not supported by the script.
+     */
+    public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
         throw new UnsupportedMethod();
     }
 

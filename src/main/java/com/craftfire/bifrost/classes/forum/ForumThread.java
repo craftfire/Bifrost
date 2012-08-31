@@ -324,4 +324,25 @@ public class ForumThread extends Message {
     public ForumBoard getCategory() throws UnsupportedMethod {
         return getBoard();
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.craftfire.bifrost.classes.general.MessageParent#getSubMessages(int)
+     */
+    @Override
+    public List<ForumPost> getSubMessages(int limit) throws UnsupportedMethod {
+        return getPosts(limit);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.craftfire.bifrost.classes.general.Message#getParent()
+     */
+    @Override
+    public ForumBoard getParent() throws UnsupportedMethod {
+        return getBoard();
+    }
 }
