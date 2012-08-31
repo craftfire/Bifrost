@@ -150,8 +150,8 @@ public abstract class Category implements IDable {
      * in classes of specific category types (such as ForumBoard). Loads it from
      * database if not cached.
      * 
-     * @return                      a Category object
-     * @throws UnsupportedMethod  if the function is not supported by script
+     * @return                    a Category object
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
     public abstract Category getParent() throws UnsupportedMethod;
 
@@ -160,9 +160,9 @@ public abstract class Category implements IDable {
      * in classes of specific category types (such as ForumBoard). Loads the
      * categories from database if not cached.
      * 
-     * @param  limit                how many subcategories should be returned, 0 = returns all
-     * @return                      the subcategory list
-     * @throws UnsupportedMethod  if the function is not supported by script
+     * @param  limit              how many subcategories should be returned, 0 = returns all
+     * @return                    the subcategory list
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
     public abstract List<? extends Category> getSubcategories(int limit) throws UnsupportedMethod;
 
@@ -171,9 +171,9 @@ public abstract class Category implements IDable {
      * implemented in classes of specific category types (such as ForumBoard).
      * Loads the messages from database if not cached.
      * 
-     * @param  limit                how many messages should be returned, 0 = returns all
-     * @return                      the list of messages
-     * @throws UnsupportedMethod  if the function is not supported by script
+     * @param  limit              how many messages should be returned, 0 = returns all
+     * @return                    the list of messages
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
     public abstract List<? extends Message> getMessages(int limit) throws UnsupportedMethod;
     

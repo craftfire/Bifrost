@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.craftfire.bifrost.Bifrost;
-import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
@@ -89,9 +88,9 @@ public class ForumPost extends Message {
 
     /**
      * Returns the ID of the board that the thread is posted in.
-     *
-     * @return the ID of the board
-     * @throws UnsupportedMethod  if the function is not supported by script
+     * 
+     * @return                    the ID of the board
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
     public int getBoardID() throws UnsupportedMethod {
         return getThread().getBoardID();
@@ -100,8 +99,8 @@ public class ForumPost extends Message {
     /**
      * Returns a ForumBoard object for the board that the thread is posted in.
      * 
-     * @return                      a ForumBoard object
-     * @throws UnsupportedMethod  if the function is not supported by script
+     * @return                    a ForumBoard object
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
     public ForumBoard getBoard() throws UnsupportedMethod {
         return getThread().getBoard();

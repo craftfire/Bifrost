@@ -170,8 +170,8 @@ public abstract class Message implements IDable {
      * Returns a Category object for the category of the message. Should be
      * implemented in classes of specific message types (such as ForumTopic).
      * 
-     * @return                      a Category object
-     * @throws UnsupportedMethod  if the function is not supported by script
+     * @return                    a Category object
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
     public abstract Category getCategory() throws UnsupportedMethod;
 

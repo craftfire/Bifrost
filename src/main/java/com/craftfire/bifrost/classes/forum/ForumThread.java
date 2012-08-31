@@ -78,8 +78,8 @@ public class ForumThread extends Message {
     /**
      * Returns a ForumBoard object for the board/category of the thread.
      * 
-     * @return                      a ForumBoard object
-     * @throws UnsupportedMethod  if the function is not supported by script
+     * @return                    a ForumBoard object
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
     public ForumBoard getBoard() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getCategoryID());
