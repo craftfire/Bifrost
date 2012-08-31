@@ -1,5 +1,8 @@
 /*
- * This file is part of Bifrost <http://www.craftfire.com/>.
+ * This file is part of Bifrost.
+ *
+ * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
+ * Bifrost is licensed under the GNU Lesser General Public License.
  *
  * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,6 +19,17 @@
  */
 package com.craftfire.bifrost.scripts.forum;
 
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
+import javax.swing.JTable;
+
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -29,12 +43,6 @@ import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
-
-import javax.swing.*;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 //TODO: Convert arrays to use Result class
 public class SMF extends Script {
@@ -53,26 +61,32 @@ public class SMF extends Script {
         }
     }
 
+    @Override
     public String[] getVersionRanges() {
         return this.versionRanges;
     }
 
+    @Override
     public String getLatestVersion() {
         return this.versionRanges[1];
     }
 
+    @Override
     public String getScriptName() {
         return this.scriptName;
     }
 
+    @Override
     public String getScriptShortname() {
         return this.shortName;
     }
 
+    @Override
     public Encryption getEncryption() {
         return this.encryption;
     }
 
+    @Override
     public boolean authenticate(String username, String password) {
         String passwordHash = this.getDataManager().getStringField(
                 "SELECT `passwd` FROM `" + this.getDataManager().getPrefix() + "members` WHERE `" + this.membernamefield +
@@ -80,19 +94,23 @@ public class SMF extends Script {
         return hashPassword(username, password).equals(passwordHash);
     }
 
+    @Override
     public String hashPassword(String username, String password) {
         return CraftCommons.encrypt(Encryption.SHA1, username.toLowerCase() + password);
     }
 
+    @Override
     public ScriptUser getLastRegUser() {
         return getUser(this.getDataManager().getIntegerField("SELECT `id_member` FROM `" + this.getDataManager().getPrefix() +
                 "members` ORDER BY `id_member` ASC LIMIT 1"));
     }
 
+    @Override
     public ScriptUser getUser(String username) {
         return getUser(getUserID(username));
     }
 
+    @Override
     public ScriptUser getUser(int userid) {
         JTable userTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "members` WHERE `id_member` = '" + userid +
@@ -178,6 +196,7 @@ public class SMF extends Script {
         return user;
     }
 
+    @Override
     public void updateUser(ScriptUser user) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
@@ -219,6 +238,7 @@ public class SMF extends Script {
         data.clear();
     }
 
+    @Override
     public void createUser(ScriptUser user) throws SQLException {
         if (isRegistered(user.getUsername())) {
             return;
@@ -265,12 +285,14 @@ public class SMF extends Script {
                 " value + 1 WHERE `variable` = 'totalMembers'");
     }
 
+    @Override
     public String getUsername(int userid) {
         return this.getDataManager().getStringField(
                 "SELECT `" + this.membernamefield + "` FROM `" + this.getDataManager().getPrefix() +
                         "members` WHERE `id_member` = '" + userid + "'");
     }
 
+    @Override
     public int getUserID(String username) {
         return this.getDataManager().getIntegerField(
                 "SELECT `id_member` FROM `" + this.getDataManager().getPrefix() + "members` WHERE `" + this
@@ -278,6 +300,7 @@ public class SMF extends Script {
                         "` = '" + username + "'");
     }
 
+    @Override
     public List<Group> getGroups(int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -293,11 +316,13 @@ public class SMF extends Script {
         return groups;
     }
 
+    @Override
     public int getGroupID(String group) {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public Group getGroup(int groupid) {
         JTable groupTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "membergroups` WHERE `id_group` = '" + groupid +
@@ -330,11 +355,13 @@ public class SMF extends Script {
         return group;
     }
 
+    @Override
     public Group getGroup(String group) {
         /* TODO */
         return null;
     }
 
+    @Override
     public List<Group> getUserGroups(String username) {
         this.currentUsername = username;
         JTable userTable = new JTable(this.getDataManager().resultSetToTableModel(
@@ -360,6 +387,7 @@ public class SMF extends Script {
         return groups;
     }
 
+    @Override
     public void updateGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
@@ -371,6 +399,7 @@ public class SMF extends Script {
         this.getDataManager().updateFields(data, "membergroups", "`id_group` = '" + group.getID() + "'");
     }
 
+    @Override
     public void createGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
@@ -383,6 +412,7 @@ public class SMF extends Script {
         group.setID(this.getDataManager().getLastID("id_group", "membergroups"));
     }
 
+    @Override
     public PrivateMessage getPM(int pmid) {
         PrivateMessage pm = new PrivateMessage(this, pmid);
         HashMap<String, Object> array = this.getDataManager().getArray(
@@ -436,6 +466,7 @@ public class SMF extends Script {
         return pm;
     }
 
+    @Override
     public List<PrivateMessage> getPMsSent(String username, int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -451,6 +482,7 @@ public class SMF extends Script {
         return pms;
     }
 
+    @Override
     public List<PrivateMessage> getPMsReceived(String username, int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -466,18 +498,21 @@ public class SMF extends Script {
         return pms;
     }
 
+    @Override
     public int getPMSentCount(String username) {
         return this.getDataManager().getIntegerField("SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() +
                 "personal_messages` WHERE `id_member_from` = '" + getUserID(username) +
                 "'");
     }
 
+    @Override
     public int getPMReceivedCount(String username) {
         return this.getDataManager().getIntegerField(
                 "SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "pm_recipients` WHERE `id_member` = '" +
                         getUserID(username) + "'");
     }
 
+    @Override
     public void updatePrivateMessage(PrivateMessage pm) throws SQLException {
         String temp;
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -529,6 +564,7 @@ public class SMF extends Script {
         data.clear();
     }
 
+    @Override
     public void createPrivateMessage(PrivateMessage pm) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         pm.setDate(new Date());
@@ -608,7 +644,7 @@ public class SMF extends Script {
             subject = postTable.getModel().getValueAt(0, 6).toString();
             body = postTable.getModel().getValueAt(0, 13).toString();
         }
-        ForumPost post = new ForumPost(this, postid, threadid, boardid);
+        ForumPost post = new ForumPost(this, postid, threadid);
         post.setPostDate(postdate);
         post.setAuthor(getUser(authorid));
         post.setSubject(subject);
@@ -658,7 +694,7 @@ public class SMF extends Script {
         return posts;
     }
 
-    public void updatePost(ForumPost post) throws SQLException {
+    public void updatePost(ForumPost post) throws SQLException, UnsupportedFunction {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("id_topic", post.getThreadID());
         data.put("id_board", post.getBoardID());
@@ -679,7 +715,7 @@ public class SMF extends Script {
         this.getDataManager().updateFields(data, "messages", "`id_msg` = '" + post.getID() + "'");
     }
 
-    public void createPost(ForumPost post) throws SQLException {
+    public void createPost(ForumPost post) throws SQLException, UnsupportedFunction {
         HashMap<String, Object> data = new HashMap<String, Object>();
         post.setPostDate(new Date());
         data.put("id_topic", post.getThreadID());
@@ -925,15 +961,18 @@ public class SMF extends Script {
         }
     }
 
+    @Override
     public int getUserCount() {
         return this.getDataManager().getIntegerField("SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "members`");
     }
 
+    @Override
     public int getGroupCount() {
         return this.getDataManager().getIntegerField(
                 "SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "membergroups`");
     }
 
+    @Override
     public List<String> getIPs(String username) {
         List<String> ips = new ArrayList<String>();
         ScriptUser user = getUser(username);
@@ -942,6 +981,7 @@ public class SMF extends Script {
         return ips;
     }
 
+    @Override
     public List<Ban> getBans(int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -1000,6 +1040,7 @@ public class SMF extends Script {
         return bans;
     }
 
+    @Override
     public void updateBan(Ban ban) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("name", ban.getName());
@@ -1038,6 +1079,7 @@ public class SMF extends Script {
         }
     }
 
+    @Override
     public void addBan(Ban ban) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         ban.setStartDate(new Date());
@@ -1083,11 +1125,13 @@ public class SMF extends Script {
                 "' WHERE `variable` = 'banLastUpdated'");
     }
 
+    @Override
     public int getBanCount() {
         return this.getDataManager().getIntegerField(
                 "SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "ban_groups`");
     }
 
+    @Override
     public boolean isBanned(String string) {
         if (CraftCommons.isEmail(string)) {
             if (this.getDataManager().getStringField(
@@ -1115,6 +1159,7 @@ public class SMF extends Script {
         return false;
     }
 
+    @Override
     public boolean isRegistered(String username) {
         if (this.getDataManager().getStringField(
                 "SELECT `" + this.membernamefield + "` FROM `" + this.getDataManager().getPrefix() + "members` WHERE `" +

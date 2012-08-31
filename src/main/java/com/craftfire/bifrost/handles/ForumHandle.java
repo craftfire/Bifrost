@@ -22,6 +22,7 @@ package com.craftfire.bifrost.handles;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -189,6 +190,16 @@ public class ForumHandle extends ScriptHandle {
         return threads;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<ForumThread> getThreadsFromBoard(int boardid, int limit) throws UnsupportedFunction {
+        if (getCache().contains(CacheGroup.BOARD_THREADS, boardid)) {
+            return (List<ForumThread>) getCache().get(CacheGroup.BOARD_THREADS, boardid);
+        }
+        List<ForumThread> threads = getForumScript().getThreadsFormBoard(boardid, limit);
+        getCache().put(CacheGroup.BOARD_THREADS, boardid, threads);
+        return threads;
+    }
+
     public void updateThread(ForumThread thread) throws SQLException, UnsupportedFunction {
         this.getForumScript().updateThread(thread);
         ForumThread.addCache(this, thread);
@@ -197,6 +208,43 @@ public class ForumHandle extends ScriptHandle {
     public void createThread(ForumThread thread) throws SQLException, UnsupportedFunction {
         this.getForumScript().createThread(thread);
         ForumThread.addCache(this, thread);
+    }
+
+    public int getBoardCount() throws UnsupportedFunction {
+        if (getCache().contains(CacheGroup.BOARD_COUNT)) {
+            return (Integer) getCache().get(CacheGroup.BOARD_COUNT);
+        }
+        int count = getForumScript().getBoardCount();
+        getCache().put(CacheGroup.BOARD_COUNT, count);
+        return count;
+    }
+
+    public List<ForumBoard> getSubBoards(int boardid, int limit) throws UnsupportedFunction {
+        if (getCache().contains(CacheGroup.BOARD_SUBS, boardid)) {
+            return (List<ForumBoard>) getCache().get(CacheGroup.BOARD_SUBS, boardid);
+        }
+        List<ForumBoard> boards = getForumScript().getSubBoards(boardid, limit);
+        getCache().put(CacheGroup.BOARD_SUBS, boardid, boards);
+        return boards;
+    }
+
+    public ForumBoard getBoard(int boardID) throws UnsupportedFunction {
+        if (ForumBoard.hasCache(this, boardID)) {
+            return ForumBoard.getCache(this, boardID);
+        }
+        ForumBoard board = getForumScript().getBoard(boardID);
+        ForumBoard.addCache(this, board);
+        return board;
+    }
+
+    public void updateBoard(ForumBoard board) throws UnsupportedFunction, SQLException {
+        getForumScript().updateBoard(board);
+        ForumBoard.addCache(this, board);
+    }
+
+    public void createBoard(ForumBoard board) throws UnsupportedFunction, SQLException {
+        getForumScript().createBoard(board);
+        ForumBoard.addCache(this, board);
     }
 
     public String getHomeURL() throws UnsupportedFunction {
