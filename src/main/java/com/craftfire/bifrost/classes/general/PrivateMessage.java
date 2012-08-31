@@ -171,4 +171,15 @@ public class PrivateMessage extends Message {
         }
         return null;
     }
+
+    /**
+     * Private Message categories are not supported. Always returns null.
+     * 
+     * @return always null
+     * @see    Message#getCategory()
+     */
+    @Override
+    public Category getCategory() {
+        return null;
+    }
 }

@@ -19,16 +19,16 @@
  */
 package com.craftfire.bifrost.classes.forum;
 
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
-
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
 
 /**
  * This class should only be used with a forum thread/topic.
@@ -43,39 +43,46 @@ import java.util.List;
  */
 public class ForumThread extends Message {
     private int firstpostid, lastpostid;
-    private final int boardid;
     private int threadviews, threadreplies;
     private boolean locked, poll, sticky;
 
     public ForumThread(Script script, int firstpostid, int lastpostid, int threadid, int boardid) {
-        super(script, threadid);
+        super(script, threadid, boardid);
         this.firstpostid = firstpostid;
         this.lastpostid = lastpostid;
-        this.boardid = boardid;
     }
 
     public ForumThread(Script script, int boardid) {
         super(script);
-        this.boardid = boardid;
-    }
-
-    @Override
-    public int getID() {
-        return super.getID();
-    }
-
-    @Override
-    public void setID(int id) {
-        super.setID(id);
+        setCategoryID(boardid);
     }
 
     /**
-     * Returns the ID of the board that the thread is posted in.
+     * Gets the board/category ID of the thread.
      *
-     * @return the ID of the board
+     * @return board/category ID of the thread, 0 if error.
      */
     public int getBoardID() {
-        return this.boardid;
+        return getCategoryID();
+    }
+
+    /**
+     * Sets the board/category of the thread.
+     * 
+     * @param boardid  the ID of the board
+     */
+    public void setBoardID(int boardid) {
+        setCategoryID(boardid);
+    }
+
+    /**
+     * Returns a ForumBoard object for the board/category of the thread.
+     * 
+     * @return                      a ForumBoard object
+     * @throws UnsupportedFunction  if the function is not supported by script
+     */
+    public ForumBoard getBoard() throws UnsupportedFunction {
+        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getCategoryID());
     }
 
     /**
@@ -126,7 +133,7 @@ public class ForumThread extends Message {
      * @return  date of the thread
      */
     public Date getThreadDate() {
-        return super.getDate();
+        return getDate();
     }
 
     /**
@@ -135,7 +142,7 @@ public class ForumThread extends Message {
      * @param threaddate date of the thread
      */
     public void setThreadDate(Date threaddate) {
-        super.setDate(threaddate);
+        setDate(threaddate);
     }
 
     /**
@@ -308,5 +315,13 @@ public class ForumThread extends Message {
             return (ForumThread) handle.getCache().get(CacheGroup.THREAD, id);
         }
         return null;
+    }
+
+    /**
+     * @see Message#getCategory()
+     */
+    @Override
+    public ForumBoard getCategory() throws UnsupportedFunction {
+        return getBoard();
     }
 }

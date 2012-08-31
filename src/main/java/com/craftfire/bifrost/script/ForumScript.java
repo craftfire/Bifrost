@@ -19,14 +19,15 @@
  */
 package com.craftfire.bifrost.script;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.commons.managers.DataManager;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * This class contains functions relevant to direct functions for each script.
@@ -199,6 +200,23 @@ public class ForumScript extends Script {
 		throw new UnsupportedFunction();
 	}
 
+	/**
+     * Returns a List with ForumThread objects from the given board/category ID.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param  boardid              The board ID to grab the threads from
+     * @param  limit                The limit (set to 0 if you want to return all)
+     * @return                      List with ForumThread objects (if none are found it returns an empty List)
+     * @see                         ForumThread
+     * @see                         List
+     * @throws UnsupportedFunction  if the function is not supported by the script.
+     */
+	public List<ForumThread> getThreadsFormBoard(int boardid, int limit) throws UnsupportedFunction {
+        throw new UnsupportedFunction();
+    }
+
     /**
      * Returns a List with Thread objects.
      * Parameter {@param limit} can be used as a limit of how many objects should be returned.
@@ -239,6 +257,84 @@ public class ForumScript extends Script {
 		throw new UnsupportedFunction();
 	}
 
+   /**
+     * Returns the complete count of how many boards have been made.
+     *
+     * @return The amount of how many boards have been made, returns 0 if none.
+     * @throws UnsupportedFunction  if the function is not supported by the script.
+     */
+    public int getBoardCount() throws UnsupportedFunction {
+        throw new UnsupportedFunction();
+    }
+
+    /**
+     * Returns a ForumBoard object of the given board ID, if nothing is found it returns null.
+     *
+     * @param  boardid              the board ID
+     * @return                      ForumBoard object, null if nothing was found.
+     * @see                         ForumBoard
+     * @throws UnsupportedFunction  if the function is not supported by the script.
+     */
+    public ForumBoard getBoard(int boardid) throws UnsupportedFunction {
+        throw new UnsupportedFunction();
+    }
+    
+    /**
+     * Returns a List with ForumBoard objects that are subboards of the given board/category ID.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param  boardid              The board ID to grab the subboards from
+     * @param  limit                The limit (set to 0 if you want to return all)
+     * @return                      List with ForumBoard objects (if none are found it returns an empty List)
+     * @see    ForumBoard
+     * @see    List
+     * @throws UnsupportedFunction  if the function is not supported by the script.
+     */
+    public List<ForumBoard> getSubBoards(int boardid, int limit) throws UnsupportedFunction {
+        throw new UnsupportedFunction();
+    }
+
+    /**
+     * Returns a List with ForumBoard objects.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param  limit                the limit (set to 0 if you want to return all)
+     * @return                      list with ForumBoard objects (if none are found it returns an empty List)
+     * @see    ForumBoard
+     * @see    List
+     * @throws UnsupportedFunction  if the function is not supported by the script
+     */
+    public List<ForumBoard> getBoards(int limit) throws UnsupportedFunction {
+        throw new UnsupportedFunction();
+    }
+
+    /**
+     * Update the ForumBoard object with whatever values set by the user.
+     *
+     * @param  board                The ForumBoard object.
+     * @see    ForumBoard
+     * @throws SQLException         if a MySQL exception occurred.
+     * @throws UnsupportedFunction  if the function is not supported by the script
+     */
+    public void updateBoard(ForumBoard board) throws UnsupportedFunction, SQLException {
+        throw new UnsupportedFunction();
+    }
+
+    /**
+     * Creates the ForumBoard object with whatever values set by the user.
+     *
+     * @param  board                the ForumBoard object
+     * @see    ForumBoard
+     * @throws SQLException         if a MySQL exception occurred
+     * @throws UnsupportedFunction  if the function is not supported by the script
+     */
+    public void createBoard(ForumBoard board) throws UnsupportedFunction {
+        throw new UnsupportedFunction();
+    }
     /**
      * Returns the script's home URL.
      *

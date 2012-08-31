@@ -1,10 +1,28 @@
+/*
+ * This file is part of Bifrost.
+ *
+ * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
+ * Bifrost is licensed under the GNU Lesser General Public License.
+ *
+ * Bifrost is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Bifrost is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.craftfire.bifrost.classes.general;
 
-import com.craftfire.bifrost.script.Script;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.script.Script;
 
 /**
  * Base class for all categories like ForumBoard, ArticleCategory, WikiCategory, IssueCategory.
@@ -12,26 +30,27 @@ import java.util.List;
  * Should <code>not</code> be instanced.
  * 
  */
-public class Category implements IDable {
-    private int catid;
+public abstract class Category implements IDable {
+    private int catid, parentid;
     private String name, description;
-    private Category parent;
-    private List<Category> subcategories;
     private final Script script;
 
     /**
-     * @param script a Script Object of the script this category comes from
+     * This constructor should be used in extending class's constructor, which
+     * may be used to create new categories.
+     * 
+     * @param script  a Script Object of the script this category comes from
      */
     protected Category(Script script) {
         this.script = script;
     }
 
     /**
-     * This constructor should be used only when loading the category from a
-     * database.
+     * This constructor should be used in extending class's constructor, which
+     * is used only when loading the category from a database.
      * 
-     * @param script  a Script Object of the script this category comes from
-     * @param catid   the ID of the category
+     * @param script  a Script Object of the script this category comes from.
+     * @param catid   the ID of the category.
      */
     protected Category(Script script, int catid) {
         this.script = script;
@@ -39,27 +58,23 @@ public class Category implements IDable {
     }
 
     /**
-     * This constructor should be preferred when creating a new category.
+     * This constructor should be used in extending class's constructor that
+     * will be preferred when creating a new category.
      * 
-     * @param script   a Script Object of the script this category comes from
-     * @param name     the name of the category
-     * @param parent   the parent category
-     * @param subcats  the list of subcategories
+     * @param script    a Script Object of the script this category comes from.
+     * @param name      the name of the category.
+     * @param parentid  the ID of the parent category
      */
-    protected Category(Script script, String name, Category parent, List<Category> subcats) {
+    protected Category(Script script, String name, int parentid) {
         this.script = script;
         this.name = name;
-        this.parent = parent;
-        if (subcats != null) {
-            this.subcategories = subcats;
-        } else {
-            this.subcategories = new ArrayList<Category>();
-        }
+        this.parentid = parentid;
     }
+
     /**
-     * Returns the ID of category.
+     * Returns the ID of the category.
      * 
-     * @see com.craftfire.bifrost.classes.general.IDable#getID()
+     * @see IDable#getID()
      */
     @Override
     public int getID() {
@@ -67,7 +82,8 @@ public class Category implements IDable {
     }
 
     /**
-     * Sets the ID of the category, this should be used only when putting the category into a database.
+     * Sets the ID of the category, this should be used only when putting the
+     * category into a database.
      * 
      * @param id  the ID of the category
      */
@@ -112,65 +128,55 @@ public class Category implements IDable {
     }
 
     /**
-     * Returns the parent category.
+     * Returns the ID of the parent category.
      * 
-     * @return the parent category
+     * @return the id of the parent category
      */
-    public Category getParent() {
-        return this.parent;
+    public int getParentID() {
+        return this.parentid;
     }
 
     /**
      * Sets the parent category.
      * 
-     * @param parent  the parent category
+     * @param parentid  the ID of the parent category
      */
-    public void setParent(Category parent) {
-        this.parent = parent;
+    public void setParentID(int parentid) {
+        this.parentid = parentid;
     }
 
     /**
-     * Adds a subcategory for this category.
+     * Returns a Category object of the parent category. Should be implemented
+     * in classes of specific category types (such as ForumBoard). Loads it from
+     * database if not cached.
      * 
-     * @param cat  a subcategory
+     * @return                      a Category object
+     * @throws UnsupportedFunction  if the function is not supported by script
      */
-    public void addSubcategory(Category cat) {
-        if (this.subcategories == null) {
-            this.subcategories = new ArrayList<Category>();
-        }
-        this.subcategories.add(cat);
-    }
+    public abstract Category getParent() throws UnsupportedFunction;
 
     /**
-     * Adds multiple subcategories for this category.
+     * Returns the list of subcategories of this category. Should be implemented
+     * in classes of specific category types (such as ForumBoard). Loads the
+     * categories from database if not cached.
      * 
-     * @param cats  subcategories
+     * @param  limit                how many subcategories should be returned, 0 = returns all
+     * @return                      the subcategory list
+     * @throws UnsupportedFunction  if the function is not supported by script
      */
-    public void addSubcategories(Collection<Category> cats) {
-        if (this.subcategories == null) {
-            this.subcategories = new ArrayList<Category>();
-        }
-        this.subcategories.addAll(cats);
-    }
+    public abstract List<? extends Category> getSubcategories(int limit) throws UnsupportedFunction;
 
     /**
-     * Sets the subcategory list of this category.
+     * Returns the list of messages contained in this category. Should be
+     * implemented in classes of specific category types (such as ForumBoard).
+     * Loads the messages from database if not cached.
      * 
-     * @param cats  subcategory list
+     * @param  limit                how many messages should be returned, 0 = returns all
+     * @return                      the list of messages
+     * @throws UnsupportedFunction  if the function is not supported by script
      */
-    public void setSubcategories(List<Category> cats) {
-        this.subcategories = cats;
-    }
-
-    /**
-     * Returns the subcategory list of this category.
-     * 
-     * @return subcategory list
-     */
-    public List<Category> getSubcategories() {
-        return this.subcategories;
-    }
-
+    public abstract List<? extends Message> getMessages(int limit) throws UnsupportedFunction;
+    
     /**
      * Returns a Script Object for the script this category comes from.
      * 

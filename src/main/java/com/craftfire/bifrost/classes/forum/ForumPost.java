@@ -19,15 +19,16 @@
  */
 package com.craftfire.bifrost.classes.forum;
 
+import java.sql.SQLException;
+import java.util.Date;
+
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedFunction;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
-
-import java.sql.SQLException;
-import java.util.Date;
 
 /**
  * This class should only be used with a forum post.
@@ -41,7 +42,7 @@ import java.util.Date;
  * Remember to run {@see #createPost()} after creating a post to insert it into the script.
  */
 public class ForumPost extends Message {
-    private final int threadid, boardid;
+    private int threadid;
 
     /**
      * This constructor should only be used by the script and not by that library user.
@@ -49,12 +50,10 @@ public class ForumPost extends Message {
      * @param script    the script
      * @param postid    the ID of the post
      * @param threadid  the ID of the thread which the post is posted in
-     * @param boardid   the ID of the board which the thread is posted in
      */
-    public ForumPost(Script script, int postid, int threadid, int boardid) {
+    public ForumPost(Script script, int postid, int threadid) {
         super(script, postid);
         this.threadid = threadid;
-        this.boardid = boardid;
     }
 
     /**
@@ -64,12 +63,10 @@ public class ForumPost extends Message {
      *
      * @param script    the script
      * @param threadid  the ID of the thread which the post is going to be posted in
-     * @param boardid   the ID of the board which the thread is posted in
      */
-    public ForumPost(Script script, int threadid, int boardid) {
+    public ForumPost(Script script, int threadid) {
         super(script);
         this.threadid = threadid;
-        this.boardid = boardid;
     }
 
     /**
@@ -82,12 +79,32 @@ public class ForumPost extends Message {
     }
 
     /**
+     * Sets the thread the post is posted in.
+     * 
+     * @param threadid  the ID of the thread
+     */
+    public void setThreadID(int threadid) {
+        this.threadid = threadid;
+    }
+
+    /**
      * Returns the ID of the board that the thread is posted in.
      *
      * @return the ID of the board
+     * @throws UnsupportedFunction  if the function is not supported by script
      */
-    public int getBoardID() {
-        return this.boardid;
+    public int getBoardID() throws UnsupportedFunction {
+        return getThread().getBoardID();
+    }
+    
+    /**
+     * Returns a ForumBoard object for the board that the thread is posted in.
+     * 
+     * @return                      a ForumBoard object
+     * @throws UnsupportedFunction  if the function is not supported by script
+     */
+    public ForumBoard getBoard() throws UnsupportedFunction {
+        return getThread().getBoard();
     }
 
     /**
@@ -196,5 +213,13 @@ public class ForumPost extends Message {
             temp = (ForumPost) handle.getCache().get(CacheGroup.POST, id);
         }
         return temp;
+    }
+
+    /**
+     * @see Message#getCategory()
+     */
+    @Override
+    public ForumBoard getCategory() throws UnsupportedFunction {
+        return getBoard();
     }
 }

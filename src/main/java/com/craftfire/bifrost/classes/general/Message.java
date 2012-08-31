@@ -1,8 +1,28 @@
+/*
+ * This file is part of Bifrost.
+ *
+ * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
+ * Bifrost is licensed under the GNU Lesser General Public License.
+ *
+ * Bifrost is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Bifrost is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.craftfire.bifrost.classes.general;
 
-import com.craftfire.bifrost.script.Script;
-
 import java.util.Date;
+
+import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.script.Script;
 
 /**
  * Base class for all messages like Thread, Post, Article, Comment, PrivateMessage, etc.
@@ -10,23 +30,51 @@ import java.util.Date;
  * Should <code>not</code> be instanced.
  */
 public abstract class Message implements IDable {
-    private int id;
+    private int id, catid;
     private ScriptUser author;
     private Date date;
     private String title, body;
     private final Script script;
 
+    /**
+     * This constructor should be used in extending class's constructor, which
+     * is used to create new messages.
+     * 
+     * @param script  a Script Object of the script this message comes from
+     */
     protected Message(Script script) {
         this.script = script;
     }
 
+    /**
+     * This constructor should be used in extending class's constructor, which
+     * is used only when loading the message from a database.
+     * 
+     * @param script  a Script Object of the script this message comes from.
+     * @param id      the ID of the message.
+     */
     protected Message(Script script, int id) {
         this.script = script;
         this.id = id;
     }
 
     /**
-     * Sets the ID of the message, should only be used when creating a new Message.
+     * This constructor should be used in extending class's constructor, which
+     * is used only when loading the message from a database.
+     * 
+     * @param script  a Script Object of the script this message comes from.
+     * @param id      the ID of the message.
+     * @param catid   the ID of the category of the message
+     */
+    protected Message(Script script, int id, int catid) {
+        this.script = script;
+        this.id = id;
+        this.catid = catid;
+    }
+
+    /**
+     * Sets the ID of the message, this should be used only when putting the
+     * message into a database.
      * 
      * @param id  the ID of the message
      */
@@ -48,7 +96,7 @@ public abstract class Message implements IDable {
      * Sets the message author.
      * 
      * @param author  a ScriptUser object containing the author
-     * @see           com.craftfire.bifrost.classes.general.ScriptUser
+     * @see           ScriptUser
      */
     public void setAuthor(ScriptUser author) {
         this.author = author;
@@ -57,8 +105,8 @@ public abstract class Message implements IDable {
     /**
      * Returns a ScriptUser object of the author, null if error.
      * 
-     * @return message author
-     * @see    com.craftfire.bifrost.classes.general.ScriptUser
+     * @return message author, null if error
+     * @see    ScriptUser
      */
     public ScriptUser getAuthor() {
         return this.author;
@@ -74,9 +122,9 @@ public abstract class Message implements IDable {
     }
 
     /**
-     * Returns date when this message was posted.
+     * Returns date when this message was posted, null if error.
      * 
-     * @return message date
+     * @return message date, null if error
      */
     public Date getDate() {
         return this.date;
@@ -119,6 +167,34 @@ public abstract class Message implements IDable {
     }
 
     /**
+     * Returns a Category object for the category of the message. Should be
+     * implemented in classes of specific message types (such as ForumTopic).
+     * 
+     * @return                      a Category object
+     * @throws UnsupportedFunction  if the function is not supported by script
+     */
+    public abstract Category getCategory() throws UnsupportedFunction;
+
+    /**
+     * Returns the ID of the category of the message.
+     * 
+     * @return the category ID
+     */
+    public int getCategoryID() {
+        return this.catid;
+    }
+
+    /**
+     * Sets the category of this message.
+     * 
+     * @param  catID                     the ID of the category
+     * @throws IllegalArgumentException  if the category id is wrong
+     */
+    public void setCategoryID(int catID) throws IllegalArgumentException {
+        this.catid = catID;
+    }
+
+    /**
      * Returns a Script object of the script this message comes from.
      * 
      * @return Script object of the script this message comes from
@@ -127,8 +203,7 @@ public abstract class Message implements IDable {
         return this.script;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
      * 
      * @see java.lang.Object#toString()
      */
