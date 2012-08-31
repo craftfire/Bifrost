@@ -24,7 +24,7 @@ import java.util.List;
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
@@ -61,7 +61,7 @@ public class ForumBoard extends Category {
      * @see Category#getMessages(int)
      */
     @Override
-    public List<ForumThread> getMessages(int limit) throws UnsupportedFunction {
+    public List<ForumThread> getMessages(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThreadsFromBoard(getID(), limit);
     }
 
@@ -105,7 +105,7 @@ public class ForumBoard extends Category {
      * @see Category#getParent()
      */
     @Override
-    public ForumBoard getParent() throws UnsupportedFunction {
+    public ForumBoard getParent() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getParentID());
     }
 
@@ -113,7 +113,7 @@ public class ForumBoard extends Category {
      * @see Category#getSubcategories(int)
      */
     @Override
-    public List<ForumBoard> getSubcategories(int limit) throws UnsupportedFunction {
+    public List<ForumBoard> getSubcategories(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getSubBoards(getID(), limit);
     }
 

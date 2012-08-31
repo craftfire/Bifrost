@@ -40,7 +40,7 @@ import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.ForumScript;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.database.DataRow;
@@ -789,7 +789,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public void updatePost(ForumPost post) throws SQLException, UnsupportedFunction {
+    public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
         data.put("user_id", post.getAuthor().getID());
@@ -804,7 +804,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public void createPost(ForumPost post) throws SQLException, UnsupportedFunction {
+    public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
         int ipID = this.insertIP(post.getAuthor(), "post", "insert");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
@@ -924,7 +924,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public void updateThread(ForumThread thread) throws SQLException, UnsupportedFunction {
+    public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
         data.put("title", thread.getSubject());
@@ -952,7 +952,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public void createThread(ForumThread thread) throws SQLException, UnsupportedFunction {
+    public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         this.insertIP(thread.getAuthor(), "thread", "insert");
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();

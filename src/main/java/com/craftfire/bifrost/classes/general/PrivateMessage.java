@@ -26,7 +26,7 @@ import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
@@ -148,11 +148,11 @@ public class PrivateMessage extends Message {
         this.deleted.put(recipient, deleted);
     }
 
-    public void updatePrivateMessage() throws SQLException, UnsupportedFunction {
+    public void updatePrivateMessage() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).updatePrivateMessage(this);
     }
 
-    public void createPrivateMessage() throws SQLException, UnsupportedFunction {
+    public void createPrivateMessage() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).createPrivateMessage(this);
     }
 

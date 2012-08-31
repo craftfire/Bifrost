@@ -21,7 +21,7 @@ package com.craftfire.bifrost.classes.general;
 
 import java.util.List;
 
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.Script;
 
 /**
@@ -151,9 +151,9 @@ public abstract class Category implements IDable {
      * database if not cached.
      * 
      * @return                      a Category object
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * @throws UnsupportedMethod  if the function is not supported by script
      */
-    public abstract Category getParent() throws UnsupportedFunction;
+    public abstract Category getParent() throws UnsupportedMethod;
 
     /**
      * Returns the list of subcategories of this category. Should be implemented
@@ -162,9 +162,9 @@ public abstract class Category implements IDable {
      * 
      * @param  limit                how many subcategories should be returned, 0 = returns all
      * @return                      the subcategory list
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * @throws UnsupportedMethod  if the function is not supported by script
      */
-    public abstract List<? extends Category> getSubcategories(int limit) throws UnsupportedFunction;
+    public abstract List<? extends Category> getSubcategories(int limit) throws UnsupportedMethod;
 
     /**
      * Returns the list of messages contained in this category. Should be
@@ -173,9 +173,9 @@ public abstract class Category implements IDable {
      * 
      * @param  limit                how many messages should be returned, 0 = returns all
      * @return                      the list of messages
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * @throws UnsupportedMethod  if the function is not supported by script
      */
-    public abstract List<? extends Message> getMessages(int limit) throws UnsupportedFunction;
+    public abstract List<? extends Message> getMessages(int limit) throws UnsupportedMethod;
     
     /**
      * Returns a Script Object for the script this category comes from.

@@ -21,7 +21,7 @@ package com.craftfire.bifrost.classes.general;
 
 import java.util.Date;
 
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.Script;
 
 /**
@@ -171,9 +171,9 @@ public abstract class Message implements IDable {
      * implemented in classes of specific message types (such as ForumTopic).
      * 
      * @return                      a Category object
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * @throws UnsupportedMethod  if the function is not supported by script
      */
-    public abstract Category getCategory() throws UnsupportedFunction;
+    public abstract Category getCategory() throws UnsupportedMethod;
 
     /**
      * Returns the ID of the category of the message.
