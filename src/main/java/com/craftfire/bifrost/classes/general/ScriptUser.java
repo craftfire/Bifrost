@@ -30,7 +30,7 @@ import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Gender;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.CraftCommons;
@@ -132,7 +132,7 @@ public class ScriptUser implements IDable {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Group> getGroups() throws UnsupportedFunction {
+    public List<Group> getGroups() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getUserGroups(this.username);
     }
 
@@ -240,31 +240,31 @@ public class ScriptUser implements IDable {
         this.anonymous = anonymous;
     }
 
-    public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedFunction {
+    public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMsSent(this.username, limit);
     }
 
-    public List<PrivateMessage> getPMsReceived(int limit) throws UnsupportedFunction {
+    public List<PrivateMessage> getPMsReceived(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMsReceived(this.username, limit);
     }
 
-    public int getPMSentCount() throws UnsupportedFunction {
+    public int getPMSentCount() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMSentCount(this.username);
     }
 
-    public int getPMReceivedCount() throws UnsupportedFunction {
+    public int getPMReceivedCount() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMReceivedCount(this.username);
     }
 
-    public int getPostCount() throws UnsupportedFunction {
+    public int getPostCount() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getPostCount(this.username);
     }
 
-    public int getThreadCount() throws UnsupportedFunction {
+    public int getThreadCount() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getThreadCount(this.username);
     }
 
-    public boolean isBanned() throws UnsupportedFunction {
+    public boolean isBanned() throws UnsupportedMethod {
         if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.username)) {
             return true;
         } else if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.email)) {
@@ -276,27 +276,27 @@ public class ScriptUser implements IDable {
         }
     }
 
-    public boolean isRegistered() throws UnsupportedFunction {
+    public boolean isRegistered() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isRegistered(this.username);
     }
 
-    public List<String> getIPs() throws UnsupportedFunction {
+    public List<String> getIPs() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getIPs(this.username);
     }
 
-    public ForumThread getLastThread() throws UnsupportedFunction {
+    public ForumThread getLastThread() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getLastUserThread(this.username);
     }
 
-    public ForumPost getLastPost() throws UnsupportedFunction {
+    public ForumPost getLastPost() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getLastUserPost(this.username);
     }
 
-    public void updateUser() throws SQLException, UnsupportedFunction {
+    public void updateUser() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateUser(this);
     }
 
-    public void createUser() throws SQLException, UnsupportedFunction {
+    public void createUser() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createUser(this);
     }
 

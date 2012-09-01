@@ -26,7 +26,7 @@ import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.handles.ForumHandle;
@@ -426,7 +426,7 @@ public class BifrostDebug {
 			newThread.createThread();
 
 			print(seperate);
-		} catch (UnsupportedFunction e) {
+		} catch (UnsupportedMethod e) {
 	   		e.printStackTrace();
 		}
     }

@@ -21,7 +21,7 @@ package com.craftfire.bifrost.classes.general;
 
 import java.util.List;
 
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.Script;
 
 /**
@@ -150,32 +150,32 @@ public abstract class Category implements IDable {
      * in classes of specific category types (such as ForumBoard). Loads it from
      * database if not cached.
      * 
-     * @return                      a Category object
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * @return                    a Category object
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
-    public abstract Category getParent() throws UnsupportedFunction;
+    public abstract Category getParent() throws UnsupportedMethod;
 
     /**
      * Returns the list of subcategories of this category. Should be implemented
      * in classes of specific category types (such as ForumBoard). Loads the
      * categories from database if not cached.
      * 
-     * @param  limit                how many subcategories should be returned, 0 = returns all
-     * @return                      the subcategory list
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * @param  limit              how many subcategories should be returned, 0 = returns all
+     * @return                    the subcategory list
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
-    public abstract List<? extends Category> getSubcategories(int limit) throws UnsupportedFunction;
+    public abstract List<? extends Category> getSubcategories(int limit) throws UnsupportedMethod;
 
     /**
      * Returns the list of messages contained in this category. Should be
      * implemented in classes of specific category types (such as ForumBoard).
      * Loads the messages from database if not cached.
      * 
-     * @param  limit                how many messages should be returned, 0 = returns all
-     * @return                      the list of messages
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * @param  limit              how many messages should be returned, 0 = returns all
+     * @return                    the list of messages
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
-    public abstract List<? extends Message> getMessages(int limit) throws UnsupportedFunction;
+    public abstract List<? extends Message> getMessages(int limit) throws UnsupportedMethod;
     
     /**
      * Returns a Script Object for the script this category comes from.

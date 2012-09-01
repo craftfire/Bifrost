@@ -19,14 +19,14 @@
  */
 package com.craftfire.bifrost.exceptions;
 
-public class UnsupportedFunction extends Exception {
+public class UnsupportedMethod extends Exception {
     private String message;
 
-    public UnsupportedFunction() {
-        this.message = "This function is not supported by this script.";
+    public UnsupportedMethod() {
+        this.message = "This method is not supported by this script.";
     }
 
-    public UnsupportedFunction(String message) {
+    public UnsupportedMethod(String message) {
         super(message);
         this.message = message;
     }

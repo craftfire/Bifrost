@@ -23,10 +23,9 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.craftfire.bifrost.Bifrost;
-import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
@@ -89,21 +88,21 @@ public class ForumPost extends Message {
 
     /**
      * Returns the ID of the board that the thread is posted in.
-     *
-     * @return the ID of the board
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * 
+     * @return                    the ID of the board
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
-    public int getBoardID() throws UnsupportedFunction {
+    public int getBoardID() throws UnsupportedMethod {
         return getThread().getBoardID();
     }
     
     /**
      * Returns a ForumBoard object for the board that the thread is posted in.
      * 
-     * @return                      a ForumBoard object
-     * @throws UnsupportedFunction  if the function is not supported by script
+     * @return                    a ForumBoard object
+     * @throws UnsupportedMethod  if the method is not supported by script
      */
-    public ForumBoard getBoard() throws UnsupportedFunction {
+    public ForumBoard getBoard() throws UnsupportedMethod {
         return getThread().getBoard();
     }
 
@@ -111,9 +110,9 @@ public class ForumPost extends Message {
      * Returns the {@link ForumThread} of the post.
      *
      * @return the thread Object
-     * @throws UnsupportedFunction if the method is not supported by the script
+     * @throws UnsupportedMethod if the method is not supported by the script
      */
-    public ForumThread getThread() throws UnsupportedFunction {
+    public ForumThread getThread() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript())
                                                                                     .getThread(this.threadid);
     }
@@ -160,9 +159,9 @@ public class ForumPost extends Message {
      * It should <b>not</b> be run when creating a new post, only when editing an already existing post.
      *
      * @throws SQLException         if a SQL error concurs
-     * @throws UnsupportedFunction  if the method is not supported by the script
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void updatePost() throws SQLException, UnsupportedFunction {
+    public void updatePost() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updatePost(this);
     }
 
@@ -172,9 +171,9 @@ public class ForumPost extends Message {
      * It should <b>not</b> be run when updating a post, only when creating a new post.
      *
      * @throws SQLException         if a SQL error concurs
-     * @throws UnsupportedFunction  if the method is not supported by the script
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void createPost() throws SQLException, UnsupportedFunction {
+    public void createPost() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createPost(this);
     }
 
@@ -219,7 +218,7 @@ public class ForumPost extends Message {
      * @see Message#getCategory()
      */
     @Override
-    public ForumBoard getCategory() throws UnsupportedFunction {
+    public ForumBoard getCategory() throws UnsupportedMethod {
         return getBoard();
     }
 }

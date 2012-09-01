@@ -38,7 +38,7 @@ import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
@@ -694,7 +694,7 @@ public class SMF extends Script {
         return posts;
     }
 
-    public void updatePost(ForumPost post) throws SQLException, UnsupportedFunction {
+    public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("id_topic", post.getThreadID());
         data.put("id_board", post.getBoardID());
@@ -715,7 +715,7 @@ public class SMF extends Script {
         this.getDataManager().updateFields(data, "messages", "`id_msg` = '" + post.getID() + "'");
     }
 
-    public void createPost(ForumPost post) throws SQLException, UnsupportedFunction {
+    public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         post.setPostDate(new Date());
         data.put("id_topic", post.getThreadID());
@@ -871,7 +871,7 @@ public class SMF extends Script {
         return threads;
     }
 
-    public void updateThread(ForumThread thread) throws SQLException, UnsupportedFunction {
+    public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         String temp;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("id_board", thread.getBoardID());
@@ -912,7 +912,7 @@ public class SMF extends Script {
         this.getDataManager().updateFields(data, "topics", "`id_topic` = '" + thread.getID() + "'");
     }
 
-    public void createThread(ForumThread thread) throws SQLException, UnsupportedFunction {
+    public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         thread.setThreadDate(new Date());
         data.put("id_board", thread.getBoardID());
