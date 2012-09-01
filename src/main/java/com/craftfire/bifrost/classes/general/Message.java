@@ -29,11 +29,12 @@ import com.craftfire.bifrost.script.Script;
  * <p>
  * Should <code>not</code> be instanced.
  */
-public abstract class Message implements IDable {
-    private int id, catid;
+public abstract class Message implements IDable, MessageParent {
+    private int id, categoryid;
     private ScriptUser author;
     private Date date;
     private String title, body;
+    private boolean deleted;
     private final Script script;
 
     /**
@@ -62,14 +63,14 @@ public abstract class Message implements IDable {
      * This constructor should be used in extending class's constructor, which
      * is used only when loading the message from a database.
      * 
-     * @param script  a Script Object of the script this message comes from.
-     * @param id      the ID of the message.
-     * @param catid   the ID of the category of the message
+     * @param script      a Script Object of the script this message comes from.
+     * @param id          the ID of the message.
+     * @param categoryid  the ID of the category of the message
      */
-    protected Message(Script script, int id, int catid) {
+    protected Message(Script script, int id, int categoryid) {
         this.script = script;
         this.id = id;
-        this.catid = catid;
+        this.categoryid = categoryid;
     }
 
     /**
@@ -167,6 +168,34 @@ public abstract class Message implements IDable {
     }
 
     /**
+     * Sets the messages's deleted state to whatever <code>Boolean</code> the <code>isDeleted</code> parameter is.
+     * <p>
+     * <code>true</code> = deleted and <code>false</code> = not deleted.
+     *
+     * @param isDeleted  <code>true</code> for deleted, <code>false</code> for not deleted
+     */
+    public void setDeleted(boolean isDeleted) {
+        this.deleted = isDeleted;
+    }
+
+    /**
+     * Returns <code>true</code> if message is deleted, <code>false</code> if not deleted.
+     *
+     * @return <code>true</code> if deleted, <code>false</code> if not deleted
+     */
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    /**
+     * Returns the parent of the message.
+     * 
+     * @return                    the parent of the message
+     * @throws UnsupportedMethod  if the method is not supported by script
+     */
+    public abstract MessageParent getParent() throws UnsupportedMethod;
+
+    /**
      * Returns a Category object for the category of the message. Should be
      * implemented in classes of specific message types (such as ForumTopic).
      * 
@@ -181,17 +210,17 @@ public abstract class Message implements IDable {
      * @return the category ID
      */
     public int getCategoryID() {
-        return this.catid;
+        return this.categoryid;
     }
 
     /**
      * Sets the category of this message.
      * 
-     * @param  catID                     the ID of the category
+     * @param  categoryid                the ID of the category
      * @throws IllegalArgumentException  if the category id is wrong
      */
-    public void setCategoryID(int catID) throws IllegalArgumentException {
-        this.catid = catID;
+    public void setCategoryID(int categoryid) throws IllegalArgumentException {
+        this.categoryid = categoryid;
     }
 
     /**

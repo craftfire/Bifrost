@@ -21,6 +21,7 @@ package com.craftfire.bifrost.classes.forum;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
@@ -185,7 +186,7 @@ public class ForumPost extends Message {
      * @param id      the id of the object to look for
      * @return        <code>true</code> if contains, <code>false</code> if not
      */
-    public static boolean hasCache(ScriptHandle handle, Object id) {
+    public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.POST, id);
     }
 
@@ -206,7 +207,7 @@ public class ForumPost extends Message {
      * @param id      the id of the post
      * @return        ForumPost object if cache was found, <code>null</code> if no cache was found
      */
-    public static ForumPost getCache(ScriptHandle handle, Object id) {
+    public static ForumPost getCache(ScriptHandle handle, int id) {
         ForumPost temp = null;
         if (handle.getCache().contains(CacheGroup.POST, id)) {
             temp = (ForumPost) handle.getCache().get(CacheGroup.POST, id);
@@ -220,5 +221,35 @@ public class ForumPost extends Message {
     @Override
     public ForumBoard getCategory() throws UnsupportedMethod {
         return getBoard();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.craftfire.bifrost.classes.general.Message#getCategoryID()
+     */
+    @Override
+    public int getCategoryID() {
+        try {
+            return getBoardID();
+        } catch (UnsupportedMethod e) {
+            return 0;
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.MessageParent#getChildMessages(int)
+     */
+    @Override
+    public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getParent()
+     */
+    @Override
+    public ForumThread getParent() throws UnsupportedMethod {
+        return getThread();
     }
 }

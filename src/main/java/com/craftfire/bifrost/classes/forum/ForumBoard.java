@@ -59,9 +59,23 @@ public class ForumBoard extends Category {
 
     /**
      * @see Category#getMessages(int)
+     * @see #getThreads(int)
      */
     @Override
     public List<ForumThread> getMessages(int limit) throws UnsupportedMethod {
+        return getThreads(limit);
+    }
+    
+    /**
+     * Returns the list of threads contained in the board.
+     * <p>
+     * Loads the threads from a database if not cached.
+     * 
+     * @param limit               how many threads should be returned, 0 = returns all
+     * @return                    the list of threads
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThreadsFromBoard(getID(), limit);
     }
 
@@ -73,7 +87,7 @@ public class ForumBoard extends Category {
      * @param id      the id of the object to look for
      * @return        <code>true</code> if contains, <code>false</code> if not
      */
-    public static boolean hasCache(ScriptHandle handle, Object id) {
+    public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.BOARD, id);
     }
 

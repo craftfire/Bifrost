@@ -30,8 +30,8 @@ import com.craftfire.bifrost.script.Script;
  * Should <code>not</code> be instanced.
  * 
  */
-public abstract class Category implements IDable {
-    private int catid, parentid;
+public abstract class Category implements IDable, MessageParent {
+    private int categoryid, parentid;
     private String name, description;
     private final Script script;
 
@@ -49,12 +49,12 @@ public abstract class Category implements IDable {
      * This constructor should be used in extending class's constructor, which
      * is used only when loading the category from a database.
      * 
-     * @param script  a Script Object of the script this category comes from.
-     * @param catid   the ID of the category.
+     * @param script      a Script Object of the script this category comes from.
+     * @param categoryid  the ID of the category.
      */
-    protected Category(Script script, int catid) {
+    protected Category(Script script, int categoryid) {
         this.script = script;
-        this.catid = catid;
+        this.categoryid = categoryid;
     }
 
     /**
@@ -78,7 +78,7 @@ public abstract class Category implements IDable {
      */
     @Override
     public int getID() {
-        return this.catid;
+        return this.categoryid;
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class Category implements IDable {
      * @param id  the ID of the category
      */
     public void setID(int id) {
-        this.catid = id;
+        this.categoryid = id;
     }
 
     /**
@@ -177,6 +177,14 @@ public abstract class Category implements IDable {
      */
     public abstract List<? extends Message> getMessages(int limit) throws UnsupportedMethod;
     
+    /* (non-Javadoc)
+     * @see MessageParent#getChildMessages(int)
+     */
+    @Override
+    public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod {
+        return getMessages(limit);
+    }
+    
     /**
      * Returns a Script Object for the script this category comes from.
      * 
@@ -191,7 +199,7 @@ public abstract class Category implements IDable {
      */
     @Override
     public String toString() {
-        return "Category " + this.catid + " named " + this.name + " from script: " + this.script.getScriptName();
+        return "Category " + this.categoryid + " named " + this.name + " from script: " + this.script.getScriptName();
     }
 
 }
