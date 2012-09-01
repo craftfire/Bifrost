@@ -19,14 +19,14 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import java.sql.SQLException;
+import java.util.Date;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
-
-import java.sql.SQLException;
-import java.util.Date;
 
 /**
  * This class should only be used with a ban.
@@ -65,7 +65,7 @@ public class Ban implements IDable {
     /**
      * This constructor should be used when creating a new ban for the script.
      * <p>
-     * Remember to run {@see #createBan()} after creating a ban to insert it into the script.
+     * Remember to run {@see #addBan()} after creating a ban to insert it into the script.
      *
      * @param script  the script
      * @param name    the name/username of the ban, set to null if none.

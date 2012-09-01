@@ -159,7 +159,7 @@ public class ForumPost extends Message {
      * <p>
      * It should <b>not</b> be run when creating a new post, only when editing an already existing post.
      *
-     * @throws SQLException         if a SQL error concurs
+     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public void updatePost() throws SQLException, UnsupportedMethod {
@@ -171,7 +171,7 @@ public class ForumPost extends Message {
      * <p>
      * It should <b>not</b> be run when updating a post, only when creating a new post.
      *
-     * @throws SQLException         if a SQL error concurs
+     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public void createPost() throws SQLException, UnsupportedMethod {
