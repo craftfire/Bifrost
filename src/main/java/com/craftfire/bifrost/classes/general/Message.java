@@ -30,7 +30,7 @@ import com.craftfire.bifrost.script.Script;
  * Should <code>not</code> be instanced.
  */
 public abstract class Message implements IDable, MessageParent {
-    private int id, catid;
+    private int id, categoryid;
     private ScriptUser author;
     private Date date;
     private String title, body;
@@ -62,14 +62,14 @@ public abstract class Message implements IDable, MessageParent {
      * This constructor should be used in extending class's constructor, which
      * is used only when loading the message from a database.
      * 
-     * @param script  a Script Object of the script this message comes from.
-     * @param id      the ID of the message.
-     * @param catid   the ID of the category of the message
+     * @param script      a Script Object of the script this message comes from.
+     * @param id          the ID of the message.
+     * @param categoryid  the ID of the category of the message
      */
-    protected Message(Script script, int id, int catid) {
+    protected Message(Script script, int id, int categoryid) {
         this.script = script;
         this.id = id;
-        this.catid = catid;
+        this.categoryid = categoryid;
     }
 
     /**
@@ -189,17 +189,17 @@ public abstract class Message implements IDable, MessageParent {
      * @return the category ID
      */
     public int getCategoryID() {
-        return this.catid;
+        return this.categoryid;
     }
 
     /**
      * Sets the category of this message.
      * 
-     * @param  catID                     the ID of the category
+     * @param  categoryid                the ID of the category
      * @throws IllegalArgumentException  if the category id is wrong
      */
-    public void setCategoryID(int catID) throws IllegalArgumentException {
-        this.catid = catID;
+    public void setCategoryID(int categoryid) throws IllegalArgumentException {
+        this.categoryid = categoryid;
     }
 
     /**
