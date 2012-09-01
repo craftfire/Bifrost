@@ -189,6 +189,7 @@ public class PrivateMessage extends Message {
 
     /**
      * Returns a PrivateMessage object for the private message this message replies to.
+     * <p>
      * Loads it from database if not cached.
      * 
      * @see Message#getParent()
