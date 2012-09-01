@@ -34,6 +34,7 @@ public abstract class Message implements IDable, MessageParent {
     private ScriptUser author;
     private Date date;
     private String title, body;
+    private boolean deleted;
     private final Script script;
 
     /**
@@ -164,6 +165,26 @@ public abstract class Message implements IDable, MessageParent {
      */
     public String getTitle() {
         return this.title;
+    }
+
+    /**
+     * Sets the messages's deleted state to whatever <code>Boolean</code> the <code>isDeleted</code> parameter is.
+     * <p>
+     * <code>true</code> = deleted and <code>false</code> = not deleted.
+     *
+     * @param isDeleted  <code>true</code> for deleted, <code>false</code> for not deleted
+     */
+    public void setDeleted(boolean isDeleted) {
+        this.deleted = isDeleted;
+    }
+
+    /**
+     * Returns <code>true</code> if message is deleted, <code>false</code> if not deleted.
+     *
+     * @return <code>true</code> if deleted, <code>false</code> if not deleted
+     */
+    public boolean isDeleted() {
+        return this.deleted;
     }
 
     /**
