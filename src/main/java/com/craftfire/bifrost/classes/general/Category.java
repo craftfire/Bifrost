@@ -178,10 +178,10 @@ public abstract class Category implements IDable, MessageParent {
     public abstract List<? extends Message> getMessages(int limit) throws UnsupportedMethod;
     
     /* (non-Javadoc)
-     * @see MessageParent#getSubMessages(int)
+     * @see MessageParent#getChildMessages(int)
      */
     @Override
-    public List<? extends Message> getSubMessages(int limit) throws UnsupportedMethod {
+    public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod {
         return getMessages(limit);
     }
     

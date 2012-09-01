@@ -329,10 +329,10 @@ public class ForumThread extends Message {
      * (non-Javadoc)
      * 
      * @see
-     * com.craftfire.bifrost.classes.general.MessageParent#getSubMessages(int)
+     * com.craftfire.bifrost.classes.general.MessageParent#getChildMessages(int)
      */
     @Override
-    public List<ForumPost> getSubMessages(int limit) throws UnsupportedMethod {
+    public List<ForumPost> getChildMessages(int limit) throws UnsupportedMethod {
         return getPosts(limit);
     }
 

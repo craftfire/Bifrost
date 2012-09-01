@@ -202,10 +202,10 @@ public class PrivateMessage extends Message {
     /**
      * Returns the list of PrivateMessages replying to this message.
      * 
-     * @see com.craftfire.bifrost.classes.general.MessageParent#getSubMessages(int)
+     * @see com.craftfire.bifrost.classes.general.MessageParent#getChildMessages(int)
      */
     @Override
-    public List<PrivateMessage> getSubMessages(int limit) throws UnsupportedMethod {
+    public List<PrivateMessage> getChildMessages(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).getPMReplies(getID(), limit);
     }
 }

@@ -237,11 +237,17 @@ public class ForumPost extends Message {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.MessageParent#getChildMessages(int)
+     */
     @Override
-    public List<? extends Message> getSubMessages(int limit) throws UnsupportedMethod {
+    public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod {
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getParent()
+     */
     @Override
     public ForumThread getParent() throws UnsupportedMethod {
         return getThread();
