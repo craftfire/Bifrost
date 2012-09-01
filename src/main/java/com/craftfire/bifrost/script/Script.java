@@ -1,5 +1,8 @@
 /*
- * This file is part of Bifrost <http://www.craftfire.com/>.
+ * This file is part of Bifrost.
+ *
+ * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
+ * Bifrost is licensed under the GNU Lesser General Public License.
  *
  * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,6 +19,9 @@
  */
 package com.craftfire.bifrost.script;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -24,14 +30,11 @@ import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.ScriptType;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
-
-import java.sql.SQLException;
-import java.util.List;
 
 public class Script {
     private final String version;
@@ -117,10 +120,10 @@ public class Script {
      * This can be sha-1, sha-256, sha-512, whirpool, md5 and so on.
      *
      * @return Encryption method.
-     * @throws com.craftfire.bifrost.exceptions.UnsupportedFunction if the function is not supported by the script.
+     * @throws com.craftfire.bifrost.exceptions.UnsupportedMethod if the function is not supported by the script.
      */
-    public Encryption getEncryption() throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public Encryption getEncryption() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -148,10 +151,10 @@ public class Script {
      * @param username The username of the user.
      * @param password The password of the user.
      * @return         True if the username and password matches.
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public boolean authenticate(String username, String password) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public boolean authenticate(String username, String password) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -160,10 +163,10 @@ public class Script {
      * @param salt     The salt of the user to hash.
      * @param password The password of the user to hash.
      * @return         A hashed string.
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public String hashPassword(String salt, String password) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public String hashPassword(String salt, String password) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -171,10 +174,10 @@ public class Script {
      *
      * @param userid The userid to get the username of.
      * @return       Username of {@param userid} or null if nothing was found.
-     * @throws       UnsupportedFunction if the function is not supported by the script.
+     * @throws       UnsupportedMethod if the function is not supported by the script.
      */
-    public String getUsername(int userid) throws UnsupportedFunction, SQLException {
-        throw new UnsupportedFunction();
+    public String getUsername(int userid) throws UnsupportedMethod, SQLException {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -182,10 +185,10 @@ public class Script {
      *
      * @param username The user ID to get the username of.
      * @return         User ID of {@param username} or 0 if nothing was found.
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public int getUserID(String username) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public int getUserID(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -194,10 +197,10 @@ public class Script {
      * @param username The username to get the ScriptUser object from.
      * @return         A ScriptUser object of the given username, returns null if nothing was found.
      * @see            com.craftfire.bifrost.classes.general.ScriptUser
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public ScriptUser getUser(String username) throws UnsupportedFunction, SQLException {
-        throw new UnsupportedFunction();
+    public ScriptUser getUser(String username) throws UnsupportedMethod, SQLException {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -206,10 +209,10 @@ public class Script {
      * @param userid The user ID to get the ScriptUser object from.
      * @return       A ScriptUser object of the given user ID, returns null if nothing was found.
      * @see          ScriptUser
-     * @throws       UnsupportedFunction if the function is not supported by the script.
+     * @throws       UnsupportedMethod if the function is not supported by the script.
      */
-    public ScriptUser getUser(int userid) throws UnsupportedFunction, SQLException {
-        throw new UnsupportedFunction();
+    public ScriptUser getUser(int userid) throws UnsupportedMethod, SQLException {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -217,10 +220,10 @@ public class Script {
      *
      * @return  A ScriptUser object of the latest registered user.
      * @see     ScriptUser
-     * @throws  UnsupportedFunction if the function is not supported by the script.
+     * @throws  UnsupportedMethod if the function is not supported by the script.
      */
-    public ScriptUser getLastRegUser() throws UnsupportedFunction, SQLException {
-        throw new UnsupportedFunction();
+    public ScriptUser getLastRegUser() throws UnsupportedMethod, SQLException {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -229,10 +232,10 @@ public class Script {
      * @param user The ScriptUser object.
      * @see        ScriptUser
      * @throws     SQLException if a MySQL exception occurred.
-     * @throws     UnsupportedFunction if the function is not supported by the script.
+     * @throws     UnsupportedMethod if the function is not supported by the script.
      */
-    public void updateUser(ScriptUser user) throws SQLException, UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public void updateUser(ScriptUser user) throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -241,10 +244,10 @@ public class Script {
      * @param user The ScriptUser object.
      * @see        ScriptUser
      * @throws     SQLException if a MySQL exception occurred.
-     * @throws     UnsupportedFunction if the function is not supported by the script.
+     * @throws     UnsupportedMethod if the function is not supported by the script.
      */
-    public void createUser(ScriptUser user) throws SQLException, UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public void createUser(ScriptUser user) throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -258,10 +261,10 @@ public class Script {
      * @return      List with Group objects, if none are found it returns an empty List.
      * @see         com.craftfire.bifrost.classes.general.Group
      * @throws      SQLException if a MySQL exception occurred.
-     * @throws      UnsupportedFunction if the function is not supported by the script.
+     * @throws      UnsupportedMethod if the function is not supported by the script.
      */
-    public List<Group> getGroups(int limit) throws UnsupportedFunction, SQLException {
-        throw new UnsupportedFunction();
+    public List<Group> getGroups(int limit) throws UnsupportedMethod, SQLException {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -269,10 +272,10 @@ public class Script {
      *
      * @param group Name of the group.
      * @return      ID of the group.
-     * @throws      UnsupportedFunction if the function is not supported by the script.
+     * @throws      UnsupportedMethod if the function is not supported by the script.
      */
-    public int getGroupID(String group) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public int getGroupID(String group) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -281,10 +284,10 @@ public class Script {
      * @param groupid The group ID.
      * @return        Group object, null if nothing was found.
      * @see           Group
-     * @throws        UnsupportedFunction if the function is not supported by the script.
+     * @throws        UnsupportedMethod if the function is not supported by the script.
      */
-    public Group getGroup(int groupid) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public Group getGroup(int groupid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -293,10 +296,10 @@ public class Script {
      * @param group The group name.
      * @return      Group object, null if nothing was found.
      * @see         Group
-     * @throws      UnsupportedFunction if the function is not supported by the script.
+     * @throws      UnsupportedMethod if the function is not supported by the script.
      */
-    public Group getGroup(String group) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public Group getGroup(String group) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -306,10 +309,10 @@ public class Script {
      * @param username The username to grab the groups of.
      * @return         List with Group objects, if none are found it returns an empty List.
      * @see            Group
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public List<Group> getUserGroups(String username) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public List<Group> getUserGroups(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -318,10 +321,10 @@ public class Script {
      * @param group The Group object.
      * @see         Group
      * @throws      SQLException if a MySQL exception occurred.
-     * @throws      UnsupportedFunction if the function is not supported by the script.
+     * @throws      UnsupportedMethod if the function is not supported by the script.
      */
-    public void updateGroup(Group group) throws SQLException, UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public void updateGroup(Group group) throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -330,10 +333,10 @@ public class Script {
      * @param group The Group object.
      * @see         Group
      * @throws      SQLException if a MySQL exception occurred.
-     * @throws      UnsupportedFunction if the function is not supported by the script.
+     * @throws      UnsupportedMethod if the function is not supported by the script.
      */
-    public void createGroup(Group group) throws SQLException, UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public void createGroup(Group group) throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -342,10 +345,43 @@ public class Script {
      * @param pmid The private message ID.
      * @return     PrivateMessage object
      * @see        com.craftfire.bifrost.classes.general.PrivateMessage
-     * @throws     UnsupportedFunction if the function is not supported by the script.
+     * @throws     UnsupportedMethod if the function is not supported by the script.
      */
-    public PrivateMessage getPM(int pmid) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public PrivateMessage getPM(int pmid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+    
+    /**
+     * Returns a List with PrivateMessage objects.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param  limit              The limit. Set to 0 if you want to return all.
+     * @return                    List with Group objects, if none are found it returns an empty List.
+     * @see                       PrivateMessage
+     * @see                       List
+     * @throws UnsupportedMethod  if the function is not supported by the script.
+     */
+    public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
+     * Returns a List with PrivateMessage objects replying to specified private message.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param  pmid               the ID of the PM
+     * @param  limit              The limit. Set to 0 if you want to return all.
+     * @return                    List with Group objects, if none are found it returns an empty List.
+     * @see                       PrivateMessage
+     * @see                       List
+     * @throws UnsupportedMethod  if the function is not supported by the script.
+     */
+    public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -359,10 +395,10 @@ public class Script {
      * @return         List with Group objects, if none are found it returns an empty List.
      * @see            PrivateMessage
      * @see            List
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -376,10 +412,10 @@ public class Script {
      * @return         List with Group objects, if none are found it returns an empty List.
      * @see            PrivateMessage
      * @see            List
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -387,10 +423,10 @@ public class Script {
      *
      * @param username The username to get the count from.
      * @return         The amount of how many private messages the username has sent, returns 0 if none.
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public int getPMSentCount(String username) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public int getPMSentCount(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -398,10 +434,10 @@ public class Script {
      *
      * @param username The username to get the count from.
      * @return         The amount of how many private messages the username has received, returns 0 if none.
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public int getPMReceivedCount(String username) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public int getPMReceivedCount(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -410,10 +446,10 @@ public class Script {
      * @param privateMessage The PrivateMessage object.
      * @see                  PrivateMessage
      * @throws               SQLException if a MySQL exception occurred.
-     * @throws               UnsupportedFunction if the function is not supported by the script.
+     * @throws               UnsupportedMethod if the function is not supported by the script.
      */
-    public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -422,10 +458,10 @@ public class Script {
      * @param privateMessage The PrivateMessage object.
      * @see                  PrivateMessage
      * @throws               SQLException if a MySQL exception occurred.
-     * @throws               UnsupportedFunction if the function is not supported by the script.
+     * @throws               UnsupportedMethod if the function is not supported by the script.
      */
-    public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -434,10 +470,10 @@ public class Script {
      * @param username The username to get the IP addresses from.
      * @return         List with {@param username}'s IP addresses.
      * @see            List
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public List<String> getIPs(String username) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public List<String> getIPs(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -450,10 +486,10 @@ public class Script {
      * @return      List with Ban objects, if none are found it returns an empty List.
      * @see         com.craftfire.bifrost.classes.general.Ban
      * @see         List
-     * @throws      UnsupportedFunction if the function is not supported by the script.
+     * @throws      UnsupportedMethod if the function is not supported by the script.
      */
-    public List<Ban> getBans(int limit) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public List<Ban> getBans(int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -462,10 +498,10 @@ public class Script {
      * @param ban The Ban object.
      * @see       Ban
      * @throws    SQLException if a MySQL exception occurred.
-     * @throws    UnsupportedFunction if the function is not supported by the script.
+     * @throws    UnsupportedMethod if the function is not supported by the script.
      */
-    public void updateBan(Ban ban) throws SQLException, UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public void updateBan(Ban ban) throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -474,20 +510,20 @@ public class Script {
      * @param ban The Ban object.
      * @see       Ban
      * @throws    SQLException if a MySQL exception occurred.
-     * @throws    UnsupportedFunction if the function is not supported by the script.
+     * @throws    UnsupportedMethod if the function is not supported by the script.
      */
-    public void addBan(Ban ban) throws SQLException, UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public void addBan(Ban ban) throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
      * Returns the complete count of how many bans that have been made.
      *
      * @return The amount of how many bans that have been made, returns 0 if none.
-     * @throws UnsupportedFunction if the function is not supported by the script.
+     * @throws UnsupportedMethod if the function is not supported by the script.
      */
-    public int getBanCount() throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public int getBanCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -495,10 +531,10 @@ public class Script {
      *
      * @param string String to search for.
      * @return       True if {@param string} is banned.
-     * @throws       UnsupportedFunction if the function is not supported by the script.
+     * @throws       UnsupportedMethod if the function is not supported by the script.
      */
-    public boolean isBanned(String string) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public boolean isBanned(String string) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
@@ -506,29 +542,29 @@ public class Script {
      *
      * @param username Username to check if is registered.
      * @return         True if {@param username} is registered.
-     * @throws         UnsupportedFunction if the function is not supported by the script.
+     * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-    public boolean isRegistered(String username) throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public boolean isRegistered(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
      * Returns the complete count of how many users the script has registered.
      *
      * @return The amount of how many users the script has registered, returns 0 if none.
-     * @throws UnsupportedFunction if the function is not supported by the script.
+     * @throws UnsupportedMethod if the function is not supported by the script.
      */
-    public int getUserCount() throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public int getUserCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 
     /**
      * Returns the complete count of how many groups the script has.
      *
      * @return The amount of how how many groups the script has, returns 0 if none.
-     * @throws UnsupportedFunction if the function is not supported by the script.
+     * @throws UnsupportedMethod if the function is not supported by the script.
      */
-    public int getGroupCount() throws UnsupportedFunction {
-        throw new UnsupportedFunction();
+    public int getGroupCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 }

@@ -24,7 +24,7 @@ import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
@@ -86,11 +86,11 @@ public class Group implements IDable {
         this.usercount = usercount;
     }
 
-    public void updateGroup() throws SQLException, UnsupportedFunction {
+    public void updateGroup() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateGroup(this);
     }
 
-    public void createGroup() throws SQLException, UnsupportedFunction {
+    public void createGroup() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createGroup(this);
     }
 

@@ -21,7 +21,7 @@ package com.craftfire.bifrost.classes.general;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
@@ -303,9 +303,9 @@ public class Ban implements IDable {
      * It should <b>not</b> be run when creating a new ban, only when editing an already existing ban.
      *
      * @throws SQLException         if a SQL error concurs
-     * @throws UnsupportedFunction  if the method is not supported by the script
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void updateBan() throws SQLException, UnsupportedFunction {
+    public void updateBan() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateBan(this);
     }
 
@@ -315,9 +315,9 @@ public class Ban implements IDable {
      * It should <b>not</b> be run when updating a ban, only when creating a new ban.
      *
      * @throws SQLException         if a SQL error concurs
-     * @throws UnsupportedFunction  if the method is not supported by the script
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void addBan() throws SQLException, UnsupportedFunction {
+    public void addBan() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).addBan(this);
     }
 

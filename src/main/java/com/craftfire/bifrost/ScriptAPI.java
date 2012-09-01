@@ -20,7 +20,7 @@
 package com.craftfire.bifrost;
 
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.handles.ForumHandle;
@@ -129,7 +129,7 @@ public class ScriptAPI {
     }
 
 
-    public boolean convert(ScriptHandle from, ScriptHandle to) throws SQLException, UnsupportedFunction {
+    public boolean convert(ScriptHandle from, ScriptHandle to) throws SQLException, UnsupportedMethod {
         //TODO: Create script converter, need to add methods to scripts
         return false;
     }

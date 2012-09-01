@@ -1,12 +1,15 @@
 /*
- * This file is part of AuthAPI <http://www.craftfire.com/>.
+ * This file is part of Bifrost.
  *
- * AuthAPI is free software: you can redistribute it and/or modify
+ * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
+ * Bifrost is licensed under the GNU Lesser General Public License.
+ *
+ * Bifrost is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AuthAPI is distributed in the hope that it will be useful,
+ * Bifrost is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -16,6 +19,19 @@
  */
 package com.craftfire.bifrost.scripts.forum;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -24,22 +40,13 @@ import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedFunction;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.ForumScript;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 //TODO: Convert arrays to use Result class
 public class XenForo extends ForumScript {
@@ -53,26 +60,32 @@ public class XenForo extends ForumScript {
         super(script, version, dataManager);
     }
 
+    @Override
     public String[] getVersionRanges() {
         return this.versionRanges;
     }
 
+    @Override
     public String getLatestVersion() {
         return this.versionRanges[0];
     }
 
+    @Override
     public Encryption getEncryption() {
         return this.encryption;
     }
 
+    @Override
     public String getScriptName() {
         return this.scriptName;
     }
 
+    @Override
     public String getScriptShortname() {
         return this.shortName;
     }
 
+    @Override
     public boolean authenticate(String username, String password) {
         Blob hashBlob =
                 this.getDataManager().getBlobField("user_authenticate", "data", "`user_id` = '" + getUserID(username) +
@@ -104,27 +117,33 @@ public class XenForo extends ForumScript {
         return hashPassword(salt, password).equals(hash);
     }
 
+    @Override
     public String hashPassword(String salt, String password) {
         return CraftCommons.encrypt(Encryption.SHA256, CraftCommons.encrypt(Encryption.SHA256, password) + salt);
     }
 
+    @Override
     public String getUsername(int userid) {
         return this.getDataManager().getStringField("user", "username", "`user_id` = '" + userid + "'");
     }
 
+    @Override
     public int getUserID(String username) {
         return this.getDataManager().getIntegerField("user", "user_id", "`username` = '" + username + "'");
     }
 
+    @Override
     public ScriptUser getLastRegUser() {
         return getUser(this.getDataManager().getIntegerField("SELECT `user_id` FROM `" + this.getDataManager().getPrefix() +
                 "user` ORDER BY `user_id` ASC LIMIT 1"));
     }
 
+    @Override
     public ScriptUser getUser(String username) {
         return getUser(getUserID(username));
     }
 
+    @Override
     public ScriptUser getUser(int userid) {
         ScriptUser user = new ScriptUser(this, userid, null, null);
         Results results = this.getDataManager().getResults(
@@ -210,6 +229,7 @@ public class XenForo extends ForumScript {
         return user;
     }
 
+    @Override
     public void updateUser(ScriptUser user) throws SQLException {
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -291,6 +311,7 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
+    @Override
     public void createUser(ScriptUser user) throws SQLException {
         long timestamp = new Date().getTime() / 1000;
         Random r = new Random();
@@ -395,6 +416,7 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
+    @Override
     public List<Group> getGroups(int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -410,6 +432,7 @@ public class XenForo extends ForumScript {
         return groups;
     }
 
+    @Override
     public Group getGroup(int groupid) {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "user_group` WHERE `user_group_id` = '" + groupid +
@@ -435,11 +458,13 @@ public class XenForo extends ForumScript {
         return group;
     }
 
+    @Override
     public int getGroupID(String group) {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public Group getGroup(String group) {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT `user_group_id` FROM `" + this.getDataManager().getPrefix() +
@@ -447,6 +472,7 @@ public class XenForo extends ForumScript {
         return getGroup(Integer.parseInt(array.get("user_group_id").toString()));
     }
 
+    @Override
     public List<Group> getUserGroups(String username) {
         this.currentUsername = username;
         List<Group> groups = new ArrayList<Group>();
@@ -469,6 +495,7 @@ public class XenForo extends ForumScript {
         return groups;
     }
 
+    @Override
     public void updateGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("title", group.getName());
@@ -476,6 +503,7 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
+    @Override
     public void createGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("title", group.getName());
@@ -484,6 +512,7 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
+    @Override
     public PrivateMessage getPM(int pmid) {
         PrivateMessage pm = new PrivateMessage(this, pmid);
         HashMap<String, Object> array = this.getDataManager().getArray(
@@ -520,6 +549,7 @@ public class XenForo extends ForumScript {
         return pm;
     }
 
+    @Override
     public List<PrivateMessage> getPMsSent(String username, int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -537,6 +567,7 @@ public class XenForo extends ForumScript {
         return pms;
     }
 
+    @Override
     public List<PrivateMessage> getPMsReceived(String username, int limit) {
         int userID = getUserID(username);
         String limitstring = "";
@@ -569,12 +600,14 @@ public class XenForo extends ForumScript {
         return pms;
     }
 
+    @Override
     public int getPMSentCount(String username) {
         return this.getDataManager().getIntegerField("SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() +
                 "conversation_message` WHERE `user_id` = '" + getUserID(username) +
                 "'");
     }
 
+    @Override
     public int getPMReceivedCount(String username) {
         /*TODO*/
         return this.getDataManager().getIntegerField("SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() +
@@ -582,6 +615,7 @@ public class XenForo extends ForumScript {
                 "'");
     }
 
+    @Override
     public void updatePrivateMessage(PrivateMessage pm) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("message", pm.getBody());
@@ -614,6 +648,7 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
+    @Override
     public void createPrivateMessage(PrivateMessage pm) throws SQLException {
         Long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -680,25 +715,30 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
+    @Override
     public int getPostCount(String username) {
         return this.getDataManager().getCount("post", "`user_id` = '" + getUserID(username) + "' AND `position` != '0'");
     }
 
+    @Override
     public int getTotalPostCount() {
         return this.getDataManager().getCount("post", "`position` != '0'");
     }
 
+    @Override
     public ForumPost getLastPost() {
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `post_id` FROM `" + this.getDataManager().getPrefix() + "post` ORDER BY `post_id` ASC LIMIT 1"));
     }
 
+    @Override
     public ForumPost getLastUserPost(String username) {
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `post_id` FROM `" + this.getDataManager().getPrefix() + "post` WHERE `user_id` = '" +
                         getUserID(username) + "' AND `position` != '0' ORDER BY `post_id` ASC LIMIT 1"));
     }
 
+    @Override
     public List<ForumPost> getPosts(int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -714,6 +754,7 @@ public class XenForo extends ForumScript {
         return posts;
     }
 
+    @Override
     public List<ForumPost> getPostsFromThread(int threadid, int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -730,6 +771,7 @@ public class XenForo extends ForumScript {
         return posts;
     }
 
+    @Override
     public ForumPost getPost(int postid) {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "post` WHERE `post_id` = '" + postid + "' LIMIT 1");
@@ -739,14 +781,15 @@ public class XenForo extends ForumScript {
                 "'");
         ForumPost post =
                 new ForumPost(this, Integer.parseInt(array.get("post_id").toString()),
-                        Integer.parseInt(array.get("thread_id").toString()), nodeID);
+                        Integer.parseInt(array.get("thread_id").toString()));
         post.setBody(array.get("message").toString());
         post.setAuthor(getUser(Integer.parseInt(array.get("user_id").toString())));
         post.setPostDate(new Date(Long.parseLong(array.get("post_date").toString()) * 1000));
         return post;
     }
 
-    public void updatePost(ForumPost post) throws SQLException {
+    @Override
+    public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
         data.put("user_id", post.getAuthor().getID());
@@ -760,7 +803,8 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
-    public void createPost(ForumPost post) throws SQLException {
+    @Override
+    public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
         int ipID = this.insertIP(post.getAuthor(), "post", "insert");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
@@ -811,25 +855,30 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
+    @Override
     public int getThreadCount(String username) {
         return this.getDataManager().getCount("thread", "`user_id` = '" + getUserID(username) + "'");
     }
 
+    @Override
     public int getTotalThreadCount() {
         return this.getDataManager().getCount("thread");
     }
 
+    @Override
     public ForumThread getLastThread() {
         return getThread(this.getDataManager().getIntegerField("SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() +
                 "thread` ORDER BY `thread_id` ASC LIMIT 1"));
     }
 
+    @Override
     public ForumThread getLastUserThread(String username) {
         return getThread(this.getDataManager().getIntegerField(
                 "SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `user_id` = '" +
                         getUserID(username) + "' ORDER BY `thread_id` ASC LIMIT 1"));
     }
 
+    @Override
     public ForumThread getThread(int threadid) {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `thread_id` = '" + threadid +
@@ -858,6 +907,7 @@ public class XenForo extends ForumScript {
         return thread;
     }
 
+    @Override
     public List<ForumThread> getThreads(int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -873,7 +923,8 @@ public class XenForo extends ForumScript {
         return threads;
     }
 
-    public void updateThread(ForumThread thread) throws SQLException, UnsupportedFunction {
+    @Override
+    public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
         data.put("title", thread.getSubject());
@@ -900,7 +951,8 @@ public class XenForo extends ForumScript {
         this.getDataManager().updateFields(data, "thread", "`thread_id` = '" + thread.getID() + "'");
     }
 
-    public void createThread(ForumThread thread) throws SQLException, UnsupportedFunction {
+    @Override
+    public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         this.insertIP(thread.getAuthor(), "thread", "insert");
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -939,14 +991,17 @@ public class XenForo extends ForumScript {
         data.clear();
     }
 
+    @Override
     public int getUserCount() {
         return this.getDataManager().getCount("user");
     }
 
+    @Override
     public int getGroupCount() {
         return this.getDataManager().getCount("user_group");
     }
 
+    @Override
     public List<String> getIPs(String username) {
         List<String> ips = new ArrayList<String>();
         List<HashMap<String, Object>> array =
@@ -958,6 +1013,7 @@ public class XenForo extends ForumScript {
         return ips;
     }
 
+    @Override
     public List<Ban> getBans(int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -992,19 +1048,23 @@ public class XenForo extends ForumScript {
         return bans;
     }
 
+    @Override
     public void updateBan(Ban ban) {
         /* TODO: Make it possible to update email bans, user and IP bans. */
     }
 
+    @Override
     public void addBan(Ban ban) {
         /* TODO: Make it possible to add email bans, user and IP bans. */
     }
 
+    @Override
     public int getBanCount() {
         return this.getDataManager().getCount("ip_match") + this.getDataManager().getCount("user_ban") +
                 this.getDataManager().getCount("ban_email");
     }
 
+    @Override
     public boolean isBanned(String string) {
         if (CraftCommons.isEmail(string)) {
             if (this.getDataManager().exist("ban_email", "banned_email", string)) {
@@ -1023,6 +1083,7 @@ public class XenForo extends ForumScript {
         return false;
     }
 
+    @Override
     public boolean isRegistered(String username) {
         return this.getDataManager().exist("user", "username", username);
     }
