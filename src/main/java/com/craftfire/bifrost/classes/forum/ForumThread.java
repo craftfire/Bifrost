@@ -289,7 +289,7 @@ public class ForumThread extends Message {
      * @param id      the id of the object to look for
      * @return        <code>true</code> if contains, <code>false</code> if not
      */
-    public static boolean hasCache(ScriptHandle handle, Object id) {
+    public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.THREAD, id);
     }
 
@@ -310,7 +310,7 @@ public class ForumThread extends Message {
      * @param id      the id of the thread
      * @return        ForumThread object if cache was found, <code>null</code> if no cache was found
      */
-    public static ForumThread getCache(ScriptHandle handle, Object id) {
+    public static ForumThread getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.THREAD, id)) {
             return (ForumThread) handle.getCache().get(CacheGroup.THREAD, id);
         }
