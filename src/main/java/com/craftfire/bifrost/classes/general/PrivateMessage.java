@@ -150,7 +150,6 @@ public class PrivateMessage extends Message {
         handle.getCache().put(CacheGroup.PM, privateMessage.getID(), privateMessage);
     }
 
-    @SuppressWarnings("unchecked")
     public static PrivateMessage getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.PM, id)) {
             return (PrivateMessage) handle.getCache().get(CacheGroup.PM, id);
