@@ -29,6 +29,17 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
+/**
+ * This class should only be used with a forum board/category.
+ * <p>
+ * The second constructor should only be used by the script itself and not by the library user.
+ * To update any changed values in the board, run {@see #updateBoard()}.
+ * <p>
+ * When creating a new ForumBoard make sure you use the correct constructor:
+ * {@see #ForumBoard(com.craftfire.bifrost.script.Script, String, int)}.
+ * <p>
+ * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+ */
 public class ForumBoard extends Category {
 
     /**
