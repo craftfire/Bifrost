@@ -263,7 +263,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * <p>
      * It should <b>not</b> be run when creating a new thread, only when editing an already existing thread.
      *
-     * @throws SQLException         if a SQL error concurs
+     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public void updateThread() throws SQLException, UnsupportedMethod {
@@ -276,7 +276,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * <p>
      * It should <b>not</b> be run when updating a thread, only when creating a new thread.
      *
-     * @throws SQLException         if a SQL error concurs
+     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public void createThread() throws SQLException, UnsupportedMethod {
