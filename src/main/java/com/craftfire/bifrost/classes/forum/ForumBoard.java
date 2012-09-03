@@ -19,6 +19,7 @@
  */
 package com.craftfire.bifrost.classes.forum;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
@@ -84,6 +85,30 @@ public class ForumBoard extends Category {
      */
     public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThreadsFromBoard(getID(), limit);
+    }
+
+    /**
+     * This method should be run after changing any board values.
+     * <p>
+     * It should <b>not</b> be run when creating a new board, only when editing an already existing board.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void updateBoard() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updateBoard(this);
+    }
+
+    /**
+     * This method should be run after creating a new board.
+     * <p>
+     * It should <b>not</b> be run when updating a board, only when creating a new board.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void createBoard() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createBoard(this);
     }
 
     /**
