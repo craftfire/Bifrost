@@ -1,5 +1,6 @@
 package com.craftfire.bifrost.classes.cms;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
@@ -91,6 +92,30 @@ public class CMSArticle extends Message implements ViewsCounter {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * This method should be run after changing any article values.
+     * <p>
+     * It should <b>not</b> be run when creating a new article, only when editing an already existing article.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void updateArticle() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateArticle(this);
+    }
+
+    /**
+     * This method should be run after creating a new article.
+     * <p>
+     * It should <b>not</b> be run when updating an article, only when creating a new article.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void createArticle() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createArticle(this);
     }
 
     /**

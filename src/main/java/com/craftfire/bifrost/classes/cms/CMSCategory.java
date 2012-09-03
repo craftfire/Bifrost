@@ -1,5 +1,6 @@
 package com.craftfire.bifrost.classes.cms;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
@@ -45,6 +46,30 @@ public class CMSCategory extends Category {
 
     public void setPublic(boolean isPublic) {
         this.is_public = isPublic;
+    }
+
+    /**
+     * This method should be run after changing any category values.
+     * <p>
+     * It should <b>not</b> be run when creating a new category, only when editing an already existing category.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void updateCategory() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateCategory(this);
+    }
+
+    /**
+     * This method should be run after creating a new category.
+     * <p>
+     * It should <b>not</b> be run when updating a category, only when creating a new category.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void createCategory() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createCategory(this);
     }
 
     /**

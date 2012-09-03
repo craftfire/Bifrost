@@ -1,5 +1,6 @@
 package com.craftfire.bifrost.classes.cms;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
@@ -70,6 +71,30 @@ public class CMSComment extends Message {
     @Override
     public Category getCategory() throws UnsupportedMethod {
         return getArticle().getCategory();
+    }
+
+    /**
+     * This method should be run after changing any comment values.
+     * <p>
+     * It should <b>not</b> be run when creating a new comment, only when editing an already existing comment.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void updateComment() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateComment(this);
+    }
+
+    /**
+     * This method should be run after creating a new comment.
+     * <p>
+     * It should <b>not</b> be run when updating a comment, only when creating a new comment.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void createComment() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createComment(this);
     }
 
     /**
