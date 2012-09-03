@@ -15,29 +15,67 @@ import com.craftfire.bifrost.script.Script;
 public class CMSComment extends Message {
     private int articleid, parentid;
 
+    /**
+     * This constructor should be used when creating a new comment for the script.
+     * <p>
+     * Remember to run {@see #createComment()} after creating a comment to insert it into the script.
+     * 
+     * @param script     the script the comment is created for
+     * @param articleid  the ID of the article the comment is on
+     */
     public CMSComment(Script script, int articleid) {
         super(script);
         this.articleid = articleid;
     }
 
+    /**
+     * This constructor should only be used by the script and <b>not</b> by that library user.
+     * 
+     * @param script     the script the article comes from
+     * @param id         the ID of the comment
+     * @param articleid  the ID of the article the comment is on
+     */
     public CMSComment(Script script, int id, int articleid) {
         super(script, id);
         this.articleid = articleid;
     }
 
+    /**
+     * Returns the list of comments replying to this comment.
+     * <p>
+     * Loads it form database if not cached.
+     * 
+     * @see MessageParent#getChildMessages(int)
+     */
     @Override
     public List<CMSComment> getChildMessages(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getCommentReplies(getID(), limit);
     }
 
+    /**
+     * Returns the ID of the comment this comment replies to.
+     * 
+     * @return the ID of the parent comment
+     */
     public int getParentID() {
         return this.parentid;
     }
 
+    /**
+     * Sets the comment this comment replies to.
+     * 
+     * @param parentid  the ID of the parent comment
+     */
     public void setParentID(int parentid) {
         this.parentid = parentid;
     }
 
+    /**
+     * Returns the CMSComment object for the comment this comment replies to.
+     * 
+     * @return the CMSComment object
+     * @see Message#getParent()
+     */
     @Override
     public MessageParent getParent() throws UnsupportedMethod {
         if (this.parentid != 0) {
@@ -47,18 +85,39 @@ public class CMSComment extends Message {
         }
     }
 
+    /**
+     * Returns the ID of the article this comment is on.
+     * 
+     * @return the ID of the article this comment is on
+     */
     public int getArticleID() {
         return this.articleid;
     }
 
+    /**
+     * Sets the article this comment is on.
+     * 
+     * @param articleid  the ID of the article this comment is on
+     */
     public void setArticleID(int articleid) {
         this.articleid = articleid;
     }
 
+    /**
+     * Returns the CMSArticle object of the article this comment is on.
+     * 
+     * @return                    the CMSArticle object
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
     public CMSArticle getArticle() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getArticle(this.articleid);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.craftfire.bifrost.classes.general.Message#getCategoryID()
+     */
     @Override
     public int getCategoryID() {
         try {
@@ -68,6 +127,11 @@ public class CMSComment extends Message {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.craftfire.bifrost.classes.general.Message#getCategory()
+     */
     @Override
     public Category getCategory() throws UnsupportedMethod {
         return getArticle().getCategory();
