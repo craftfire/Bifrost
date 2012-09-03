@@ -10,6 +10,7 @@ import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
 public class CMSCategory extends Category {
+    private boolean is_public;
 
     public CMSCategory(Script script, int catid) {
         super(script, catid);
@@ -36,6 +37,14 @@ public class CMSCategory extends Category {
     @Override
     public List<CMSArticle> getMessages(int limit) throws UnsupportedMethod {
         return getArticles(limit);
+    }
+
+    public boolean isPublic() {
+        return this.is_public;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.is_public = isPublic;
     }
 
     /**

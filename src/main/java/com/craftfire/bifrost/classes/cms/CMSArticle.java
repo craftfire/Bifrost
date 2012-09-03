@@ -4,12 +4,16 @@ import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
+import com.craftfire.bifrost.classes.general.ViewsCounter;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
-public class CMSArticle extends Message {
+public class CMSArticle extends Message implements ViewsCounter {
+    private String intro, url;
+    private int views;
+    private boolean is_public, featured, allowComments;
 
     public CMSArticle(Script script, int catid) {
         super(script);
@@ -37,6 +41,56 @@ public class CMSArticle extends Message {
     @Override
     public CMSCategory getCategory() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getCategory(getCategoryID());
+    }
+
+    public String getIntro() {
+        return this.intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
+    }
+
+    public boolean isPublic() {
+        return this.is_public;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.is_public = isPublic;
+    }
+
+    @Override
+    public int getViewsCount() {
+        return this.views;
+    }
+
+    @Override
+    public void setViewsCount(int views) {
+        this.views = views;
+    }
+
+    public boolean isFeatured() {
+        return this.featured;
+    }
+
+    public void setFeatured(boolean isFeatured) {
+        this.featured = isFeatured;
+    }
+
+    public boolean isAllowingComments() {
+        return this.allowComments;
+    }
+
+    public void setAllowComments(boolean allowComments) {
+        this.allowComments = allowComments;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     /**
