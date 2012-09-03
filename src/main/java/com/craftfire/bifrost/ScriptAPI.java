@@ -19,10 +19,14 @@
  */
 package com.craftfire.bifrost;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
+import com.craftfire.bifrost.handles.CMSHandle;
 import com.craftfire.bifrost.handles.ForumHandle;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
@@ -30,9 +34,6 @@ import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
-
-import java.sql.SQLException;
-import java.util.HashMap;
 
 public class ScriptAPI {
     private HashMap<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
@@ -95,6 +96,14 @@ public class ScriptAPI {
     public ForumHandle getForumHandle(Scripts script) {
         if (handleExists(script)) {
             return (ForumHandle) this.handles.get(script);
+        } else {
+            return null;
+        }
+    }
+
+    public CMSHandle getCMSHandle(Scripts script) {
+        if (handleExists(script)) {
+            return (CMSHandle) this.handles.get(script);
         } else {
             return null;
         }

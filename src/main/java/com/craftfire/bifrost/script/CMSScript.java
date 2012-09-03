@@ -19,11 +19,149 @@
  */
 package com.craftfire.bifrost.script;
 
+import java.util.List;
+
+import com.craftfire.bifrost.classes.cms.CMSArticle;
+import com.craftfire.bifrost.classes.cms.CMSCategory;
+import com.craftfire.bifrost.classes.cms.CMSComment;
 import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.commons.managers.DataManager;
 
 public class CMSScript extends Script {
     protected CMSScript(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
+    }
+
+    public CMSComment getComment(int commentid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getCommentTotalCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSComment> getCommentsOnArticle(int articleid, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getCommentCount(int articleid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSComment> getCommentReplies(int commentid, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getCommentReplyCount(int commentid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSComment> getUserComments(String username, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getUserCommentCount(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public CMSComment getLastComment() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public CMSComment getLastUserComment(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public CMSComment getLastCommentOnArticle(int articleid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public void updateComment(CMSComment comment) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public void createComment(CMSComment comment) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public CMSArticle getArticle(int articleid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getArticleTotalCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSArticle> getArticlesFromCategory(int catid, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getArticleCount(int catid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSArticle> getUserArticles(String username, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getUserArticleCount(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public CMSArticle getLastArticle() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public CMSArticle getLastUserArticle(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public CMSArticle getLastArticleFromCategory(int catid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public void updateArticle(CMSArticle article) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public void createArticle(CMSArticle article) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public CMSCategory getCategory(int catid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSCategory> getCategories(int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getCategoryCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public List<CMSCategory> getSubCategories(int catid, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public int getSubCategoryCount(int catid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public void updateCategory(CMSCategory category) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    public void createCategory(CMSCategory category) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
     }
 }
