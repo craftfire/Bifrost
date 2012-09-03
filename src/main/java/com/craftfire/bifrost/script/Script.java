@@ -22,6 +22,11 @@ package com.craftfire.bifrost.script;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.managers.LoggingManager;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -31,10 +36,6 @@ import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.ScriptType;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
-import com.craftfire.commons.managers.LoggingManager;
 
 public class Script {
     private final String version;
@@ -565,6 +566,16 @@ public class Script {
      * @throws UnsupportedMethod if the function is not supported by the script.
      */
     public int getGroupCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
+     * Returns the script's home URL.
+     *
+     * @return Home URL of the script.
+     * @throws UnsupportedMethod if the method is not supported by the script.
+     */
+    public String getHomeURL() throws UnsupportedMethod {
         throw new UnsupportedMethod();
     }
 }

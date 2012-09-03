@@ -22,12 +22,13 @@ package com.craftfire.bifrost.script;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.commons.managers.DataManager;
 
 /**
  * This class contains functions relevant to direct functions for each script.
@@ -335,15 +336,6 @@ public class ForumScript extends Script {
     public void createBoard(ForumBoard board) throws UnsupportedMethod {
         throw new UnsupportedMethod();
     }
-    /**
-     * Returns the script's home URL.
-     *
-     * @return Home URL of the script.
-     * @throws UnsupportedMethod if the function is not supported by the script.
-     */
-	public String getHomeURL() throws UnsupportedMethod {
-		throw new UnsupportedMethod();
-	}
 
     /**
      * Returns the script's forum URL.
