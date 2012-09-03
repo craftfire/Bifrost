@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
+import com.craftfire.bifrost.classes.general.ViewsCounter;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -41,7 +42,7 @@ import com.craftfire.bifrost.script.Script;
  * <p>
  * Remember to run {@see #createThread()} after creating a thread to insert it into the script.
  */
-public class ForumThread extends Message {
+public class ForumThread extends Message implements ViewsCounter {
     private int firstpostid, lastpostid;
     private int threadviews, threadreplies;
     private boolean locked, poll, sticky;
@@ -168,6 +169,7 @@ public class ForumThread extends Message {
      *
      * @return number of views
      */
+    @Override
     public int getViewsCount() {
         return this.threadviews;
     }
@@ -177,6 +179,7 @@ public class ForumThread extends Message {
      *
      * @param threadviews  number of views
      */
+    @Override
     public void setViewsCount(int threadviews) {
         this.threadviews = threadviews;
     }
@@ -260,7 +263,7 @@ public class ForumThread extends Message {
      * <p>
      * It should <b>not</b> be run when creating a new thread, only when editing an already existing thread.
      *
-     * @throws SQLException         if a SQL error concurs
+     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public void updateThread() throws SQLException, UnsupportedMethod {
@@ -273,7 +276,7 @@ public class ForumThread extends Message {
      * <p>
      * It should <b>not</b> be run when updating a thread, only when creating a new thread.
      *
-     * @throws SQLException         if a SQL error concurs
+     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public void createThread() throws SQLException, UnsupportedMethod {

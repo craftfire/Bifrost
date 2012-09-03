@@ -19,6 +19,7 @@
  */
 package com.craftfire.bifrost.classes.forum;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
@@ -28,7 +29,26 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
+/**
+ * This class should only be used with a forum board/category.
+ * <p>
+ * The second constructor should only be used by the script itself and not by the library user.
+ * To update any changed values in the board, run {@see #updateBoard()}.
+ * <p>
+ * When creating a new ForumBoard make sure you use the correct constructor:
+ * {@see #ForumBoard(com.craftfire.bifrost.script.Script, String, int)}.
+ * <p>
+ * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+ */
 public class ForumBoard extends Category {
+
+    /**
+     * This constructor may be used when creating a new board for the script.
+     * <p>
+     * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+     * 
+     * @param script  the script the board is created for
+     */
     public ForumBoard(Script script) {
         super(script);
     }
@@ -44,7 +64,7 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * This constructor should be used when creating a new board for the script.
+     * This constructor should be preferred when creating a new board for the script.
      * <p>
      * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
      * 
@@ -76,6 +96,30 @@ public class ForumBoard extends Category {
      */
     public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThreadsFromBoard(getID(), limit);
+    }
+
+    /**
+     * This method should be run after changing any board values.
+     * <p>
+     * It should <b>not</b> be run when creating a new board, only when editing an already existing board.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void updateBoard() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updateBoard(this);
+    }
+
+    /**
+     * This method should be run after creating a new board.
+     * <p>
+     * It should <b>not</b> be run when updating a board, only when creating a new board.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void createBoard() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createBoard(this);
     }
 
     /**
@@ -129,4 +173,5 @@ public class ForumBoard extends Category {
     public List<ForumBoard> getSubcategories(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getSubBoards(getID(), limit);
     }
+
 }

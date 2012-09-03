@@ -22,6 +22,8 @@ package com.craftfire.bifrost.handles;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
@@ -32,7 +34,6 @@ import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.ForumScript;
-import com.craftfire.commons.managers.DataManager;
 
 public class ForumHandle extends ScriptHandle {
     public ForumHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
@@ -245,15 +246,6 @@ public class ForumHandle extends ScriptHandle {
     public void createBoard(ForumBoard board) throws UnsupportedMethod, SQLException {
         getForumScript().createBoard(board);
         ForumBoard.addCache(this, board);
-    }
-
-    public String getHomeURL() throws UnsupportedMethod {
-        if (this.script.getCache().contains(CacheGroup.URL_HOME)) {
-            return (String) this.script.getCache().get(CacheGroup.URL_HOME);
-        }
-        String url = this.getForumScript().getHomeURL();
-        this.script.getCache().put(CacheGroup.URL_HOME, url);
-        return url;
     }
 
     public String getForumURL() throws UnsupportedMethod {

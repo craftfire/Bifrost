@@ -22,6 +22,9 @@ package com.craftfire.bifrost.handles;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.ScriptAPI;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -34,8 +37,6 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.Script;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
 
 /**
  * @see Script
@@ -409,5 +410,14 @@ public class ScriptHandle {
         boolean registered = this.script.isRegistered(username);
         this.script.getCache().put(CacheGroup.IS_REGISTERED, registered, username);
         return registered;
+    }
+
+    public String getHomeURL() throws UnsupportedMethod {
+        if (this.script.getCache().contains(CacheGroup.URL_HOME)) {
+            return (String) this.script.getCache().get(CacheGroup.URL_HOME);
+        }
+        String url = this.getScript().getHomeURL();
+        this.script.getCache().put(CacheGroup.URL_HOME, url);
+        return url;
     }
 }
