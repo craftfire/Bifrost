@@ -29,6 +29,14 @@ import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
 public class ForumBoard extends Category {
+
+    /**
+     * This constructor may be used when creating a new board for the script.
+     * <p>
+     * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+     * 
+     * @param script  the script the board is created for
+     */
     public ForumBoard(Script script) {
         super(script);
     }
@@ -44,7 +52,7 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * This constructor should be used when creating a new board for the script.
+     * This constructor should be preferred when creating a new board for the script.
      * <p>
      * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
      * 
@@ -129,4 +137,5 @@ public class ForumBoard extends Category {
     public List<ForumBoard> getSubcategories(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getSubBoards(getID(), limit);
     }
+
 }
