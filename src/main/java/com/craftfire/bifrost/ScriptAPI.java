@@ -108,15 +108,13 @@ public class ScriptAPI {
         return (ForumHandle) this.lastHandle;
     }
 
-    public void addHandle(String script, String version, DataManager dataManager) throws UnsupportedScript,
-                                                                                                    UnsupportedVersion {
+    public void addHandle(String script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
         ScriptHandle handle = new ScriptHandle(script, version, dataManager);
         this.handles.put(handle.getScript().getScript(), handle);
         this.lastHandle = handle;
     }
 
-    public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript,
-            UnsupportedVersion {
+    public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
         ScriptHandle handle = new ScriptHandle(script, version, dataManager);
         this.handles.put(handle.getScript().getScript(), handle);
         this.lastHandle = handle;
@@ -128,12 +126,11 @@ public class ScriptAPI {
         this.lastHandle = handle;
     }
 
-
     public boolean convert(ScriptHandle from, ScriptHandle to) throws SQLException, UnsupportedMethod {
         //TODO: Create script converter, need to add methods to scripts
         return false;
     }
-    
+
     protected boolean handleExists(Scripts script) {
         return this.handles.containsKey(script);
     }

@@ -19,6 +19,7 @@
  */
 package com.craftfire.bifrost.exceptions;
 
+@SuppressWarnings("serial")
 public class UnsupportedMethod extends Exception {
     private String message;
 

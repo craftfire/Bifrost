@@ -29,7 +29,6 @@ import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
 public class ForumBoard extends Category {
-
     public ForumBoard(Script script) {
         super(script);
     }
@@ -130,5 +129,4 @@ public class ForumBoard extends Category {
     public List<ForumBoard> getSubcategories(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getSubBoards(getID(), limit);
     }
-
 }

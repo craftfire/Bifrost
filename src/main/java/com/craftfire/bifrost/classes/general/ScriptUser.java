@@ -131,7 +131,6 @@ public class ScriptUser implements IDable {
         this.lastname = lastname;
     }
 
-    @SuppressWarnings("unchecked")
     public List<Group> getGroups() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getUserGroups(this.username);
     }
@@ -308,7 +307,6 @@ public class ScriptUser implements IDable {
         handle.getCache().put(CacheGroup.USER, scriptUser.getID(), scriptUser);
     }
 
-    @SuppressWarnings("unchecked")
     public static ScriptUser getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.USER, id)) {
             return (ScriptUser) handle.getCache().get(CacheGroup.USER, id);

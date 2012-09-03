@@ -35,7 +35,6 @@ import com.craftfire.bifrost.script.ForumScript;
 import com.craftfire.commons.managers.DataManager;
 
 public class ForumHandle extends ScriptHandle {
-
     public ForumHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         super(script, version, dataManager);
     }
@@ -219,6 +218,7 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    @SuppressWarnings("unchecked")
     public List<ForumBoard> getSubBoards(int boardid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.BOARD_SUBS, boardid)) {
             return (List<ForumBoard>) getCache().get(CacheGroup.BOARD_SUBS, boardid);
