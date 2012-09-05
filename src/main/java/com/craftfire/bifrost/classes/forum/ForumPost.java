@@ -237,16 +237,20 @@ public class ForumPost extends Message {
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.MessageParent#getChildMessages(int)
+    /**
+     * Returns the list of messages whose parent is this object.
+     * <p>
+     * For ForumPost this always returns null.
      */
     @Override
     public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getParent()
+    /**
+     * Returns the parent of the message.
+     * <p>
+     * For ForumPost it always has the same result as {@see #getThread()}.
      */
     @Override
     public ForumThread getParent() throws UnsupportedMethod {

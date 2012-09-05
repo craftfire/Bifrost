@@ -37,7 +37,7 @@ import com.craftfire.bifrost.script.Script;
  * To update any changed values in the article, run {@see #updateArticle()}.
  * <p>
  * When creating a new CMSArticle make sure you use the correct constructor:
- * {@see #CMSArticle(com.craftfire.bifrost.script.Script, int)}.
+ * {@see #CMSArticle(Script, int)}.
  * <p>
  * Remember to run {@see #createArticle()} after creating an article to insert it into the script.
  */
@@ -84,7 +84,9 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * @see #getComments(int)
+     * Returns the list of messages whose parent is this object.
+     * <p>
+     * For CMSArticle it always has the same result as {@see #getComments(int)}.
      */
     @Override
     public List<CMSComment> getChildMessages(int limit) throws UnsupportedMethod {
@@ -92,7 +94,9 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * @see #getCategory()
+     * Returns the parent of the message.
+     * <p>
+     * For CMSArticle it always has the same result as {@see #getCategory()}.
      */
     @Override
     public CMSCategory getParent() throws UnsupportedMethod {

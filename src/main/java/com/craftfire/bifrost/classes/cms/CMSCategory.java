@@ -112,7 +112,9 @@ public class CMSCategory extends Category {
     }
 
     /**
-     * @see #getArticles(int)
+     * Returns the list of messages contained in this category.
+     * <p>
+     * For CMSCategory it always has the same result as {@see #getArticles(int)}.
      */
     @Override
     public List<CMSArticle> getMessages(int limit) throws UnsupportedMethod {

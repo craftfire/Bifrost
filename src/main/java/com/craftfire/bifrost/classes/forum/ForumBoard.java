@@ -77,8 +77,9 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * @see Category#getMessages(int)
-     * @see #getThreads(int)
+     * Returns the list of messages contained in this category.
+     * <p>
+     * For ForumBoard it has the same effect as {@see #getThreads(int)}
      */
     @Override
     public List<ForumThread> getMessages(int limit) throws UnsupportedMethod {
@@ -158,7 +159,7 @@ public class ForumBoard extends Category {
         return null;
     }
 
-    /**
+    /* (non-javadoc)
      * @see Category#getParent()
      */
     @Override
@@ -166,7 +167,7 @@ public class ForumBoard extends Category {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getParentID());
     }
 
-    /**
+    /* (non-javadoc)
      * @see Category#getSubcategories(int)
      */
     @Override

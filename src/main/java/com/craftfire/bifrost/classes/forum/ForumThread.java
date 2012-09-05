@@ -321,28 +321,29 @@ public class ForumThread extends Message implements ViewsCounter {
     }
 
     /**
-     * @see Message#getCategory()
+     * Returns a Category object for the category of the message.
+     * <p>
+     * For ForumThread it has always the same result as {@see #getBoard()}.
      */
     @Override
     public ForumBoard getCategory() throws UnsupportedMethod {
         return getBoard();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.craftfire.bifrost.classes.general.MessageParent#getChildMessages(int)
+    /**
+     * Returns the list of messages whose parent is this object.
+     * <p>
+     * For ForumThread it has always the same result as {@see #getPosts(int)}.
      */
     @Override
     public List<ForumPost> getChildMessages(int limit) throws UnsupportedMethod {
         return getPosts(limit);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.craftfire.bifrost.classes.general.Message#getParent()
+    /**
+     * Returns the parent of the message.
+     * <p>
+     * For ForumThread it always has the same result as {@see #getBoard()}.
      */
     @Override
     public ForumBoard getParent() throws UnsupportedMethod {
