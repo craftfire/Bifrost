@@ -26,6 +26,7 @@ import java.util.List;
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ViewsCounter;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -303,7 +304,13 @@ public class ForumThread extends Message implements ViewsCounter {
      * @param thread  the ForumThread object
      */
     public static void addCache(ScriptHandle handle, ForumThread thread) {
-        handle.getCache().put(CacheGroup.THREAD, thread.getID(), thread);
+        handle.getCache().putMetadatable(CacheGroup.THREAD, thread.getID(), thread);
+        handle.getCache().setMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-board", thread.getBoardID());
+        if (thread.getAuthor() != null) {
+            handle.getCache().setMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-author", thread.getAuthor().getUsername());
+        } else {
+            handle.getCache().removeMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-author");
+        }
     }
 
     /**
@@ -318,6 +325,35 @@ public class ForumThread extends Message implements ViewsCounter {
             return (ForumThread) handle.getCache().get(CacheGroup.THREAD, id);
         }
         return null;
+    }
+
+    public static void cleanupCache(ScriptHandle handle, ForumThread thread, CacheCleanupReason reason) {
+        if (thread.getAuthor() != null) {
+            handle.getCache().remove(CacheGroup.THREAD_COUNT, thread.getAuthor().getUsername());
+            handle.getCache().remove(CacheGroup.THREAD_LIST_USER, thread.getAuthor().getUsername());
+            handle.getCache().remove(CacheGroup.THREAD_LAST_USER, thread.getAuthor().getUsername());
+        }
+        handle.getCache().remove(CacheGroup.BOARD_THREADS, thread.getBoardID());
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.THREAD_COUNT_TOTAL);
+            handle.getCache().clear(CacheGroup.THREAD_LAST);
+            handle.getCache().clear(CacheGroup.THREAD_LIST);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.THREAD_COUNT_TOTAL);
+            handle.getCache().clear(CacheGroup.THREAD_LAST);
+            handle.getCache().clear(CacheGroup.THREAD_LIST);
+            /* Passes through */
+        case UPDATE:
+            Object old_username = handle.getCache().getMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-author");
+            Object old_boardid = handle.getCache().getMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-board");
+            handle.getCache().remove(CacheGroup.THREAD_COUNT, old_username);
+            handle.getCache().remove(CacheGroup.THREAD_LIST_USER, old_username);
+            handle.getCache().remove(CacheGroup.THREAD_LAST_USER, old_username);
+            handle.getCache().remove(CacheGroup.BOARD_THREADS, old_boardid);
+            break;
+        }
     }
 
     /**

@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -197,7 +198,13 @@ public class ForumPost extends Message {
      * @param post    the ForumPost object
      */
     public static void addCache(ScriptHandle handle, ForumPost post) {
-        handle.getCache().put(CacheGroup.POST, post.getID(), post);
+        handle.getCache().putMetadatable(CacheGroup.POST, post.getID(), post);
+        handle.getCache().setMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-thread", post.getThreadID());
+        if (post.getAuthor() != null) {
+            handle.getCache().setMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-author", post.getAuthor().getUsername());
+        } else {
+            handle.getCache().removeMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-author");
+        }
     }
 
     /**
@@ -213,6 +220,35 @@ public class ForumPost extends Message {
             temp = (ForumPost) handle.getCache().get(CacheGroup.POST, id);
         }
         return temp;
+    }
+
+    public static void cleanupCache(ScriptHandle handle, ForumPost post, CacheCleanupReason reason) {
+        if (post.getAuthor() != null) {
+            handle.getCache().remove(CacheGroup.POST_COUNT, post.getAuthor().getUsername());
+            handle.getCache().remove(CacheGroup.POST_LAST_USER, post.getAuthor().getUsername());
+            handle.getCache().remove(CacheGroup.POST_LIST_USER, post.getAuthor().getUsername());
+        }
+        handle.getCache().remove(CacheGroup.THREAD_POSTS, post.getThreadID());
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.POST_COUNT_TOTAL);
+            handle.getCache().clear(CacheGroup.POST_LAST);
+            handle.getCache().clear(CacheGroup.POST_LIST);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.POST_COUNT_TOTAL);
+            handle.getCache().clear(CacheGroup.POST_LAST);
+            handle.getCache().clear(CacheGroup.POST_LIST);
+            /* Passes through */
+        case UPDATE:
+            Object old_username = handle.getCache().getMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-author");
+            Object old_threadid = handle.getCache().getMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-thread");
+            handle.getCache().remove(CacheGroup.POST_COUNT, old_username);
+            handle.getCache().remove(CacheGroup.POST_LAST_USER, old_username);
+            handle.getCache().remove(CacheGroup.POST_LIST_USER, old_username);
+            handle.getCache().remove(CacheGroup.THREAD_POSTS, old_threadid);
+            break;
+        }
     }
 
     /**

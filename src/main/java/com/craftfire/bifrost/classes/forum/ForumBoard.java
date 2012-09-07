@@ -24,6 +24,7 @@ import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Category;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -142,7 +143,8 @@ public class ForumBoard extends Category {
      * @param board   the board object
      */
     public static void addCache(ScriptHandle handle, ForumBoard board) {
-        handle.getCache().put(CacheGroup.BOARD, board.getID(), board);
+        handle.getCache().putMetadatable(CacheGroup.BOARD, board.getID(), board);
+        handle.getCache().setMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent", board.getParentID());
     }
 
     /**
@@ -157,6 +159,22 @@ public class ForumBoard extends Category {
             return (ForumBoard) handle.getCache().get(CacheGroup.BOARD, id);
         }
         return null;
+    }
+
+    public static void cleanupCache(ScriptHandle handle, ForumBoard board, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.BOARD_SUBS, board.getParentID());
+        switch (reason) {
+        case OTHER:
+            handle.getCache().remove(CacheGroup.BOARD_SUBS, handle.getCache().getMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent"));
+            /* Passes through */
+        case CREATE:
+            handle.getCache().clear(CacheGroup.BOARD_COUNT);
+            handle.getCache().clear(CacheGroup.BOARD_LIST);
+            break;
+        case UPDATE:
+            handle.getCache().remove(CacheGroup.BOARD_SUBS, handle.getCache().getMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent"));
+            break;
+        }
     }
 
     /* (non-javadoc)

@@ -31,6 +31,7 @@ import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
@@ -195,11 +196,13 @@ public class ScriptHandle {
 
     public void updateUser(ScriptUser user) throws SQLException, UnsupportedMethod {
         this.script.updateUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.UPDATE);
         ScriptUser.addCache(this, user);
     }
 
     public void createUser(ScriptUser user) throws SQLException, UnsupportedMethod {
         this.script.createUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.CREATE);
         ScriptUser.addCache(this, user);
     }
 
@@ -252,11 +255,13 @@ public class ScriptHandle {
 
     public void updateGroup(Group group) throws SQLException, UnsupportedMethod {
         this.script.updateGroup(group);
+        Group.cleanupCache(this, group, CacheCleanupReason.UPDATE);
         Group.addCache(this, group);
     }
 
     public void createGroup(Group group) throws SQLException, UnsupportedMethod {
         this.script.createGroup(group);
+        Group.cleanupCache(this, group, CacheCleanupReason.CREATE);
         Group.addCache(this, group);
     }
 
@@ -329,11 +334,13 @@ public class ScriptHandle {
 
     public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
         this.script.updatePrivateMessage(privateMessage);
+        PrivateMessage.cleanupCache(this, privateMessage, CacheCleanupReason.UPDATE);
         PrivateMessage.addCache(this, privateMessage);
     }
 
     public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
         this.script.createPrivateMessage(privateMessage);
+        PrivateMessage.cleanupCache(this, privateMessage, CacheCleanupReason.CREATE);
         PrivateMessage.addCache(this, privateMessage);
     }
 
@@ -377,11 +384,13 @@ public class ScriptHandle {
 
     public void updateBan(Ban ban) throws SQLException, UnsupportedMethod {
         this.script.updateBan(ban);
+        Ban.cleanupCache(this, ban, CacheCleanupReason.UPDATE);
         Ban.addCache(this, ban);
     }
 
     public void addBan(Ban ban) throws SQLException, UnsupportedMethod {
         this.script.addBan(ban);
+        Ban.cleanupCache(this, ban, CacheCleanupReason.CREATE);
         Ban.addCache(this, ban);
     }
 

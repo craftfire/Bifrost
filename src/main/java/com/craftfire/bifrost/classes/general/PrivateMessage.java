@@ -20,10 +20,13 @@
 package com.craftfire.bifrost.classes.general;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -147,7 +150,26 @@ public class PrivateMessage extends Message {
     }
 
     public static void addCache(ScriptHandle handle, PrivateMessage privateMessage) {
-        handle.getCache().put(CacheGroup.PM, privateMessage.getID(), privateMessage);
+        handle.getCache().putMetadatable(CacheGroup.PM, privateMessage.getID(), privateMessage);
+        handle.getCache().setMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-parent", privateMessage.getParentID());
+        if (privateMessage.getAuthor() != null) {
+            handle.getCache().setMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-author", privateMessage.getAuthor().getUsername());
+        } else {
+            handle.getCache().removeMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-author");
+        }
+        if (privateMessage.getRecipients() != null) {
+            List<String> recipientNames = new ArrayList<String>();
+            Iterator<ScriptUser> I = privateMessage.getRecipients().iterator();
+            while (I.hasNext()) {
+                ScriptUser user = I.next();
+                if (user != null) {
+                    recipientNames.add(user.getUsername());
+                }
+            }
+            handle.getCache().setMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients", privateMessage.getRecipients());
+        } else {
+            handle.getCache().removeMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients");
+        }
     }
 
     public static PrivateMessage getCache(ScriptHandle handle, Object id) {
@@ -155,6 +177,50 @@ public class PrivateMessage extends Message {
             return (PrivateMessage) handle.getCache().get(CacheGroup.PM, id);
         }
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void cleanupCache(ScriptHandle handle, PrivateMessage privateMessage, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.PM_REPLIES, privateMessage.getParentID());
+        if (privateMessage.getAuthor() != null) {
+            handle.getCache().remove(CacheGroup.PM_SENT, privateMessage.getAuthor().getUsername());
+            handle.getCache().remove(CacheGroup.PM_SENT_COUNT, privateMessage.getAuthor().getUsername());
+        }
+        if (privateMessage.getRecipients() != null) {
+            Iterator<ScriptUser> I = privateMessage.getRecipients().iterator();
+            while (I.hasNext()) {
+                ScriptUser user = I.next();
+                if (user != null) {
+                    handle.getCache().remove(CacheGroup.PM_RECEIVED, user.getUsername());
+                    handle.getCache().remove(CacheGroup.PM_RECEIVED_COUNT, user.getUsername());
+                }
+            }
+        }
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.PM_LIST);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.PM_LIST);
+            /* Passes through */
+        case UPDATE:
+            Object old_parentid = handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-parent");
+            Object old_username = handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-author");
+            List<String> old_recipients = (List<String>) handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients");
+            handle.getCache().remove(CacheGroup.PM_REPLIES, old_parentid);
+            handle.getCache().remove(CacheGroup.PM_SENT, old_username);
+            handle.getCache().remove(CacheGroup.PM_SENT_COUNT, old_username);
+            if (old_recipients != null) {
+                Iterator<String> I = old_recipients.iterator();
+                while (I.hasNext()) {
+                    String username = I.next();
+                    handle.getCache().remove(CacheGroup.PM_RECEIVED, username);
+                    handle.getCache().remove(CacheGroup.PM_RECEIVED_COUNT, username);
+                }
+            }
+            break;
+        }
+
     }
 
     /**

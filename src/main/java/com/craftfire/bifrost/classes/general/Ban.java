@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -355,5 +356,17 @@ public class Ban implements IDable {
             return (Ban) handle.getCache().get(CacheGroup.BAN, id);
         }
         return null;
+    }
+
+    public static void cleanupCache(ScriptHandle handle, Ban ban, CacheCleanupReason reason) {
+        switch (reason) {
+        case CREATE:
+        case OTHER:
+            handle.getCache().clear(CacheGroup.BAN_LIST);
+            handle.getCache().clear(CacheGroup.BAN_COUNT);
+            break;
+        case UPDATE:
+            break;
+        }
     }
 }
