@@ -110,6 +110,23 @@ public class ForumScript extends Script {
 	}
 
     /**
+     * Returns a List with Post objects that have been made by the {@param username}.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     * 
+     * @param username            the username to grab the posts from
+     * @param limit               the limit, set to 0 if you want to return all
+     * @return                    List with Post objects, if none are found it returns an empty List
+     * @see                       ForumPost
+     * @see                       List
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public List<ForumPost> getUserPosts(String username, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
      * Returns a ForumPost object of the given post id, if nothing is found it returns null.
      *
      * @param postid The post ID.
@@ -215,6 +232,23 @@ public class ForumScript extends Script {
      * @throws UnsupportedMethod  if the function is not supported by the script.
      */
 	public List<ForumThread> getThreadsFormBoard(int boardid, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
+     * Returns a List with ForumThread objects that have been made by {@param username}.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param username            the username to grab the thread list from
+     * @param limit               the limit, set to 0 if you want to return all
+     * @return                    List with ForumThread objects, if none are found it returns an empty List
+     * @see                       List
+     * @see                       ForumThread
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public List<ForumThread> getUserThreads(String username, int limit) throws UnsupportedMethod {
         throw new UnsupportedMethod();
     }
 
