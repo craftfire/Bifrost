@@ -336,7 +336,7 @@ public class ScriptUser implements IDable {
                 handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, user.getUsername());
                 handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, user.getUsername());
                 handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, user.getUsername());
-                handle.getCache().remove(CacheGroup.COMMENT_USER_COUNT, user.getUsername());
+                handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, user.getUsername());
                 handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, user.getUsername());
                 handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, user.getUsername());
                 handle.getCache().remove(CacheGroup.POST_COUNT, user.getUsername());
@@ -353,7 +353,7 @@ public class ScriptUser implements IDable {
                 handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, old_username);
                 handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, old_username);
                 handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, old_username);
-                handle.getCache().remove(CacheGroup.COMMENT_USER_COUNT, old_username);
+                handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, old_username);
                 handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, old_username);
                 handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, old_username);
                 handle.getCache().remove(CacheGroup.POST_COUNT, old_username);

@@ -142,11 +142,11 @@ public class CMSHandle extends ScriptHandle {
     }
 
     public int getUserCommentCount(String username) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.COMMENT_USER_COUNT, username)) {
-            return (Integer) getCache().get(CacheGroup.COMMENT_USER_COUNT, username);
+        if (getCache().contains(CacheGroup.COMMENT_COUNT_USER, username)) {
+            return (Integer) getCache().get(CacheGroup.COMMENT_COUNT_USER, username);
         }
         int cmts = getCMSScript().getUserCommentCount(username);
-        getCache().put(CacheGroup.COMMENT_USER_COUNT, username, cmts);
+        getCache().put(CacheGroup.COMMENT_COUNT_USER, username, cmts);
         return cmts;
     }
 

@@ -242,7 +242,7 @@ public class CMSComment extends Message {
         if (comment.getAuthor() != null) {
             String username = comment.getAuthor().getUsername();
             handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, username);
-            handle.getCache().remove(CacheGroup.COMMENT_USER_COUNT, username);
+            handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, username);
             handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, username);
         }
         handle.getCache().remove(CacheGroup.COMMENT_REPLIES, comment.getParentID());
@@ -264,7 +264,7 @@ public class CMSComment extends Message {
             handle.getCache().remove(CacheGroup.COMMENT_COUNT, old_article);
             handle.getCache().remove(CacheGroup.COMMENT_LAST_ARTICLE, old_article);
             handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, old_username);
-            handle.getCache().remove(CacheGroup.COMMENT_USER_COUNT, old_username);
+            handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, old_username);
             handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, old_username);
             handle.getCache().remove(CacheGroup.COMMENT_REPLIES, old_parent);
             handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, old_parent);
