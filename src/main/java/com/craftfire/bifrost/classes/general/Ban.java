@@ -35,7 +35,7 @@ import com.craftfire.bifrost.script.Script;
  * To update any changed values in the post, run {@see #updateBan()}.
  * <p>
  * When creating a new Ban make sure you use the correct constructor:
- * {@see #Ban(com.craftfire.bifrost.script.Script, String, String, String)}.
+ * {@see #Ban(Script, String, String, String)}.
  * <p>
  * Remember to run {@see #addBan()} after creating a ban to insert it into the script.
  */

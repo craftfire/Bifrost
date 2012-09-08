@@ -35,7 +35,7 @@ import com.craftfire.bifrost.script.Script;
  * To update any changed values in the post, run {@see #updateGroup()}.
  * <p>
  * When creating a new Group make sure you use the correct constructor:
- * {@see #Group(com.craftfire.bifrost.script.Script, String)}.
+ * {@see #Group(Script, String)}.
  * <p>
  * Remember to run {@see #createGroup()} after creating a group to insert it into the script.
  */

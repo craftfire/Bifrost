@@ -37,7 +37,7 @@ import com.craftfire.bifrost.script.Script;
  * To update any changed values in the thread, run {@see #updateThread()}.
  * <p>
  * When creating a new ForumThread make sure you use the correct constructor:
- * {@see #ForumThread(com.craftfire.bifrost.script.Script, int)}.
+ * {@see #ForumThread(Script, int)}.
  * <p>
  * Remember to run {@see #createThread()} after creating a thread to insert it into the script.
  */

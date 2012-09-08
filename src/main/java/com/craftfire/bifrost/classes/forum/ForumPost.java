@@ -37,7 +37,7 @@ import com.craftfire.bifrost.script.Script;
  * To update any changed values in the post, run {@see #updatePost()}.
  * <p>
  * When creating a new ForumPost make sure you use the correct constructor:
- * {@see #ForumPost(com.craftfire.bifrost.script.Script, int, int)}.
+ * {@see #ForumPost(Script, int, int)}.
  * <p>
  * Remember to run {@see #createPost()} after creating a post to insert it into the script.
  */
