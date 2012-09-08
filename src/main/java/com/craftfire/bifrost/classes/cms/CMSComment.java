@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.MessageParent;
@@ -235,6 +236,17 @@ public class CMSComment extends Message {
         return null;
     }
 
+    /**
+     * Removes outdated cache elements related to given {@param comment} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link CMSComment}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle   the handle the method is called from
+     * @param comment  the comment to cleanup related cache
+     * @param reason   the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see            Cache
+     */
     public static void cleanupCache(ScriptHandle handle, CMSComment comment, CacheCleanupReason reason) {
         handle.getCache().remove(CacheGroup.ARTICLE_COMMENTS, comment.getArticleID());
         handle.getCache().remove(CacheGroup.COMMENT_COUNT, comment.getArticleID());

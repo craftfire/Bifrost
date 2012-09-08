@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ViewsCounter;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
@@ -327,6 +328,17 @@ public class ForumThread extends Message implements ViewsCounter {
         return null;
     }
 
+    /**
+     * Removes outdated cache elements related to given {@param thread} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link ForumThread}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle  the handle the method is called from
+     * @param thread  the thread to cleanup related cache
+     * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see           Cache
+     */
     public static void cleanupCache(ScriptHandle handle, ForumThread thread, CacheCleanupReason reason) {
         if (thread.getAuthor() != null) {
             handle.getCache().remove(CacheGroup.THREAD_COUNT, thread.getAuthor().getUsername());

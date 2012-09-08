@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ViewsCounter;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
@@ -297,6 +298,17 @@ public class CMSArticle extends Message implements ViewsCounter {
         return null;
     }
 
+    /**
+     * Removes outdated cache elements related to given {@param article} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link CMSArticle}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle   the handle the method is called from
+     * @param article  the article to cleanup related cache
+     * @param reason   the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see            Cache
+     */
     public static void cleanupCache(ScriptHandle handle, CMSArticle article, CacheCleanupReason reason) {
         handle.getCache().remove(CacheGroup.CMSCAT_ARTICLES, article.getCategoryID());
         handle.getCache().remove(CacheGroup.ARTICLE_COUNT, article.getCategoryID());

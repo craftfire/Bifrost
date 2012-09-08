@@ -28,6 +28,7 @@ import java.util.List;
 import com.craftfire.commons.CraftCommons;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
@@ -317,6 +318,17 @@ public class ScriptUser implements IDable {
         return null;
     }
 
+    /**
+     * Removes outdated cache elements related to given {@param user} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link ScriptUser}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle  the handle the method is called from
+     * @param user    the user to cleanup related cache
+     * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see           Cache
+     */
     public static void cleanupCache(ScriptHandle handle, ScriptUser user, CacheCleanupReason reason) {
         handle.getCache().remove(CacheGroup.USER_ID, user.getUsername());
         handle.getCache().remove(CacheGroup.USER_USERNAME, user.getID());

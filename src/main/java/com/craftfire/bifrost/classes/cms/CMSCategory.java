@@ -22,6 +22,7 @@ package com.craftfire.bifrost.classes.cms;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
@@ -179,6 +180,17 @@ public class CMSCategory extends Category {
         return null;
     }
 
+    /**
+     * Removes outdated cache elements related to given {@param category} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link CMSCategory}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle    the handle the method is called from
+     * @param category  the category to cleanup related cache
+     * @param reason    the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see             Cache
+     */
     public static void cleanupCache(ScriptHandle handle, CMSCategory category, CacheCleanupReason reason) {
         handle.getCache().remove(CacheGroup.CMSCAT_SUBS, category.getParentID());
         handle.getCache().remove(CacheGroup.CMSCAT_SUB_COUNT, category.getParentID());

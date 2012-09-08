@@ -19,6 +19,13 @@
  */
 package com.craftfire.bifrost.enums;
 
+/**
+ * The enum that says what is the reason of cache cleanup.
+ * <p>
+ * Different cleanup reasons cause different cleanup actions to be performed.
+ * <p>
+ * {@link #OTHER} reason usually causes all actions to be performed, but it's up to the method.
+ */
 public enum CacheCleanupReason {
     CREATE, UPDATE, OTHER
 

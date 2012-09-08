@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
@@ -179,6 +180,17 @@ public class PrivateMessage extends Message {
         return null;
     }
 
+    /**
+     * Removes outdated cache elements related to given {@param privateMessage} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link PrivateMessage}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle          the handle the method is called from
+     * @param privateMessage  the private message to cleanup related cache
+     * @param reason          the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see                   Cache
+     */
     @SuppressWarnings("unchecked")
     public static void cleanupCache(ScriptHandle handle, PrivateMessage privateMessage, CacheCleanupReason reason) {
         handle.getCache().remove(CacheGroup.PM_REPLIES, privateMessage.getParentID());
