@@ -20,9 +20,13 @@
 package com.craftfire.bifrost.classes.general;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -201,7 +205,19 @@ public class Group implements IDable {
      * @param group   the Group object
      */
     public static void addCache(ScriptHandle handle, Group group) {
-        handle.getCache().put(CacheGroup.GROUP, group.getID(), group);
+        handle.getCache().putMetadatable(CacheGroup.GROUP, group.getID(), group);
+        handle.getCache().setMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-name", group.getName());
+        if (group.getUsers() != null) {
+            List<String> usernames = new ArrayList<String>();
+            Iterator<ScriptUser> I = group.getUsers().iterator();
+            while (I.hasNext()) {
+                ScriptUser user = I.next();
+                if (user != null) {
+                    usernames.add(user.getUsername());
+                }
+            }
+            handle.getCache().setMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-users", usernames);
+        }
     }
 
     /**
@@ -216,5 +232,52 @@ public class Group implements IDable {
             return (Group) handle.getCache().get(CacheGroup.GROUP, id);
         }
         return null;
+    }
+
+    /**
+     * Removes outdated cache elements related to given {@param group} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link Group}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle  the handle the method is called from
+     * @param group   the group to cleanup related cache
+     * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see           Cache
+     */
+    @SuppressWarnings("unchecked")
+    public static void cleanupCache(ScriptHandle handle, Group group, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.GROUP_ID, group.getName());
+        if (group.getUsers() != null) {
+            Iterator<ScriptUser> I = group.getUsers().iterator();
+            while (I.hasNext()) {
+                ScriptUser user = I.next();
+                if (user != null) {
+                    handle.getCache().remove(CacheGroup.USER_GROUP, user.getUsername());
+                }
+            }
+        }
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.GROUP_COUNT);
+            handle.getCache().clear(CacheGroup.GROUP_LIST);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.GROUP_COUNT);
+            handle.getCache().clear(CacheGroup.GROUP_LIST);
+            /* Passes through */
+        case UPDATE:
+            Object old_name = handle.getCache().getMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-name");
+            List<String> old_usernames = (List<String>) handle.getCache().getMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-users");
+            handle.getCache().remove(CacheGroup.GROUP_ID, old_name);
+            if (old_usernames != null) {
+                Iterator<String> I = old_usernames.iterator();
+                while (I.hasNext()) {
+                    String username = I.next();
+                    handle.getCache().remove(CacheGroup.USER_GROUP, username);
+                }
+            }
+            break;
+        }
     }
 }

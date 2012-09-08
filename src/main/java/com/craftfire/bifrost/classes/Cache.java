@@ -19,8 +19,10 @@
  */
 package com.craftfire.bifrost.classes;
 
-import com.craftfire.bifrost.enums.CacheGroup;
+import com.craftfire.commons.classes.MetadatableCacheItem;
 import com.craftfire.commons.managers.CacheManager;
+
+import com.craftfire.bifrost.enums.CacheGroup;
 
 /**
  * Handles all different cache within each {@link com.craftfire.bifrost.script.Script}
@@ -62,6 +64,31 @@ public class Cache {
      */
     public void put(CacheGroup group, Object id, Object object) {
         this.cacheManager.put(group.toString(), id, object);
+    }
+
+    /**
+     * Puts an object without an ID in the specified {@link CacheGroup} group parameter as metadatable cache item.
+     * <p>
+     * This will override any previous object in the specified {@link CacheGroup} per {@link CacheManager}.
+     *
+     * @param group   the {@link CacheGroup} which the object should be placed in
+     * @param object  the object that is going to be stored
+     */
+    public void putMetadatable(CacheGroup group, Object object) {
+        putMetadatable(group, 1, object);
+    }
+
+    /**
+     * Puts an object with an ID in the specified {@link CacheGroup} group parameter as metadatable cache item.
+     * <p>
+     * The id parameter can be used to retrieve the object from the cache.
+     *
+     * @param group   the {@link CacheGroup} which the object should be placed in
+     * @param id      the ID of the stored object.
+     * @param object  the object that is going to be stored
+     */
+    public void putMetadatable(CacheGroup group, Object id, Object object) {
+        this.cacheManager.putMetadatable(group.toString(), id, object);
     }
 
     /**
@@ -112,5 +139,83 @@ public class Cache {
      */
     public boolean contains(CacheGroup group, Object id) {
          return this.cacheManager.contains(group.toString(), id);
+    }
+
+    /**
+     * Removes from cache all object in the cache group.
+     * 
+     * @param group  the {@link CacheGroup} to clear
+     */
+    public void clear(CacheGroup group) {
+        this.cacheManager.clear(group.toString());
+    }
+
+    /**
+     * Removes the object from the cache.
+     * 
+     * @param group  the {@link CacheGroup} which the object should be removed from
+     * @param id     the id of the object
+     */
+    public void remove(CacheGroup group, Object id) {
+        this.cacheManager.remove(group.toString(), id);
+    }
+
+    /**
+     * Sets the value of the metadata key of specified cached object.
+     * <p>
+     * If operation succeeded, returns <code>true</code>
+     * <p>
+     * If the object is not metadatable, not present in cache, or other error occurred, returns <code>false</code>.
+     * 
+     * @param group  the {@link CacheGroup} of the object
+     * @param id     the id of the object
+     * @param key    the meta key to set
+     * @param value  the meta value
+     * @return       <code>true</code> if succeeded, <code>false</code> if not
+     */
+    public boolean setMetadata(CacheGroup group, Object id, String key, Object value) {
+        MetadatableCacheItem item = this.cacheManager.getMetadatableItem(group.toString(), id);
+        if (item == null) {
+            return false;
+        }
+        item.setMetaData(key, value);
+        return true;
+    }
+
+    /**
+     * Returns the value of the metadata key of specified object.
+     * 
+     * @param group  the {@link CacheGroup} of the object
+     * @param id     the id of the object
+     * @param key    the meta key to get
+     * @return       value of the meta key, or null if the object is not metadatable, not present in cache, or other error occured
+     */
+    public Object getMetadata(CacheGroup group, Object id, String key) {
+        MetadatableCacheItem item = this.cacheManager.getMetadatableItem(group.toString(), id);
+        if (item == null) {
+            return null;
+        }
+        return item.getMetaData(key);
+    }
+
+    /**
+     * Removes the metadata key from specified cached object.
+     * <p>
+     * If operation succeeded, returns <code>true</code>
+     * <p>
+     * If the object is not metadatable, not present in cache, or other error occurred, returns <code>false</code>.
+     * 
+     * @param group  the {@link CacheGroup} of the object
+     * @param id     the id of the object
+     * @param key    the meta key to set
+     * @return       <code>true</code> if succeeded, <code>false</code> if not
+     */
+    public boolean removeMetadata(CacheGroup group, Object id, String key) {
+        MetadatableCacheItem item = this.cacheManager.getMetadatableItem(group.toString(), id);
+        if (item == null) {
+            return false;
+        }
+        item.removeMetaData(key);
+        return true;
     }
 }

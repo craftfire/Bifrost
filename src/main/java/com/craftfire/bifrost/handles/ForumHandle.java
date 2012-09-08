@@ -29,6 +29,7 @@ import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
@@ -85,17 +86,29 @@ public class ForumHandle extends ScriptHandle {
             return (List<ForumPost>) this.script.getCache().get(CacheGroup.THREAD_POSTS, threadid);
         }
         List<ForumPost> posts = this.getForumScript().getPostsFromThread(threadid, limit);
-        this.script.getCache().put(CacheGroup.THREAD_POSTS, posts);
+        this.script.getCache().put(CacheGroup.THREAD_POSTS, threadid, posts);
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<ForumPost> getUserPosts(String username, int limit) throws UnsupportedMethod {
+        if (this.script.getCache().contains(CacheGroup.POST_LIST_USER, username)) {
+            return (List<ForumPost>) this.script.getCache().get(CacheGroup.POST_LIST_USER, username);
+        }
+        List<ForumPost> posts = this.getForumScript().getUserPosts(username, limit);
+        this.script.getCache().put(CacheGroup.POST_LIST_USER, username, posts);
         return posts;
     }
 
     public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
         this.getForumScript().updatePost(post);
+        ForumPost.cleanupCache(this, post, CacheCleanupReason.UPDATE);
         ForumPost.addCache(this, post);
     }
 
     public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
         this.getForumScript().createPost(post);
+        ForumPost.cleanupCache(this, post, CacheCleanupReason.CREATE);
         ForumPost.addCache(this, post);
     }
 
@@ -200,13 +213,25 @@ public class ForumHandle extends ScriptHandle {
         return threads;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<ForumThread> getUserThreads(String username, int limit) throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.THREAD_LIST_USER, username)) {
+            return (List<ForumThread>) getCache().get(CacheGroup.THREAD_LIST_USER, username);
+        }
+        List<ForumThread> threads = getForumScript().getUserThreads(username, limit);
+        getCache().put(CacheGroup.THREAD_LIST_USER, username, threads);
+        return threads;
+    }
+
     public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         this.getForumScript().updateThread(thread);
+        ForumThread.cleanupCache(this, thread, CacheCleanupReason.UPDATE);
         ForumThread.addCache(this, thread);
     }
 
     public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         this.getForumScript().createThread(thread);
+        ForumThread.cleanupCache(this, thread, CacheCleanupReason.CREATE);
         ForumThread.addCache(this, thread);
     }
 
@@ -240,11 +265,13 @@ public class ForumHandle extends ScriptHandle {
 
     public void updateBoard(ForumBoard board) throws UnsupportedMethod, SQLException {
         getForumScript().updateBoard(board);
+        ForumBoard.cleanupCache(this, board, CacheCleanupReason.UPDATE);
         ForumBoard.addCache(this, board);
     }
 
     public void createBoard(ForumBoard board) throws UnsupportedMethod, SQLException {
         getForumScript().createBoard(board);
+        ForumBoard.cleanupCache(this, board, CacheCleanupReason.CREATE);
         ForumBoard.addCache(this, board);
     }
 

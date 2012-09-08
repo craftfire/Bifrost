@@ -23,7 +23,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Category;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -77,8 +79,9 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * @see Category#getMessages(int)
-     * @see #getThreads(int)
+     * Returns the list of messages contained in this category.
+     * <p>
+     * For ForumBoard it has the same effect as {@see #getThreads(int)}
      */
     @Override
     public List<ForumThread> getMessages(int limit) throws UnsupportedMethod {
@@ -141,7 +144,8 @@ public class ForumBoard extends Category {
      * @param board   the board object
      */
     public static void addCache(ScriptHandle handle, ForumBoard board) {
-        handle.getCache().put(CacheGroup.BOARD, board.getID(), board);
+        handle.getCache().putMetadatable(CacheGroup.BOARD, board.getID(), board);
+        handle.getCache().setMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent", board.getParentID());
     }
 
     /**
@@ -159,6 +163,33 @@ public class ForumBoard extends Category {
     }
 
     /**
+     * Removes outdated cache elements related to given {@param board} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link ForumBoard}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle  the handle the method is called from
+     * @param board   the board to cleanup related cache
+     * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see           Cache
+     */
+    public static void cleanupCache(ScriptHandle handle, ForumBoard board, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.BOARD_SUBS, board.getParentID());
+        switch (reason) {
+        case OTHER:
+            handle.getCache().remove(CacheGroup.BOARD_SUBS, handle.getCache().getMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent"));
+            /* Passes through */
+        case CREATE:
+            handle.getCache().clear(CacheGroup.BOARD_COUNT);
+            handle.getCache().clear(CacheGroup.BOARD_LIST);
+            break;
+        case UPDATE:
+            handle.getCache().remove(CacheGroup.BOARD_SUBS, handle.getCache().getMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent"));
+            break;
+        }
+    }
+
+    /* (non-javadoc)
      * @see Category#getParent()
      */
     @Override
@@ -166,7 +197,7 @@ public class ForumBoard extends Category {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getParentID());
     }
 
-    /**
+    /* (non-javadoc)
      * @see Category#getSubcategories(int)
      */
     @Override

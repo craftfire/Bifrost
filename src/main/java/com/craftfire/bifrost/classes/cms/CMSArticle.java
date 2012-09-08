@@ -23,8 +23,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ViewsCounter;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -37,7 +39,7 @@ import com.craftfire.bifrost.script.Script;
  * To update any changed values in the article, run {@see #updateArticle()}.
  * <p>
  * When creating a new CMSArticle make sure you use the correct constructor:
- * {@see #CMSArticle(com.craftfire.bifrost.script.Script, int)}.
+ * {@see #CMSArticle(Script, int)}.
  * <p>
  * Remember to run {@see #createArticle()} after creating an article to insert it into the script.
  */
@@ -84,7 +86,9 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * @see #getComments(int)
+     * Returns the list of messages whose parent is this object.
+     * <p>
+     * For CMSArticle it always has the same result as {@see #getComments(int)}.
      */
     @Override
     public List<CMSComment> getChildMessages(int limit) throws UnsupportedMethod {
@@ -92,7 +96,9 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * @see #getCategory()
+     * Returns the parent of the message.
+     * <p>
+     * For CMSArticle it always has the same result as {@see #getCategory()}.
      */
     @Override
     public CMSCategory getParent() throws UnsupportedMethod {
@@ -269,7 +275,13 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @param article  the CMSArticle object
      */
     public static void addCache(ScriptHandle handle, CMSArticle article) {
-        handle.getCache().put(CacheGroup.ARTICLE, article.getID(), article);
+        handle.getCache().putMetadatable(CacheGroup.ARTICLE, article.getID(), article);
+        handle.getCache().setMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-category", article.getCategoryID());
+        if (article.getAuthor() != null) {
+            handle.getCache().setMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-author", article.getAuthor().getUsername());
+        } else {
+            handle.getCache().removeMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-author");
+        }
     }
 
     /**
@@ -284,6 +296,50 @@ public class CMSArticle extends Message implements ViewsCounter {
             return (CMSArticle) handle.getCache().get(CacheGroup.ARTICLE, id);
         }
         return null;
+    }
+
+    /**
+     * Removes outdated cache elements related to given {@param article} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link CMSArticle}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle   the handle the method is called from
+     * @param article  the article to cleanup related cache
+     * @param reason   the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see            Cache
+     */
+    public static void cleanupCache(ScriptHandle handle, CMSArticle article, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.CMSCAT_ARTICLES, article.getCategoryID());
+        handle.getCache().remove(CacheGroup.ARTICLE_COUNT, article.getCategoryID());
+        handle.getCache().remove(CacheGroup.ARTICLE_LAST_CATEGORY, article.getCategoryID());
+        if (article.getAuthor() != null) {
+            String username = article.getAuthor().getUsername();
+            handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, username);
+            handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, username);
+            handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, username);
+        }
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.ARTICLE_COUNT);
+            handle.getCache().clear(CacheGroup.ARTICLE_LIST);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.ARTICLE_COUNT);
+            handle.getCache().clear(CacheGroup.ARTICLE_LIST);
+            /* Passes through */
+        case UPDATE:
+            Object old_category = handle.getCache().getMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-category");
+            Object old_username = handle.getCache().getMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-author");
+            handle.getCache().remove(CacheGroup.CMSCAT_ARTICLES, old_category);
+            handle.getCache().remove(CacheGroup.ARTICLE_COUNT, old_category);
+            handle.getCache().remove(CacheGroup.ARTICLE_LAST_CATEGORY, old_category);
+            handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, old_username);
+            handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, old_username);
+            handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, old_username);
+            break;
+        }
+
     }
 
 }

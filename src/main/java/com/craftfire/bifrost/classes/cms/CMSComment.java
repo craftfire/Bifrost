@@ -23,14 +23,27 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.MessageParent;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
+/**
+ * This class should only be used with a CMS comment.
+ * <p>
+ * The second constructor should only be used by the script itself and not by the library user.
+ * To update any changed values in the comment, run {@see #updateComment()}.
+ * <p>
+ * When creating a new CMSComment make sure you use the correct constructor:
+ * {@see #CMSComment(Script, int)}.
+ * <p>
+ * Remember to run {@see #createComment()} after creating a comment to insert it into the script.
+ */
 public class CMSComment extends Message {
     private int articleid, parentid;
 
@@ -199,7 +212,14 @@ public class CMSComment extends Message {
      * @param comment  the CMSComment object
      */
     public static void addCache(ScriptHandle handle, CMSComment comment) {
-        handle.getCache().put(CacheGroup.COMMENT, comment.getID(), comment);
+        handle.getCache().putMetadatable(CacheGroup.COMMENT, comment.getID(), comment);
+        handle.getCache().setMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-article", comment.getArticleID());
+        handle.getCache().setMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-parent", comment.getParentID());
+        if (comment.getAuthor() != null) {
+            handle.getCache().setMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-author", comment.getAuthor().getUsername());
+        } else {
+            handle.getCache().removeMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-author");
+        }
     }
 
     /**
@@ -214,5 +234,53 @@ public class CMSComment extends Message {
             return (CMSComment) handle.getCache().get(CacheGroup.COMMENT, id);
         }
         return null;
+    }
+
+    /**
+     * Removes outdated cache elements related to given {@param comment} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link CMSComment}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle   the handle the method is called from
+     * @param comment  the comment to cleanup related cache
+     * @param reason   the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see            Cache
+     */
+    public static void cleanupCache(ScriptHandle handle, CMSComment comment, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.ARTICLE_COMMENTS, comment.getArticleID());
+        handle.getCache().remove(CacheGroup.COMMENT_COUNT, comment.getArticleID());
+        handle.getCache().remove(CacheGroup.COMMENT_LAST_ARTICLE, comment.getArticleID());
+        if (comment.getAuthor() != null) {
+            String username = comment.getAuthor().getUsername();
+            handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, username);
+            handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, username);
+            handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, username);
+        }
+        handle.getCache().remove(CacheGroup.COMMENT_REPLIES, comment.getParentID());
+        handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, comment.getParentID());
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.COMMENT_COUNT_TOTAL);
+            handle.getCache().clear(CacheGroup.COMMENT_LIST);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.COMMENT_COUNT_TOTAL);
+            handle.getCache().clear(CacheGroup.COMMENT_LIST);
+            /* Passes through */
+        case UPDATE:
+            Object old_article = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-article");
+            Object old_username = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-author");
+            Object old_parent = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-parent");
+            handle.getCache().remove(CacheGroup.ARTICLE_COMMENTS, old_article);
+            handle.getCache().remove(CacheGroup.COMMENT_COUNT, old_article);
+            handle.getCache().remove(CacheGroup.COMMENT_LAST_ARTICLE, old_article);
+            handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, old_username);
+            handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, old_username);
+            handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, old_username);
+            handle.getCache().remove(CacheGroup.COMMENT_REPLIES, old_parent);
+            handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, old_parent);
+            break;
+        }
     }
 }
