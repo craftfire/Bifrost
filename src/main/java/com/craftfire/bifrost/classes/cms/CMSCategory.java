@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Category;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -160,7 +161,8 @@ public class CMSCategory extends Category {
      * @param category  the category object
      */
     public static void addCache(ScriptHandle handle, CMSCategory category) {
-        handle.getCache().put(CacheGroup.CMSCAT, category.getID(), category);
+        handle.getCache().putMetadatable(CacheGroup.CMSCAT, category.getID(), category);
+        handle.getCache().setMetadata(CacheGroup.CMSCAT, category.getID(), "bifrost-cache.old-parent", category.getParentID());
     }
 
     /**
@@ -175,6 +177,26 @@ public class CMSCategory extends Category {
             return (CMSCategory) handle.getCache().get(CacheGroup.CMSCAT, id);
         }
         return null;
+    }
+
+    public static void cleanupCache(ScriptHandle handle, CMSCategory category, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.CMSCAT_SUBS, category.getParentID());
+        handle.getCache().remove(CacheGroup.CMSCAT_SUB_COUNT, category.getParentID());
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.CMSCAT_LIST);
+            handle.getCache().clear(CacheGroup.CMSCAT_COUNT);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.CMSCAT_LIST);
+            handle.getCache().clear(CacheGroup.CMSCAT_COUNT);
+            /* Passes through */
+        case UPDATE:
+            Object old_parent = handle.getCache().getMetadata(CacheGroup.CMSCAT, category.getID(), "bifrost-cache.old-parent");
+            handle.getCache().remove(CacheGroup.CMSCAT_SUBS, old_parent);
+            handle.getCache().remove(CacheGroup.CMSCAT_SUB_COUNT, old_parent);
+            break;
+        }
     }
 
 }

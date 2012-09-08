@@ -21,17 +21,19 @@ package com.craftfire.bifrost.handles;
 
 import java.util.List;
 
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.CMSScript;
-import com.craftfire.commons.managers.DataManager;
 
 public class CMSHandle extends ScriptHandle {
 
@@ -177,11 +179,13 @@ public class CMSHandle extends ScriptHandle {
 
     public void updateComment(CMSComment comment) throws UnsupportedMethod {
         getCMSScript().updateComment(comment);
+        CMSComment.cleanupCache(this, comment, CacheCleanupReason.UPDATE);
         CMSComment.addCache(this, comment);
     }
 
     public void createComment(CMSComment comment) throws UnsupportedMethod {
         getCMSScript().createComment(comment);
+        CMSComment.cleanupCache(this, comment, CacheCleanupReason.CREATE);
         CMSComment.addCache(this, comment);
     }
 
@@ -280,11 +284,13 @@ public class CMSHandle extends ScriptHandle {
 
     public void updateArticle(CMSArticle article) throws UnsupportedMethod {
         getCMSScript().updateArticle(article);
+        CMSArticle.cleanupCache(this, article, CacheCleanupReason.UPDATE);
         CMSArticle.addCache(this, article);
     }
 
     public void createArticle(CMSArticle article) throws UnsupportedMethod {
         getCMSScript().createArticle(article);
+        CMSArticle.cleanupCache(this, article, CacheCleanupReason.CREATE);
         CMSArticle.addCache(this, article);
     }
 
@@ -337,11 +343,13 @@ public class CMSHandle extends ScriptHandle {
 
     public void updateCategory(CMSCategory category) throws UnsupportedMethod {
         getCMSScript().updateCategory(category);
+        CMSCategory.cleanupCache(this, category, CacheCleanupReason.UPDATE);
         CMSCategory.addCache(this, category);
     }
 
     public void createCategory(CMSCategory category) throws UnsupportedMethod {
         getCMSScript().createCategory(category);
+        CMSCategory.cleanupCache(this, category, CacheCleanupReason.CREATE);
         CMSCategory.addCache(this, category);
     }
 

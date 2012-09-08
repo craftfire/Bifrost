@@ -26,6 +26,7 @@ import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.MessageParent;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
@@ -210,7 +211,14 @@ public class CMSComment extends Message {
      * @param comment  the CMSComment object
      */
     public static void addCache(ScriptHandle handle, CMSComment comment) {
-        handle.getCache().put(CacheGroup.COMMENT, comment.getID(), comment);
+        handle.getCache().putMetadatable(CacheGroup.COMMENT, comment.getID(), comment);
+        handle.getCache().setMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-article", comment.getArticleID());
+        handle.getCache().setMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-parent", comment.getParentID());
+        if (comment.getAuthor() != null) {
+            handle.getCache().setMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-author", comment.getAuthor().getUsername());
+        } else {
+            handle.getCache().removeMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-author");
+        }
     }
 
     /**
@@ -225,5 +233,42 @@ public class CMSComment extends Message {
             return (CMSComment) handle.getCache().get(CacheGroup.COMMENT, id);
         }
         return null;
+    }
+
+    public static void cleanupCache(ScriptHandle handle, CMSComment comment, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.ARTICLE_COMMENTS, comment.getArticleID());
+        handle.getCache().remove(CacheGroup.COMMENT_COUNT, comment.getArticleID());
+        handle.getCache().remove(CacheGroup.COMMENT_LAST_ARTICLE, comment.getArticleID());
+        if (comment.getAuthor() != null) {
+            String username = comment.getAuthor().getUsername();
+            handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, username);
+            handle.getCache().remove(CacheGroup.COMMENT_USER_COUNT, username);
+            handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, username);
+        }
+        handle.getCache().remove(CacheGroup.COMMENT_REPLIES, comment.getParentID());
+        handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, comment.getParentID());
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.COMMENT_COUNT_TOTAL);
+            handle.getCache().clear(CacheGroup.COMMENT_LIST);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.COMMENT_COUNT_TOTAL);
+            handle.getCache().clear(CacheGroup.COMMENT_LIST);
+            /* Passes through */
+        case UPDATE:
+            Object old_article = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-article");
+            Object old_username = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-author");
+            Object old_parent = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-parent");
+            handle.getCache().remove(CacheGroup.ARTICLE_COMMENTS, old_article);
+            handle.getCache().remove(CacheGroup.COMMENT_COUNT, old_article);
+            handle.getCache().remove(CacheGroup.COMMENT_LAST_ARTICLE, old_article);
+            handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, old_username);
+            handle.getCache().remove(CacheGroup.COMMENT_USER_COUNT, old_username);
+            handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, old_username);
+            handle.getCache().remove(CacheGroup.COMMENT_REPLIES, old_parent);
+            handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, old_parent);
+            break;
+        }
     }
 }
