@@ -38,7 +38,7 @@ For those using [Maven](http://maven.apache.org/download.html) to manage project
 
     <dependency>
         <groupId>com.craftfire</groupId>
-        <artifactId>authapi</artifactId>
+        <artifactId>bifrost</artifactId>
         <version>dev-SNAPSHOT</version>
     </dependency>
 
@@ -54,7 +54,7 @@ Coding and Pull Request Conventions
 * Generally follow the Oracle coding standards.
 * Use spaces, no tabs.
 * No trailing whitespaces.
-* 80 column limit for readability.
+* 200 column limit for readability.
 * Pull requests must compile, work, and be formatted properly.
 * Sign-off on ALL your commits - this indicates you agree to the terms of our license.
 * No merges should be included in pull requests unless the pull request's purpose is a merge.
