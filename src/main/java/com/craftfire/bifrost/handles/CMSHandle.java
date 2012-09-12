@@ -21,8 +21,6 @@ package com.craftfire.bifrost.handles;
 
 import java.util.List;
 
-import com.craftfire.commons.managers.DataManager;
-
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
@@ -34,6 +32,7 @@ import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.CMSScript;
+import com.craftfire.commons.managers.DataManager;
 
 public class CMSHandle extends ScriptHandle {
 
@@ -77,7 +76,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LIST)) {
-            return (List<CMSComment>) getCache().get(CacheGroup.COMMENT_LIST);
+            List<CMSComment> cmts = (List<CMSComment>) getCache().get(CacheGroup.COMMENT_LIST);
+            if (cmts.size() == limit) {
+                return cmts;
+            } else if (cmts.size() > limit) {
+                return cmts.subList(0, limit);
+            }
         }
         List<CMSComment> cmts = getCMSScript().getComments(limit);
         getCache().put(CacheGroup.COMMENT, cmts);
@@ -96,7 +100,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSComment> getCommentsOnArticle(int articleid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_COMMENTS, articleid)) {
-            return (List<CMSComment>) getCache().get(CacheGroup.ARTICLE_COMMENTS, articleid);
+            List<CMSComment> cmts = (List<CMSComment>) getCache().get(CacheGroup.ARTICLE_COMMENTS, articleid);
+            if (cmts.size() == limit) {
+                return cmts;
+            } else if (cmts.size() > limit) {
+                return cmts.subList(0, limit);
+            }
         }
         List<CMSComment> cmts = getCMSScript().getCommentsOnArticle(articleid, limit);
         getCache().put(CacheGroup.ARTICLE_COMMENTS, articleid, cmts);
@@ -115,7 +124,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSComment> getCommentReplies(int commentid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_REPLIES, commentid)) {
-            return (List<CMSComment>) getCache().get(CacheGroup.COMMENT_REPLIES, commentid);
+            List<CMSComment> cmts = (List<CMSComment>) getCache().get(CacheGroup.COMMENT_REPLIES, commentid);
+            if (cmts.size() == limit) {
+                return cmts;
+            } else if (cmts.size() > limit) {
+                return cmts.subList(0, limit);
+            }
         }
         List<CMSComment> cmts = getCMSScript().getCommentReplies(commentid, limit);
         getCache().put(CacheGroup.COMMENT_REPLIES, commentid, cmts);
@@ -134,7 +148,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSComment> getUserComments(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LIST_USER, username)) {
-            return (List<CMSComment>) getCache().get(CacheGroup.COMMENT_LIST_USER, username);
+            List<CMSComment> cmts = (List<CMSComment>) getCache().get(CacheGroup.COMMENT_LIST_USER, username);
+            if (cmts.size() == limit) {
+                return cmts;
+            } else if (cmts.size() > limit) {
+                return cmts.subList(0, limit);
+            }
         }
         List<CMSComment> cmts = getCMSScript().getUserComments(username, limit);
         getCache().put(CacheGroup.COMMENT_LIST_USER, username, cmts);
@@ -201,7 +220,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LIST)) {
-            return (List<CMSArticle>) getCache().get(CacheGroup.ARTICLE_LIST);
+            List<CMSArticle> arts = (List<CMSArticle>) getCache().get(CacheGroup.ARTICLE_LIST);
+            if (arts.size() == limit) {
+                return arts;
+            } else if (arts.size() > limit) {
+                return arts.subList(0, limit);
+            }
         }
         List<CMSArticle> arts = getCMSScript().getArticles(limit);
         getCache().put(CacheGroup.ARTICLE_LIST, arts);
@@ -220,7 +244,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSArticle> getArticlesFromCategory(int catid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_ARTICLES, catid)) {
-            return (List<CMSArticle>) getCache().get(CacheGroup.CMSCAT_ARTICLES, catid);
+            List<CMSArticle> arts = (List<CMSArticle>) getCache().get(CacheGroup.CMSCAT_ARTICLES, catid);
+            if (arts.size() == limit) {
+                return arts;
+            } else if (arts.size() > limit) {
+                return arts.subList(0, limit);
+            }
         }
         List<CMSArticle> arts = getCMSScript().getArticlesFromCategory(catid, limit);
         getCache().put(CacheGroup.CMSCAT_ARTICLES, catid, arts);
@@ -239,7 +268,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSArticle> getUserArticles(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LIST_USER, username)) {
-            return (List<CMSArticle>) getCache().get(CacheGroup.ARTICLE_LIST_USER, username);
+            List<CMSArticle> arts = (List<CMSArticle>) getCache().get(CacheGroup.ARTICLE_LIST_USER, username);
+            if (arts.size() == limit) {
+                return arts;
+            } else if (arts.size() > limit) {
+                return arts.subList(0, limit);
+            }
         }
         List<CMSArticle> arts = getCMSScript().getUserArticles(username, limit);
         getCache().put(CacheGroup.ARTICLE_LIST_USER, username, arts);
@@ -306,7 +340,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSCategory> getCategories(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_LIST)) {
-            return (List<CMSCategory>) getCache().get(CacheGroup.CMSCAT_LIST);
+            List<CMSCategory> cats = (List<CMSCategory>) getCache().get(CacheGroup.CMSCAT_LIST);
+            if (cats.size() == limit) {
+                return cats;
+            } else if (cats.size() > limit) {
+                return cats.subList(0, limit);
+            }
         }
         List<CMSCategory> cats = getCMSScript().getCategories(limit);
         getCache().put(CacheGroup.CMSCAT_LIST, cats);
@@ -325,7 +364,12 @@ public class CMSHandle extends ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<CMSCategory> getSubCategories(int catid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_SUBS, catid)) {
-            return (List<CMSCategory>) getCache().get(CacheGroup.CMSCAT_SUBS, catid);
+            List<CMSCategory> cats = (List<CMSCategory>) getCache().get(CacheGroup.CMSCAT_SUBS, catid);
+            if (cats.size() == limit) {
+                return cats;
+            } else if (cats.size() > limit) {
+                return cats.subList(0, limit);
+            }
         }
         List<CMSCategory> cats = getCMSScript().getSubCategories(catid, limit);
         getCache().put(CacheGroup.CMSCAT_SUBS, catid, cats);
