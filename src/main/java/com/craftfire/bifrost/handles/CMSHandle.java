@@ -77,9 +77,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LIST)) {
             List<CMSComment> cmts = (List<CMSComment>) getCache().get(CacheGroup.COMMENT_LIST);
-            if (cmts.size() == limit) {
+            if (cmts.size() == ((limit == 0) ? getCommentTotalCount() : limit)) {
                 return cmts;
-            } else if (cmts.size() > limit) {
+            } else if ((cmts.size() > limit) && (limit != 0)) {
                 return cmts.subList(0, limit);
             }
         }
@@ -101,9 +101,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSComment> getCommentsOnArticle(int articleid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_COMMENTS, articleid)) {
             List<CMSComment> cmts = (List<CMSComment>) getCache().get(CacheGroup.ARTICLE_COMMENTS, articleid);
-            if (cmts.size() == limit) {
+            if (cmts.size() == ((limit == 0) ? getCommentCount(articleid) : limit)) {
                 return cmts;
-            } else if (cmts.size() > limit) {
+            } else if ((cmts.size() > limit) && (limit != 0)) {
                 return cmts.subList(0, limit);
             }
         }
@@ -125,9 +125,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSComment> getCommentReplies(int commentid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_REPLIES, commentid)) {
             List<CMSComment> cmts = (List<CMSComment>) getCache().get(CacheGroup.COMMENT_REPLIES, commentid);
-            if (cmts.size() == limit) {
+            if (cmts.size() == ((limit == 0) ? getCommentReplyCount(commentid) : limit)) {
                 return cmts;
-            } else if (cmts.size() > limit) {
+            } else if ((cmts.size() > limit) && (limit != 0)) {
                 return cmts.subList(0, limit);
             }
         }
@@ -149,9 +149,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSComment> getUserComments(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LIST_USER, username)) {
             List<CMSComment> cmts = (List<CMSComment>) getCache().get(CacheGroup.COMMENT_LIST_USER, username);
-            if (cmts.size() == limit) {
+            if (cmts.size() == ((limit == 0) ? getUserCommentCount(username) : limit)) {
                 return cmts;
-            } else if (cmts.size() > limit) {
+            } else if ((cmts.size() > limit) && (limit != 0)) {
                 return cmts.subList(0, limit);
             }
         }
@@ -221,9 +221,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LIST)) {
             List<CMSArticle> arts = (List<CMSArticle>) getCache().get(CacheGroup.ARTICLE_LIST);
-            if (arts.size() == limit) {
+            if (arts.size() == ((limit == 0) ? getArticleTotalCount() : limit)) {
                 return arts;
-            } else if (arts.size() > limit) {
+            } else if ((arts.size() > limit) && (limit != 0)) {
                 return arts.subList(0, limit);
             }
         }
@@ -245,9 +245,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSArticle> getArticlesFromCategory(int catid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_ARTICLES, catid)) {
             List<CMSArticle> arts = (List<CMSArticle>) getCache().get(CacheGroup.CMSCAT_ARTICLES, catid);
-            if (arts.size() == limit) {
+            if (arts.size() == ((limit == 0) ? getArticleCount(catid) : limit)) {
                 return arts;
-            } else if (arts.size() > limit) {
+            } else if ((arts.size() > limit) && (limit != 0)) {
                 return arts.subList(0, limit);
             }
         }
@@ -269,9 +269,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSArticle> getUserArticles(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LIST_USER, username)) {
             List<CMSArticle> arts = (List<CMSArticle>) getCache().get(CacheGroup.ARTICLE_LIST_USER, username);
-            if (arts.size() == limit) {
+            if (arts.size() == ((limit == 0) ? getUserArticleCount(username) : limit)) {
                 return arts;
-            } else if (arts.size() > limit) {
+            } else if ((arts.size() > limit) && (limit != 0)) {
                 return arts.subList(0, limit);
             }
         }
@@ -341,9 +341,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSCategory> getCategories(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_LIST)) {
             List<CMSCategory> cats = (List<CMSCategory>) getCache().get(CacheGroup.CMSCAT_LIST);
-            if (cats.size() == limit) {
+            if (cats.size() == ((limit == 0) ? getCategoryCount() : limit)) {
                 return cats;
-            } else if (cats.size() > limit) {
+            } else if ((cats.size() > limit) && (limit != 0)) {
                 return cats.subList(0, limit);
             }
         }
@@ -365,9 +365,9 @@ public class CMSHandle extends ScriptHandle {
     public List<CMSCategory> getSubCategories(int catid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_SUBS, catid)) {
             List<CMSCategory> cats = (List<CMSCategory>) getCache().get(CacheGroup.CMSCAT_SUBS, catid);
-            if (cats.size() == limit) {
+            if (cats.size() == ((limit == 0) ? getSubCategoryCount(catid) : limit)) {
                 return cats;
-            } else if (cats.size() > limit) {
+            } else if ((cats.size() > limit) && (limit != 0)) {
                 return cats.subList(0, limit);
             }
         }

@@ -73,9 +73,9 @@ public class ForumHandle extends ScriptHandle {
     public List<ForumPost> getPosts(int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.POST_LIST)) {
             List<ForumPost> posts = (List<ForumPost>) this.script.getCache().get(CacheGroup.POST_LIST);
-            if (posts.size() == limit) {
+            if (posts.size() == ((limit == 0) ? getTotalPostCount() : limit)) {
                 return posts;
-            } else if (posts.size() > limit) {
+            } else if ((posts.size() > limit) && (limit != 0)) {
                 return posts.subList(0, limit);
             }
         }
@@ -88,9 +88,9 @@ public class ForumHandle extends ScriptHandle {
     public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.THREAD_POSTS, threadid)) {
             List<ForumPost> posts = (List<ForumPost>) this.script.getCache().get(CacheGroup.THREAD_POSTS, threadid);
-            if (posts.size() == limit) {
+            if (posts.size() == ((limit == 0) ? getThread(threadid).getRepliesCount() : limit)) {       //FIXME: Shouldn't use getThread here. Should have specific method to get post count in thread.
                 return posts;
-            } else if (posts.size() > limit) {
+            } else if ((posts.size() > limit) && (limit !=0)) {
                 return posts.subList(0, limit);
             }
         }
@@ -103,9 +103,9 @@ public class ForumHandle extends ScriptHandle {
     public List<ForumPost> getUserPosts(String username, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.POST_LIST_USER, username)) {
             List<ForumPost> posts = (List<ForumPost>) this.script.getCache().get(CacheGroup.POST_LIST_USER, username);
-            if (posts.size() == limit) {
+            if (posts.size() == ((limit == 0) ? getPostCount(username) : limit)) {
                 return posts;
-            } else if (posts.size() > limit) {
+            } else if ((posts.size() > limit) && (limit != 0)) {
                 return posts.subList(0, limit);
             }
         }
@@ -211,9 +211,9 @@ public class ForumHandle extends ScriptHandle {
     public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.THREAD_LIST)) {
             List<ForumThread> threads = (List<ForumThread>) this.script.getCache().get(CacheGroup.THREAD_LIST);
-            if (threads.size() == limit) {
+            if (threads.size() == ((limit == 0) ? getTotalThreadCount() : limit)) {
                 return threads;
-            } else {
+            } else if ((threads.size() > limit) && (limit != 0)) {
                 return threads.subList(0, limit);
             }
         }
@@ -224,11 +224,11 @@ public class ForumHandle extends ScriptHandle {
 
     @SuppressWarnings("unchecked")
     public List<ForumThread> getThreadsFromBoard(int boardid, int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.BOARD_THREADS, boardid)) {
+        if (getCache().contains(CacheGroup.BOARD_THREADS, boardid) && (limit != 0)) {
             List<ForumThread> threads = (List<ForumThread>) getCache().get(CacheGroup.BOARD_THREADS, boardid);
             if (threads.size() == limit) {
                 return threads;
-            } else {
+            } else if ((threads.size() > limit) && (limit != 0)) {
                 return threads.subList(0, limit);
             }
         }
@@ -241,9 +241,9 @@ public class ForumHandle extends ScriptHandle {
     public List<ForumThread> getUserThreads(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.THREAD_LIST_USER, username)) {
             List<ForumThread> threads = (List<ForumThread>) getCache().get(CacheGroup.THREAD_LIST_USER, username);
-            if (threads.size() == limit) {
+            if (threads.size() == ((limit == 0) ? getThreadCount(username) : limit)) {
                 return threads;
-            } else {
+            } else if ((threads.size() > limit) && (limit != 0)) {
                 return threads.subList(0, limit);
             }
         }
@@ -268,9 +268,9 @@ public class ForumHandle extends ScriptHandle {
     public List<ForumBoard> getBoards(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.BOARD_LIST)) {
             List<ForumBoard> boards = (List<ForumBoard>) getCache().get(CacheGroup.BOARD_LIST);
-            if (boards.size() == limit) {
+            if (boards.size() == ((limit == 0) ? getBoardCount() : limit)) {
                 return boards;
-            } else if (boards.size() > limit) {
+            } else if ((boards.size() > limit) && (limit != 0)) {
                 return boards.subList(0, limit);
             }
         }
@@ -290,7 +290,7 @@ public class ForumHandle extends ScriptHandle {
 
     @SuppressWarnings("unchecked")
     public List<ForumBoard> getSubBoards(int boardid, int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.BOARD_SUBS, boardid)) {
+        if (getCache().contains(CacheGroup.BOARD_SUBS, boardid) && (limit != 0)) {                          //FIXME: Should somehow check if the list in cache is from an unlimited query.
             List<ForumBoard> boards = (List<ForumBoard>) getCache().get(CacheGroup.BOARD_SUBS, boardid);
             if (boards.size() == limit) {
                 return boards;

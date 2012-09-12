@@ -209,9 +209,9 @@ public class ScriptHandle {
     public List<Group> getGroups(int limit) throws SQLException, UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.GROUP_LIST)) {
             List<Group> groups = (List<Group>) this.script.getCache().get(CacheGroup.GROUP_LIST);
-            if (groups.size() == limit) {
+            if (groups.size() == ((limit == 0) ? getGroupCount() : limit)) {
                 return groups;
-            } else if (groups.size() > limit) {
+            } else if ((groups.size() > limit) && (limit != 0)) {
                 return groups.subList(0, limit);
             }
         }
@@ -280,7 +280,19 @@ public class ScriptHandle {
 
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.PM_LIST)) {
+        if (getCache().contains(CacheGroup.PM_LIST) && (limit != 0)) { // FIXME:
+                                                                       // Should
+                                                                       // somehow
+                                                                       // check
+                                                                       // if the
+                                                                       // list
+                                                                       // in
+                                                                       // cache
+                                                                       // is
+                                                                       // from
+                                                                       // an
+                                                                       // unlimited
+                                                                       // query.
             List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
             if (pms.size() == limit) {
                 return pms;
@@ -295,7 +307,20 @@ public class ScriptHandle {
 
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.PM_REPLIES, pmid)) {
+        if (getCache().contains(CacheGroup.PM_REPLIES, pmid) && (limit != 0)) { // FIXME:
+                                                                                // Should
+                                                                                // somehow
+                                                                                // check
+                                                                                // if
+                                                                                // the
+                                                                                // list
+                                                                                // in
+                                                                                // cache
+                                                                                // is
+                                                                                // from
+                                                                                // an
+                                                                                // unlimited
+                                                                                // query.
             List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_REPLIES, pmid);
             if (pms.size() == limit) {
                 return pms;
@@ -312,9 +337,9 @@ public class ScriptHandle {
     public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_SENT, username)) {
             List<PrivateMessage> pms = (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
-            if (pms.size() == limit) {
+            if (pms.size() == ((limit == 0) ? getPMSentCount(username) : limit)) {
                 return pms;
-            } else if (pms.size() > limit) {
+            } else if ((pms.size() > limit) && (limit != 0)) {
                 return pms.subList(0, limit);
             }
         }
@@ -327,9 +352,9 @@ public class ScriptHandle {
     public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_RECEIVED, username)) {
             List<PrivateMessage> pms = (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
-            if (pms.size() == limit) {
+            if (pms.size() == ((limit == 0) ? getPMReceivedCount(username) : limit)) {
                 return pms;
-            } else if (pms.size() > limit) {
+            } else if ((pms.size() > limit) && (limit != 0)) {
                 return pms.subList(0, limit);
             }
         }
@@ -400,9 +425,9 @@ public class ScriptHandle {
     public List<Ban> getBans(int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.BAN_LIST)) {
             List<Ban> bans = (List<Ban>) this.script.getCache().get(CacheGroup.BAN_LIST);
-            if (bans.size() == limit) {
+            if (bans.size() == ((limit == 0) ? getBanCount() : limit)) {
                 return bans;
-            } else if (bans.size() > limit) {
+            } else if ((bans.size() > limit) && (limit != 0)) {
                 return bans.subList(0, limit);
             }
         }
