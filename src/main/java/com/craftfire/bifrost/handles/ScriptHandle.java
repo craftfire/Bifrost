@@ -209,7 +209,12 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<Group> getGroups(int limit) throws SQLException, UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.GROUP_LIST)) {
-            return (List<Group>) this.script.getCache().get(CacheGroup.GROUP_LIST);
+            List<Group> groups = (List<Group>) this.script.getCache().get(CacheGroup.GROUP_LIST);
+            if (groups.size() == ((limit == 0) ? getGroupCount() : limit)) {
+                return groups;
+            } else if ((groups.size() > limit) && (limit != 0)) {
+                return groups.subList(0, limit);
+            }
         }
         List<Group> groups = this.script.getGroups(limit);
         this.script.getCache().put(CacheGroup.GROUP_LIST, groups);
@@ -277,7 +282,12 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.PM_LIST)) {
-            return (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
+            List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
+            if (pms.size() == ((limit == 0) ? getPMCount() : limit)) {
+                return pms;
+            } else if ((pms.size() > limit) && (limit != 0)) {
+                return pms.subList(0, limit);
+            }
         }
         List<PrivateMessage> pms = this.script.getPMs(limit);
         getCache().put(CacheGroup.PM_LIST, pms);
@@ -286,8 +296,13 @@ public class ScriptHandle {
 
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.PM_REPLIES, pmid)) {
-            return (List<PrivateMessage>) getCache().get(CacheGroup.PM_REPLIES, pmid);
+        if (getCache().contains(CacheGroup.PM_REPLIES, pmid) && (limit != 0)) {
+            List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_REPLIES, pmid);
+            if (pms.size() == ((limit == 0) ? getPMReplyCount(pmid) : limit)) {
+                return pms;
+            } else if ((pms.size() > limit) && (limit != 0)) {
+                return pms.subList(0, limit);
+            }
         }
         List<PrivateMessage> pms = this.script.getPMReplies(pmid, limit);
         getCache().put(CacheGroup.PM_REPLIES, pmid, pms);
@@ -297,7 +312,12 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_SENT, username)) {
-            return (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
+            List<PrivateMessage> pms = (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
+            if (pms.size() == ((limit == 0) ? getPMSentCount(username) : limit)) {
+                return pms;
+            } else if ((pms.size() > limit) && (limit != 0)) {
+                return pms.subList(0, limit);
+            }
         }
         List<PrivateMessage> pms = this.script.getPMsSent(username, limit);
         this.script.getCache().put(CacheGroup.PM_SENT, username, pms);
@@ -307,11 +327,34 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_RECEIVED, username)) {
-            return (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
+            List<PrivateMessage> pms = (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
+            if (pms.size() == ((limit == 0) ? getPMReceivedCount(username) : limit)) {
+                return pms;
+            } else if ((pms.size() > limit) && (limit != 0)) {
+                return pms.subList(0, limit);
+            }
         }
         List<PrivateMessage> pms = this.script.getPMsSent(username, limit);
         this.script.getCache().put(CacheGroup.PM_RECEIVED, username, pms);
         return pms;
+    }
+
+    public int getPMCount() throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.PM_COUNT)) {
+            return (Integer) getCache().get(CacheGroup.PM_COUNT);
+        }
+        int count = this.script.getPMCount();
+        getCache().put(CacheGroup.PM_COUNT, count);
+        return count;
+    }
+
+    public int getPMReplyCount(int pmid) throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.PM_REPLY_COUNT, pmid)) {
+            return (Integer) getCache().get(CacheGroup.PM_REPLY_COUNT, pmid);
+        }
+        int count = this.script.getPMReplyCount(pmid);
+        getCache().put(CacheGroup.PM_REPLY_COUNT, pmid, count);
+        return count;
     }
 
     public int getPMSentCount(String username) throws UnsupportedMethod {
@@ -375,7 +418,12 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<Ban> getBans(int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.BAN_LIST)) {
-            return (List<Ban>) this.script.getCache().get(CacheGroup.BAN_LIST);
+            List<Ban> bans = (List<Ban>) this.script.getCache().get(CacheGroup.BAN_LIST);
+            if (bans.size() == ((limit == 0) ? getBanCount() : limit)) {
+                return bans;
+            } else if ((bans.size() > limit) && (limit != 0)) {
+                return bans.subList(0, limit);
+            }
         }
         List<Ban> bans = this.script.getBans(limit);
         this.script.getCache().put(CacheGroup.BAN_LIST, bans);
