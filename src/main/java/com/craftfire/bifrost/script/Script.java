@@ -420,6 +420,27 @@ public class Script {
     }
 
     /**
+     * Returns a total amount of how many private messages are there.
+     * 
+     * @return                    total amount of private messages
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public int getPMCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
+     * Returns an amount of how many private messages are replying to specified private message.
+     * 
+     * @param  pmid               the ID of the message
+     * @return                    an amount of private message replying to the message
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public int getPMReplyCount(int pmid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
      * Returns an amount of how many private messages {@param username} has sent.
      *
      * @param username The username to get the count from.

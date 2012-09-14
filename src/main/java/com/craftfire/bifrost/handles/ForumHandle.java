@@ -22,6 +22,8 @@ package com.craftfire.bifrost.handles;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
@@ -33,7 +35,6 @@ import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.ForumScript;
-import com.craftfire.commons.managers.DataManager;
 
 public class ForumHandle extends ScriptHandle {
     public ForumHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
@@ -88,7 +89,7 @@ public class ForumHandle extends ScriptHandle {
     public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.THREAD_POSTS, threadid)) {
             List<ForumPost> posts = (List<ForumPost>) this.script.getCache().get(CacheGroup.THREAD_POSTS, threadid);
-            if (posts.size() == ((limit == 0) ? getThread(threadid).getRepliesCount() : limit)) {       //FIXME: Shouldn't use getThread here. Should have specific method to get post count in thread.
+            if (posts.size() == ((limit == 0) ? getPostCountInThread(threadid) : limit)) {
                 return posts;
             } else if ((posts.size() > limit) && (limit !=0)) {
                 return posts.subList(0, limit);
@@ -132,6 +133,15 @@ public class ForumHandle extends ScriptHandle {
         }
         int count = this.getForumScript().getPostCount(username);
         this.script.getCache().put(CacheGroup.POST_COUNT, username, count);
+        return count;
+    }
+
+    public int getPostCountInThread(int threadid) throws UnsupportedMethod {
+        if (this.script.getCache().contains(CacheGroup.POST_COUNT_THREAD, threadid)) {
+            return (Integer) this.script.getCache().get(CacheGroup.POST_COUNT_THREAD, threadid);
+        }
+        int count = this.getForumScript().getPostCountInThread(threadid);
+        this.script.getCache().put(CacheGroup.POST_COUNT_THREAD, threadid, count);
         return count;
     }
 
@@ -288,13 +298,22 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    public int getSubBoardCount(int boardid) throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.BOARD_SUB_COUNT, boardid)) {
+            return (Integer) getCache().get(CacheGroup.BOARD_SUB_COUNT, boardid);
+        }
+        int count = getForumScript().getSubBoardCount(boardid);
+        getCache().put(CacheGroup.BOARD_SUB_COUNT, boardid, count);
+        return count;
+    }
+
     @SuppressWarnings("unchecked")
     public List<ForumBoard> getSubBoards(int boardid, int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.BOARD_SUBS, boardid) && (limit != 0)) {                          //FIXME: Should somehow check if the list in cache is from an unlimited query.
+        if (getCache().contains(CacheGroup.BOARD_SUBS, boardid)) {
             List<ForumBoard> boards = (List<ForumBoard>) getCache().get(CacheGroup.BOARD_SUBS, boardid);
-            if (boards.size() == limit) {
+            if (boards.size() == ((limit == 0) ? getSubBoardCount(boardid) : limit)) {
                 return boards;
-            } else if (boards.size() > limit) {
+            } else if ((boards.size() > limit) && (limit != 0)) {
                 return boards.subList(0, limit);
             }
         }

@@ -39,15 +39,26 @@ public class ForumScript extends Script {
     }
 
     /**
+     * Returns an amount of how many posts are there in {@param threadid}.
+     *
+     * @param threadid            the ID of the thread to count posts from
+     * @return                    the amount of how many posts the are there in the thread
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public int getPostCountInThread(int threadid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
      * Returns an amount of how many posts {@param username} has made.
      *
      * @param username The username to get the count from.
      * @return         The amount of how many posts the username have made, returns 0 if none.
      * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-	public int getPostCount(String username) throws UnsupportedMethod {
-		throw new UnsupportedMethod();
-	}
+    public int getPostCount(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
 
     /**
      * Returns the complete count of how many posts have been made.
@@ -299,6 +310,17 @@ public class ForumScript extends Script {
      * @throws UnsupportedMethod  if the function is not supported by the script.
      */
     public int getBoardCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
+     * Returns the count of how many sub-boards the board has.
+     *
+     * @param boardid             the ID of the board
+     * @return                    the number of sub-boards of the board
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public int getSubBoardCount(int boardid) throws UnsupportedMethod {
         throw new UnsupportedMethod();
     }
 

@@ -22,6 +22,9 @@ package com.craftfire.bifrost.handles;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.ScriptAPI;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -35,8 +38,6 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.Script;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
 
 /**
  * @see Script
@@ -280,23 +281,11 @@ public class ScriptHandle {
 
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.PM_LIST) && (limit != 0)) { // FIXME:
-                                                                       // Should
-                                                                       // somehow
-                                                                       // check
-                                                                       // if the
-                                                                       // list
-                                                                       // in
-                                                                       // cache
-                                                                       // is
-                                                                       // from
-                                                                       // an
-                                                                       // unlimited
-                                                                       // query.
+        if (getCache().contains(CacheGroup.PM_LIST)) {
             List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
-            if (pms.size() == limit) {
+            if (pms.size() == ((limit == 0) ? getPMCount() : limit)) {
                 return pms;
-            } else if (pms.size() > limit) {
+            } else if ((pms.size() > limit) && (limit != 0)) {
                 return pms.subList(0, limit);
             }
         }
@@ -307,24 +296,11 @@ public class ScriptHandle {
 
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.PM_REPLIES, pmid) && (limit != 0)) { // FIXME:
-                                                                                // Should
-                                                                                // somehow
-                                                                                // check
-                                                                                // if
-                                                                                // the
-                                                                                // list
-                                                                                // in
-                                                                                // cache
-                                                                                // is
-                                                                                // from
-                                                                                // an
-                                                                                // unlimited
-                                                                                // query.
+        if (getCache().contains(CacheGroup.PM_REPLIES, pmid) && (limit != 0)) {
             List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_REPLIES, pmid);
-            if (pms.size() == limit) {
+            if (pms.size() == ((limit == 0) ? getPMReplyCount(pmid) : limit)) {
                 return pms;
-            } else if (pms.size() > limit) {
+            } else if ((pms.size() > limit) && (limit != 0)) {
                 return pms.subList(0, limit);
             }
         }
@@ -361,6 +337,24 @@ public class ScriptHandle {
         List<PrivateMessage> pms = this.script.getPMsSent(username, limit);
         this.script.getCache().put(CacheGroup.PM_RECEIVED, username, pms);
         return pms;
+    }
+
+    public int getPMCount() throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.PM_COUNT)) {
+            return (Integer) getCache().get(CacheGroup.PM_COUNT);
+        }
+        int count = this.script.getPMCount();
+        getCache().put(CacheGroup.PM_COUNT, count);
+        return count;
+    }
+
+    public int getPMReplyCount(int pmid) throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.PM_REPLY_COUNT, pmid)) {
+            return (Integer) getCache().get(CacheGroup.PM_REPLY_COUNT, pmid);
+        }
+        int count = this.script.getPMReplyCount(pmid);
+        getCache().put(CacheGroup.PM_REPLY_COUNT, pmid, count);
+        return count;
     }
 
     public int getPMSentCount(String username) throws UnsupportedMethod {
