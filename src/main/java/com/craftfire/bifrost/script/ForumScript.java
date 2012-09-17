@@ -22,12 +22,13 @@ package com.craftfire.bifrost.script;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.commons.managers.DataManager;
 
 /**
  * This class contains functions relevant to direct functions for each script.
@@ -38,15 +39,26 @@ public class ForumScript extends Script {
     }
 
     /**
+     * Returns an amount of how many posts are there in {@param threadid}.
+     *
+     * @param threadid            the ID of the thread to count posts from
+     * @return                    the amount of how many posts the are there in the thread
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public int getPostCountInThread(int threadid) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
      * Returns an amount of how many posts {@param username} has made.
      *
      * @param username The username to get the count from.
      * @return         The amount of how many posts the username have made, returns 0 if none.
      * @throws         UnsupportedMethod if the function is not supported by the script.
      */
-	public int getPostCount(String username) throws UnsupportedMethod {
-		throw new UnsupportedMethod();
-	}
+    public int getPostCount(String username) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
 
     /**
      * Returns the complete count of how many posts have been made.
@@ -107,6 +119,23 @@ public class ForumScript extends Script {
 	public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
+
+    /**
+     * Returns a List with Post objects that have been made by the {@param username}.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     * 
+     * @param username            the username to grab the posts from
+     * @param limit               the limit, set to 0 if you want to return all
+     * @return                    List with Post objects, if none are found it returns an empty List
+     * @see                       ForumPost
+     * @see                       List
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public List<ForumPost> getUserPosts(String username, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
 
     /**
      * Returns a ForumPost object of the given post id, if nothing is found it returns null.
@@ -218,6 +247,23 @@ public class ForumScript extends Script {
     }
 
     /**
+     * Returns a List with ForumThread objects that have been made by {@param username}.
+     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Set {@param limit} to 0 to return all the objects.
+     * If none are found, the List will be empty.
+     *
+     * @param username            the username to grab the thread list from
+     * @param limit               the limit, set to 0 if you want to return all
+     * @return                    List with ForumThread objects, if none are found it returns an empty List
+     * @see                       List
+     * @see                       ForumThread
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public List<ForumThread> getUserThreads(String username, int limit) throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
      * Returns a List with Thread objects.
      * Parameter {@param limit} can be used as a limit of how many objects should be returned.
      * Set {@param limit} to 0 to return all the objects.
@@ -264,6 +310,17 @@ public class ForumScript extends Script {
      * @throws UnsupportedMethod  if the function is not supported by the script.
      */
     public int getBoardCount() throws UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
+
+    /**
+     * Returns the count of how many sub-boards the board has.
+     *
+     * @param boardid             the ID of the board
+     * @return                    the number of sub-boards of the board
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public int getSubBoardCount(int boardid) throws UnsupportedMethod {
         throw new UnsupportedMethod();
     }
 
@@ -335,15 +392,6 @@ public class ForumScript extends Script {
     public void createBoard(ForumBoard board) throws UnsupportedMethod {
         throw new UnsupportedMethod();
     }
-    /**
-     * Returns the script's home URL.
-     *
-     * @return Home URL of the script.
-     * @throws UnsupportedMethod if the function is not supported by the script.
-     */
-	public String getHomeURL() throws UnsupportedMethod {
-		throw new UnsupportedMethod();
-	}
 
     /**
      * Returns the script's forum URL.

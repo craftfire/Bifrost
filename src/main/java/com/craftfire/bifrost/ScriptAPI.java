@@ -19,10 +19,14 @@
  */
 package com.craftfire.bifrost;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
+import com.craftfire.bifrost.handles.CMSHandle;
 import com.craftfire.bifrost.handles.ForumHandle;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
@@ -30,9 +34,6 @@ import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
-
-import java.sql.SQLException;
-import java.util.HashMap;
 
 public class ScriptAPI {
     private HashMap<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
@@ -100,6 +101,14 @@ public class ScriptAPI {
         }
     }
 
+    public CMSHandle getCMSHandle(Scripts script) {
+        if (handleExists(script)) {
+            return (CMSHandle) this.handles.get(script);
+        } else {
+            return null;
+        }
+    }
+
     public ScriptHandle getHandle() {
         return this.lastHandle;
     }
@@ -108,15 +117,13 @@ public class ScriptAPI {
         return (ForumHandle) this.lastHandle;
     }
 
-    public void addHandle(String script, String version, DataManager dataManager) throws UnsupportedScript,
-                                                                                                    UnsupportedVersion {
+    public void addHandle(String script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
         ScriptHandle handle = new ScriptHandle(script, version, dataManager);
         this.handles.put(handle.getScript().getScript(), handle);
         this.lastHandle = handle;
     }
 
-    public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript,
-            UnsupportedVersion {
+    public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
         ScriptHandle handle = new ScriptHandle(script, version, dataManager);
         this.handles.put(handle.getScript().getScript(), handle);
         this.lastHandle = handle;
@@ -128,12 +135,11 @@ public class ScriptAPI {
         this.lastHandle = handle;
     }
 
-
     public boolean convert(ScriptHandle from, ScriptHandle to) throws SQLException, UnsupportedMethod {
         //TODO: Create script converter, need to add methods to scripts
         return false;
     }
-    
+
     protected boolean handleExists(Scripts script) {
         return this.handles.containsKey(script);
     }

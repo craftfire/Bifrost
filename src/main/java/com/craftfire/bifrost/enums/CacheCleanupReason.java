@@ -17,22 +17,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.exceptions;
+package com.craftfire.bifrost.enums;
 
-@SuppressWarnings("serial")
-public class UnsupportedVersion extends Exception {
-    private String message;
+/**
+ * The enum that says what is the reason of cache cleanup.
+ * <p>
+ * Different cleanup reasons cause different cleanup actions to be performed.
+ * <p>
+ * {@link #OTHER} reason usually causes all actions to be performed, but it's up to the method.
+ */
+public enum CacheCleanupReason {
+    CREATE, UPDATE, OTHER
 
-    public UnsupportedVersion() {
-        this.message = "This version is not supported by the script.";
-    }
-
-    public UnsupportedVersion(String message) {
-        super(message);
-        this.message = message;
-    }
-
-    public String getError() {
-        return this.message;
-    }
 }

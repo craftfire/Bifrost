@@ -19,17 +19,38 @@
  */
 package com.craftfire.bifrost.classes.forum;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Category;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 
+/**
+ * This class should only be used with a forum board/category.
+ * <p>
+ * The second constructor should only be used by the script itself and not by the library user.
+ * To update any changed values in the board, run {@see #updateBoard()}.
+ * <p>
+ * When creating a new ForumBoard make sure you use the correct constructor:
+ * {@see #ForumBoard(com.craftfire.bifrost.script.Script, String, int)}.
+ * <p>
+ * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+ */
 public class ForumBoard extends Category {
 
+    /**
+     * This constructor may be used when creating a new board for the script.
+     * <p>
+     * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+     * 
+     * @param script  the script the board is created for
+     */
     public ForumBoard(Script script) {
         super(script);
     }
@@ -45,7 +66,7 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * This constructor should be used when creating a new board for the script.
+     * This constructor should be preferred when creating a new board for the script.
      * <p>
      * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
      * 
@@ -58,8 +79,9 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * @see Category#getMessages(int)
-     * @see #getThreads(int)
+     * Returns the list of messages contained in this category.
+     * <p>
+     * For ForumBoard it has the same effect as {@see #getThreads(int)}
      */
     @Override
     public List<ForumThread> getMessages(int limit) throws UnsupportedMethod {
@@ -77,6 +99,30 @@ public class ForumBoard extends Category {
      */
     public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThreadsFromBoard(getID(), limit);
+    }
+
+    /**
+     * This method should be run after changing any board values.
+     * <p>
+     * It should <b>not</b> be run when creating a new board, only when editing an already existing board.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void updateBoard() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updateBoard(this);
+    }
+
+    /**
+     * This method should be run after creating a new board.
+     * <p>
+     * It should <b>not</b> be run when updating a board, only when creating a new board.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void createBoard() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createBoard(this);
     }
 
     /**
@@ -98,7 +144,8 @@ public class ForumBoard extends Category {
      * @param board   the board object
      */
     public static void addCache(ScriptHandle handle, ForumBoard board) {
-        handle.getCache().put(CacheGroup.BOARD, board.getID(), board);
+        handle.getCache().putMetadatable(CacheGroup.BOARD, board.getID(), board);
+        handle.getCache().setMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent", board.getParentID());
     }
 
     /**
@@ -116,6 +163,33 @@ public class ForumBoard extends Category {
     }
 
     /**
+     * Removes outdated cache elements related to given {@param board} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link ForumBoard}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle  the handle the method is called from
+     * @param board   the board to cleanup related cache
+     * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see           Cache
+     */
+    public static void cleanupCache(ScriptHandle handle, ForumBoard board, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.BOARD_SUBS, board.getParentID());
+        switch (reason) {
+        case OTHER:
+            handle.getCache().remove(CacheGroup.BOARD_SUBS, handle.getCache().getMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent"));
+            /* Passes through */
+        case CREATE:
+            handle.getCache().clear(CacheGroup.BOARD_COUNT);
+            handle.getCache().clear(CacheGroup.BOARD_LIST);
+            break;
+        case UPDATE:
+            handle.getCache().remove(CacheGroup.BOARD_SUBS, handle.getCache().getMetadata(CacheGroup.BOARD, board.getID(), "bifrost-cache.old-parent"));
+            break;
+        }
+    }
+
+    /* (non-javadoc)
      * @see Category#getParent()
      */
     @Override
@@ -123,7 +197,7 @@ public class ForumBoard extends Category {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getParentID());
     }
 
-    /**
+    /* (non-javadoc)
      * @see Category#getSubcategories(int)
      */
     @Override

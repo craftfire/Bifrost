@@ -25,15 +25,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.craftfire.commons.CraftCommons;
+
 import com.craftfire.bifrost.Bifrost;
+import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
-import com.craftfire.commons.CraftCommons;
 
 public class ScriptUser implements IDable {
     private int userid;
@@ -131,7 +134,6 @@ public class ScriptUser implements IDable {
         this.lastname = lastname;
     }
 
-    @SuppressWarnings("unchecked")
     public List<Group> getGroups() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getUserGroups(this.username);
     }
@@ -305,14 +307,76 @@ public class ScriptUser implements IDable {
     }
 
     public static void addCache(ScriptHandle handle, ScriptUser scriptUser) {
-        handle.getCache().put(CacheGroup.USER, scriptUser.getID(), scriptUser);
+        handle.getCache().putMetadatable(CacheGroup.USER, scriptUser.getID(), scriptUser);
+        handle.getCache().setMetadata(CacheGroup.USER, scriptUser.getID(), "bifrost-cache.old-username", scriptUser.getUsername());
     }
 
-    @SuppressWarnings("unchecked")
     public static ScriptUser getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.USER, id)) {
             return (ScriptUser) handle.getCache().get(CacheGroup.USER, id);
         }
         return null;
     }
+
+    /**
+     * Removes outdated cache elements related to given {@param user} from cache.
+     * <p>
+     * The method should be called when updating or creating a {@link ScriptUser}, but before calling {@link #addCache}.
+     * Only {@link ScriptHandle} and derived classes need to call this method.
+     * 
+     * @param handle  the handle the method is called from
+     * @param user    the user to cleanup related cache
+     * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
+     * @see           Cache
+     */
+    public static void cleanupCache(ScriptHandle handle, ScriptUser user, CacheCleanupReason reason) {
+        handle.getCache().remove(CacheGroup.USER_ID, user.getUsername());
+        handle.getCache().remove(CacheGroup.USER_USERNAME, user.getID());
+        handle.getCache().remove(CacheGroup.IS_BANNED, user.getUsername());
+        handle.getCache().remove(CacheGroup.IS_REGISTERED, user.getUsername());
+        switch (reason) {
+        case CREATE:
+            handle.getCache().clear(CacheGroup.USER_COUNT);
+            break;
+        case OTHER:
+            handle.getCache().clear(CacheGroup.USER_COUNT);
+            /* Passes through */
+        case UPDATE:
+            Object old_username = handle.getCache().getMetadata(CacheGroup.USER, user.getID(), "bifrost-cache.old-username");
+            if (!user.getUsername().equals(old_username)) {
+                handle.getCache().remove(CacheGroup.USER_IP, user.getUsername());
+                handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.POST_COUNT, user.getUsername());
+                handle.getCache().remove(CacheGroup.POST_LIST_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.POST_LAST_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.THREAD_COUNT, user.getUsername());
+                handle.getCache().remove(CacheGroup.THREAD_LIST_USER, user.getUsername());
+                handle.getCache().remove(CacheGroup.THREAD_LAST_USER, user.getUsername());
+
+                handle.getCache().remove(CacheGroup.USER_USERNAME, user.getID());
+                handle.getCache().remove(CacheGroup.IS_BANNED, old_username);
+                handle.getCache().remove(CacheGroup.IS_REGISTERED, old_username);
+                handle.getCache().remove(CacheGroup.USER_IP, old_username);
+                handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, old_username);
+                handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, old_username);
+                handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, old_username);
+                handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, old_username);
+                handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, old_username);
+                handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, old_username);
+                handle.getCache().remove(CacheGroup.POST_COUNT, old_username);
+                handle.getCache().remove(CacheGroup.POST_LIST_USER, old_username);
+                handle.getCache().remove(CacheGroup.POST_LAST_USER, old_username);
+                handle.getCache().remove(CacheGroup.THREAD_COUNT, old_username);
+                handle.getCache().remove(CacheGroup.THREAD_LIST_USER, old_username);
+                handle.getCache().remove(CacheGroup.THREAD_LAST_USER, old_username);
+            }
+
+        }
+    }
+
 }

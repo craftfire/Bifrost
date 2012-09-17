@@ -26,12 +26,12 @@ public class Bifrost {
     private static Bifrost instance;
     private final String version = "1.0.0";
     private final ScriptAPI scriptAPI;
-	private final LoggingManager loggingManager = new LoggingManager("CraftFire.Bifrost", "[Bifrost]");
+    private final LoggingManager loggingManager = new LoggingManager("CraftFire.Bifrost", "[Bifrost]");
 
     public Bifrost() {
-        this.scriptAPI = new ScriptAPI();
         instance = this;
-        this.loggingManager.info("Initialized Bifrost version " + this.version);  //TODO
+        this.scriptAPI = new ScriptAPI();
+        this.loggingManager.info("Initialized Bifrost version " + this.version); // TODO
     }
 
     public static Bifrost getInstance() {
@@ -46,7 +46,7 @@ public class Bifrost {
         return this.scriptAPI;
     }
 
-	public LoggingManager getLoggingManager() {
-		return this.loggingManager;
-	}
+    public LoggingManager getLoggingManager() {
+        return this.loggingManager;
+    }
 }

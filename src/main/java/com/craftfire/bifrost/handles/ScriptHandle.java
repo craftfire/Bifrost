@@ -22,20 +22,22 @@ package com.craftfire.bifrost.handles;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.ScriptAPI;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.Script;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
 
 /**
  * @see Script
@@ -194,18 +196,25 @@ public class ScriptHandle {
 
     public void updateUser(ScriptUser user) throws SQLException, UnsupportedMethod {
         this.script.updateUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.UPDATE);
         ScriptUser.addCache(this, user);
     }
 
     public void createUser(ScriptUser user) throws SQLException, UnsupportedMethod {
         this.script.createUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.CREATE);
         ScriptUser.addCache(this, user);
     }
 
     @SuppressWarnings("unchecked")
     public List<Group> getGroups(int limit) throws SQLException, UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.GROUP_LIST)) {
-            return (List<Group>) this.script.getCache().get(CacheGroup.GROUP_LIST);
+            List<Group> groups = (List<Group>) this.script.getCache().get(CacheGroup.GROUP_LIST);
+            if (groups.size() == ((limit == 0) ? getGroupCount() : limit)) {
+                return groups;
+            } else if ((groups.size() > limit) && (limit != 0)) {
+                return groups.subList(0, limit);
+            }
         }
         List<Group> groups = this.script.getGroups(limit);
         this.script.getCache().put(CacheGroup.GROUP_LIST, groups);
@@ -251,11 +260,13 @@ public class ScriptHandle {
 
     public void updateGroup(Group group) throws SQLException, UnsupportedMethod {
         this.script.updateGroup(group);
+        Group.cleanupCache(this, group, CacheCleanupReason.UPDATE);
         Group.addCache(this, group);
     }
 
     public void createGroup(Group group) throws SQLException, UnsupportedMethod {
         this.script.createGroup(group);
+        Group.cleanupCache(this, group, CacheCleanupReason.CREATE);
         Group.addCache(this, group);
     }
 
@@ -271,7 +282,12 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.PM_LIST)) {
-            return (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
+            List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
+            if (pms.size() == ((limit == 0) ? getPMCount() : limit)) {
+                return pms;
+            } else if ((pms.size() > limit) && (limit != 0)) {
+                return pms.subList(0, limit);
+            }
         }
         List<PrivateMessage> pms = this.script.getPMs(limit);
         getCache().put(CacheGroup.PM_LIST, pms);
@@ -280,8 +296,13 @@ public class ScriptHandle {
 
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
-        if (getCache().contains(CacheGroup.PM_REPLIES, pmid)) {
-            return (List<PrivateMessage>) getCache().get(CacheGroup.PM_REPLIES, pmid);
+        if (getCache().contains(CacheGroup.PM_REPLIES, pmid) && (limit != 0)) {
+            List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_REPLIES, pmid);
+            if (pms.size() == ((limit == 0) ? getPMReplyCount(pmid) : limit)) {
+                return pms;
+            } else if ((pms.size() > limit) && (limit != 0)) {
+                return pms.subList(0, limit);
+            }
         }
         List<PrivateMessage> pms = this.script.getPMReplies(pmid, limit);
         getCache().put(CacheGroup.PM_REPLIES, pmid, pms);
@@ -291,7 +312,12 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_SENT, username)) {
-            return (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
+            List<PrivateMessage> pms = (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
+            if (pms.size() == ((limit == 0) ? getPMSentCount(username) : limit)) {
+                return pms;
+            } else if ((pms.size() > limit) && (limit != 0)) {
+                return pms.subList(0, limit);
+            }
         }
         List<PrivateMessage> pms = this.script.getPMsSent(username, limit);
         this.script.getCache().put(CacheGroup.PM_SENT, username, pms);
@@ -301,11 +327,34 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_RECEIVED, username)) {
-            return (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
+            List<PrivateMessage> pms = (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
+            if (pms.size() == ((limit == 0) ? getPMReceivedCount(username) : limit)) {
+                return pms;
+            } else if ((pms.size() > limit) && (limit != 0)) {
+                return pms.subList(0, limit);
+            }
         }
         List<PrivateMessage> pms = this.script.getPMsSent(username, limit);
         this.script.getCache().put(CacheGroup.PM_RECEIVED, username, pms);
         return pms;
+    }
+
+    public int getPMCount() throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.PM_COUNT)) {
+            return (Integer) getCache().get(CacheGroup.PM_COUNT);
+        }
+        int count = this.script.getPMCount();
+        getCache().put(CacheGroup.PM_COUNT, count);
+        return count;
+    }
+
+    public int getPMReplyCount(int pmid) throws UnsupportedMethod {
+        if (getCache().contains(CacheGroup.PM_REPLY_COUNT, pmid)) {
+            return (Integer) getCache().get(CacheGroup.PM_REPLY_COUNT, pmid);
+        }
+        int count = this.script.getPMReplyCount(pmid);
+        getCache().put(CacheGroup.PM_REPLY_COUNT, pmid, count);
+        return count;
     }
 
     public int getPMSentCount(String username) throws UnsupportedMethod {
@@ -328,11 +377,13 @@ public class ScriptHandle {
 
     public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
         this.script.updatePrivateMessage(privateMessage);
+        PrivateMessage.cleanupCache(this, privateMessage, CacheCleanupReason.UPDATE);
         PrivateMessage.addCache(this, privateMessage);
     }
 
     public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
         this.script.createPrivateMessage(privateMessage);
+        PrivateMessage.cleanupCache(this, privateMessage, CacheCleanupReason.CREATE);
         PrivateMessage.addCache(this, privateMessage);
     }
 
@@ -367,7 +418,12 @@ public class ScriptHandle {
     @SuppressWarnings("unchecked")
     public List<Ban> getBans(int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.BAN_LIST)) {
-            return (List<Ban>) this.script.getCache().get(CacheGroup.BAN_LIST);
+            List<Ban> bans = (List<Ban>) this.script.getCache().get(CacheGroup.BAN_LIST);
+            if (bans.size() == ((limit == 0) ? getBanCount() : limit)) {
+                return bans;
+            } else if ((bans.size() > limit) && (limit != 0)) {
+                return bans.subList(0, limit);
+            }
         }
         List<Ban> bans = this.script.getBans(limit);
         this.script.getCache().put(CacheGroup.BAN_LIST, bans);
@@ -376,11 +432,13 @@ public class ScriptHandle {
 
     public void updateBan(Ban ban) throws SQLException, UnsupportedMethod {
         this.script.updateBan(ban);
+        Ban.cleanupCache(this, ban, CacheCleanupReason.UPDATE);
         Ban.addCache(this, ban);
     }
 
     public void addBan(Ban ban) throws SQLException, UnsupportedMethod {
         this.script.addBan(ban);
+        Ban.cleanupCache(this, ban, CacheCleanupReason.CREATE);
         Ban.addCache(this, ban);
     }
 
@@ -409,5 +467,14 @@ public class ScriptHandle {
         boolean registered = this.script.isRegistered(username);
         this.script.getCache().put(CacheGroup.IS_REGISTERED, registered, username);
         return registered;
+    }
+
+    public String getHomeURL() throws UnsupportedMethod {
+        if (this.script.getCache().contains(CacheGroup.URL_HOME)) {
+            return (String) this.script.getCache().get(CacheGroup.URL_HOME);
+        }
+        String url = this.getScript().getHomeURL();
+        this.script.getCache().put(CacheGroup.URL_HOME, url);
+        return url;
     }
 }

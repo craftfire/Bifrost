@@ -17,22 +17,24 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.exceptions;
+package com.craftfire.bifrost.classes.general;
 
-@SuppressWarnings("serial")
-public class UnsupportedVersion extends Exception {
-    private String message;
+/**
+ * Everything that counts its views.
+ */
+public interface ViewsCounter {
+    /**
+     * Returns the view count of the object.
+     * 
+     * @return the view count
+     */
+    public int getViewsCount();
 
-    public UnsupportedVersion() {
-        this.message = "This version is not supported by the script.";
-    }
+    /**
+     * Sets the view count of the object.
+     * 
+     * @param views  view count
+     */
+    public void setViewsCount(int views);
 
-    public UnsupportedVersion(String message) {
-        super(message);
-        this.message = message;
-    }
-
-    public String getError() {
-        return this.message;
-    }
 }

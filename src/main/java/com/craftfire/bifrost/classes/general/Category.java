@@ -28,7 +28,6 @@ import com.craftfire.bifrost.script.Script;
  * Base class for all categories like ForumBoard, ArticleCategory, WikiCategory, IssueCategory.
  * <p>
  * Should <code>not</code> be instanced.
- * 
  */
 public abstract class Category implements IDable, MessageParent {
     private int categoryid, parentid;
