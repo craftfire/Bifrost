@@ -26,6 +26,7 @@ import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.bifrost.script.ForumScript;
 import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.database.DataRow;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PhpBB extends Script {
+public class PhpBB extends ForumScript {
     private final String scriptName = "phpbb";
     private final String shortName = "phpbb";
     private final Encryption encryption = Encryption.SHA1; /*TODO*/
@@ -274,7 +275,7 @@ public class PhpBB extends Script {
         return null;
     }
 
-    public List<Thread> getThreads(int limit) {
+    public List<ForumThread> getThreads(int limit) {
         /*TODO*/
         return null;
     }

@@ -27,6 +27,8 @@ import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.script.Script;
+import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
@@ -35,8 +37,8 @@ import java.util.List;
 public class MyBB extends Script {
     private final String scriptName = "mybb";
     private final String shortName = "mybb";
-    private final Encryption encryption = Encryption.SHA1; /*TODO*/
-    private final String[] versionRanges = {"1.0.4"}; /*TODO*/
+    private final Encryption encryption = Encryption.MD5;
+    private final String[] versionRanges = {"1.6.8"}; /*TODO*/
     private String currentUsername = null;
 
     public MyBB(Scripts script, String version, DataManager dataManager) {
@@ -65,33 +67,31 @@ public class MyBB extends Script {
     }
 
     public boolean authenticate(String username, String password) {
-        /*TODO*/
-        return false;
+        String passwordHash = this.getDataManager().getStringField("users", "password", "`username` = '" + username + "'");
+        String passwordSalt = this.getDataManager().getStringField("users", "salt", "`username` = '" + username + "'");
+        return hashPassword(passwordSalt, password).equals(passwordHash);
     }
 
     public String hashPassword(String salt, String password) {
-        /*TODO*/
-        return null;
+        return CraftCommons.encrypt(Encryption.MD5, CraftCommons.encrypt(Encryption.MD5, salt) +
+                                                    CraftCommons.encrypt(Encryption.MD5, password));
     }
 
     public String getUsername(int userid) {
-        /*TODO*/
-        return null;
+        return this.getDataManager().getStringField("users", "username", "`uid` = '" + userid + "'");
     }
 
     public int getUserID(String username) {
-        /*TODO*/
-        return 0;
+        return this.getDataManager().getIntegerField("users", "uid", "`username` = '" + username + "'");
     }
 
     public ScriptUser getLastRegUser() {
-        /*TODO*/
-        return null;
+        return getUser(this.getDataManager().getIntegerField("SELECT `uid` FROM `" +
+                this.getDataManager().getPrefix() + "users` ORDER BY `uid` ASC LIMIT 1"));
     }
 
     public ScriptUser getUser(String username) {
-        /*TODO*/
-        return null;
+        return getUser(getUserID(username));
     }
 
     public ScriptUser getUser(int userid) {
