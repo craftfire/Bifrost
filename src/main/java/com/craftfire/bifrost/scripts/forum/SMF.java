@@ -101,8 +101,8 @@ public class SMF extends Script {
 
     @Override
     public ScriptUser getLastRegUser() {
-        return getUser(this.getDataManager().getIntegerField("SELECT `id_member` FROM `" + this.getDataManager().getPrefix() +
-                "members` ORDER BY `id_member` ASC LIMIT 1"));
+        return getUser(this.getDataManager().getIntegerField("SELECT `id_member` FROM `" +
+                this.getDataManager().getPrefix() + "members` ORDER BY `id_member` ASC LIMIT 1"));
     }
 
     @Override

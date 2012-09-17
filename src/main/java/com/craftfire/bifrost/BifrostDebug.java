@@ -42,6 +42,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Used for debugging and testing different scripts.
+ */
 public class BifrostDebug {
     static Bifrost bifrost;
     static Scripts script;

@@ -39,10 +39,22 @@ public class ScriptAPI {
     private HashMap<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
     private ScriptHandle lastHandle = null;
 
+    /**
+     * Returns the Bifrost instance.
+     *
+     * @return Bifrost instance
+     * @see Bifrost
+     */
     public Bifrost getBifrost() {
         return Bifrost.getInstance();
     }
 
+    /**
+     * Returns the LoggingManager of Bifrost.
+     *
+     * @return LoggingManager of Bifrost
+     * @see LoggingManager
+     */
     public LoggingManager getLoggingManager() {
         return Bifrost.getInstance().getLoggingManager();
     }
@@ -50,9 +62,9 @@ public class ScriptAPI {
     /**
      * Converts a string into a script enum.
      *
-     * @param string The string which contains the script name
-     * @return The script for the string, if none are found it returns null.
-     * @throws UnsupportedScript if the input string is not found in the list of supported scripts.
+     * @param string  the string which contains the script name
+     * @return        the script for the string, if none are found it returns null.
+     * @throws        UnsupportedScript if the input string is not found in the list of supported scripts.
      */
     public static Scripts stringToScript(String string) throws UnsupportedScript {
         for (Scripts script : Scripts.values()) {

@@ -34,18 +34,43 @@ public class Bifrost {
         this.loggingManager.info("Initialized Bifrost version " + this.version); // TODO
     }
 
+    /**
+     * Returns the instance of Bifrost.
+     * <p>
+     * Only one instance of Bifrost should be run at all times, this method can be used to grab the instance of Bifrost.
+     * @return Bifrost instance
+     */
     public static Bifrost getInstance() {
         return instance;
     }
 
+    /**
+     * Returns the version of Bifrost.
+     *
+     * @return version of Bifrost
+     */
     public String getVersion() {
         return this.version;
     }
 
+    /**
+     * Returns the ScriptAPI.
+     * <p>
+     * ScriptAPI contains all the needed methods to add new script handles, use script methods and such.
+     *
+     * @return ScriptAPI
+     * @see ScriptAPI
+     */
     public ScriptAPI getScriptAPI() {
         return this.scriptAPI;
     }
 
+    /**
+     * Returns the LoggingManager of Bifrost.
+     *
+     * @return LoggingManager
+     * @see LoggingManager
+     */
     public LoggingManager getLoggingManager() {
         return this.loggingManager;
     }
