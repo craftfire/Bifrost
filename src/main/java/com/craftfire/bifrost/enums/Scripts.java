@@ -23,6 +23,7 @@ package com.craftfire.bifrost.enums;
  * This enum holds all the different supported scripts.
  */
 public enum Scripts {
+    MYBB("mybb", ScriptType.FORUM),
     SMF("simplemachines", ScriptType.FORUM),
     XF("xenforo", ScriptType.FORUM);
 

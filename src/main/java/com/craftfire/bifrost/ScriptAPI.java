@@ -84,6 +84,8 @@ public class ScriptAPI {
 
     public static Script setScript(Scripts scriptName, String version, DataManager dataManager) {
         switch (scriptName) {
+            case MYBB:
+                return new MyBB(scriptName, version, dataManager);
             case SMF:
                 return new SMF(scriptName, version, dataManager);
             case XF:

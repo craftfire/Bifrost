@@ -19,6 +19,8 @@
  */
 package com.craftfire.bifrost.scripts.forum;
 
+import java.util.List;
+
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -26,19 +28,17 @@ import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.bifrost.script.ForumScript;
 import com.craftfire.bifrost.script.Script;
 import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
-import java.util.List;
-
-public class MyBB extends Script {
+public class MyBB extends ForumScript {
     private final String scriptName = "mybb";
     private final String shortName = "mybb";
     private final Encryption encryption = Encryption.MD5;
-    private final String[] versionRanges = {"1.6.8"}; /*TODO*/
+    private final String[] versionRanges = {"1.6.8"};
     private String currentUsername = null;
 
     public MyBB(Scripts script, String version, DataManager dataManager) {
@@ -66,21 +66,31 @@ public class MyBB extends Script {
         return this.shortName;
     }
 
+    @Override
     public boolean authenticate(String username, String password) {
         String passwordHash = this.getDataManager().getStringField("users", "password", "`username` = '" + username + "'");
         String passwordSalt = this.getDataManager().getStringField("users", "salt", "`username` = '" + username + "'");
         return hashPassword(passwordSalt, password).equals(passwordHash);
     }
 
+    @Override
     public String hashPassword(String salt, String password) {
         return CraftCommons.encrypt(Encryption.MD5, CraftCommons.encrypt(Encryption.MD5, salt) +
                                                     CraftCommons.encrypt(Encryption.MD5, password));
     }
 
+    @Override
+    public boolean isRegistered(String username) {
+        /*TODO*/
+        return false;
+    }
+
+    @Override
     public String getUsername(int userid) {
         return this.getDataManager().getStringField("users", "username", "`uid` = '" + userid + "'");
     }
 
+    @Override
     public int getUserID(String username) {
         return this.getDataManager().getIntegerField("users", "uid", "`username` = '" + username + "'");
     }
@@ -90,8 +100,67 @@ public class MyBB extends Script {
                 this.getDataManager().getPrefix() + "users` ORDER BY `uid` ASC LIMIT 1"));
     }
 
+    @Override
     public ScriptUser getUser(String username) {
         return getUser(getUserID(username));
+    }
+
+    @Override
+    public int getUserCount() {
+        /*TODO*/
+        return 0;
+    }
+
+    @Override
+    public int getGroupCount() {
+        /*TODO*/
+        return 0;
+    }
+
+    @Override
+    public String getHomeURL() {
+        /*TODO*/
+        return null;
+    }
+
+    @Override
+    public String getForumURL() {
+        /*TODO*/
+        return null;
+    }
+
+    @Override
+    public List<String> getIPs(String username) {
+        /*TODO*/
+        return null;
+    }
+
+    @Override
+    public List<Ban> getBans(int limit) {
+        /*TODO*/
+        return null;
+    }
+
+    @Override
+    public void updateBan(Ban ban) {
+        /*TODO*/
+    }
+
+    @Override
+    public void addBan(Ban ban) {
+        /*TODO*/
+    }
+
+    @Override
+    public int getBanCount() {
+        /*TODO*/
+        return 0;
+    }
+
+    @Override
+    public boolean isBanned(String string) {
+        /*TODO*/
+        return false;
     }
 
     public ScriptUser getUser(int userid) {
@@ -250,60 +319,8 @@ public class MyBB extends Script {
         /*TODO*/
     }
 
-    public void createThread(ForumThread thread) {
+    @Override
+    public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         /*TODO*/
-    }
-
-    public int getUserCount() {
-        /*TODO*/
-        return 0;
-    }
-
-    public int getGroupCount() {
-        /*TODO*/
-        return 0;
-    }
-
-    public String getHomeURL() {
-        /*TODO*/
-        return null;
-    }
-
-    public String getForumURL() {
-        /*TODO*/
-        return null;
-    }
-
-    public List<String> getIPs(String username) {
-        /*TODO*/
-        return null;
-    }
-
-    public List<Ban> getBans(int limit) {
-        /*TODO*/
-        return null;
-    }
-
-    public void updateBan(Ban ban) {
-        /*TODO*/
-    }
-
-    public void addBan(Ban ban) {
-        /*TODO*/
-    }
-
-    public int getBanCount() {
-        /*TODO*/
-        return 0;
-    }
-
-    public boolean isBanned(String string) {
-        /*TODO*/
-        return false;
-    }
-
-    public boolean isRegistered(String username) {
-        /*TODO*/
-        return false;
     }
 }
