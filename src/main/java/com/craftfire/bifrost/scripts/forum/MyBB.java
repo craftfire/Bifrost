@@ -37,7 +37,6 @@ import com.craftfire.commons.managers.DataManager;
 public class MyBB extends ForumScript {
     private final String scriptName = "mybb";
     private final String shortName = "mybb";
-    private final Encryption encryption = Encryption.MD5;
     private final String[] versionRanges = {"1.6.8"};
     private String currentUsername = null;
 
@@ -45,23 +44,22 @@ public class MyBB extends ForumScript {
         super(script, version, dataManager);
     }
 
+    @Override
     public String[] getVersionRanges() {
         return this.versionRanges;
     }
 
+    @Override
     public String getLatestVersion() {
-        /*TODO*/
         return this.versionRanges[0];
     }
 
-    public Encryption getEncryption() {
-        return this.encryption;
-    }
-
+    @Override
     public String getScriptName() {
         return this.scriptName;
     }
 
+    @Override
     public String getScriptShortname() {
         return this.shortName;
     }
@@ -163,164 +161,197 @@ public class MyBB extends ForumScript {
         return false;
     }
 
+    @Override
     public ScriptUser getUser(int userid) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public void updateUser(ScriptUser user) {
         /*TODO*/
     }
 
+    @Override
     public void createUser(ScriptUser user) {
         /*TODO*/
     }
 
+    @Override
     public List<Group> getGroups(int limit) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public int getGroupID(String group) {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public Group getGroup(int groupid) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public Group getGroup(String group) {
         /* TODO */
         return null;
     }
 
+    @Override
     public List<Group> getUserGroups(String username) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public void updateGroup(Group group) {
         /*TODO*/
     }
 
+    @Override
     public void createGroup(Group group) {
         /*TODO*/
     }
 
+    @Override
     public PrivateMessage getPM(int pmid) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public List<PrivateMessage> getPMsSent(String username, int limit) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public List<PrivateMessage> getPMsReceived(String username, int limit) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public int getPMSentCount(String username) {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public int getPMReceivedCount(String username) {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public void updatePrivateMessage(PrivateMessage privateMessage) {
         /*TODO*/
     }
 
+    @Override
     public void createPrivateMessage(PrivateMessage privateMessage) {
         /*TODO*/
     }
 
+    @Override
     public int getPostCount(String username) {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public int getTotalPostCount() {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public ForumPost getLastPost() {
         /*TODO*/
         return null;
     }
 
+    @Override
     public ForumPost getLastUserPost(String username) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public List<ForumPost> getPosts(int limit) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public List<ForumPost> getPostsFromThread(int threadid, int limit) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public ForumPost getPost(int postid) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public void updatePost(ForumPost post) {
         /*TODO*/
     }
 
+    @Override
     public void createPost(ForumPost post) {
         /*TODO*/
     }
 
+    @Override
     public int getThreadCount(String username) {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public int getTotalThreadCount() {
         /*TODO*/
         return 0;
     }
 
+    @Override
     public ForumThread getLastThread() {
         /*TODO*/
         return null;
     }
 
+    @Override
     public ForumThread getLastUserThread(String username) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public ForumThread getThread(int threadid) {
         /*TODO*/
         return null;
     }
 
-    public List<Thread> getThreads(int limit) {
+    @Override
+    public List<ForumThread> getThreads(int limit) {
         /*TODO*/
         return null;
     }
 
+    @Override
     public void updateThread(ForumThread thread) {
         /*TODO*/
     }
 
     @Override
-    public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
+    public void createThread(ForumThread thread) {
         /*TODO*/
     }
 }
