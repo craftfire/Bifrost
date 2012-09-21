@@ -471,7 +471,7 @@ public class BifrostScriptTest {
     }
 
     @Test
-    public void testForumThreadClass() {
+    public void testForumThreadClass() throws SQLException {
         print(seperate);
         print(script.toString() + " - " + version + " - FORUMTHREAD CLASS");
         ForumHandle fhandle = getForumHandle();

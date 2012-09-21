@@ -32,6 +32,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.database.DataRow;
+import com.craftfire.commons.database.Results;
+import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -42,11 +48,6 @@ import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.ForumScript;
-import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.database.DataRow;
-import com.craftfire.commons.database.Results;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
 
 //TODO: Convert arrays to use Result class
 public class XenForo extends ForumScript {
@@ -133,18 +134,18 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public ScriptUser getLastRegUser() {
+    public ScriptUser getLastRegUser() throws SQLException {
         return getUser(this.getDataManager().getIntegerField("SELECT `user_id` FROM `" + this.getDataManager().getPrefix() +
                 "user` ORDER BY `user_id` ASC LIMIT 1"));
     }
 
     @Override
-    public ScriptUser getUser(String username) {
+    public ScriptUser getUser(String username) throws SQLException {
         return getUser(getUserID(username));
     }
 
     @Override
-    public ScriptUser getUser(int userid) {
+    public ScriptUser getUser(int userid) throws SQLException {
         ScriptUser user = new ScriptUser(this, userid, null, null);
         Results results = this.getDataManager().getResults(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_id` = '" +
@@ -513,7 +514,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public PrivateMessage getPM(int pmid) {
+    public PrivateMessage getPM(int pmid) throws SQLException {
         PrivateMessage pm = new PrivateMessage(this, pmid);
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "conversation_message` WHERE `message_id` = '" +
@@ -550,7 +551,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public List<PrivateMessage> getPMsSent(String username, int limit) {
+    public List<PrivateMessage> getPMsSent(String username, int limit) throws SQLException {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -568,7 +569,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public List<PrivateMessage> getPMsReceived(String username, int limit) {
+    public List<PrivateMessage> getPMsReceived(String username, int limit) throws SQLException {
         int userID = getUserID(username);
         String limitstring = "";
         if (limit > 0) {
@@ -726,20 +727,20 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public ForumPost getLastPost() {
+    public ForumPost getLastPost() throws SQLException {
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `post_id` FROM `" + this.getDataManager().getPrefix() + "post` ORDER BY `post_id` ASC LIMIT 1"));
     }
 
     @Override
-    public ForumPost getLastUserPost(String username) {
+    public ForumPost getLastUserPost(String username) throws SQLException {
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `post_id` FROM `" + this.getDataManager().getPrefix() + "post` WHERE `user_id` = '" +
                         getUserID(username) + "' AND `position` != '0' ORDER BY `post_id` ASC LIMIT 1"));
     }
 
     @Override
-    public List<ForumPost> getPosts(int limit) {
+    public List<ForumPost> getPosts(int limit) throws SQLException {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -755,7 +756,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public List<ForumPost> getPostsFromThread(int threadid, int limit) {
+    public List<ForumPost> getPostsFromThread(int threadid, int limit) throws SQLException {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -772,7 +773,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public ForumPost getPost(int postid) {
+    public ForumPost getPost(int postid) throws SQLException {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "post` WHERE `post_id` = '" + postid + "' LIMIT 1");
         int nodeID = this.getDataManager().getIntegerField("thread", "node_id", "`thread_id` = '" +
@@ -866,20 +867,20 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public ForumThread getLastThread() {
+    public ForumThread getLastThread() throws SQLException {
         return getThread(this.getDataManager().getIntegerField("SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() +
                 "thread` ORDER BY `thread_id` ASC LIMIT 1"));
     }
 
     @Override
-    public ForumThread getLastUserThread(String username) {
+    public ForumThread getLastUserThread(String username) throws SQLException {
         return getThread(this.getDataManager().getIntegerField(
                 "SELECT `thread_id` FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `user_id` = '" +
                         getUserID(username) + "' ORDER BY `thread_id` ASC LIMIT 1"));
     }
 
     @Override
-    public ForumThread getThread(int threadid) {
+    public ForumThread getThread(int threadid) throws SQLException {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `thread_id` = '" + threadid +
                         "' LIMIT 1");
@@ -908,7 +909,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public List<ForumThread> getThreads(int limit) {
+    public List<ForumThread> getThreads(int limit) throws SQLException {
         String limitstring = "";
         if (limit > 0) {
             limitstring = " LIMIT 0 , " + limit;
@@ -1065,7 +1066,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public boolean isBanned(String string) {
+    public boolean isBanned(String string) throws SQLException {
         if (CraftCommons.isEmail(string)) {
             if (this.getDataManager().exist("ban_email", "banned_email", string)) {
                 return true;

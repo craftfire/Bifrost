@@ -242,11 +242,11 @@ public class ScriptUser implements IDable {
         this.anonymous = anonymous;
     }
 
-    public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedMethod {
+    public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMsSent(this.username, limit);
     }
 
-    public List<PrivateMessage> getPMsReceived(int limit) throws UnsupportedMethod {
+    public List<PrivateMessage> getPMsReceived(int limit) throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMsReceived(this.username, limit);
     }
 
@@ -266,7 +266,7 @@ public class ScriptUser implements IDable {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getThreadCount(this.username);
     }
 
-    public boolean isBanned() throws UnsupportedMethod {
+    public boolean isBanned() throws UnsupportedMethod, SQLException {
         if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.username)) {
             return true;
         } else if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.email)) {
@@ -286,11 +286,11 @@ public class ScriptUser implements IDable {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getIPs(this.username);
     }
 
-    public ForumThread getLastThread() throws UnsupportedMethod {
+    public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getLastUserThread(this.username);
     }
 
-    public ForumPost getLastPost() throws UnsupportedMethod {
+    public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getLastUserPost(this.username);
     }
 

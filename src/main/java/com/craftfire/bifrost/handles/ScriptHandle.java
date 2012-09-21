@@ -270,7 +270,7 @@ public class ScriptHandle {
         Group.addCache(this, group);
     }
 
-    public PrivateMessage getPM(int pmid) throws UnsupportedMethod {
+    public PrivateMessage getPM(int pmid) throws UnsupportedMethod, SQLException {
         if (PrivateMessage.hasCache(this, pmid)) {
             return PrivateMessage.getCache(this, pmid);
         }
@@ -310,7 +310,7 @@ public class ScriptHandle {
     }
 
     @SuppressWarnings("unchecked")
-    public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod {
+    public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.PM_SENT, username)) {
             List<PrivateMessage> pms = (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
             if (pms.size() == ((limit == 0) ? getPMSentCount(username) : limit)) {
@@ -325,7 +325,7 @@ public class ScriptHandle {
     }
 
     @SuppressWarnings("unchecked")
-    public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod {
+    public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.PM_RECEIVED, username)) {
             List<PrivateMessage> pms = (List<PrivateMessage>) this.script.getCache().get(CacheGroup.PM_RECEIVED, username);
             if (pms.size() == ((limit == 0) ? getPMReceivedCount(username) : limit)) {
@@ -451,7 +451,7 @@ public class ScriptHandle {
         return count;
     }
 
-    public boolean isBanned(String string) throws UnsupportedMethod {
+    public boolean isBanned(String string) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.IS_BANNED, string)) {
             return (Boolean) this.script.getCache().get(CacheGroup.IS_BANNED, string);
         }

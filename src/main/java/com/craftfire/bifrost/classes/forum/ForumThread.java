@@ -83,8 +83,9 @@ public class ForumThread extends Message implements ViewsCounter {
      * 
      * @return                    a ForumBoard object
      * @throws UnsupportedMethod  if the method is not supported by script
+     * @throws SQLException       if a MySQL exception occurred
      */
-    public ForumBoard getBoard() throws UnsupportedMethod {
+    public ForumBoard getBoard() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getCategoryID());
     }
 
@@ -94,11 +95,12 @@ public class ForumThread extends Message implements ViewsCounter {
      * <p>
      * List will be empty if there were no posts.
      *
-     * @param limit  how many ForumPosts that should be returned, 0 = returns all.
-     * @return       a List of ForumPost's
-     * @see          ForumPost
+     * @param  limit         how many ForumPosts that should be returned, 0 = returns all.
+     * @return               a List of ForumPost's
+     * @throws SQLException  if a MySQL exception occurred
+     * @see                  ForumPost
      */
-    public List<ForumPost> getPosts(int limit) throws UnsupportedMethod {
+    public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI()
                 .getForumHandle(getScript().getScript())
                 .getPostsFromThread(getID(), limit);
@@ -107,11 +109,12 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns the first Post of the thread.
      *
-     * @return  first ForumPost of the thread
-     * @throws  UnsupportedMethod if the method is not supported by the script
-     * @see     ForumPost
+     * @return                     first ForumPost of the thread
+     * @throws  UnsupportedMethod  if the method is not supported by the script
+     * @throws  SQLException       if a MySQL exception occurred
+     * @see                        ForumPost
      */
-    public ForumPost getFirstPost() throws UnsupportedMethod {
+    public ForumPost getFirstPost() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI()
                 .getForumHandle(getScript().getScript())
                 .getPost(this.firstpostid);
@@ -120,11 +123,12 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns the last Post of the thread.
      *
-     * @return  last ForumPosts of the thread
-     * @throws  UnsupportedMethod if the method is not supported by the script
-     * @see     ForumPost
+     * @return                     last ForumPosts of the thread
+     * @throws  UnsupportedMethod  if the method is not supported by the script
+     * @throws  SQLException       if a MySQL exception occurred
+     * @see                        ForumPost
      */
-    public ForumPost getLastPost() throws UnsupportedMethod {
+    public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI()
                 .getForumHandle(getScript().getScript())
                 .getPost(this.lastpostid);
@@ -374,7 +378,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * For ForumThread it has always the same result as {@see #getBoard()}.
      */
     @Override
-    public ForumBoard getCategory() throws UnsupportedMethod {
+    public ForumBoard getCategory() throws UnsupportedMethod, SQLException {
         return getBoard();
     }
 
@@ -384,7 +388,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * For ForumThread it has always the same result as {@see #getPosts(int)}.
      */
     @Override
-    public List<ForumPost> getChildMessages(int limit) throws UnsupportedMethod {
+    public List<ForumPost> getChildMessages(int limit) throws UnsupportedMethod, SQLException {
         return getPosts(limit);
     }
 
@@ -394,7 +398,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * For ForumThread it always has the same result as {@see #getBoard()}.
      */
     @Override
-    public ForumBoard getParent() throws UnsupportedMethod {
+    public ForumBoard getParent() throws UnsupportedMethod, SQLException {
         return getBoard();
     }
 }

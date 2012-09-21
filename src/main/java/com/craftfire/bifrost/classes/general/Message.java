@@ -19,6 +19,7 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
@@ -192,8 +193,9 @@ public abstract class Message implements IDable, MessageParent {
      * 
      * @return                    the parent of the message
      * @throws UnsupportedMethod  if the method is not supported by script
+     * @throws SQLException       if a MySQL exception occurred
      */
-    public abstract MessageParent getParent() throws UnsupportedMethod;
+    public abstract MessageParent getParent() throws UnsupportedMethod, SQLException;
 
     /**
      * Returns a Category object for the category of the message. Should be
@@ -201,8 +203,9 @@ public abstract class Message implements IDable, MessageParent {
      * 
      * @return                    a Category object
      * @throws UnsupportedMethod  if the method is not supported by script
+     * @throws SQLException       if a MySQL exception occurred
      */
-    public abstract Category getCategory() throws UnsupportedMethod;
+    public abstract Category getCategory() throws UnsupportedMethod, SQLException;
 
     /**
      * Returns the ID of the category of the message.

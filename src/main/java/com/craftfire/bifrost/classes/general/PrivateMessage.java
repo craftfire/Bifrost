@@ -284,7 +284,7 @@ public class PrivateMessage extends Message {
      * @see Message#getParent()
      */
     @Override
-    public PrivateMessage getParent() throws UnsupportedMethod {
+    public PrivateMessage getParent() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).getPM(this.parentid);
     }
 

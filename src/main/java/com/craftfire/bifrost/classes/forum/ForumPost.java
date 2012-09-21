@@ -96,7 +96,11 @@ public class ForumPost extends Message {
      * @throws UnsupportedMethod  if the method is not supported by script
      */
     public int getBoardID() throws UnsupportedMethod {
-        return getThread().getBoardID();
+        try {
+            return getThread().getBoardID();
+        } catch (SQLException e) {
+            return 0;
+        }
     }
     
     /**
@@ -104,18 +108,20 @@ public class ForumPost extends Message {
      * 
      * @return                    a ForumBoard object
      * @throws UnsupportedMethod  if the method is not supported by script
+     * @throws SQLException       if a MySQL exception occurred
      */
-    public ForumBoard getBoard() throws UnsupportedMethod {
+    public ForumBoard getBoard() throws UnsupportedMethod, SQLException {
         return getThread().getBoard();
     }
 
     /**
      * Returns the {@link ForumThread} of the post.
      *
-     * @return the thread Object
-     * @throws UnsupportedMethod if the method is not supported by the script
+     * @return                    the thread Object
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException       if a MySQL exception occurred
      */
-    public ForumThread getThread() throws UnsupportedMethod {
+    public ForumThread getThread() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript())
                                                                                     .getThread(this.threadid);
     }
@@ -267,7 +273,7 @@ public class ForumPost extends Message {
      * @see Message#getCategory()
      */
     @Override
-    public ForumBoard getCategory() throws UnsupportedMethod {
+    public ForumBoard getCategory() throws UnsupportedMethod, SQLException {
         return getBoard();
     }
 
@@ -301,7 +307,7 @@ public class ForumPost extends Message {
      * For ForumPost it always has the same result as {@see #getThread()}.
      */
     @Override
-    public ForumThread getParent() throws UnsupportedMethod {
+    public ForumThread getParent() throws UnsupportedMethod, SQLException {
         return getThread();
     }
 }

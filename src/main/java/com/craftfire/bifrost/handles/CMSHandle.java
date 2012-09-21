@@ -19,7 +19,10 @@
  */
 package com.craftfire.bifrost.handles;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
@@ -32,7 +35,6 @@ import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.CMSScript;
-import com.craftfire.commons.managers.DataManager;
 
 public class CMSHandle extends ScriptHandle {
 
@@ -316,13 +318,13 @@ public class CMSHandle extends ScriptHandle {
         return art;
     }
 
-    public void updateArticle(CMSArticle article) throws UnsupportedMethod {
+    public void updateArticle(CMSArticle article) throws UnsupportedMethod, SQLException {
         getCMSScript().updateArticle(article);
         CMSArticle.cleanupCache(this, article, CacheCleanupReason.UPDATE);
         CMSArticle.addCache(this, article);
     }
 
-    public void createArticle(CMSArticle article) throws UnsupportedMethod {
+    public void createArticle(CMSArticle article) throws UnsupportedMethod, SQLException {
         getCMSScript().createArticle(article);
         CMSArticle.cleanupCache(this, article, CacheCleanupReason.CREATE);
         CMSArticle.addCache(this, article);

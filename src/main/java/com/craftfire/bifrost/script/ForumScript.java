@@ -76,8 +76,9 @@ public class ForumScript extends Script {
      * @return ForumPost object of the last post
      * @see    ForumPost
      * @throws UnsupportedMethod if the function is not supported by the script
+     * @throws SQLException if a MySQL exception occurred
      */
-	public ForumPost getLastPost() throws UnsupportedMethod {
+    public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
@@ -88,8 +89,9 @@ public class ForumScript extends Script {
      * @return          ForumPost object of the last post made by the user
      * @see             ForumPost
      * @throws          UnsupportedMethod if the function is not supported by the script
+     * @throws          SQLException  if a MySQL exception occurred
      */
-	public ForumPost getLastUserPost(String username) throws UnsupportedMethod {
+    public ForumPost getLastUserPost(String username) throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
@@ -98,8 +100,9 @@ public class ForumScript extends Script {
      *
      * @return The amount of how many threads have been made, returns 0 if none
      * @throws UnsupportedMethod if the function is not supported by the script
+     * @throws SQLException  if a MySQL exception occurred
      */
-	public List<ForumPost> getPosts(int limit) throws UnsupportedMethod {
+    public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
@@ -116,8 +119,9 @@ public class ForumScript extends Script {
      * @return          List with ForumPost objects, if none are found it returns an empty List
      * @see             ForumPost
      * @throws          UnsupportedMethod if the function is not supported by the script
+     * @throws SQLException  if a MySQL exception occurred
      */
-	public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod {
+    public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
@@ -146,8 +150,9 @@ public class ForumScript extends Script {
      * @return       ForumPost object, null if nothing was found.
      * @see          ForumPost
      * @throws       UnsupportedMethod if the function is not supported by the script.
+     * @throws SQLException  if a MySQL exception occurred
      */
-	public ForumPost getPost(int postid) throws UnsupportedMethod {
+    public ForumPost getPost(int postid) throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
@@ -202,8 +207,9 @@ public class ForumScript extends Script {
      * @return ForumThread object of the last thread
      * @see    ForumThread
      * @throws UnsupportedMethod if the function is not supported by the script
+     * @throws SQLException  if a MySQL exception occurred
      */
-	public ForumThread getLastThread() throws UnsupportedMethod {
+    public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
@@ -214,8 +220,9 @@ public class ForumScript extends Script {
      * @return          ForumThread object of the last post made by the user
      * @see             ForumThread
      * @throws          UnsupportedMethod if the function is not supported by the script
+     * @throws SQLException  if a MySQL exception occurred
      */
-	public ForumThread getLastUserThread(String username) throws UnsupportedMethod {
+    public ForumThread getLastUserThread(String username) throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
@@ -226,8 +233,9 @@ public class ForumScript extends Script {
      * @return          ForumThread object, null if nothing was found
      * @see             ForumThread
      * @throws          UnsupportedMethod if the function is not supported by the script
+     * @throws SQLException  if a MySQL exception occurred
      */
-	public ForumThread getThread(int threadid) throws UnsupportedMethod {
+    public ForumThread getThread(int threadid) throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
@@ -280,8 +288,9 @@ public class ForumScript extends Script {
      * @return       List with @Override objects, if none are found it returns an empty List.
      * @see          ForumThread
      * @throws       UnsupportedMethod if the function is not supported by the script.
+     * @throws SQLException  if a MySQL exception occurred
      */
-	public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
+    public List<ForumThread> getThreads(int limit) throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
