@@ -347,8 +347,9 @@ public class Script {
      * @return     PrivateMessage object
      * @see        com.craftfire.bifrost.classes.general.PrivateMessage
      * @throws     UnsupportedMethod if the function is not supported by the script.
+     * @throws     SQLException  if a MySQL exception occurred
      */
-    public PrivateMessage getPM(int pmid) throws UnsupportedMethod {
+    public PrivateMessage getPM(int pmid) throws UnsupportedMethod, SQLException {
         throw new UnsupportedMethod();
     }
     
@@ -397,8 +398,9 @@ public class Script {
      * @see            PrivateMessage
      * @see            List
      * @throws         UnsupportedMethod if the function is not supported by the script.
+     * @throws         SQLException  if a MySQL exception occurred
      */
-    public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod {
+    public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod, SQLException {
         throw new UnsupportedMethod();
     }
 
@@ -414,8 +416,9 @@ public class Script {
      * @see            PrivateMessage
      * @see            List
      * @throws         UnsupportedMethod if the function is not supported by the script.
+     * @throws         SQLException  if a MySQL exception occurred
      */
-    public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod {
+    public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod, SQLException {
         throw new UnsupportedMethod();
     }
 
@@ -554,8 +557,9 @@ public class Script {
      * @param string String to search for.
      * @return       True if {@param string} is banned.
      * @throws       UnsupportedMethod if the function is not supported by the script.
+     * @throws       SQLException  if a MySQL exception occurred
      */
-    public boolean isBanned(String string) throws UnsupportedMethod {
+    public boolean isBanned(String string) throws UnsupportedMethod, SQLException {
         throw new UnsupportedMethod();
     }
 

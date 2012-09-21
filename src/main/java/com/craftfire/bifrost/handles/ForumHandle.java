@@ -61,7 +61,7 @@ public class ForumHandle extends ScriptHandle {
         return new ForumThread(this.script, boardid);
     }
 
-    public ForumPost getPost(int postID) throws UnsupportedMethod {
+    public ForumPost getPost(int postID) throws UnsupportedMethod, SQLException {
         if (ForumPost.hasCache(this, postID)) {
             return ForumPost.getCache(this, postID);
         }
@@ -71,7 +71,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     @SuppressWarnings("unchecked")
-    public List<ForumPost> getPosts(int limit) throws UnsupportedMethod {
+    public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.POST_LIST)) {
             List<ForumPost> posts = (List<ForumPost>) this.script.getCache().get(CacheGroup.POST_LIST);
             if (posts.size() == ((limit == 0) ? getTotalPostCount() : limit)) {
@@ -86,7 +86,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     @SuppressWarnings("unchecked")
-    public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod {
+    public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.THREAD_POSTS, threadid)) {
             List<ForumPost> posts = (List<ForumPost>) this.script.getCache().get(CacheGroup.THREAD_POSTS, threadid);
             if (posts.size() == ((limit == 0) ? getPostCountInThread(threadid) : limit)) {
@@ -154,7 +154,7 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
-    public ForumPost getLastPost() throws UnsupportedMethod {
+    public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.POST_LAST)) {
             return (ForumPost) this.script.getCache().get(CacheGroup.POST_LAST);
         }
@@ -163,7 +163,7 @@ public class ForumHandle extends ScriptHandle {
         return post;
     }
 
-    public ForumPost getLastUserPost(String username) throws UnsupportedMethod {
+    public ForumPost getLastUserPost(String username) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.POST_LAST_USER, username)) {
             return (ForumPost) this.script.getCache().get(CacheGroup.POST_LAST_USER, username);
         }
@@ -190,7 +190,7 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
-    public ForumThread getLastThread() throws UnsupportedMethod {
+    public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.THREAD_LAST)) {
             return (ForumThread) this.script.getCache().get(CacheGroup.THREAD_LAST);
         }
@@ -199,7 +199,7 @@ public class ForumHandle extends ScriptHandle {
         return thread;
     }
 
-    public ForumThread getLastUserThread(String username) throws UnsupportedMethod {
+    public ForumThread getLastUserThread(String username) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.THREAD_LAST_USER, username)) {
             return (ForumThread) this.script.getCache().get(CacheGroup.THREAD_LAST_USER, username);
         }
@@ -208,7 +208,7 @@ public class ForumHandle extends ScriptHandle {
         return thread;
     }
 
-    public ForumThread getThread(int threadID) throws UnsupportedMethod {
+    public ForumThread getThread(int threadID) throws UnsupportedMethod, SQLException {
         if (ForumThread.hasCache(this, threadID)) {
             return ForumThread.getCache(this, threadID);
         }
@@ -218,7 +218,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     @SuppressWarnings("unchecked")
-    public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
+    public List<ForumThread> getThreads(int limit) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.THREAD_LIST)) {
             List<ForumThread> threads = (List<ForumThread>) this.script.getCache().get(CacheGroup.THREAD_LIST);
             if (threads.size() == ((limit == 0) ? getTotalThreadCount() : limit)) {

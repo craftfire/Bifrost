@@ -101,7 +101,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * For CMSArticle it always has the same result as {@see #getCategory()}.
      */
     @Override
-    public CMSCategory getParent() throws UnsupportedMethod {
+    public CMSCategory getParent() throws UnsupportedMethod, SQLException {
         return getCategory();
     }
 
@@ -111,7 +111,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @see com.craftfire.bifrost.classes.general.Message#getCategory()
      */
     @Override
-    public CMSCategory getCategory() throws UnsupportedMethod {
+    public CMSCategory getCategory() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getCategory(getCategoryID());
     }
 

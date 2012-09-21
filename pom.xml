@@ -67,6 +67,12 @@
             <version>${commonsVersion}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+        	<groupId>junit</groupId>
+        	<artifactId>junit</artifactId>
+        	<version>4.10</version>
+        	<scope>test</scope>
+        </dependency>
     </dependencies>
 
     <!-- Build settings -->
@@ -152,6 +158,25 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+            </plugin>
+            <!--  Test plugin -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.7.1</version>
+		        <configuration>
+                    <excludes>
+                        <exclude>**/BifrostScriptTest.java</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- JAR creation plugin -->
             <plugin>

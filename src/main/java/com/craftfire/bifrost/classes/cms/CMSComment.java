@@ -165,7 +165,7 @@ public class CMSComment extends Message {
      * @see com.craftfire.bifrost.classes.general.Message#getCategory()
      */
     @Override
-    public Category getCategory() throws UnsupportedMethod {
+    public Category getCategory() throws UnsupportedMethod, SQLException {
         return getArticle().getCategory();
     }
 
