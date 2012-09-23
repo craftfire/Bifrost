@@ -27,10 +27,12 @@ import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.MessageParent;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
+import com.craftfire.bifrost.script.CMSScript;
 import com.craftfire.bifrost.script.Script;
 
 /**
@@ -55,7 +57,7 @@ public class CMSComment extends Message {
      * @param script     the script the comment is created for
      * @param articleid  the ID of the article the comment is on
      */
-    public CMSComment(Script script, int articleid) {
+    public CMSComment(CMSScript script, int articleid) {
         super(script);
         this.articleid = articleid;
     }
@@ -67,7 +69,7 @@ public class CMSComment extends Message {
      * @param id         the ID of the comment
      * @param articleid  the ID of the article the comment is on
      */
-    public CMSComment(Script script, int id, int articleid) {
+    public CMSComment(CMSScript script, int id, int articleid) {
         super(script, id);
         this.articleid = articleid;
     }
@@ -281,6 +283,32 @@ public class CMSComment extends Message {
             handle.getCache().remove(CacheGroup.COMMENT_REPLIES, old_parent);
             handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, old_parent);
             break;
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getScript()
+     */
+    @Override
+    public CMSScript getScript() {
+        return (CMSScript) super.getScript();
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getAuthor()
+     */
+    @Override
+    public CMSUser getAuthor() {
+        return (CMSUser) super.getAuthor();
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#setAuthor(com.craftfire.bifrost.classes.general.ScriptUser)
+     */
+    @Override
+    public void setAuthor(ScriptUser author) {
+        if (author instanceof CMSUser) {
+            super.setAuthor(author);
         }
     }
 }

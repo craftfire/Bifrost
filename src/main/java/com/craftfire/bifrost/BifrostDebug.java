@@ -19,8 +19,21 @@
  */
 package com.craftfire.bifrost;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
+import com.craftfire.commons.enums.DataType;
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
@@ -30,17 +43,6 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.handles.ForumHandle;
-import com.craftfire.commons.enums.DataType;
-import com.craftfire.commons.managers.DataManager;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Used for debugging and testing different scripts.
@@ -215,7 +217,7 @@ public class BifrostDebug {
             print(seperate);
 
             print(script.toString() + " - " + version + " - USER CLASS - " + username);
-            ScriptUser user = bifrost.getScriptAPI().getHandle(script) .getUser(username);
+            ForumUser user = bifrost.getScriptAPI().getForumHandle(script).getUser(username);
             printResult("getAvatarURL", user.getAvatarURL());
             printResult("getBirthday", "" + user.getBirthday());
             printResult("getEmail", user.getEmail());

@@ -30,8 +30,13 @@ import java.util.Random;
 
 import javax.swing.JTable;
 
+import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
@@ -39,13 +44,10 @@ import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.script.Script;
-import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.bifrost.script.ForumScript;
 
 //TODO: Convert arrays to use Result class
-public class SMF extends Script {
+public class SMF extends ForumScript {
     private final String scriptName = "simplemachines";
     private final String shortName = "smf";
     private final Encryption encryption = Encryption.SHA1;
@@ -100,18 +102,18 @@ public class SMF extends Script {
     }
 
     @Override
-    public ScriptUser getLastRegUser() {
+    public ForumUser getLastRegUser() {
         return getUser(this.getDataManager().getIntegerField("SELECT `id_member` FROM `" +
                 this.getDataManager().getPrefix() + "members` ORDER BY `id_member` ASC LIMIT 1"));
     }
 
     @Override
-    public ScriptUser getUser(String username) {
+    public ForumUser getUser(String username) {
         return getUser(getUserID(username));
     }
 
     @Override
-    public ScriptUser getUser(int userid) {
+    public ForumUser getUser(int userid) {
         JTable userTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "members` WHERE `id_member` = '" + userid +
                         "' LIMIT 1"));
@@ -179,7 +181,7 @@ public class SMF extends Script {
                 }
             }
         }
-        ScriptUser user = new ScriptUser(this, userid, savedusername, password);
+        ForumUser user = new ForumUser(this, userid, savedusername, password);
         user.setPasswordSalt(passwordsalt);
         user.setUserTitle(title);
         user.setNickname(nickname);
@@ -619,16 +621,19 @@ public class SMF extends Script {
         data.clear();
     }
 
+    @Override
     public int getTotalPostCount() {
         return this.getDataManager().getIntegerField("SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "messages`");
     }
 
+    @Override
     public int getPostCount(String username) {
         return this.getDataManager().getIntegerField(
                 "SELECT `posts` FROM `" + this.getDataManager().getPrefix() + "members` WHERE `" + this.membernamefield +
                         "` = '" + username + "'");
     }
 
+    @Override
     public ForumPost getPost(int postid) {
         JTable postTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "messages` WHERE `id_msg` = '" + postid +
@@ -652,6 +657,7 @@ public class SMF extends Script {
         return post;
     }
 
+    @Override
     public ForumPost getLastUserPost(String username) {
         int userid = getUserID(username);
         return getPost(this.getDataManager().getIntegerField(
@@ -659,11 +665,13 @@ public class SMF extends Script {
                         "' ORDER BY `id_msg` ASC LIMIT 1"));
     }
 
+    @Override
     public ForumPost getLastPost() {
         return getPost(this.getDataManager().getIntegerField(
                 "SELECT `id_msg` FROM `" + this.getDataManager().getPrefix() + "messages` ORDER BY `id_msg` ASC LIMIT 1"));
     }
 
+    @Override
     public List<ForumPost> getPosts(int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -679,6 +687,7 @@ public class SMF extends Script {
         return posts;
     }
 
+    @Override
     public List<ForumPost> getPostsFromThread(int threadid, int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -694,6 +703,7 @@ public class SMF extends Script {
         return posts;
     }
 
+    @Override
     public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("id_topic", post.getThreadID());
@@ -715,6 +725,7 @@ public class SMF extends Script {
         this.getDataManager().updateFields(data, "messages", "`id_msg` = '" + post.getID() + "'");
     }
 
+    @Override
     public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         post.setPostDate(new Date());
@@ -774,10 +785,12 @@ public class SMF extends Script {
         }
     }
 
+    @Override
     public int getTotalThreadCount() {
         return this.getDataManager().getIntegerField("SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "topics`");
     }
 
+    @Override
     public int getThreadCount(String username) {
         int userid = getUserID(username);
         return this.getDataManager().getIntegerField(
@@ -785,12 +798,14 @@ public class SMF extends Script {
                         userid + "'");
     }
 
+    @Override
     public ForumThread getLastThread() {
         return getThread(this.getDataManager().getIntegerField(
                 "SELECT `id_topic` FROM `" + this.getDataManager().getPrefix() + "topics` ORDER BY `id_topic` ASC LIMIT " +
                         "1"));
     }
 
+    @Override
     public ForumThread getLastUserThread(String username) {
         int userid = getUserID(username);
         return getThread(this.getDataManager().getIntegerField(
@@ -798,6 +813,7 @@ public class SMF extends Script {
                         userid + "' ORDER BY `id_topic` ASC LIMIT 1"));
     }
 
+    @Override
     public ForumThread getThread(int threadid) {
         JTable threadTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "topics` WHERE `id_topic` = '" + threadid +
@@ -856,6 +872,7 @@ public class SMF extends Script {
         return thread;
     }
 
+    @Override
     public List<ForumThread> getThreads(int limit) {
         String limitstring = "";
         if (limit > 0) {
@@ -871,6 +888,7 @@ public class SMF extends Script {
         return threads;
     }
 
+    @Override
     public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         String temp;
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -912,6 +930,7 @@ public class SMF extends Script {
         this.getDataManager().updateFields(data, "topics", "`id_topic` = '" + thread.getID() + "'");
     }
 
+    @Override
     public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         thread.setThreadDate(new Date());

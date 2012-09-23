@@ -26,12 +26,13 @@ import java.util.List;
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Message;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.classes.general.ViewsCounter;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
-import com.craftfire.bifrost.script.Script;
+import com.craftfire.bifrost.script.ForumScript;
 
 /**
  * This class should only be used with a forum thread/topic.
@@ -49,13 +50,13 @@ public class ForumThread extends Message implements ViewsCounter {
     private int threadviews, threadreplies;
     private boolean locked, poll, sticky;
 
-    public ForumThread(Script script, int firstpostid, int lastpostid, int threadid, int boardid) {
+    public ForumThread(ForumScript script, int firstpostid, int lastpostid, int threadid, int boardid) {
         super(script, threadid, boardid);
         this.firstpostid = firstpostid;
         this.lastpostid = lastpostid;
     }
 
-    public ForumThread(Script script, int boardid) {
+    public ForumThread(ForumScript script, int boardid) {
         super(script);
         setCategoryID(boardid);
     }
@@ -400,5 +401,31 @@ public class ForumThread extends Message implements ViewsCounter {
     @Override
     public ForumBoard getParent() throws UnsupportedMethod, SQLException {
         return getBoard();
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getScript()
+     */
+    @Override
+    public ForumScript getScript() {
+        return (ForumScript) super.getScript();
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getAuthor()
+     */
+    @Override
+    public ForumUser getAuthor() {
+        return (ForumUser) super.getAuthor();
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#setAuthor(com.craftfire.bifrost.classes.general.ScriptUser)
+     */
+    @Override
+    public void setAuthor(ScriptUser author) {
+        if (author instanceof ForumUser) {
+            super.setAuthor(author);
+        }
     }
 }

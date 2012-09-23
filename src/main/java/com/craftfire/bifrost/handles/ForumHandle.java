@@ -27,8 +27,10 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
@@ -54,11 +56,11 @@ public class ForumHandle extends ScriptHandle {
     }
 
     public ForumPost newPost(int threadid, int boardid) {
-        return new ForumPost(this.script, threadid, boardid);
+        return new ForumPost(getForumScript(), threadid, boardid);
     }
 
     public ForumThread newThread(int boardid) {
-        return new ForumThread(this.script, boardid);
+        return new ForumThread(getForumScript(), boardid);
     }
 
     public ForumPost getPost(int postID) throws UnsupportedMethod, SQLException {
@@ -350,5 +352,32 @@ public class ForumHandle extends ScriptHandle {
         String url = this.getForumScript().getForumURL();
         this.script.getCache().put(CacheGroup.URL_FORUM, url);
         return url;
+    }
+
+    @Override
+    public ForumUser getUser(String username) throws UnsupportedMethod, SQLException {
+        return (ForumUser) super.getUser(username);
+    }
+
+    @Override
+    public ForumUser getUser(int userid) throws UnsupportedMethod, SQLException {
+        return (ForumUser) super.getUser(userid);
+    }
+
+    @Override
+    public ForumUser getLastRegUser() throws UnsupportedMethod, SQLException {
+        return (ForumUser) super.getLastRegUser();
+    }
+
+    public void updateUser(ForumUser user) throws SQLException, UnsupportedMethod {
+        getForumScript().updateUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.UPDATE);
+        ScriptUser.addCache(this, user);
+    }
+
+    public void createUser(ForumUser user) throws SQLException, UnsupportedMethod {
+        getForumScript().createUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.CREATE);
+        ScriptUser.addCache(this, user);
     }
 }

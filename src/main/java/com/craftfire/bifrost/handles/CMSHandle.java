@@ -55,15 +55,15 @@ public class CMSHandle extends ScriptHandle {
     }
 
     public CMSComment newComment(int articleid) {
-        return new CMSComment(this.script, articleid);
+        return new CMSComment(getCMSScript(), articleid);
     }
 
     public CMSArticle newArticle(int catid) {
-        return new CMSArticle(this.script, catid);
+        return new CMSArticle(getCMSScript(), catid);
     }
 
     public CMSCategory newCategory(String name, int parentid) {
-        return new CMSCategory(this.script, name, parentid);
+        return new CMSCategory(getCMSScript(), name, parentid);
     }
 
     public CMSComment getComment(int commentid) throws UnsupportedMethod {

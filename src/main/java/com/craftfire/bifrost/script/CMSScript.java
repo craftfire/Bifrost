@@ -19,14 +19,18 @@
  */
 package com.craftfire.bifrost.script;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
+import com.craftfire.bifrost.classes.cms.CMSUser;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.commons.managers.DataManager;
 
 public class CMSScript extends Script {
     protected CMSScript(Scripts script, String version, DataManager dataManager) {
@@ -163,5 +167,28 @@ public class CMSScript extends Script {
 
     public void createCategory(CMSCategory category) throws UnsupportedMethod {
         throw new UnsupportedMethod();
+    }
+
+    @Override
+    public CMSUser getUser(String username) throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getUser(username);
+    }
+
+    @Override
+    public CMSUser getUser(int userid) throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getUser(userid);
+    }
+
+    @Override
+    public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getLastRegUser();
+    }
+
+    public void updateUser(CMSUser user) throws SQLException, UnsupportedMethod {
+        updateUser((ScriptUser) user);
+    }
+
+    public void createUser(CMSUser user) throws SQLException, UnsupportedMethod {
+        createUser((ScriptUser) user);
     }
 }

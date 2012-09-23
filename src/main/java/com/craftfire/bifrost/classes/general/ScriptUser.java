@@ -29,8 +29,6 @@ import com.craftfire.commons.CraftCommons;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
-import com.craftfire.bifrost.classes.forum.ForumPost;
-import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Gender;
@@ -63,6 +61,10 @@ public class ScriptUser implements IDable {
 
     public String getUsername() {
         return this.username;
+    }
+
+    public Script getScript() {
+        return this.script;
     }
 
     @Override
@@ -258,14 +260,6 @@ public class ScriptUser implements IDable {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMReceivedCount(this.username);
     }
 
-    public int getPostCount() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getPostCount(this.username);
-    }
-
-    public int getThreadCount() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getThreadCount(this.username);
-    }
-
     public boolean isBanned() throws UnsupportedMethod, SQLException {
         if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.username)) {
             return true;
@@ -284,14 +278,6 @@ public class ScriptUser implements IDable {
 
     public List<String> getIPs() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getIPs(this.username);
-    }
-
-    public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getLastUserThread(this.username);
-    }
-
-    public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(this.script.getScript()).getLastUserPost(this.username);
     }
 
     public void updateUser() throws SQLException, UnsupportedMethod {

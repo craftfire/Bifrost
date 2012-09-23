@@ -28,7 +28,7 @@ import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
-import com.craftfire.bifrost.script.Script;
+import com.craftfire.bifrost.script.CMSScript;
 
 /**
  * This class should only be used with a CMS category.
@@ -52,7 +52,7 @@ public class CMSCategory extends Category {
      * @param script  the script the board is created for
      * @param name
      */
-    public CMSCategory(Script script, String name) {
+    public CMSCategory(CMSScript script, String name) {
         super(script);
         setName(name);
     }
@@ -63,7 +63,7 @@ public class CMSCategory extends Category {
      * @param script      the script the category comes from
      * @param categoryid  the ID of the category
      */
-    public CMSCategory(Script script, int categoryid) {
+    public CMSCategory(CMSScript script, int categoryid) {
         super(script, categoryid);
     }
 
@@ -76,7 +76,7 @@ public class CMSCategory extends Category {
      * @param name      the name of the category
      * @param parentid  the ID of parent category of the category
      */
-    public CMSCategory(Script script, String name, int parentid) {
+    public CMSCategory(CMSScript script, String name, int parentid) {
         super(script, name, parentid);
     }
 
@@ -211,4 +211,11 @@ public class CMSCategory extends Category {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getScript()
+     */
+    @Override
+    public CMSScript getScript() {
+        return (CMSScript) super.getScript();
+    }
 }

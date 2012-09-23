@@ -41,6 +41,7 @@ import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
@@ -209,8 +210,6 @@ public class BifrostScriptTest {
             printResult("getIPs", "" + user.getIPs());
             printResult("getLastIP", user.getLastIP());
             printResult("getLastLogin", "" + user.getLastLogin());
-            printResult("getLastPost", "" + user.getLastPost());
-            printResult("getLastThread", "" + user.getLastThread());
             printResult("getLastName", user.getLastName());
             printResult("getNickname", user.getNickname());
             printResult("getProfileURL", user.getProfileURL());
@@ -220,12 +219,10 @@ public class BifrostScriptTest {
             printResult("getPMSentCount", "" + user.getPMSentCount());
             printResult("getPMsSent", "" + user.getPMsSent(0));
             printResult("getPMsReceived", "" + user.getPMsReceived(0));
-            printResult("getPostCount", "" + user.getPostCount());
             printResult("getRealName", user.getRealName());
             printResult("getRegIP", user.getRegIP());
             printResult("getRegDate", "" + user.getRegDate());
             printResult("getStatusMessage", user.getStatusMessage());
-            printResult("getThreadCount", "" + user.getThreadCount());
             printResult("getUsername", user.getUsername());
             printResult("getUserTitle", user.getUserTitle());
             printResult("getUserID", "" + user.getID());
@@ -427,6 +424,25 @@ public class BifrostScriptTest {
     }
 
     @Test
+    public void testForumUserClass() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - FORUMUSER CLASS - " + username);
+        ForumHandle fhandle = getForumHandle();
+        if (fhandle == null) {
+            fail("Not a forum script.");
+        }
+        try {
+            ForumUser user = fhandle.getUser(username);
+            printResult("getLastPost", "" + user.getLastPost());
+            printResult("getLastThread", "" + user.getLastThread());
+            printResult("getPostCount", "" + user.getPostCount());
+            printResult("getThreadCount", "" + user.getThreadCount());
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
     public void testForumPostClass() throws SQLException {
         print(seperate);
         print(script.toString() + " - " + version + " - FORUMPOST CLASS");
@@ -435,7 +451,7 @@ public class BifrostScriptTest {
             fail("Not a forum script.");
         }
         try {
-            ScriptUser user = handle.getUser(username);
+            ForumUser user = fhandle.getUser(username);
             ForumPost post = user.getLastPost();
             printResult("getAuthor", "" + post.getAuthor());
             printResult("getBody", post.getBody());
@@ -458,7 +474,7 @@ public class BifrostScriptTest {
             fail("Not a forum script.");
         }
         try {
-            ScriptUser user = handle.getUser(username);
+            ForumUser user = fhandle.getUser(username);
             ForumPost post = user.getLastPost();
             String temp = post.getSubject();
             post.setSubject("Debug");
