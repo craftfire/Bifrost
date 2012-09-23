@@ -27,8 +27,10 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
+import com.craftfire.bifrost.classes.cms.CMSUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
@@ -399,4 +401,30 @@ public class CMSHandle extends ScriptHandle {
         CMSCategory.addCache(this, category);
     }
 
+    @Override
+    public CMSUser getUser(String username) throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getUser(username);
+    }
+
+    @Override
+    public CMSUser getUser(int userid) throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getUser(userid);
+    }
+
+    @Override
+    public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getLastRegUser();
+    }
+
+    public void updateUser(CMSUser user) throws SQLException, UnsupportedMethod {
+        getCMSScript().updateUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.UPDATE);
+        ScriptUser.addCache(this, user);
+    }
+
+    public void createUser(CMSUser user) throws SQLException, UnsupportedMethod {
+        getCMSScript().createUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.CREATE);
+        ScriptUser.addCache(this, user);
+    }
 }
