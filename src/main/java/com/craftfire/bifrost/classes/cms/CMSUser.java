@@ -19,6 +19,8 @@
  */
 package com.craftfire.bifrost.classes.cms;
 
+import java.sql.SQLException;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
@@ -53,5 +55,15 @@ public class CMSUser extends ScriptUser {
     @Override
     public CMSScript getScript() {
         return (CMSScript) super.getScript();
+    }
+
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateUser(this);
+    }
+
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createUser(this);
     }
 }

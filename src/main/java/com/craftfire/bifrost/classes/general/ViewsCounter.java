@@ -28,13 +28,13 @@ public interface ViewsCounter {
      * 
      * @return the view count
      */
-    public int getViewsCount();
+    int getViewsCount();
 
     /**
      * Sets the view count of the object.
      * 
      * @param views  view count
      */
-    public void setViewsCount(int views);
+    void setViewsCount(int views);
 
 }

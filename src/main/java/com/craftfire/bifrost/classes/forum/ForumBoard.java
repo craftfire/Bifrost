@@ -25,7 +25,6 @@ import java.util.List;
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Category;
-import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
@@ -110,7 +109,8 @@ public class ForumBoard extends Category {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void updateBoard() throws SQLException, UnsupportedMethod {
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updateBoard(this);
     }
 
@@ -122,7 +122,8 @@ public class ForumBoard extends Category {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void createBoard() throws SQLException, UnsupportedMethod {
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createBoard(this);
     }
 

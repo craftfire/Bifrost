@@ -307,7 +307,8 @@ public class Ban implements IDable {
      * @throws SQLException         if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void updateBan() throws SQLException, UnsupportedMethod {
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateBan(this);
     }
 
@@ -319,7 +320,8 @@ public class Ban implements IDable {
      * @throws SQLException         if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void addBan() throws SQLException, UnsupportedMethod {
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).addBan(this);
     }
 

@@ -150,11 +150,13 @@ public class PrivateMessage extends Message {
         this.deleted.put(recipient, deleted);
     }
 
-    public void updatePrivateMessage() throws SQLException, UnsupportedMethod {
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).updatePrivateMessage(this);
     }
 
-    public void createPrivateMessage() throws SQLException, UnsupportedMethod {
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).createPrivateMessage(this);
     }
 

@@ -255,9 +255,9 @@ public class BifrostScriptTest {
             String temp = user.getUsername();
             user.setUsername("Debug");
             user.setPassword("craftfire");
-            user.updateUser();
+            user.update();
             user.setUsername(temp);
-            user.updateUser();
+            user.update();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -274,7 +274,7 @@ public class BifrostScriptTest {
         newUser.setLastIP("127.0.0.1");
         newUser.setEmail("dev@craftfire.com");
         try {
-            newUser.createUser();
+            newUser.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -311,9 +311,9 @@ public class BifrostScriptTest {
             Ban ban = handle.getBans(1).get(0);
             String temp = ban.getReason();
             ban.setReason("Debug");
-            ban.updateBan();
+            ban.update();
             ban.setReason(temp);
-            ban.updateBan();
+            ban.update();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -327,7 +327,7 @@ public class BifrostScriptTest {
             Ban newBan = bifrost.getScriptAPI().getForumHandle(script).newBan("craftfire-ban-" + this.randomInt, "dev@craftfire.com", "127.0.0.1");
             newBan.setNotes("Staff notes");
             newBan.setReason("Hello world!");
-            newBan.addBan();
+            newBan.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -359,9 +359,9 @@ public class BifrostScriptTest {
             Group group = user.getGroups().get(0);
             String temp = group.getName();
             group.setName("Debug");
-            group.updateGroup();
+            group.update();
             group.setName(temp);
-            group.updateGroup();
+            group.update();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -374,7 +374,7 @@ public class BifrostScriptTest {
         try {
             Group newGroup = bifrost.getScriptAPI().getForumHandle(script).newGroup("craftfire_group_" + this.randomInt);
             newGroup.setDescription("Description is not needed!");
-            newGroup.createGroup();
+            newGroup.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -406,9 +406,9 @@ public class BifrostScriptTest {
             PrivateMessage pm = user.getPMsSent(1).get(0);
             String temp = pm.getBody();
             pm.setBody("Debug");
-            pm.updatePrivateMessage();
+            pm.update();
             pm.setBody(temp);
-            pm.updatePrivateMessage();
+            pm.update();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -427,7 +427,7 @@ public class BifrostScriptTest {
             newPM.setBody("This is an example body: " + this.randomInt);
             newPM.setSubject("This is an example subject: " + this.randomInt);
             newPM.setNew(handle.getUser("Craftfire"), true);
-            newPM.createPrivateMessage();
+            newPM.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -490,9 +490,9 @@ public class BifrostScriptTest {
             ForumPost post = user.getLastPost();
             String temp = post.getSubject();
             post.setSubject("Debug");
-            post.updatePost();
+            post.update();
             post.setSubject(temp);
-            post.updatePost();
+            post.update();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -511,7 +511,7 @@ public class BifrostScriptTest {
             newPost.setBody("Test: This is the body of the post?!");
             newPost.setAuthor(handle.getUser("craftfire" + this.randomInt));
             newPost.setSubject("Test " + this.randomInt + ": This is the subject of the post!");
-            newPost.createPost();
+            newPost.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -555,9 +555,9 @@ public class BifrostScriptTest {
             ForumThread thread = fhandle.getLastThread();
             String temp = thread.getSubject();
             thread.setSubject("Debug");
-            thread.updateThread();
+            thread.update();
             thread.setSubject(temp);
-            thread.updateThread();
+            thread.update();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -576,7 +576,7 @@ public class BifrostScriptTest {
             newThread.setBody("Test: " + this.randomInt + " This it the body of the thread?!");
             newThread.setAuthor(handle.getUser("craftfire" + this.randomInt));
             newThread.setSubject("Test: " + this.randomInt + " This is the subject of the thread!");
-            newThread.createThread();
+            newThread.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -617,10 +617,10 @@ public class BifrostScriptTest {
             String temp = board.getName();
             String changed = null;
             board.setName("Debug");
-            board.updateBoard();
+            board.update();
             changed = board.getName();
             board.setName(temp);
-            board.updateBoard();
+            board.update();
             assertEquals("Debug", changed);
         } catch (UnsupportedMethod e) {
             fail(e.toString());
@@ -639,7 +639,7 @@ public class BifrostScriptTest {
             ForumBoard newBoard = fhandle.newBoard(2);
             newBoard.setDescription("Test: " + this.randomInt + " This it the description of the board?!");
             newBoard.setName("Test: " + this.randomInt + " This is the name of the board!");
-            newBoard.createBoard();
+            newBoard.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -706,12 +706,12 @@ public class BifrostScriptTest {
             String temp = comment.getBody();
             String changed = null;
             comment.setBody("Debug");
-            comment.updateComment();
+            comment.update();
             handle.getCache().remove(CacheGroup.COMMENT, comment.getID());
             comment = chandle.getComment(comment.getID());
             changed = comment.getBody();
             comment.setBody(temp);
-            comment.updateComment();
+            comment.update();
             assertEquals("Debug", changed);
         } catch (UnsupportedMethod e) {
             fail(e.toString());
@@ -731,7 +731,7 @@ public class BifrostScriptTest {
             newComment.setBody("Test: This is the body of the comment?!");
             newComment.setAuthor(chandle.getUser("craftfire" + this.randomInt));
             newComment.setTitle("Test " + this.randomInt + ": This is the title of the comment!");
-            newComment.createComment();
+            newComment.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -781,12 +781,12 @@ public class BifrostScriptTest {
             String temp = article.getTitle();
             String changed = null;
             article.setTitle("Debug");
-            article.updateArticle();
+            article.update();
             handle.getCache().remove(CacheGroup.ARTICLE, article.getID());
             article = chandle.getArticle(article.getID());
             changed = article.getTitle();
             article.setTitle(temp);
-            article.updateArticle();
+            article.update();
             assertEquals("Debug", changed);
         } catch (UnsupportedMethod e) {
             fail(e.toString());
@@ -806,7 +806,7 @@ public class BifrostScriptTest {
             newArticle.setBody("Test: This is the body of the article?!");
             newArticle.setAuthor(chandle.getUser("craftfire" + this.randomInt));
             newArticle.setTitle("Test " + this.randomInt + ": This is the title of the article!");
-            newArticle.createArticle();
+            newArticle.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
@@ -849,12 +849,12 @@ public class BifrostScriptTest {
             String temp = category.getName();
             String changed = null;
             category.setName("Debug");
-            category.updateCategory();
+            category.update();
             handle.getCache().remove(CacheGroup.CMSCAT, category.getID());
             category = chandle.getCategory(category.getID());
             changed = category.getName();
             category.setName(temp);
-            category.updateCategory();
+            category.update();
             assertEquals("Debug", changed);
         } catch (UnsupportedMethod e) {
             fail(e.toString());
@@ -873,7 +873,7 @@ public class BifrostScriptTest {
             CMSCategory newCategory = chandle.newCategory("", 0);
             newCategory.setDescription("Test: This is the description of the category?!");
             newCategory.setName("Test " + this.randomInt + ": This is the name of the category!");
-            newCategory.createCategory();
+            newCategory.create();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }

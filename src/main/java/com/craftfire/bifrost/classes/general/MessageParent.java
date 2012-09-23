@@ -40,5 +40,5 @@ public interface MessageParent {
      * @throws UnsupportedMethod  if the method is not supported by script
      * @throws SQLException       if a MySQL exception occurred
      */
-    public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod, SQLException;
+    List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod, SQLException;
 }

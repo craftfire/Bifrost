@@ -170,7 +170,8 @@ public class Group implements IDable {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void updateGroup() throws SQLException, UnsupportedMethod {
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateGroup(this);
     }
 
@@ -182,7 +183,8 @@ public class Group implements IDable {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void createGroup() throws SQLException, UnsupportedMethod {
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createGroup(this);
     }
 

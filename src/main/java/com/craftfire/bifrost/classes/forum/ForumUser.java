@@ -56,4 +56,14 @@ public class ForumUser extends ScriptUser {
     public ForumScript getScript() {
         return (ForumScript) super.getScript();
     }
+
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updateUser(this);
+    }
+
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createUser(this);
+    }
 }

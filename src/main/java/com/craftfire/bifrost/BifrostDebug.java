@@ -257,9 +257,9 @@ public class BifrostDebug {
             temp = user.getUsername();
             user.setUsername("Debug");
             user.setPassword("craftfire");
-            user.updateUser();
+            user.update();
             user.setUsername(temp);
-            user.updateUser();
+            user.update();
 
             print(seperate);
 
@@ -270,7 +270,7 @@ public class BifrostDebug {
             newUser.setRegIP("127.0.0.1");
             newUser.setLastIP("127.0.0.1");
             newUser.setEmail("dev@craftfire.com");
-            newUser.createUser();
+            newUser.create();
 
             print(seperate);
 
@@ -294,9 +294,9 @@ public class BifrostDebug {
             print(script.toString() + " - " + version + " - BAN UPDATING");
             temp = ban.getReason();
             ban.setReason("Debug");
-            ban.updateBan();
+            ban.update();
             ban.setReason(temp);
-            ban.updateBan();
+            ban.update();
 
             print(seperate);
 
@@ -304,7 +304,7 @@ public class BifrostDebug {
             Ban newBan = bifrost.getScriptAPI().getForumHandle(script).newBan("craftfire-ban-" + randomInt, "dev@craftfire.com", "127.0.0.1");
             newBan.setNotes("Staff notes");
             newBan.setReason("Hello world!");
-            newBan.addBan();
+            newBan.create();
 
             print(seperate);
 
@@ -321,16 +321,16 @@ public class BifrostDebug {
             print(script.toString() + " - " + version + " - GROUP UPDATING");
             temp = group.getName();
             group.setName("Debug");
-            group.updateGroup();
+            group.update();
             group.setName(temp);
-            group.updateGroup();
+            group.update();
 
             print(seperate);
 
             print(script.toString() + " - " + version + " - GROUP CREATE");
             Group newGroup = bifrost.getScriptAPI().getForumHandle(script).newGroup("craftfire_group_" + randomInt);
             newGroup.setDescription("Description is not needed!");
-            newGroup.createGroup();
+            newGroup.create();
 
             print(seperate);
 
@@ -349,9 +349,9 @@ public class BifrostDebug {
             print(script.toString() + " - " + version + " - POST UPDATING");
             temp = post.getSubject();
             post.setSubject("Debug");
-            post.updatePost();
+            post.update();
             post.setSubject(temp);
-            post.updatePost();
+            post.update();
 
             print(seperate);
 
@@ -360,7 +360,7 @@ public class BifrostDebug {
             newPost.setBody("Test: This is the body of the post?!");
             newPost.setAuthor(bifrost.getScriptAPI().getHandle(script).getUser("craftfire" + randomInt));
             newPost.setSubject("Test " + randomInt + ": This is the subject of the post!");
-            newPost.createPost();
+            newPost.create();
 
             print(seperate);
 
@@ -378,9 +378,9 @@ public class BifrostDebug {
             print(script.toString() + " - " + version + " - PRIVATEMESSAGE UPDATING");
             temp = pm.getBody();
             pm.setBody("Debug");
-            pm.updatePrivateMessage();
+            pm.update();
             pm.setBody(temp);
-            pm.updatePrivateMessage();
+            pm.update();
 
             print(seperate);
 
@@ -393,7 +393,7 @@ public class BifrostDebug {
             newPM.setBody("This is an example body: " + randomInt);
             newPM.setSubject("This is an example subject: " + randomInt);
             newPM.setNew(bifrost.getScriptAPI().getHandle(script).getUser("Craftfire"), true);
-            newPM.createPrivateMessage();
+            newPM.create();
 
             print(seperate);
 
@@ -416,9 +416,9 @@ public class BifrostDebug {
             print(script.toString() + " - " + version + " - THREAD UPDATING");
             temp = thread.getSubject();
             thread.setSubject("Debug");
-            thread.updateThread();
+            thread.update();
             thread.setSubject(temp);
-            thread.updateThread();
+            thread.update();
 
             print(seperate);
 
@@ -427,7 +427,7 @@ public class BifrostDebug {
             newThread.setBody("Test: " + randomInt + " This it the body of the thread?!");
             newThread.setAuthor(bifrost.getScriptAPI().getHandle(script).getUser("craftfire" + randomInt));
             newThread.setSubject("Test: " + randomInt + " This is the subject of the thread!");
-            newThread.createThread();
+            newThread.create();
 
             print(seperate);
         } catch (UnsupportedMethod e) {
