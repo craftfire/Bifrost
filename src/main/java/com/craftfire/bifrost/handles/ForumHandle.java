@@ -63,6 +63,10 @@ public class ForumHandle extends ScriptHandle {
         return new ForumThread(getForumScript(), boardid);
     }
 
+    public ForumBoard newBoard(int parentid) {
+        return new ForumBoard(getForumScript(), "", parentid);
+    }
+
     public ForumPost getPost(int postID) throws UnsupportedMethod, SQLException {
         if (ForumPost.hasCache(this, postID)) {
             return ForumPost.getCache(this, postID);

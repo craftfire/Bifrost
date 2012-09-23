@@ -19,6 +19,7 @@
  */
 package com.craftfire.bifrost;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -39,6 +40,7 @@ import org.junit.Test;
 import com.craftfire.commons.enums.DataType;
 import com.craftfire.commons.managers.DataManager;
 
+import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.forum.ForumUser;
@@ -565,6 +567,69 @@ public class BifrostScriptTest {
             newThread.setAuthor(handle.getUser("craftfire" + this.randomInt));
             newThread.setSubject("Test: " + this.randomInt + " This is the subject of the thread!");
             newThread.createThread();
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testForumBoardClass() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - FORUMBOARD CLASS");
+        ForumHandle fhandle = getForumHandle();
+        if (fhandle == null) {
+            fail("Not a forum script.");
+        }
+        try {
+            ForumBoard board = fhandle.getLastThread().getBoard();
+            printResult("getID", "" + board.getID());
+            printResult("getName", board.getName());
+            printResult("getDescription", board.getDescription());
+            printResult("getParentID", "" + board.getParentID());
+            printResult("getParent", "" + board.getParent());
+            printResult("getSubcategories", board.getSubcategories(0));
+            printResult("getThreads", board.getThreads(0));
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testForumBoardUpdate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - FORUMBOARD UPDATING");
+        ForumHandle fhandle = getForumHandle();
+        if (fhandle == null) {
+            fail("Not a forum script.");
+        }
+        try {
+            ForumBoard board = fhandle.getLastThread().getBoard();
+            String temp = board.getName();
+            String changed = null;
+            board.setName("Debug");
+            board.updateBoard();
+            changed = board.getName();
+            board.setName(temp);
+            board.updateBoard();
+            assertEquals("Debug", changed);
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testForumBoardCreate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - FORUMBOARD CREATE");
+        ForumHandle fhandle = getForumHandle();
+        if (fhandle == null) {
+            fail("Not a forum script.");
+        }
+        try {
+            ForumBoard newBoard = fhandle.newBoard(2);
+            newBoard.setDescription("Test: " + this.randomInt + " This it the description of the board?!");
+            newBoard.setName("Test: " + this.randomInt + " This is the name of the board!");
+            newBoard.createBoard();
         } catch (UnsupportedMethod e) {
             fail(e.toString());
         }
