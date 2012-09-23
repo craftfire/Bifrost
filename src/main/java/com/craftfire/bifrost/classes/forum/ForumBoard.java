@@ -25,11 +25,12 @@ import java.util.List;
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Category;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
-import com.craftfire.bifrost.script.Script;
+import com.craftfire.bifrost.script.ForumScript;
 
 /**
  * This class should only be used with a forum board/category.
@@ -51,7 +52,7 @@ public class ForumBoard extends Category {
      * 
      * @param script  the script the board is created for
      */
-    public ForumBoard(Script script) {
+    public ForumBoard(ForumScript script) {
         super(script);
     }
 
@@ -61,7 +62,7 @@ public class ForumBoard extends Category {
      * @param script   the script the board comes from
      * @param boardid  the ID of the board
      */
-    public ForumBoard(Script script, int boardid) {
+    public ForumBoard(ForumScript script, int boardid) {
         super(script, boardid);
     }
 
@@ -74,7 +75,7 @@ public class ForumBoard extends Category {
      * @param name      the name of the board
      * @param parentid  the id of the parent board or 0 if none
      */
-    public ForumBoard(Script script, String name, int parentid) {
+    public ForumBoard(ForumScript script, String name, int parentid) {
         super(script, name, parentid);
     }
 
@@ -205,4 +206,11 @@ public class ForumBoard extends Category {
         return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getSubBoards(getID(), limit);
     }
 
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getScript()
+     */
+    @Override
+    public ForumScript getScript() {
+        return (ForumScript) super.getScript();
+    }
 }

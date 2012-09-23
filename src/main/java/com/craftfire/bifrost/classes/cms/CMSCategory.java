@@ -19,6 +19,7 @@
  */
 package com.craftfire.bifrost.classes.cms;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
@@ -28,7 +29,7 @@ import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
-import com.craftfire.bifrost.script.Script;
+import com.craftfire.bifrost.script.CMSScript;
 
 /**
  * This class should only be used with a CMS category.
@@ -52,7 +53,7 @@ public class CMSCategory extends Category {
      * @param script  the script the board is created for
      * @param name
      */
-    public CMSCategory(Script script, String name) {
+    public CMSCategory(CMSScript script, String name) {
         super(script);
         setName(name);
     }
@@ -63,7 +64,7 @@ public class CMSCategory extends Category {
      * @param script      the script the category comes from
      * @param categoryid  the ID of the category
      */
-    public CMSCategory(Script script, int categoryid) {
+    public CMSCategory(CMSScript script, int categoryid) {
         super(script, categoryid);
     }
 
@@ -76,7 +77,7 @@ public class CMSCategory extends Category {
      * @param name      the name of the category
      * @param parentid  the ID of parent category of the category
      */
-    public CMSCategory(Script script, String name, int parentid) {
+    public CMSCategory(CMSScript script, String name, int parentid) {
         super(script, name, parentid);
     }
 
@@ -141,6 +142,30 @@ public class CMSCategory extends Category {
      */
     public void setPublic(boolean isPublic) {
         this.is_public = isPublic;
+    }
+
+    /**
+     * This method should be run after changing any category values.
+     * <p>
+     * It should <b>not</b> be run when creating a new category, only when editing an already existing category.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void updateCategory() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateCategory(this);
+    }
+
+    /**
+     * This method should be run after creating a new category.
+     * <p>
+     * It should <b>not</b> be run when updating an category, only when creating a new category.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     */
+    public void createCategory() throws SQLException, UnsupportedMethod {
+        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createCategory(this);
     }
 
     /**
@@ -211,4 +236,11 @@ public class CMSCategory extends Category {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getScript()
+     */
+    @Override
+    public CMSScript getScript() {
+        return (CMSScript) super.getScript();
+    }
 }

@@ -27,6 +27,8 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.forum.ForumUser;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 
@@ -421,4 +423,27 @@ public class ForumScript extends Script {
 	public String getForumURL() throws UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
+
+    @Override
+    public ForumUser getUser(String username) throws UnsupportedMethod, SQLException {
+        return (ForumUser) super.getUser(username);
+    }
+
+    @Override
+    public ForumUser getUser(int userid) throws UnsupportedMethod, SQLException {
+        return (ForumUser) super.getUser(userid);
+    }
+
+    @Override
+    public ForumUser getLastRegUser() throws UnsupportedMethod, SQLException {
+        return (ForumUser) super.getLastRegUser();
+    }
+
+    public void updateUser(ForumUser user) throws SQLException, UnsupportedMethod {
+        updateUser((ScriptUser) user);
+    }
+
+    public void createUser(ForumUser user) throws SQLException, UnsupportedMethod {
+        createUser((ScriptUser) user);
+    }
 }

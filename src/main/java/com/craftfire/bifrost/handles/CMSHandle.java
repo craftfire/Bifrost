@@ -27,8 +27,10 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
+import com.craftfire.bifrost.classes.cms.CMSUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
@@ -55,15 +57,15 @@ public class CMSHandle extends ScriptHandle {
     }
 
     public CMSComment newComment(int articleid) {
-        return new CMSComment(this.script, articleid);
+        return new CMSComment(getCMSScript(), articleid);
     }
 
     public CMSArticle newArticle(int catid) {
-        return new CMSArticle(this.script, catid);
+        return new CMSArticle(getCMSScript(), catid);
     }
 
     public CMSCategory newCategory(String name, int parentid) {
-        return new CMSCategory(this.script, name, parentid);
+        return new CMSCategory(getCMSScript(), name, parentid);
     }
 
     public CMSComment getComment(int commentid) throws UnsupportedMethod {
@@ -399,4 +401,30 @@ public class CMSHandle extends ScriptHandle {
         CMSCategory.addCache(this, category);
     }
 
+    @Override
+    public CMSUser getUser(String username) throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getUser(username);
+    }
+
+    @Override
+    public CMSUser getUser(int userid) throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getUser(userid);
+    }
+
+    @Override
+    public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
+        return (CMSUser) super.getLastRegUser();
+    }
+
+    public void updateUser(CMSUser user) throws SQLException, UnsupportedMethod {
+        getCMSScript().updateUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.UPDATE);
+        ScriptUser.addCache(this, user);
+    }
+
+    public void createUser(CMSUser user) throws SQLException, UnsupportedMethod {
+        getCMSScript().createUser(user);
+        ScriptUser.cleanupCache(this, user, CacheCleanupReason.CREATE);
+        ScriptUser.addCache(this, user);
+    }
 }

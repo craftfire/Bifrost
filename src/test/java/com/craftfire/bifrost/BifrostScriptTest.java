@@ -19,6 +19,7 @@
  */
 package com.craftfire.bifrost;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -39,16 +40,24 @@ import org.junit.Test;
 import com.craftfire.commons.enums.DataType;
 import com.craftfire.commons.managers.DataManager;
 
+import com.craftfire.bifrost.classes.cms.CMSArticle;
+import com.craftfire.bifrost.classes.cms.CMSCategory;
+import com.craftfire.bifrost.classes.cms.CMSComment;
+import com.craftfire.bifrost.classes.cms.CMSUser;
+import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
+import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
+import com.craftfire.bifrost.handles.CMSHandle;
 import com.craftfire.bifrost.handles.ForumHandle;
 import com.craftfire.bifrost.handles.ScriptHandle;
 
@@ -172,6 +181,8 @@ public class BifrostScriptTest {
         print("isKeepAlive = " + dataManager.isKeepAlive());
     }
 
+    // ----------------------------------------------------------- GENERAL TESTS
+
     @Test
     public void testScriptClass() throws SQLException {
         print(seperate);
@@ -209,8 +220,6 @@ public class BifrostScriptTest {
             printResult("getIPs", "" + user.getIPs());
             printResult("getLastIP", user.getLastIP());
             printResult("getLastLogin", "" + user.getLastLogin());
-            printResult("getLastPost", "" + user.getLastPost());
-            printResult("getLastThread", "" + user.getLastThread());
             printResult("getLastName", user.getLastName());
             printResult("getNickname", user.getNickname());
             printResult("getProfileURL", user.getProfileURL());
@@ -220,12 +229,10 @@ public class BifrostScriptTest {
             printResult("getPMSentCount", "" + user.getPMSentCount());
             printResult("getPMsSent", "" + user.getPMsSent(0));
             printResult("getPMsReceived", "" + user.getPMsReceived(0));
-            printResult("getPostCount", "" + user.getPostCount());
             printResult("getRealName", user.getRealName());
             printResult("getRegIP", user.getRegIP());
             printResult("getRegDate", "" + user.getRegDate());
             printResult("getStatusMessage", user.getStatusMessage());
-            printResult("getThreadCount", "" + user.getThreadCount());
             printResult("getUsername", user.getUsername());
             printResult("getUserTitle", user.getUserTitle());
             printResult("getUserID", "" + user.getID());
@@ -426,6 +433,27 @@ public class BifrostScriptTest {
         }
     }
 
+    // ----------------------------------------------------------- FORUM TESTS
+
+    @Test
+    public void testForumUserClass() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - FORUMUSER CLASS - " + username);
+        ForumHandle fhandle = getForumHandle();
+        if (fhandle == null) {
+            fail("Not a forum script.");
+        }
+        try {
+            ForumUser user = fhandle.getUser(username);
+            printResult("getLastPost", "" + user.getLastPost());
+            printResult("getLastThread", "" + user.getLastThread());
+            printResult("getPostCount", "" + user.getPostCount());
+            printResult("getThreadCount", "" + user.getThreadCount());
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
     @Test
     public void testForumPostClass() throws SQLException {
         print(seperate);
@@ -435,7 +463,7 @@ public class BifrostScriptTest {
             fail("Not a forum script.");
         }
         try {
-            ScriptUser user = handle.getUser(username);
+            ForumUser user = fhandle.getUser(username);
             ForumPost post = user.getLastPost();
             printResult("getAuthor", "" + post.getAuthor());
             printResult("getBody", post.getBody());
@@ -458,7 +486,7 @@ public class BifrostScriptTest {
             fail("Not a forum script.");
         }
         try {
-            ScriptUser user = handle.getUser(username);
+            ForumUser user = fhandle.getUser(username);
             ForumPost post = user.getLastPost();
             String temp = post.getSubject();
             post.setSubject("Debug");
@@ -554,6 +582,305 @@ public class BifrostScriptTest {
         }
     }
 
+    @Test
+    public void testForumBoardClass() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - FORUMBOARD CLASS");
+        ForumHandle fhandle = getForumHandle();
+        if (fhandle == null) {
+            fail("Not a forum script.");
+        }
+        try {
+            ForumBoard board = fhandle.getLastThread().getBoard();
+            printResult("getID", "" + board.getID());
+            printResult("getName", board.getName());
+            printResult("getDescription", board.getDescription());
+            printResult("getParentID", "" + board.getParentID());
+            printResult("getParent", "" + board.getParent());
+            printResult("getSubcategories", board.getSubcategories(0));
+            printResult("getThreads", board.getThreads(0));
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testForumBoardUpdate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - FORUMBOARD UPDATING");
+        ForumHandle fhandle = getForumHandle();
+        if (fhandle == null) {
+            fail("Not a forum script.");
+        }
+        try {
+            ForumBoard board = fhandle.getLastThread().getBoard();
+            String temp = board.getName();
+            String changed = null;
+            board.setName("Debug");
+            board.updateBoard();
+            changed = board.getName();
+            board.setName(temp);
+            board.updateBoard();
+            assertEquals("Debug", changed);
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testForumBoardCreate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - FORUMBOARD CREATE");
+        ForumHandle fhandle = getForumHandle();
+        if (fhandle == null) {
+            fail("Not a forum script.");
+        }
+        try {
+            ForumBoard newBoard = fhandle.newBoard(2);
+            newBoard.setDescription("Test: " + this.randomInt + " This it the description of the board?!");
+            newBoard.setName("Test: " + this.randomInt + " This is the name of the board!");
+            newBoard.createBoard();
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    // ----------------------------------------------------------- CMS TESTS
+
+    @Test
+    public void testCMSUserClass() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSUSER CLASS - " + username);
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSUser user = chandle.getUser(username);
+            printResult("getLastComment", "" + user.getLastComment());
+            printResult("getLastArticle", "" + user.getLastArticle());
+            printResult("getCommentCount", "" + user.getCommentCount());
+            printResult("getArticleCount", "" + user.getArticleCount());
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSCommentClass() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSCOMMENT CLASS");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSUser user = chandle.getUser(username);
+            CMSComment comment = user.getLastComment();
+            printResult("getID", "" + comment.getID());
+            printResult("getAuthor", "" + comment.getAuthor());
+            printResult("getBody", comment.getBody());
+            printResult("getTitle", comment.getTitle());
+            printResult("getCategorzID", "" + comment.getCategoryID());
+            printResult("getDate", "" + comment.getDate());
+            printResult("getArticleID", "" + comment.getArticleID());
+            printResult("isDeleted", "" + comment.isDeleted());
+            printResult("getParentID", "" + comment.getParentID());
+            printResult("getChildMessages", "" + comment.getChildMessages(0));
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSCommentUpdate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSCOMMENT UPDATING");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSUser user = chandle.getUser(username);
+            CMSComment comment = user.getLastComment();
+            String temp = comment.getBody();
+            String changed = null;
+            comment.setBody("Debug");
+            comment.updateComment();
+            handle.getCache().remove(CacheGroup.COMMENT, comment.getID());
+            comment = chandle.getComment(comment.getID());
+            changed = comment.getBody();
+            comment.setBody(temp);
+            comment.updateComment();
+            assertEquals("Debug", changed);
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSCommentCreate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSCOMMENT CREATE");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSComment newComment = chandle.newComment(1);
+            newComment.setBody("Test: This is the body of the comment?!");
+            newComment.setAuthor(chandle.getUser("craftfire" + this.randomInt));
+            newComment.setTitle("Test " + this.randomInt + ": This is the title of the comment!");
+            newComment.createComment();
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSArticleClass() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSARTICLE CLASS");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSUser user = chandle.getUser(username);
+            CMSArticle article = user.getLastArticle();
+            printResult("getID", "" + article.getID());
+            printResult("getAuthor", "" + article.getAuthor());
+            printResult("getTitle", article.getTitle());
+            printResult("getIntro", article.getIntro());
+            printResult("getBody", article.getBody());
+            printResult("getCategoryID", "" + article.getCategoryID());
+            printResult("getDate", "" + article.getDate());
+            printResult("isDeleted", "" + article.isDeleted());
+            printResult("isPublic", "" + article.isPublic());
+            printResult("isFeatured", "" + article.isFeatured());
+            printResult("isAllowingComments", "" + article.isAllowingComments());
+            printResult("getUrl", article.getUrl());
+            printResult("getViewsCount", "" + article.getViewsCount());
+            printResult("getComments", article.getComments(0));
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSArticleUpdate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSARTICLE UPDATING");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSUser user = chandle.getUser(username);
+            CMSArticle article = user.getLastArticle();
+            String temp = article.getTitle();
+            String changed = null;
+            article.setTitle("Debug");
+            article.updateArticle();
+            handle.getCache().remove(CacheGroup.ARTICLE, article.getID());
+            article = chandle.getArticle(article.getID());
+            changed = article.getTitle();
+            article.setTitle(temp);
+            article.updateArticle();
+            assertEquals("Debug", changed);
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSArticleCreate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSARTICLE CREATE");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSArticle newArticle = chandle.newArticle(2);
+            newArticle.setBody("Test: This is the body of the article?!");
+            newArticle.setAuthor(chandle.getUser("craftfire" + this.randomInt));
+            newArticle.setTitle("Test " + this.randomInt + ": This is the title of the article!");
+            newArticle.createArticle();
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSCategoryClass() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSCATEGORY CLASS");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSUser user = chandle.getUser(username);
+            CMSCategory category = user.getLastArticle().getCategory();
+            printResult("getID", "" + category.getID());
+            printResult("getName", category.getName());
+            printResult("getDescription", category.getDescription());
+            printResult("getParentID", "" + category.getParentID());
+            printResult("getArticles", category.getArticles(0));
+            printResult("getSubcategories", category.getSubcategories(0));
+            printResult("isPublic", "" + category.isPublic());
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSCategoryUpdate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSCATEGORY UPDATING");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSUser user = chandle.getUser(username);
+            CMSCategory category = user.getLastArticle().getCategory();
+            String temp = category.getName();
+            String changed = null;
+            category.setName("Debug");
+            category.updateCategory();
+            handle.getCache().remove(CacheGroup.CMSCAT, category.getID());
+            category = chandle.getCategory(category.getID());
+            changed = category.getName();
+            category.setName(temp);
+            category.updateCategory();
+            assertEquals("Debug", changed);
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testCMSCategoryCreate() throws SQLException {
+        print(seperate);
+        print(script.toString() + " - " + version + " - CMSCATEGORY CREATE");
+        CMSHandle chandle = getCMSHandle();
+        if (chandle == null) {
+            fail("Not a CMS script.");
+        }
+        try {
+            CMSCategory newCategory = chandle.newCategory("", 0);
+            newCategory.setDescription("Test: This is the description of the category?!");
+            newCategory.setName("Test " + this.randomInt + ": This is the name of the category!");
+            newCategory.createCategory();
+        } catch (UnsupportedMethod e) {
+            fail(e.toString());
+        }
+    }
+
+    // ----------------------------------------------------------- UTIL METHODS
+
     public static void ask(String name, String key, String defaultvalue) {
         String line = null;
         boolean valid = false;
@@ -613,6 +940,14 @@ public class BifrostScriptTest {
     public static ForumHandle getForumHandle() {
         try {
             return bifrost.getScriptAPI().getForumHandle(script);
+        } catch (ClassCastException ignore) {
+        }
+        return null;
+    }
+
+    public static CMSHandle getCMSHandle() {
+        try {
+            return bifrost.getScriptAPI().getCMSHandle(script);
         } catch (ClassCastException ignore) {
         }
         return null;

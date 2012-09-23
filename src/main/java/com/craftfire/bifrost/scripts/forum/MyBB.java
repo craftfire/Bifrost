@@ -21,18 +21,19 @@ package com.craftfire.bifrost.scripts.forum;
 
 import java.util.List;
 
+import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.enums.Encryption;
+import com.craftfire.commons.managers.DataManager;
+
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.script.ForumScript;
-import com.craftfire.bifrost.script.Script;
-import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
 
 public class MyBB extends ForumScript {
     private final String scriptName = "mybb";
@@ -93,13 +94,14 @@ public class MyBB extends ForumScript {
         return this.getDataManager().getIntegerField("users", "uid", "`username` = '" + username + "'");
     }
 
-    public ScriptUser getLastRegUser() {
+    @Override
+    public ForumUser getLastRegUser() {
         return getUser(this.getDataManager().getIntegerField("SELECT `uid` FROM `" +
                 this.getDataManager().getPrefix() + "users` ORDER BY `uid` ASC LIMIT 1"));
     }
 
     @Override
-    public ScriptUser getUser(String username) {
+    public ForumUser getUser(String username) {
         return getUser(getUserID(username));
     }
 
@@ -162,7 +164,7 @@ public class MyBB extends ForumScript {
     }
 
     @Override
-    public ScriptUser getUser(int userid) {
+    public ForumUser getUser(int userid) {
         /*TODO*/
         return null;
     }

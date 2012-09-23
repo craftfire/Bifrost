@@ -40,6 +40,7 @@ import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
+import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
@@ -134,19 +135,19 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public ScriptUser getLastRegUser() throws SQLException {
+    public ForumUser getLastRegUser() throws SQLException {
         return getUser(this.getDataManager().getIntegerField("SELECT `user_id` FROM `" + this.getDataManager().getPrefix() +
                 "user` ORDER BY `user_id` ASC LIMIT 1"));
     }
 
     @Override
-    public ScriptUser getUser(String username) throws SQLException {
+    public ForumUser getUser(String username) throws SQLException {
         return getUser(getUserID(username));
     }
 
     @Override
-    public ScriptUser getUser(int userid) throws SQLException {
-        ScriptUser user = new ScriptUser(this, userid, null, null);
+    public ForumUser getUser(int userid) throws SQLException {
+        ForumUser user = new ForumUser(this, userid, null, null);
         Results results = this.getDataManager().getResults(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_id` = '" +
                         userid + "' LIMIT 1");

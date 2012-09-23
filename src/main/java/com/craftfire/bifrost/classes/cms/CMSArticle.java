@@ -25,12 +25,13 @@ import java.util.List;
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Message;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.classes.general.ViewsCounter;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
-import com.craftfire.bifrost.script.Script;
+import com.craftfire.bifrost.script.CMSScript;
 
 /**
  * This class should only be used with a CMS article.
@@ -56,7 +57,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @param script      the script the article is created for
      * @param categoryid  the id of the category of the script
      */
-    public CMSArticle(Script script, int categoryid) {
+    public CMSArticle(CMSScript script, int categoryid) {
         super(script);
         setCategoryID(categoryid);
     }
@@ -68,7 +69,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @param id          the ID of the article
      * @param categoryid  the ID of the category of the article
      */
-    public CMSArticle(Script script, int id, int categoryid) {
+    public CMSArticle(CMSScript script, int id, int categoryid) {
         super(script, id, categoryid);
     }
 
@@ -342,4 +343,29 @@ public class CMSArticle extends Message implements ViewsCounter {
 
     }
 
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getScript()
+     */
+    @Override
+    public CMSScript getScript() {
+        return (CMSScript) super.getScript();
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#getAuthor()
+     */
+    @Override
+    public CMSUser getAuthor() {
+        return (CMSUser) super.getAuthor();
+    }
+
+    /* (non-Javadoc)
+     * @see com.craftfire.bifrost.classes.general.Message#setAuthor(com.craftfire.bifrost.classes.general.ScriptUser)
+     */
+    @Override
+    public void setAuthor(ScriptUser author) {
+        if (author instanceof CMSUser) {
+            super.setAuthor(author);
+        }
+    }
 }
