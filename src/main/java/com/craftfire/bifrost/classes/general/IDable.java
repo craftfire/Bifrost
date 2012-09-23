@@ -32,7 +32,7 @@ public interface IDable {
      * 
      * @return the ID
      */
-    public int getID();
+    int getID();
 
     /**
      * This method applies the changed values of the object into the database. Should be run after changing any values in the object.
@@ -42,7 +42,7 @@ public interface IDable {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void update() throws SQLException, UnsupportedMethod;
+    void update() throws SQLException, UnsupportedMethod;
 
     /**
      * This method puts the object into the database. Should be run after creating a new object.
@@ -52,5 +52,5 @@ public interface IDable {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void create() throws SQLException, UnsupportedMethod;
+    void create() throws SQLException, UnsupportedMethod;
 }
