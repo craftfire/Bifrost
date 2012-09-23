@@ -956,7 +956,7 @@ public class SMF extends ForumScript {
         post.setAuthor(thread.getAuthor());
         post.setBody(thread.getBody());
         post.setSubject(thread.getSubject());
-        post.createPost();
+        post.create();
 
         data = new HashMap<String, Object>();
         data.put("id_first_msg", post.getID());

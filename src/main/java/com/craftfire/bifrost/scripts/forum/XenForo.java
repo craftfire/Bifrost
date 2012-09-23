@@ -985,7 +985,7 @@ public class XenForo extends ForumScript {
         post.setAuthor(thread.getAuthor());
         post.setBody(thread.getBody());
         post.setSubject(thread.getSubject());
-        post.createPost();
+        post.create();
         data = new HashMap<String, Object>();
         data.put("first_post_id", post.getID());
         data.put("last_post_id", post.getID());

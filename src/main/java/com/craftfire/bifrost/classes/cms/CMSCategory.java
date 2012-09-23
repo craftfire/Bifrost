@@ -152,7 +152,8 @@ public class CMSCategory extends Category {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void updateCategory() throws SQLException, UnsupportedMethod {
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateCategory(this);
     }
 
@@ -164,7 +165,8 @@ public class CMSCategory extends Category {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void createCategory() throws SQLException, UnsupportedMethod {
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createCategory(this);
     }
 

@@ -33,7 +33,6 @@ import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.CMSScript;
-import com.craftfire.bifrost.script.Script;
 
 /**
  * This class should only be used with a CMS comment.
@@ -179,7 +178,8 @@ public class CMSComment extends Message {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void updateComment() throws SQLException, UnsupportedMethod {
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateComment(this);
     }
 
@@ -191,7 +191,8 @@ public class CMSComment extends Message {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void createComment() throws SQLException, UnsupportedMethod {
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createComment(this);
     }
 

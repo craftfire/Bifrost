@@ -280,11 +280,13 @@ public class ScriptUser implements IDable {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getIPs(this.username);
     }
 
-    public void updateUser() throws SQLException, UnsupportedMethod {
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateUser(this);
     }
 
-    public void createUser() throws SQLException, UnsupportedMethod {
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createUser(this);
     }
 

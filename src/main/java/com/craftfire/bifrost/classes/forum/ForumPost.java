@@ -171,7 +171,8 @@ public class ForumPost extends Message {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void updatePost() throws SQLException, UnsupportedMethod {
+    @Override
+    public void update() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updatePost(this);
     }
 
@@ -183,7 +184,8 @@ public class ForumPost extends Message {
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    public void createPost() throws SQLException, UnsupportedMethod {
+    @Override
+    public void create() throws SQLException, UnsupportedMethod {
         Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createPost(this);
     }
 
