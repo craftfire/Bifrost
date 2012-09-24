@@ -56,14 +56,14 @@ public class XenForo extends ForumScript {
 
     public XenForo(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
-        this.scriptName = "xenforo";
-        this.shortName = "xf";
-        this.versionRanges = new String[] {"1.0.4", "1.1.2"};
+		this.setScriptName("xenforo");
+        this.setShortName("xf");
+        this.setVersionRanges(new String[] {"1.0.4", "1.1.2"});
     }
 
     @Override
     public String getLatestVersion() {
-        return this.versionRanges[1];
+        return this.getVersionRanges()[1];
     }
 
     @Override
@@ -344,9 +344,9 @@ public class XenForo extends ForumScript {
             data.put("dob_year", format.format(user.getBirthday()));
         }
         this.getDataManager().insertFields(data, "user_profile");
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             this.getDataManager().updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             this.getDataManager().updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
         }
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
@@ -650,7 +650,7 @@ public class XenForo extends ForumScript {
         data.put("user_id", pm.getSender().getID());
         data.put("username", pm.getSender().getUsername());
         data.put("message", pm.getBody());
-        if (!CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (!CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data.put("ip_id", ipID);
         }
         this.getDataManager().insertFields(data, "conversation_message");

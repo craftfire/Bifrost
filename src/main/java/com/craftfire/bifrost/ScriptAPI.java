@@ -32,7 +32,6 @@ import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
 import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
-import com.craftfire.bifrost.scripts.forum.MyBB;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
@@ -85,8 +84,6 @@ public class ScriptAPI {
 
     public static Script setScript(Scripts scriptName, String version, DataManager dataManager) {
         switch (scriptName) {
-            case MYBB:
-                return new MyBB(scriptName, version, dataManager);
             case SMF:
                 return new SMF(scriptName, version, dataManager);
             case XF:

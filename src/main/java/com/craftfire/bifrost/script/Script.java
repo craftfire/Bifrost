@@ -44,8 +44,8 @@ public class Script {
     private final Scripts script;
     private final DataManager dataManager;
     private final Cache cache;
-    public String[] versionRanges;
-    public String scriptName, shortName;
+    private String[] versionRanges;
+    private String scriptName, shortName;
 
     protected Script(Scripts script, String version, DataManager dataManager) {
         this.version = version;
@@ -111,6 +111,61 @@ public class Script {
     }
 
     /**
+     * Returns an array of version ranges which the script supports.
+     *
+     * @return the version ranges
+     */
+    public String[] getVersionRanges()  {
+        return this.versionRanges;
+    }
+
+    /**
+     * Sets the version ranges of the script.
+     *
+     * @param versionRanges  the version ranges of the script
+     */
+    protected void setVersionRanges(String[] versionRanges) {
+        this.versionRanges = versionRanges;
+    }
+
+    /**
+     * Returns the script's full name, for example SimpleMachines.
+     *
+     * @return the script's full name
+     */
+    public String getScriptName() {
+        return this.scriptName;
+    }
+
+    /**
+     * Sets the script's full name.
+     *
+     * @param scriptName  the full name of the script
+     */
+    protected void setScriptName(String scriptName) {
+        this.scriptName = scriptName;
+    }
+
+    /**
+     * Returns the script's short name, for example SMF.
+     *
+     * @return the script's short name
+     */
+    public String getScriptShortname() {
+        return this.shortName;
+    }
+
+    /**
+     * Sets the script's short name.
+     *
+     * @param shortName  the short name of the script
+     */
+    protected void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+
+    /**
      * Returns the latest version which is supported by the script.
      *
      * @return latest supported version of the script
@@ -140,33 +195,6 @@ public class Script {
      */
     public String getVersion() {
         return this.version;
-    }
-
-    /**
-     * Returns an array of version ranges which the script supports.
-     *
-     * @return the version ranges
-     */
-    public String[] getVersionRanges()  {
-        return this.versionRanges;
-    }
-
-    /**
-     * Returns the script's full name, for example SimpleMachines.
-     *
-     * @return the script's full name
-     */
-    public String getScriptName() {
-        return this.scriptName;
-    }
-
-    /**
-     * Returns the script's short name, for example SMF.
-     *
-     * @return the script's short name
-     */
-    public String getScriptShortname() {
-        return this.shortName;
     }
 
     /**

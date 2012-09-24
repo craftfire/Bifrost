@@ -53,10 +53,10 @@ public class SMF extends ForumScript {
 
     public SMF(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
-        this.scriptName = "simplemachines";
-        this.shortName = "smf";
-        this.versionRanges = new String[] {"1.1.16", "2.0.2"};
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        this.setScriptName("simplemachines");
+        this.setShortName("smf");
+        this.setVersionRanges(new String[] {"1.1.16", "2.0.2"});
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             this.membernamefield = this.membernamefield.replace("_", "");
             this.groupfield = this.groupfield.replace("_", "");
         }
@@ -64,7 +64,7 @@ public class SMF extends ForumScript {
 
     @Override
     public String getLatestVersion() {
-        return this.versionRanges[1];
+        return this.getVersionRanges()[1];
     }
 
     @Override
@@ -108,7 +108,7 @@ public class SMF extends ForumScript {
             regdate = new Date(Long.parseLong(userTable.getModel().getValueAt(0, 2).toString()) * 1000);
             lastlogin = new Date(Long.parseLong(userTable.getModel().getValueAt(0, 6).toString()) * 1000);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+            if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
                 email = userTable.getModel().getValueAt(0, 14).toString();
                 title = userTable.getModel().getValueAt(0, 34).toString();
                 password = userTable.getModel().getValueAt(0, 13).toString();
@@ -133,7 +133,7 @@ public class SMF extends ForumScript {
                 if (activatedid == 1) {
                     activated = true;
                 }
-            } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+            } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
                 email = userTable.getModel().getValueAt(0, 18).toString();
                 title = userTable.getModel().getValueAt(0, 38).toString();
                 password = userTable.getModel().getValueAt(0, 16).toString();
@@ -179,7 +179,7 @@ public class SMF extends ForumScript {
     @Override
     public void updateUser(ScriptUser user) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data.put("membername", user.getUsername());
             data.put("realname", user.getNickname());
             data.put("emailaddress", user.getEmail());
@@ -187,7 +187,7 @@ public class SMF extends ForumScript {
             data.put("memberip2", user.getLastIP());
             data.put("dateregistered", user.getRegDate().getTime() / 1000);
             data.put("lastlogin", user.getLastLogin().getTime() / 1000);
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             data.put("member_name", user.getUsername());
             data.put("real_name", user.getNickname());
             data.put("email_address", user.getEmail());
@@ -232,14 +232,14 @@ public class SMF extends ForumScript {
         user.setLastLogin(new Date());
         data.put(this.membernamefield, user.getUsername());
         data.put("passwd", user.getPassword());
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data.put("dateregistered", user.getRegDate().getTime() / 1000);
             data.put("realname", user.getUsername());
             data.put("emailaddress", user.getEmail());
             data.put("memberip", user.getRegIP());
             data.put("memberip2", user.getLastIP());
             data.put("passwordsalt", user.getPasswordSalt());
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             data.put("date_registered", user.getRegDate().getTime() / 1000);
             data.put("real_name", user.getUsername());
             data.put("email_address", user.getEmail());
@@ -312,7 +312,7 @@ public class SMF extends ForumScript {
         if (groupTable.getRowCount() == 1) {
             groupid = Integer.parseInt(groupTable.getModel().getValueAt(0, 0).toString());
             groupname = groupTable.getModel().getValueAt(0, 1).toString();
-            if (! CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+            if (! CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
                 groupdescription = groupTable.getModel().getValueAt(0, 2).toString();
             }
             JTable userTable = new JTable(this.getDataManager().resultSetToTableModel(
@@ -370,9 +370,9 @@ public class SMF extends ForumScript {
     @Override
     public void updateGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data.put("groupname", group.getName());
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             data.put("group_name", group.getName());
             data.put("description", group.getDescription());
         }
@@ -382,9 +382,9 @@ public class SMF extends ForumScript {
     @Override
     public void createGroup(Group group) throws SQLException {
         HashMap<String, Object> data = new HashMap<String, Object>();
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data.put("groupName", group.getName());
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             data.put("group_name", group.getName());
             data.put("description", group.getDescription());
         }
@@ -403,13 +403,13 @@ public class SMF extends ForumScript {
             pm.setBody(array.get("body").toString());
             pm.setSubject(array.get("subject").toString());
             pm.setSender(getUser(Integer.parseInt(array.get("id_member_from").toString())));
-            if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+            if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
                 if (array.get("deleted_by_sender").toString().equalsIgnoreCase("0")) {
                     pm.setDeletedBySender(false);
                 } else {
                     pm.setDeletedBySender(true);
                 }
-            } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+            } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
                 if (array.get("deletedbysender").toString().equalsIgnoreCase("0")) {
                     pm.setDeletedBySender(false);
                 } else {
@@ -433,7 +433,7 @@ public class SMF extends ForumScript {
                 } else {
                     pm.setRead(recipient, true);
                 }
-                if (! CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+                if (! CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
                     if (map.get("is_new").toString().equalsIgnoreCase("0")) {
                         pm.setNew(recipient, false);
                     } else {
@@ -502,10 +502,10 @@ public class SMF extends ForumScript {
         } else {
             temp = "0";
         }
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data.put("deletedbysender", temp);
             data.put("fromname", pm.getSender().getUsername());
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             data.put("deleted_by_sender", temp);
             data.put("from_name", pm.getSender().getUsername());
         }
@@ -529,7 +529,7 @@ public class SMF extends ForumScript {
                 temp = "0";
             }
             data.put("deleted", temp);
-            if (! CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+            if (! CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
                 if (pm.isNew(recipient)) {
                     temp = "1";
                 } else {
@@ -553,13 +553,13 @@ public class SMF extends ForumScript {
         data.put("msgtime", pm.getDate().getTime() / 1000);
         data.put("subject", pm.getSubject());
         data.put("body", pm.getBody());
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             if (! pm.isDeletedBySender()) {
                 temp = 0;
             }
             data.put("deletedbysender", temp);
             data.put("fromname", pm.getSender().getUsername());
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             if (! pm.isDeletedBySender()) {
                 temp = 0;
             }
@@ -568,7 +568,7 @@ public class SMF extends ForumScript {
         }
         this.getDataManager().insertFields(data, "personal_messages");
         pm.setID(this.getDataManager().getLastID("id_pm", "personal_messages"));
-        if (! CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (! CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data = new HashMap<String, Object>();
             data.put("id_pm_head", pm.getID());
             this.getDataManager().updateFields(data, "personal_messages", "`id_pm` = '" + pm.getID() + "'");
@@ -587,7 +587,7 @@ public class SMF extends ForumScript {
                 temp = 1;
             }
             data.put("deleted", temp);
-            if (! CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+            if (! CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
                 temp = 0;
                 if (pm.isNew(recipient)) {
                     temp = 1;
@@ -690,12 +690,12 @@ public class SMF extends ForumScript {
         data.put("id_member", post.getAuthor().getID());
         data.put("subject", post.getSubject());
         data.put("body", post.getBody());
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data.put("postertime", post.getPostDate().getTime() / 1000);
             data.put("postername", post.getAuthor().getUsername());
             data.put("posteremail", post.getAuthor().getEmail());
             data.put("posterip", post.getAuthor().getLastIP());
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             data.put("poster_time", post.getPostDate().getTime() / 1000);
             data.put("poster_name", post.getAuthor().getUsername());
             data.put("poster_email", post.getAuthor().getEmail());
@@ -714,12 +714,12 @@ public class SMF extends ForumScript {
         data.put("subject", post.getSubject());
         data.put("body", post.getBody());
 
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             data.put("postertime", post.getPostDate().getTime() / 1000);
             data.put("postername", post.getAuthor().getUsername());
             data.put("posteremail", post.getAuthor().getEmail());
             data.put("posterip", post.getAuthor().getLastIP());
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             data.put("poster_time", post.getPostDate().getTime() / 1000);
             data.put("poster_name", post.getAuthor().getUsername());
             data.put("poster_email", post.getAuthor().getEmail());
@@ -738,11 +738,11 @@ public class SMF extends ForumScript {
         data.put("id_last_msg", post.getID());
         data.put("id_member_updated", post.getAuthor().getID());
         this.getDataManager().updateFields(data, "topics", "`id_topic` = '" + post.getThreadID() + "'");
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             this.getDataManager().executeQueryVoid(
                     "UPDATE `" + this.getDataManager().getPrefix() + "topics" + "` SET `numreplies` =" +
                             " numreplies + 1 WHERE `id_topic` = '" + post.getThreadID() + "'");
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             this.getDataManager().executeQueryVoid(
                     "UPDATE `" + this.getDataManager().getPrefix() + "topics" + "` SET `num_replies` =" +
                             " num_replies + 1 WHERE `id_topic` = '" + post.getThreadID() + "'");
@@ -753,11 +753,11 @@ public class SMF extends ForumScript {
                 "UPDATE `" + this.getDataManager().getPrefix() + "boards" + "` SET `id_last_msg` =" +
                         " '" + post.getID() + "', `id_msg_updated` = '" + post.getID() + "' WHERE `id_board` = '" +
                         post.getBoardID() + "'");
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             this.getDataManager().executeQueryVoid(
                     "UPDATE `" + this.getDataManager().getPrefix() + "boards" + "` SET `numposts` =" +
                             " numposts + 1 WHERE `id_board` = '" + post.getBoardID() + "'");
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             this.getDataManager().executeQueryVoid(
                     "UPDATE `" + this.getDataManager().getPrefix() + "boards" + "` SET `num_posts` =" +
                             " num_posts + 1 WHERE `id_board` = '" + post.getBoardID() + "'");
@@ -814,14 +814,14 @@ public class SMF extends ForumScript {
             if (temp > 0) {
                 poll = true;
             }
-            if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+            if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
                 numreplies = Integer.parseInt(threadTable.getModel().getValueAt(0, 8).toString());
                 numviews = Integer.parseInt(threadTable.getModel().getValueAt(0, 9).toString());
                 temp = Integer.parseInt(threadTable.getModel().getValueAt(0, 10).toString());
                 if (temp > 0) {
                     locked = true;
                 }
-            } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+            } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
                 numreplies = Integer.parseInt(threadTable.getModel().getValueAt(0, 10).toString());
                 numviews = Integer.parseInt(threadTable.getModel().getValueAt(0, 11).toString());
                 temp = Integer.parseInt(threadTable.getModel().getValueAt(0, 12).toString());
@@ -881,7 +881,7 @@ public class SMF extends ForumScript {
             temp = "0";
         }
         data.put("id_poll", temp);
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             if (thread.isSticky()) {
                 temp = "1";
             } else {
@@ -890,7 +890,7 @@ public class SMF extends ForumScript {
             data.put("issticky", temp);
             data.put("numreplies", thread.getRepliesCount());
             data.put("numviews", thread.getViewsCount());
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             if (thread.isSticky()) {
                 temp = "1";
             } else {
@@ -919,11 +919,11 @@ public class SMF extends ForumScript {
         if (thread.isLocked()) {
             data.put("locked", "1");
         }
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             if (thread.isSticky()) {
                 data.put("issticky", "1");
             }
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             if (thread.isSticky()) {
                 data.put("is_sticky", "1");
             }
@@ -942,14 +942,14 @@ public class SMF extends ForumScript {
         data.put("id_last_msg", post.getID());
         this.getDataManager().updateFields(data, "topics", "`id_topic` = '" + thread.getID() + "'");
 
-        if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
             this.getDataManager().executeQueryVoid(
                     "UPDATE `" + this.getDataManager().getPrefix() + "boards" + "` SET `numtopics` =" +
                             " numtopics + 1 WHERE `id_board` = '" + post.getBoardID() + "'");
             this.getDataManager().executeQueryVoid(
                     "UPDATE `" + this.getDataManager().getPrefix() + "topics" + "` SET `numreplies` =" +
                             " '0' WHERE `id_topic` = '" + post.getThreadID() + "'");
-        } else if (CraftCommons.inVersionRange(this.versionRanges[1], this.getVersion())) {
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
             this.getDataManager().executeQueryVoid(
                     "UPDATE `" + this.getDataManager().getPrefix() + "boards" + "` SET `num_topics` =" +
                             " num_topics + 1 WHERE `id_board` = '" + post.getBoardID() + "'");
