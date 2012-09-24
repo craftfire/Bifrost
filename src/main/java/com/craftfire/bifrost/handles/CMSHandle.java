@@ -45,15 +45,15 @@ public class CMSHandle extends ScriptHandle {
     }
 
     public CMSScript getCMSScript() {
-        return (CMSScript) this.script;
+        return (CMSScript) this.getScript();
     }
 
     public Ban newBan(String name, String email, String ip) {
-        return new Ban(this.script, name, email, ip);
+        return new Ban(this.getScript(), name, email, ip);
     }
 
     public Group newGroup(String groupname) {
-        return new Group(this.script, groupname);
+        return new Group(this.getScript(), groupname);
     }
 
     public CMSComment newComment(int articleid) {

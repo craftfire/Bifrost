@@ -173,7 +173,6 @@ public class SMF extends ForumScript {
         user.setBirthday(birthday);
         user.setGender(gender);
         user.setActivated(activated);
-        user.setGroups(getUserGroups(savedusername));
         return user;
     }
 
