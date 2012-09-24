@@ -47,7 +47,7 @@ import com.craftfire.bifrost.script.CMSScript;
 public class CMSArticle extends Message implements ViewsCounter {
     private String intro, url;
     private int views;
-    private boolean is_public, featured, allowComments;
+    private boolean isPublic, featured, allowComments;
 
     /**
      * This constructor should be used when creating a new article for the script.
@@ -140,7 +140,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @return <code>true</code> if published, <code>false</code> if not published
      */
     public boolean isPublic() {
-        return this.is_public;
+        return this.isPublic;
     }
 
     /**
@@ -151,7 +151,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @param isPublic  <code>true</code> for published, <code>false</code> for not published
      */
     public void setPublic(boolean isPublic) {
-        this.is_public = isPublic;
+        this.isPublic = isPublic;
     }
 
     /*

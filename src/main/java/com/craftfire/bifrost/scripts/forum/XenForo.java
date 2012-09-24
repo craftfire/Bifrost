@@ -756,6 +756,7 @@ public class XenForo extends ForumScript {
     public ForumPost getPost(int postid) throws SQLException {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "post` WHERE `post_id` = '" + postid + "' LIMIT 1");
+        //TODO: figure out how to use nodeID
         int nodeID = this.getDataManager().getIntegerField("thread", "node_id", "`thread_id` = '" +
                 Integer.parseInt(array.get("thread_id")
                         .toString()) +

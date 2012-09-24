@@ -616,6 +616,7 @@ public class SMF extends ForumScript {
         JTable postTable = new JTable(this.getDataManager().resultSetToTableModel(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "messages` WHERE `id_msg` = '" + postid +
                         "' LIMIT 1"));
+        //TODO: Figure out how to use boardid
         int threadid = 0, boardid = 0, authorid = 0;
         Date postdate = null;
         String subject = null, body = null;

@@ -43,7 +43,7 @@ import com.craftfire.bifrost.script.CMSScript;
  * Remember to run {@see #createCategory()} after creating a category to insert it into the script.
  */
 public class CMSCategory extends Category {
-    private boolean is_public;
+    private boolean isPublic;
     
     /**
      * This constructor may be used when creating a new category for the script.
@@ -130,7 +130,7 @@ public class CMSCategory extends Category {
      * @return <code>true</code> if published, <code>false</code> if not published
      */
     public boolean isPublic() {
-        return this.is_public;
+        return this.isPublic;
     }
 
     /**
@@ -141,7 +141,7 @@ public class CMSCategory extends Category {
      * @param isPublic  <code>true</code> for published, <code>false</code> for not published
      */
     public void setPublic(boolean isPublic) {
-        this.is_public = isPublic;
+        this.isPublic = isPublic;
     }
 
     /**
