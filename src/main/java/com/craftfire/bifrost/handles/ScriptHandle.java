@@ -133,10 +133,6 @@ public class ScriptHandle {
         return this.script.getVersionRanges();
     }
 
-    public Encryption getEncryption() throws UnsupportedMethod {
-        return this.script.getEncryption();
-    }
-
     public String getScriptName() throws UnsupportedMethod {
         return this.script.getScriptName();
     }

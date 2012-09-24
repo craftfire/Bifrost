@@ -54,7 +54,6 @@ import com.craftfire.bifrost.script.ForumScript;
 public class XenForo extends ForumScript {
     private final String scriptName = "xenforo";
     private final String shortName = "xf";
-    private final Encryption encryption = Encryption.SHA1;
     private final String[] versionRanges = {"1.0.4", "1.1.2"};
     private String currentUsername = null;
 
@@ -70,11 +69,6 @@ public class XenForo extends ForumScript {
     @Override
     public String getLatestVersion() {
         return this.versionRanges[0];
-    }
-
-    @Override
-    public Encryption getEncryption() {
-        return this.encryption;
     }
 
     @Override

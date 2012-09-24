@@ -43,7 +43,6 @@ import com.craftfire.bifrost.script.ForumScript;
 public class PhpBB extends ForumScript {
     private final String scriptName = "phpbb";
     private final String shortName = "phpbb";
-    private final Encryption encryption = Encryption.SHA1; /*TODO*/
     private final String[] versionRanges = {"20.0.23", "3.0.10"};
     private String membernamefield = "username", groupfield = "additional_groups";
     private String currentUsername = null;
@@ -60,11 +59,6 @@ public class PhpBB extends ForumScript {
     @Override
     public String getLatestVersion() {
         return this.versionRanges[1];
-    }
-
-    @Override
-    public Encryption getEncryption() {
-        return this.encryption;
     }
 
     @Override

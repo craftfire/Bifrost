@@ -50,7 +50,6 @@ import com.craftfire.bifrost.script.ForumScript;
 public class SMF extends ForumScript {
     private final String scriptName = "simplemachines";
     private final String shortName = "smf";
-    private final Encryption encryption = Encryption.SHA1;
     private final String[] versionRanges = {"1.1.16", "2.0.2"};
     private String currentUsername = null;
     private String membernamefield = "member_name", groupfield = "additional_groups";
@@ -81,11 +80,6 @@ public class SMF extends ForumScript {
     @Override
     public String getScriptShortname() {
         return this.shortName;
-    }
-
-    @Override
-    public Encryption getEncryption() {
-        return this.encryption;
     }
 
     @Override
