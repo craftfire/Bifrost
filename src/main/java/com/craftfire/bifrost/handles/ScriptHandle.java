@@ -22,7 +22,6 @@ package com.craftfire.bifrost.handles;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.ScriptAPI;
@@ -42,7 +41,7 @@ import com.craftfire.bifrost.script.Script;
 /**
  * This class contains methods relevant to methods to use for a generic script.
  *
- * @see Script
+ * @see Script Documentation of all the methods
  */
 public class ScriptHandle {
     private Script script;
@@ -129,38 +128,65 @@ public class ScriptHandle {
         return new ScriptUser(this.script, username, password);
     }
 
+    /**
+     * @see Script#getLatestVersion() Documentation for this method
+     */
     public String getLatestVersion() {
         return this.script.getLatestVersion();
     }
 
+    /**
+     * @see Script#isSupportedVersion() Documentation for this method
+     */
     public boolean isSupportedVersion() {
         return this.script.isSupportedVersion();
     }
 
+    /**
+     * @see Script#getVersion() Documentation for this method
+     */
     public String getVersion() throws UnsupportedMethod {
         return this.script.getVersion();
     }
 
+    /**
+     * @see Script#getVersionRanges() Documentation for this method
+     */
     public String[] getVersionRanges() {
         return this.script.getVersionRanges();
     }
 
+    /**
+     * @see Script#getScriptName() Documentation for this method
+     */
     public String getScriptName() throws UnsupportedMethod {
         return this.script.getScriptName();
     }
 
+    /**
+     * @see Script#getScriptShortname() Documentation for this method
+     */
     public String getScriptShortname() throws UnsupportedMethod {
         return this.script.getScriptShortname();
     }
 
+    /**
+     * @see Script#authenticate(String, String) Doucmentation for this method
+     */
     public boolean authenticate(String username, String password) throws UnsupportedMethod {
         return this.script.authenticate(username, password);
     }
 
+    /**
+     * @see Script#hashPassword(String, String) Documentation for this method
+     */
     public String hashPassword(String salt, String password) throws UnsupportedMethod {
         return this.script.hashPassword(salt, password);
     }
 
+    /**
+     * @see Script#getUsername(int) Documentation for this method
+     */
     public String getUsername(int userid) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.USER_USERNAME, userid)) {
             return (String) this.script.getCache().get(CacheGroup.USER_USERNAME, userid);
@@ -170,6 +196,9 @@ public class ScriptHandle {
         return username;
     }
 
+    /**
+     * @see Script#getUserID(String) Documentation for this method
+     */
     public int getUserID(String username) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.USER_ID, username)) {
             return (Integer) this.script.getCache().get(CacheGroup.USER_ID, username);
@@ -179,11 +208,17 @@ public class ScriptHandle {
         return userID;
     }
 
+    /**
+     * @see Script#getUser(String) Documentation for this method
+     */
     public ScriptUser getUser(String username) throws UnsupportedMethod, SQLException {
         int id = this.script.getUserID(username);
         return this.getUser(id);
     }
 
+    /**
+     * @see Script#getUser(int) Documentation for this method
+     */
     public ScriptUser getUser(int userid) throws UnsupportedMethod, SQLException {
         if (ScriptUser.hasCache(this.getHandle(), userid)) {
             return ScriptUser.getCache(this, userid);
@@ -193,6 +228,9 @@ public class ScriptHandle {
         return user;
     }
 
+    /**
+     * @see Script#getLastRegUser() Documentation for this method
+     */
     public ScriptUser getLastRegUser() throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.USER_LAST_REG)) {
             return (ScriptUser) this.script.getCache().get(CacheGroup.USER_LAST_REG);
@@ -202,18 +240,27 @@ public class ScriptHandle {
         return user;
     }
 
+    /**
+     * @see Script#updateUser(ScriptUser) Documentation for this method
+     */
     public void updateUser(ScriptUser user) throws SQLException, UnsupportedMethod {
         this.script.updateUser(user);
         ScriptUser.cleanupCache(this, user, CacheCleanupReason.UPDATE);
         ScriptUser.addCache(this, user);
     }
 
+    /**
+     * @see Script#createUser(ScriptUser) Documentation for this method
+     */
     public void createUser(ScriptUser user) throws SQLException, UnsupportedMethod {
         this.script.createUser(user);
         ScriptUser.cleanupCache(this, user, CacheCleanupReason.CREATE);
         ScriptUser.addCache(this, user);
     }
 
+    /**
+     * @see Script#getGroups(int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<Group> getGroups(int limit) throws SQLException, UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.GROUP_LIST)) {
@@ -229,6 +276,9 @@ public class ScriptHandle {
         return groups;
     }
 
+    /**
+     * @see Script#getGroupID(String) Documentation for this method
+     */
     public int getGroupID(String group) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.GROUP_ID, group)) {
             return (Integer) this.script.getCache().get(CacheGroup.GROUP_ID, group);
@@ -238,6 +288,9 @@ public class ScriptHandle {
         return groupID;
     }
 
+    /**
+     * @see Script#getGroup(int) Documentation for this method
+     */
     public Group getGroup(int groupID) throws UnsupportedMethod {
         if (Group.hasCache(this, groupID)) {
             return Group.getCache(this, groupID);
@@ -247,6 +300,9 @@ public class ScriptHandle {
         return group;
     }
 
+    /**
+     * @see Script#getGroup(String) Documentation for this method
+     */
     public Group getGroup(String groupString) throws UnsupportedMethod {
         if (Group.hasCache(this, groupString)) {
             return Group.getCache(this, groupString);
@@ -256,6 +312,9 @@ public class ScriptHandle {
         return group;
     }
 
+    /**
+     * @see Script#getUserGroups(String) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<Group> getUserGroups(String username) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.USER_GROUP, username)) {
@@ -266,18 +325,27 @@ public class ScriptHandle {
         return groups;
     }
 
+    /**
+     * @see Script#updateGroup(Group) Documentation for this method
+     */
     public void updateGroup(Group group) throws SQLException, UnsupportedMethod {
         this.script.updateGroup(group);
         Group.cleanupCache(this, group, CacheCleanupReason.UPDATE);
         Group.addCache(this, group);
     }
 
+    /**
+     * @see Script#createGroup(Group) Documentation for this method
+     */
     public void createGroup(Group group) throws SQLException, UnsupportedMethod {
         this.script.createGroup(group);
         Group.cleanupCache(this, group, CacheCleanupReason.CREATE);
         Group.addCache(this, group);
     }
 
+    /**
+     * @see Script#getPM(int) Documentation for this method
+     */
     public PrivateMessage getPM(int pmid) throws UnsupportedMethod, SQLException {
         if (PrivateMessage.hasCache(this, pmid)) {
             return PrivateMessage.getCache(this, pmid);
@@ -287,6 +355,9 @@ public class ScriptHandle {
         return pm;
     }
 
+    /**
+     * @see Script#getPMs(int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.PM_LIST)) {
@@ -302,6 +373,9 @@ public class ScriptHandle {
         return pms;
     }
 
+    /**
+     * @see Script#getPMReplies(int, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.PM_REPLIES, pmid) && (limit != 0)) {
@@ -317,6 +391,9 @@ public class ScriptHandle {
         return pms;
     }
 
+    /**
+     * @see Script#getPMsSent(String, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsSent(String username, int limit) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.PM_SENT, username)) {
@@ -332,6 +409,9 @@ public class ScriptHandle {
         return pms;
     }
 
+    /**
+     * @see Script#getPMsReceived(String, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<PrivateMessage> getPMsReceived(String username, int limit) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.PM_RECEIVED, username)) {
@@ -347,6 +427,9 @@ public class ScriptHandle {
         return pms;
     }
 
+    /**
+     * @see Script#getPMCount() Documentation for this method
+     */
     public int getPMCount() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.PM_COUNT)) {
             return (Integer) getCache().get(CacheGroup.PM_COUNT);
@@ -356,6 +439,9 @@ public class ScriptHandle {
         return count;
     }
 
+    /**
+     * @see Script#getPMReplyCount(int) Documentation for this method
+     */
     public int getPMReplyCount(int pmid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.PM_REPLY_COUNT, pmid)) {
             return (Integer) getCache().get(CacheGroup.PM_REPLY_COUNT, pmid);
@@ -365,6 +451,9 @@ public class ScriptHandle {
         return count;
     }
 
+    /**
+     * @see Script#getPMSentCount(String) Documentation for this method
+     */
     public int getPMSentCount(String username) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_SENT_COUNT, username)) {
             return (Integer) this.script.getCache().get(CacheGroup.PM_SENT_COUNT, username);
@@ -374,6 +463,9 @@ public class ScriptHandle {
         return count;
     }
 
+    /**
+     * @see Script#getPMReceivedCount(String) Documentation for this method
+     */
     public int getPMReceivedCount(String username) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.PM_RECEIVED_COUNT, username)) {
             return (Integer) this.script.getCache().get(CacheGroup.PM_RECEIVED_COUNT, username);
@@ -383,18 +475,27 @@ public class ScriptHandle {
         return count;
     }
 
+    /**
+     * @see Script#updatePrivateMessage(PrivateMessage) Documentation for this method
+     */
     public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
         this.script.updatePrivateMessage(privateMessage);
         PrivateMessage.cleanupCache(this, privateMessage, CacheCleanupReason.UPDATE);
         PrivateMessage.addCache(this, privateMessage);
     }
 
+    /**
+     * @see Script#createPrivateMessage(PrivateMessage) Documentation for this method
+     */
     public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
         this.script.createPrivateMessage(privateMessage);
         PrivateMessage.cleanupCache(this, privateMessage, CacheCleanupReason.CREATE);
         PrivateMessage.addCache(this, privateMessage);
     }
 
+    /**
+     * @see Script#getUserCount() Documentation for this method
+     */
     public int getUserCount() throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.USER_COUNT)) {
             return (Integer) this.script.getCache().get(CacheGroup.USER_COUNT);
@@ -404,6 +505,9 @@ public class ScriptHandle {
         return count;
     }
 
+    /**
+     * @see Script#getGroupCount() Documentation for this method
+     */
     public int getGroupCount() throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.GROUP_COUNT)) {
             return (Integer) this.script.getCache().get(CacheGroup.GROUP_COUNT);
@@ -413,6 +517,9 @@ public class ScriptHandle {
         return count;
     }
 
+    /**
+     * @see Script#getIPs(String) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<String> getIPs(String username) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.USER_IP, username)) {
@@ -423,6 +530,9 @@ public class ScriptHandle {
         return ips;
     }
 
+    /**
+     * @see Script#getBans(int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<Ban> getBans(int limit) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.BAN_LIST)) {
@@ -438,18 +548,27 @@ public class ScriptHandle {
         return bans;
     }
 
+    /**
+     * @see Script#updateBan(Ban) Documentation for this method
+     */
     public void updateBan(Ban ban) throws SQLException, UnsupportedMethod {
         this.script.updateBan(ban);
         Ban.cleanupCache(this, ban, CacheCleanupReason.UPDATE);
         Ban.addCache(this, ban);
     }
 
+    /**
+     * @see Script#addBan(Ban) Documentation for this method
+     */
     public void addBan(Ban ban) throws SQLException, UnsupportedMethod {
         this.script.addBan(ban);
         Ban.cleanupCache(this, ban, CacheCleanupReason.CREATE);
         Ban.addCache(this, ban);
     }
 
+    /**
+     * @see Script#getBanCount() Documentation for this method
+     */
     public int getBanCount() throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.BAN_COUNT)) {
             return (Integer) this.script.getCache().get(CacheGroup.BAN_COUNT);
@@ -459,6 +578,9 @@ public class ScriptHandle {
         return count;
     }
 
+    /**
+     * @see Script#isBanned(String) Documentation for this method
+     */
     public boolean isBanned(String string) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.IS_BANNED, string)) {
             return (Boolean) this.script.getCache().get(CacheGroup.IS_BANNED, string);
@@ -468,6 +590,9 @@ public class ScriptHandle {
         return banned;
     }
 
+    /**
+     * @see Script#isRegistered(String) Documentation for this method
+     */
     public boolean isRegistered(String username) throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.IS_REGISTERED, username)) {
             return (Boolean) this.script.getCache().get(CacheGroup.IS_REGISTERED, username);
@@ -477,6 +602,9 @@ public class ScriptHandle {
         return registered;
     }
 
+    /**
+     * @see Script#getHomeURL() Documentation for this method
+     */
     public String getHomeURL() throws UnsupportedMethod {
         if (this.script.getCache().contains(CacheGroup.URL_HOME)) {
             return (String) this.script.getCache().get(CacheGroup.URL_HOME);
