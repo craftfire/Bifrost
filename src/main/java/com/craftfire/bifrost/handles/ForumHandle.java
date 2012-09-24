@@ -71,6 +71,9 @@ public class ForumHandle extends ScriptHandle {
         return post;
     }
 
+    /**
+     * @see ForumScript#getPosts(int) Javadoc
+     */
     @SuppressWarnings("unchecked")
     public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
         if (getCache().contains(CacheGroup.POST_LIST)) {
