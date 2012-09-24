@@ -28,8 +28,6 @@ import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
 import com.craftfire.bifrost.classes.cms.CMSUser;
-import com.craftfire.bifrost.classes.general.Ban;
-import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
@@ -41,12 +39,10 @@ import com.craftfire.bifrost.script.CMSScript;
 /**
  * This class contains methods relevant to methods to use for a cms script.
  *
- * @see CMSScript
+ * {@link CMSScript}s
  */
 public class CMSHandle extends ScriptHandle {
 
-    public CMSHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        super(script, version, dataManager);
     }
 
     public CMSScript getCMSScript() {

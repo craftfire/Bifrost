@@ -27,7 +27,6 @@ import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.script.Script;
-import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
 import java.util.List;

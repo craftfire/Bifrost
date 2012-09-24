@@ -21,7 +21,6 @@ package com.craftfire.bifrost.classes.general;
 
 import java.awt.Image;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

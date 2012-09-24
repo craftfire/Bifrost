@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
-import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
@@ -202,7 +201,7 @@ public class ForumPost extends Message {
     }
 
     /**
-     * Adds a ForumPost to the cache with the given script handle
+     * Adds a ForumPost to the cache with the given script handle.
      *
      * @param handle  the script handle
      * @param post    the ForumPost object
@@ -233,7 +232,7 @@ public class ForumPost extends Message {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param post} from cache.
+     * Removes outdated cache elements related to given <code>post</code> from cache.
      * <p>
      * The method should be called when updating or creating a {@link ForumPost}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.
@@ -241,7 +240,6 @@ public class ForumPost extends Message {
      * @param handle  the handle the method is called from
      * @param post    the post to cleanup related cache
      * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
-     * @see           Cache
      */
     public static void cleanupCache(ScriptHandle handle, ForumPost post, CacheCleanupReason reason) {
         if (post.getAuthor() != null) {
