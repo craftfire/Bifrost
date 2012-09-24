@@ -256,7 +256,7 @@ public class ForumScript extends Script {
      * @see                       List
      * @throws UnsupportedMethod  if the function is not supported by the script.
      */
-	public List<ForumThread> getThreadsFormBoard(int boardid, int limit) throws UnsupportedMethod {
+	public List<ForumThread> getThreadsFromBoard(int boardid, int limit) throws UnsupportedMethod {
         throw new UnsupportedMethod();
     }
 
