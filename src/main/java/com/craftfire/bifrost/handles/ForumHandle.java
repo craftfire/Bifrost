@@ -39,7 +39,7 @@ import com.craftfire.bifrost.script.ForumScript;
 /**
  * This class contains methods relevant to methods to use for a forum script.
  *
- * @see ForumScript Javadoc of all the methods
+ * @see ForumScript Documentation of all the methods
  */
 public class ForumHandle extends ScriptHandle {
     public ForumHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
@@ -63,7 +63,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     /**
-     * @see ForumScript#getPost(int) Javadoc for this method
+     * @see ForumScript#getPost(int) Documentation for this method
      */
     public ForumPost getPost(int postID) throws UnsupportedMethod, SQLException {
         if (ForumPost.hasCache(this, postID)) {
@@ -75,7 +75,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     /**
-     * @see ForumScript#getPosts(int) Javadoc for this method
+     * @see ForumScript#getPosts(int) Documentation for this method
      */
     @SuppressWarnings("unchecked")
     public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
@@ -93,7 +93,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     /**
-     * @see ForumScript#getPostsFromThread(int, int) Javadoc for this method
+     * @see ForumScript#getPostsFromThread(int, int) Documentation for this method
      */
     @SuppressWarnings("unchecked")
     public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod, SQLException {
@@ -110,6 +110,9 @@ public class ForumHandle extends ScriptHandle {
         return posts;
     }
 
+    /**
+     * @see ForumScript#getUserPosts(String, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<ForumPost> getUserPosts(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.POST_LIST_USER, username)) {
@@ -125,18 +128,27 @@ public class ForumHandle extends ScriptHandle {
         return posts;
     }
 
+    /**
+     * @see ForumScript#updatePost(ForumPost) Documentation for this method
+     */
     public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
         this.getForumScript().updatePost(post);
         ForumPost.cleanupCache(this, post, CacheCleanupReason.UPDATE);
         ForumPost.addCache(this, post);
     }
 
+    /**
+     * @see ForumScript#createPost(ForumPost) Documentation for this method
+     */
     public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
         this.getForumScript().createPost(post);
         ForumPost.cleanupCache(this, post, CacheCleanupReason.CREATE);
         ForumPost.addCache(this, post);
     }
 
+    /**
+     * @see ForumScript#getPostCount(String) Documentation for this method
+     */
     public int getPostCount(String username) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.POST_COUNT, username)) {
             return (Integer) getCache().get(CacheGroup.POST_COUNT, username);
@@ -146,6 +158,9 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    /**
+     * @see ForumScript#getPostCountInThread(int) Documentation for this method
+     */
     public int getPostCountInThread(int threadid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.POST_COUNT_THREAD, threadid)) {
             return (Integer) getCache().get(CacheGroup.POST_COUNT_THREAD, threadid);
@@ -155,6 +170,9 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    /**
+     * @see ForumScript#getTotalPostCount() Documentation for this method
+     */
     public int getTotalPostCount() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.POST_COUNT_TOTAL)) {
             return (Integer) getCache().get(CacheGroup.POST_COUNT_TOTAL);
@@ -164,6 +182,9 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    /**
+     * @see ForumScript#getLastPost() Documentation for this method
+     */
     public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
         if (getCache().contains(CacheGroup.POST_LAST)) {
             return (ForumPost) getCache().get(CacheGroup.POST_LAST);
@@ -173,6 +194,9 @@ public class ForumHandle extends ScriptHandle {
         return post;
     }
 
+    /**
+     * @see ForumScript#getLastUserPost(String) Documentation for this method
+     */
     public ForumPost getLastUserPost(String username) throws UnsupportedMethod, SQLException {
         if (getCache().contains(CacheGroup.POST_LAST_USER, username)) {
             return (ForumPost) getCache().get(CacheGroup.POST_LAST_USER, username);
@@ -182,6 +206,9 @@ public class ForumHandle extends ScriptHandle {
         return post;
     }
 
+    /**
+     * @see ForumScript#getTotalThreadCount() Documentation for this method
+     */
     public int getTotalThreadCount() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.THREAD_COUNT_TOTAL)) {
             return (Integer) getCache().get(CacheGroup.THREAD_COUNT_TOTAL);
@@ -191,6 +218,9 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    /**
+     * @see ForumScript#getThreadCount(String) Documentation for this method
+     */
     public int getThreadCount(String username) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.THREAD_COUNT, username)) {
             return (Integer) getCache().get(CacheGroup.THREAD_COUNT, username);
@@ -200,6 +230,9 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    /**
+     * @see ForumScript#getLastThread() Documentation for this method
+     */
     public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
         if (getCache().contains(CacheGroup.THREAD_LAST)) {
             return (ForumThread) getCache().get(CacheGroup.THREAD_LAST);
@@ -209,6 +242,9 @@ public class ForumHandle extends ScriptHandle {
         return thread;
     }
 
+    /**
+     * @see ForumScript#getLastUserThread(String) Documentation for this method
+     */
     public ForumThread getLastUserThread(String username) throws UnsupportedMethod, SQLException {
         if (getCache().contains(CacheGroup.THREAD_LAST_USER, username)) {
             return (ForumThread) getCache().get(CacheGroup.THREAD_LAST_USER, username);
@@ -218,6 +254,9 @@ public class ForumHandle extends ScriptHandle {
         return thread;
     }
 
+    /**
+     * @see ForumScript#getThread(int) Documentation for this method
+     */
     public ForumThread getThread(int threadID) throws UnsupportedMethod, SQLException {
         if (ForumThread.hasCache(this, threadID)) {
             return ForumThread.getCache(this, threadID);
@@ -227,6 +266,9 @@ public class ForumHandle extends ScriptHandle {
         return thread;
     }
 
+    /**
+     * @see ForumScript#getThreads(int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<ForumThread> getThreads(int limit) throws UnsupportedMethod, SQLException {
         if (getCache().contains(CacheGroup.THREAD_LIST)) {
@@ -242,6 +284,9 @@ public class ForumHandle extends ScriptHandle {
         return threads;
     }
 
+    /**
+     * @see ForumScript#getThreadsFromBoard(int, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<ForumThread> getThreadsFromBoard(int boardid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.BOARD_THREADS, boardid) && (limit != 0)) {
@@ -252,11 +297,14 @@ public class ForumHandle extends ScriptHandle {
                 return threads.subList(0, limit);
             }
         }
-        List<ForumThread> threads = getForumScript().getThreadsFormBoard(boardid, limit);
+        List<ForumThread> threads = getForumScript().getThreadsFromBoard(boardid, limit);
         getCache().put(CacheGroup.BOARD_THREADS, boardid, threads);
         return threads;
     }
 
+    /**
+     * @see ForumScript#getUserThreads(String, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<ForumThread> getUserThreads(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.THREAD_LIST_USER, username)) {
@@ -272,18 +320,27 @@ public class ForumHandle extends ScriptHandle {
         return threads;
     }
 
+    /**
+     * @see ForumScript#updateThread(ForumThread) Documentation for this method
+     */
     public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         this.getForumScript().updateThread(thread);
         ForumThread.cleanupCache(this, thread, CacheCleanupReason.UPDATE);
         ForumThread.addCache(this, thread);
     }
 
+    /**
+     * @see ForumScript#createThread(ForumThread) Documentation for this method
+     */
     public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
         this.getForumScript().createThread(thread);
         ForumThread.cleanupCache(this, thread, CacheCleanupReason.CREATE);
         ForumThread.addCache(this, thread);
     }
 
+    /**
+     * @see ForumScript#getBoards(int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<ForumBoard> getBoards(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.BOARD_LIST)) {
@@ -299,6 +356,9 @@ public class ForumHandle extends ScriptHandle {
         return boards;
     }
 
+    /**
+     * @see ForumScript#getBoardCount() Documentation for this method
+     */
     public int getBoardCount() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.BOARD_COUNT)) {
             return (Integer) getCache().get(CacheGroup.BOARD_COUNT);
@@ -308,6 +368,9 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    /**
+     * @see ForumScript#getSubBoardCount(int) Documentation for this method
+     */
     public int getSubBoardCount(int boardid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.BOARD_SUB_COUNT, boardid)) {
             return (Integer) getCache().get(CacheGroup.BOARD_SUB_COUNT, boardid);
@@ -317,6 +380,9 @@ public class ForumHandle extends ScriptHandle {
         return count;
     }
 
+    /**
+     * @see ForumScript#getSubBoards(int, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<ForumBoard> getSubBoards(int boardid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.BOARD_SUBS, boardid)) {
@@ -332,6 +398,9 @@ public class ForumHandle extends ScriptHandle {
         return boards;
     }
 
+    /**
+     * @see ForumScript#getBoard(int) Documentation for this method
+     */
     public ForumBoard getBoard(int boardID) throws UnsupportedMethod {
         if (ForumBoard.hasCache(this, boardID)) {
             return ForumBoard.getCache(this, boardID);
@@ -341,18 +410,27 @@ public class ForumHandle extends ScriptHandle {
         return board;
     }
 
+    /**
+     * @see ForumScript#updateBoard(ForumBoard) Documentation for this method
+     */
     public void updateBoard(ForumBoard board) throws UnsupportedMethod, SQLException {
         getForumScript().updateBoard(board);
         ForumBoard.cleanupCache(this, board, CacheCleanupReason.UPDATE);
         ForumBoard.addCache(this, board);
     }
 
+    /**
+     * @see ForumScript#createBoard(ForumBoard) Documentation for this method
+     */
     public void createBoard(ForumBoard board) throws UnsupportedMethod, SQLException {
         getForumScript().createBoard(board);
         ForumBoard.cleanupCache(this, board, CacheCleanupReason.CREATE);
         ForumBoard.addCache(this, board);
     }
 
+    /**
+     * @see ForumScript#getForumURL() Documentation for this method
+     */
     public String getForumURL() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.URL_FORUM)) {
             return (String) getCache().get(CacheGroup.URL_FORUM);
@@ -362,27 +440,42 @@ public class ForumHandle extends ScriptHandle {
         return url;
     }
 
+    /**
+     * @see ForumScript#getUser(String) Documentation for this method
+     */
     @Override
     public ForumUser getUser(String username) throws UnsupportedMethod, SQLException {
         return (ForumUser) super.getUser(username);
     }
 
+    /**
+     * @see ForumScript#getUser(int) Documentation for this method
+     */
     @Override
     public ForumUser getUser(int userid) throws UnsupportedMethod, SQLException {
         return (ForumUser) super.getUser(userid);
     }
 
+    /**
+     * @see ForumScript#getLastRegUser() Documentation for this method
+     */
     @Override
     public ForumUser getLastRegUser() throws UnsupportedMethod, SQLException {
         return (ForumUser) super.getLastRegUser();
     }
 
+    /**
+     * @see ForumScript#updateUser(ForumUser) Documentation for this method
+     */
     public void updateUser(ForumUser user) throws SQLException, UnsupportedMethod {
         getForumScript().updateUser(user);
         ScriptUser.cleanupCache(this, user, CacheCleanupReason.UPDATE);
         ScriptUser.addCache(this, user);
     }
 
+    /**
+     * @see ForumScript#createUser(ForumUser) Documentation for this method
+     */
     public void createUser(ForumUser user) throws SQLException, UnsupportedMethod {
         getForumScript().createUser(user);
         ScriptUser.cleanupCache(this, user, CacheCleanupReason.CREATE);
