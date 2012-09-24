@@ -39,7 +39,7 @@ import com.craftfire.bifrost.script.ForumScript;
 /**
  * This class contains methods relevant to methods to use for a forum script.
  *
- * @see ForumScript
+ * @see ForumScript Javadoc of all the methods
  */
 public class ForumHandle extends ScriptHandle {
     public ForumHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
@@ -62,6 +62,9 @@ public class ForumHandle extends ScriptHandle {
         return new ForumBoard(getForumScript(), "", parentid);
     }
 
+    /**
+     * @see ForumScript#getPost(int) Javadoc for this method
+     */
     public ForumPost getPost(int postID) throws UnsupportedMethod, SQLException {
         if (ForumPost.hasCache(this, postID)) {
             return ForumPost.getCache(this, postID);
@@ -72,7 +75,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     /**
-     * @see ForumScript#getPosts(int) Javadoc
+     * @see ForumScript#getPosts(int) Javadoc for this method
      */
     @SuppressWarnings("unchecked")
     public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
@@ -89,6 +92,9 @@ public class ForumHandle extends ScriptHandle {
         return posts;
     }
 
+    /**
+     * @see ForumScript#getPostsFromThread(int, int) Javadoc for this method
+     */
     @SuppressWarnings("unchecked")
     public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod, SQLException {
         if (getCache().contains(CacheGroup.THREAD_POSTS, threadid)) {
