@@ -39,10 +39,12 @@ import com.craftfire.bifrost.script.CMSScript;
 /**
  * This class contains methods relevant to methods to use for a cms script.
  *
- * {@link CMSScript}s
+ * @see CMSScript
  */
 public class CMSHandle extends ScriptHandle {
 
+    public CMSHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+        super(script, version, dataManager);
     }
 
     public CMSScript getCMSScript() {
