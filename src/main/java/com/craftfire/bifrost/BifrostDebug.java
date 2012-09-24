@@ -192,7 +192,6 @@ public class BifrostDebug {
             
             print(script.toString() + " - " + version + " - SCRIPT CLASS");
             ForumHandle tscript = bifrost.getScriptAPI().getForumHandle(script);
-            printResult("getEncryption", "" + tscript.getEncryption());
             printResult("getLatestVersion", tscript.getLatestVersion());
             printResult("getScriptName", tscript.getScriptName());
             printResult("getScriptShortname", tscript.getScriptShortname());
