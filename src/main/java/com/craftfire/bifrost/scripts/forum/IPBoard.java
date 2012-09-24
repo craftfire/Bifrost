@@ -33,15 +33,14 @@ import com.craftfire.commons.managers.DataManager;
 import java.util.List;
 
 public class IPBoard extends Script {
-    private final String scriptName = "ipboard";
-    private final String shortName = "ipb";
-    private final Encryption encryption = Encryption.SHA1; /*TODO*/
-    private final String[] versionRanges = {"1.0.4"}; /*TODO*/
-    private String currentUsername = null;
 
     public IPBoard(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
+        this.scriptName = "dupe";
+        this.shortName = "dupe";
+        this.versionRanges = new String[] {"1.0.0"};
     }
+
     public String[] getVersionRanges() {
         return this.versionRanges;
     }
@@ -49,10 +48,6 @@ public class IPBoard extends Script {
     public String getLatestVersion() {
         /*TODO*/
         return this.versionRanges[0];
-    }
-
-    public Encryption getEncryption() {
-        return this.encryption;
     }
 
     public String getScriptName() {

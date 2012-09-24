@@ -211,9 +211,9 @@ public class Group implements IDable {
         handle.getCache().setMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-name", group.getName());
         if (group.getUsers() != null) {
             List<String> usernames = new ArrayList<String>();
-            Iterator<ScriptUser> I = group.getUsers().iterator();
-            while (I.hasNext()) {
-                ScriptUser user = I.next();
+            Iterator<ScriptUser> iterator = group.getUsers().iterator();
+            while (iterator.hasNext()) {
+                ScriptUser user = iterator.next();
                 if (user != null) {
                     usernames.add(user.getUsername());
                 }
@@ -251,9 +251,9 @@ public class Group implements IDable {
     public static void cleanupCache(ScriptHandle handle, Group group, CacheCleanupReason reason) {
         handle.getCache().remove(CacheGroup.GROUP_ID, group.getName());
         if (group.getUsers() != null) {
-            Iterator<ScriptUser> I = group.getUsers().iterator();
-            while (I.hasNext()) {
-                ScriptUser user = I.next();
+            Iterator<ScriptUser> iterator = group.getUsers().iterator();
+            while (iterator.hasNext()) {
+                ScriptUser user = iterator.next();
                 if (user != null) {
                     handle.getCache().remove(CacheGroup.USER_GROUP, user.getUsername());
                 }
@@ -269,13 +269,13 @@ public class Group implements IDable {
             handle.getCache().clear(CacheGroup.GROUP_LIST);
             /* Passes through */
         case UPDATE:
-            Object old_name = handle.getCache().getMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-name");
-            List<String> old_usernames = (List<String>) handle.getCache().getMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-users");
-            handle.getCache().remove(CacheGroup.GROUP_ID, old_name);
-            if (old_usernames != null) {
-                Iterator<String> I = old_usernames.iterator();
-                while (I.hasNext()) {
-                    String username = I.next();
+            Object oldName = handle.getCache().getMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-name");
+            List<String> oldUsernames = (List<String>) handle.getCache().getMetadata(CacheGroup.GROUP, group.getID(), "bifrost-cache.old-users");
+            handle.getCache().remove(CacheGroup.GROUP_ID, oldName);
+            if (oldUsernames != null) {
+                Iterator<String> iterator = oldUsernames.iterator();
+                while (iterator.hasNext()) {
+                    String username = iterator.next();
                     handle.getCache().remove(CacheGroup.USER_GROUP, username);
                 }
             }

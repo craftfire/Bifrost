@@ -365,12 +365,12 @@ public class ForumThread extends Message implements ViewsCounter {
             handle.getCache().clear(CacheGroup.THREAD_LIST);
             /* Passes through */
         case UPDATE:
-            Object old_username = handle.getCache().getMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-author");
-            Object old_boardid = handle.getCache().getMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-board");
-            handle.getCache().remove(CacheGroup.THREAD_COUNT, old_username);
-            handle.getCache().remove(CacheGroup.THREAD_LIST_USER, old_username);
-            handle.getCache().remove(CacheGroup.THREAD_LAST_USER, old_username);
-            handle.getCache().remove(CacheGroup.BOARD_THREADS, old_boardid);
+            Object oldUsername = handle.getCache().getMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-author");
+            Object oldBoardID = handle.getCache().getMetadata(CacheGroup.THREAD, thread.getID(), "bifrost-cache.old-board");
+            handle.getCache().remove(CacheGroup.THREAD_COUNT, oldUsername);
+            handle.getCache().remove(CacheGroup.THREAD_LIST_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.THREAD_LAST_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.BOARD_THREADS, oldBoardID);
             break;
         }
     }

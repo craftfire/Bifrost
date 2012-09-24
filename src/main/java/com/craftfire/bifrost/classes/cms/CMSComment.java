@@ -272,17 +272,17 @@ public class CMSComment extends Message {
             handle.getCache().clear(CacheGroup.COMMENT_LIST);
             /* Passes through */
         case UPDATE:
-            Object old_article = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-article");
-            Object old_username = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-author");
-            Object old_parent = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-parent");
-            handle.getCache().remove(CacheGroup.ARTICLE_COMMENTS, old_article);
-            handle.getCache().remove(CacheGroup.COMMENT_COUNT, old_article);
-            handle.getCache().remove(CacheGroup.COMMENT_LAST_ARTICLE, old_article);
-            handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, old_username);
-            handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, old_username);
-            handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, old_username);
-            handle.getCache().remove(CacheGroup.COMMENT_REPLIES, old_parent);
-            handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, old_parent);
+            Object oldArticle = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-article");
+            Object oldUsername = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-author");
+            Object oldParent = handle.getCache().getMetadata(CacheGroup.COMMENT, comment.getID(), "bifrost-cache.old-parent");
+            handle.getCache().remove(CacheGroup.ARTICLE_COMMENTS, oldArticle);
+            handle.getCache().remove(CacheGroup.COMMENT_COUNT, oldArticle);
+            handle.getCache().remove(CacheGroup.COMMENT_LAST_ARTICLE, oldArticle);
+            handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.COMMENT_REPLIES, oldParent);
+            handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, oldParent);
             break;
         }
     }

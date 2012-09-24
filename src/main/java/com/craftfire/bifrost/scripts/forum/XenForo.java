@@ -52,33 +52,18 @@ import com.craftfire.bifrost.script.ForumScript;
 
 //TODO: Convert arrays to use Result class
 public class XenForo extends ForumScript {
-    private final String scriptName = "xenforo";
-    private final String shortName = "xf";
-    private final String[] versionRanges = {"1.0.4", "1.1.2"};
     private String currentUsername = null;
 
     public XenForo(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
-    }
-
-    @Override
-    public String[] getVersionRanges() {
-        return this.versionRanges;
+        this.scriptName = "xenforo";
+        this.shortName = "xf";
+        this.versionRanges = new String[] {"1.0.4", "1.1.2"};
     }
 
     @Override
     public String getLatestVersion() {
-        return this.versionRanges[0];
-    }
-
-    @Override
-    public String getScriptName() {
-        return this.scriptName;
-    }
-
-    @Override
-    public String getScriptShortname() {
-        return this.shortName;
+        return this.versionRanges[1];
     }
 
     @Override

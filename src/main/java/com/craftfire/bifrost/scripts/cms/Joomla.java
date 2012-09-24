@@ -33,34 +33,17 @@ import com.craftfire.commons.managers.DataManager;
 import java.util.List;
 
 public class Joomla extends Script {
-    private final String scriptName = "joomla";
-    private final String shortName = "jom";
-    private final Encryption encryption = Encryption.SHA1; /*TODO*/
-    private final String[] versionRanges = {"1.0.4"}; /*TODO*/
-    private String currentUsername = null;
 
     public Joomla(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
-    }
-    public String[] getVersionRanges() {
-        return this.versionRanges;
+        this.scriptName = "dupe";
+        this.shortName = "dupe";
+        this.versionRanges = new String[] {"1.0.0"};
     }
 
     public String getLatestVersion() {
         /*TODO*/
         return this.versionRanges[0];
-    }
-
-    public Encryption getEncryption() {
-        return this.encryption;
-    }
-
-    public String getScriptName() {
-        return this.scriptName;
-    }
-
-    public String getScriptShortname() {
-        return this.shortName;
     }
 
     public boolean authenticate(String username, String password) {

@@ -262,12 +262,12 @@ public class ForumPost extends Message {
             handle.getCache().clear(CacheGroup.POST_LIST);
             /* Passes through */
         case UPDATE:
-            Object old_username = handle.getCache().getMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-author");
-            Object old_threadid = handle.getCache().getMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-thread");
-            handle.getCache().remove(CacheGroup.POST_COUNT, old_username);
-            handle.getCache().remove(CacheGroup.POST_LAST_USER, old_username);
-            handle.getCache().remove(CacheGroup.POST_LIST_USER, old_username);
-            handle.getCache().remove(CacheGroup.THREAD_POSTS, old_threadid);
+            Object oldUsername = handle.getCache().getMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-author");
+            Object oldThreadID = handle.getCache().getMetadata(CacheGroup.POST, post.getID(), "bifrost-cache.old-thread");
+            handle.getCache().remove(CacheGroup.POST_COUNT, oldUsername);
+            handle.getCache().remove(CacheGroup.POST_LAST_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.POST_LIST_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.THREAD_POSTS, oldThreadID);
             break;
         }
     }

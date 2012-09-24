@@ -36,35 +36,18 @@ import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.script.ForumScript;
 
 public class MyBB extends ForumScript {
-    private final String scriptName = "mybb";
-    private final String shortName = "mybb";
-    private final String[] versionRanges = {"1.6.8"};
-    private String currentUsername = null;
 
     public MyBB(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
-    }
-
-    @Override
-    public String[] getVersionRanges() {
-        return this.versionRanges;
+        this.scriptName = "mybb";
+        this.shortName = "mybb";
+        this.versionRanges = new String[] {"1.6.8"};
     }
 
     @Override
     public String getLatestVersion() {
         return this.versionRanges[0];
     }
-
-    @Override
-    public String getScriptName() {
-        return this.scriptName;
-    }
-
-    @Override
-    public String getScriptShortname() {
-        return this.shortName;
-    }
-
     @Override
     public boolean authenticate(String username, String password) {
         String passwordHash = this.getDataManager().getStringField("users", "password", "`username` = '" + username + "'");

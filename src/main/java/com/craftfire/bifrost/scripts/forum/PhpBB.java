@@ -41,19 +41,12 @@ import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.script.ForumScript;
 
 public class PhpBB extends ForumScript {
-    private final String scriptName = "phpbb";
-    private final String shortName = "phpbb";
-    private final String[] versionRanges = {"20.0.23", "3.0.10"};
-    private String membernamefield = "username", groupfield = "additional_groups";
-    private String currentUsername = null;
 
     public PhpBB(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
-    }
-
-    @Override
-    public String[] getVersionRanges() {
-        return this.versionRanges;
+        this.scriptName = "phpbb";
+        this.shortName = "phpbb";
+        this.versionRanges = new String[] {"2.0.23", "3.0.10"};
     }
 
     @Override
@@ -62,20 +55,10 @@ public class PhpBB extends ForumScript {
     }
 
     @Override
-    public String getScriptName() {
-        return this.scriptName;
-    }
-
-    @Override
-    public String getScriptShortname() {
-        return this.shortName;
-    }
-
-    @Override
     public boolean authenticate(String username, String password) {
         /*TODO*/
         String passwordHash = this.getDataManager().getStringField("users",
-                                                "user_password", "`" + this.membernamefield + "` = '" + username + "'");
+                                                                "user_password", "`username` = '" + username + "'");
         return hashPassword(username, password).equals(passwordHash);
     }
 

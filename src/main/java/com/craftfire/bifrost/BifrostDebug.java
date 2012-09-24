@@ -61,11 +61,11 @@ public class BifrostDebug {
         int count = 1;
         HashMap<Integer, Scripts> scriptsh = new HashMap<Integer, Scripts>();
         for (Scripts s : Scripts.values()) {
-            System.out.println("#" + count + " - " + s.toString() + newline);
+            System.out.print("#" + count + " - " + s.toString() + newline);
             scriptsh.put(count, s);
             count++;
         }
-        System.out.println(newline + "Please select a number for which script you wish to use." + newline);
+        System.out.print(newline + "Please select a number for which script you wish to use." + newline);
         InputStreamReader reader = new InputStreamReader(System.in);
         BufferedReader buf_reader = new BufferedReader(reader);
         int tmp;
@@ -74,14 +74,14 @@ public class BifrostDebug {
             tmp = Integer.parseInt(s.trim());
             Scripts ss = scriptsh.get(tmp);
             script = ss;
-            System.out.println(newline + "Selected " + ss.toString() + " as script." + newline);
-            System.out.println(seperate);
-            System.out.println("Please continue by typing the script version number (e.g. 1.0.1)" + newline);
+            System.out.print(newline + "Selected " + ss.toString() + " as script." + newline);
+            System.out.print(seperate);
+            System.out.print("Please continue by typing the script version number (e.g. 1.0.1)" + newline);
             String line = null;
             boolean valid = false;
             do {
                 if (line != null) {
-                    System.out.println(newline + "That was not a valid version number, please try again." + newline);
+                    System.out.print(newline + "That was not a valid version number, please try again." + newline);
                 }
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 line = br.readLine();
@@ -93,12 +93,12 @@ public class BifrostDebug {
                     }
                 } else {
                     version = "1.0.0";
-                    System.out.println(version);
+                    System.out.print(version);
                     valid = true;
                 }
             } while (!valid);
-            System.out.println(newline + script.toString() + " version set to " + version + "." + newline);
-            System.out.println(seperate);
+            System.out.print(newline + script.toString() + " version set to " + version + "." + newline);
+            System.out.print(seperate);
             ask("MySQL keepalive", "mysql_keepalive", "true");
             ask("MySQL timeout", "mysql_timeout", "0");
             ask("MySQL host", "mysql_host", "localhost");
@@ -139,7 +139,7 @@ public class BifrostDebug {
             }
             runTests();
         } catch (IOException ioe) {
-            System.out.println("IO exception = " + ioe);
+            System.out.print("IO exception = " + ioe);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -150,7 +150,7 @@ public class BifrostDebug {
         boolean valid = false;
         try {
             do {
-                System.out.println(newline + name + ": ");
+                System.out.print(newline + name + ": ");
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 line = br.readLine();
                 if (line != null && !line.isEmpty()) {
@@ -158,12 +158,12 @@ public class BifrostDebug {
                     valid = true;
                 } else {
                     data.put(key, defaultvalue);
-                    System.out.println(defaultvalue);
+                    System.out.print(defaultvalue);
                     valid = true;
                 }
             } while (!valid);
         } catch (IOException ioe) {
-            System.out.println("IO exception = " + ioe);
+            System.out.print("IO exception = " + ioe);
         }
     }
 
@@ -435,7 +435,7 @@ public class BifrostDebug {
     }
 
     public static void print(String string) {
-        System.out.println(string);
+        System.out.print(string);
     }
 
     public static void printResult(String function, String data) {

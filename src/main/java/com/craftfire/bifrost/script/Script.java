@@ -44,6 +44,8 @@ public class Script {
     private final Scripts script;
     private final DataManager dataManager;
     private final Cache cache;
+    public String[] versionRanges;
+    public String scriptName, shortName;
 
     protected Script(Scripts script, String version, DataManager dataManager) {
         this.version = version;
@@ -146,7 +148,7 @@ public class Script {
      * @return the version ranges
      */
     public String[] getVersionRanges()  {
-        return null;
+        return this.versionRanges;
     }
 
     /**
@@ -155,7 +157,7 @@ public class Script {
      * @return the script's full name
      */
     public String getScriptName() {
-        return null;
+        return this.scriptName;
     }
 
     /**
@@ -164,7 +166,7 @@ public class Script {
      * @return the script's short name
      */
     public String getScriptShortname() {
-        return null;
+        return this.shortName;
     }
 
     /**

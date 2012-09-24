@@ -43,7 +43,6 @@ public class ScriptUser implements IDable {
     private String username, title, nickname, realname, firstname, lastname, email, password, passwordsalt,
             statusmessage, avatarurl, profileurl, regip, lastip;
     private boolean activated, anonymous;
-    private List<Group> groups = new ArrayList<Group>();
     private final Script script;
 
     public ScriptUser(Script script, int userid, String username, String password) {
@@ -138,10 +137,6 @@ public class ScriptUser implements IDable {
 
     public List<Group> getGroups() throws UnsupportedMethod {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getUserGroups(this.username);
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
     }
 
     public String getEmail() {
@@ -330,8 +325,8 @@ public class ScriptUser implements IDable {
             handle.getCache().clear(CacheGroup.USER_COUNT);
             /* Passes through */
         case UPDATE:
-            Object old_username = handle.getCache().getMetadata(CacheGroup.USER, user.getID(), "bifrost-cache.old-username");
-            if (!user.getUsername().equals(old_username)) {
+            Object oldUsername = handle.getCache().getMetadata(CacheGroup.USER, user.getID(), "bifrost-cache.old-username");
+            if (!user.getUsername().equals(oldUsername)) {
                 handle.getCache().remove(CacheGroup.USER_IP, user.getUsername());
                 handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, user.getUsername());
                 handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, user.getUsername());
@@ -347,21 +342,21 @@ public class ScriptUser implements IDable {
                 handle.getCache().remove(CacheGroup.THREAD_LAST_USER, user.getUsername());
 
                 handle.getCache().remove(CacheGroup.USER_USERNAME, user.getID());
-                handle.getCache().remove(CacheGroup.IS_BANNED, old_username);
-                handle.getCache().remove(CacheGroup.IS_REGISTERED, old_username);
-                handle.getCache().remove(CacheGroup.USER_IP, old_username);
-                handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, old_username);
-                handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, old_username);
-                handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, old_username);
-                handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, old_username);
-                handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, old_username);
-                handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, old_username);
-                handle.getCache().remove(CacheGroup.POST_COUNT, old_username);
-                handle.getCache().remove(CacheGroup.POST_LIST_USER, old_username);
-                handle.getCache().remove(CacheGroup.POST_LAST_USER, old_username);
-                handle.getCache().remove(CacheGroup.THREAD_COUNT, old_username);
-                handle.getCache().remove(CacheGroup.THREAD_LIST_USER, old_username);
-                handle.getCache().remove(CacheGroup.THREAD_LAST_USER, old_username);
+                handle.getCache().remove(CacheGroup.IS_BANNED, oldUsername);
+                handle.getCache().remove(CacheGroup.IS_REGISTERED, oldUsername);
+                handle.getCache().remove(CacheGroup.USER_IP, oldUsername);
+                handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.COMMENT_COUNT_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.COMMENT_LIST_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.COMMENT_LAST_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.POST_COUNT, oldUsername);
+                handle.getCache().remove(CacheGroup.POST_LIST_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.POST_LAST_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.THREAD_COUNT, oldUsername);
+                handle.getCache().remove(CacheGroup.THREAD_LIST_USER, oldUsername);
+                handle.getCache().remove(CacheGroup.THREAD_LAST_USER, oldUsername);
             }
 
         }

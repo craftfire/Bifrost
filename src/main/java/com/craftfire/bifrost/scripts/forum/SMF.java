@@ -48,14 +48,14 @@ import com.craftfire.bifrost.script.ForumScript;
 
 //TODO: Convert arrays to use Result class
 public class SMF extends ForumScript {
-    private final String scriptName = "simplemachines";
-    private final String shortName = "smf";
-    private final String[] versionRanges = {"1.1.16", "2.0.2"};
     private String currentUsername = null;
     private String membernamefield = "member_name", groupfield = "additional_groups";
 
     public SMF(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
+        this.scriptName = "simplemachines";
+        this.shortName = "smf";
+        this.versionRanges = new String[] {"1.1.16", "2.0.2"};
         if (CraftCommons.inVersionRange(this.versionRanges[0], this.getVersion())) {
             this.membernamefield = this.membernamefield.replace("_", "");
             this.groupfield = this.groupfield.replace("_", "");
@@ -63,23 +63,8 @@ public class SMF extends ForumScript {
     }
 
     @Override
-    public String[] getVersionRanges() {
-        return this.versionRanges;
-    }
-
-    @Override
     public String getLatestVersion() {
         return this.versionRanges[1];
-    }
-
-    @Override
-    public String getScriptName() {
-        return this.scriptName;
-    }
-
-    @Override
-    public String getScriptShortname() {
-        return this.shortName;
     }
 
     @Override

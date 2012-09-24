@@ -332,14 +332,14 @@ public class CMSArticle extends Message implements ViewsCounter {
             handle.getCache().clear(CacheGroup.ARTICLE_LIST);
             /* Passes through */
         case UPDATE:
-            Object old_category = handle.getCache().getMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-category");
-            Object old_username = handle.getCache().getMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-author");
-            handle.getCache().remove(CacheGroup.CMSCAT_ARTICLES, old_category);
-            handle.getCache().remove(CacheGroup.ARTICLE_COUNT, old_category);
-            handle.getCache().remove(CacheGroup.ARTICLE_LAST_CATEGORY, old_category);
-            handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, old_username);
-            handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, old_username);
-            handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, old_username);
+            Object oldCategory = handle.getCache().getMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-category");
+            Object oldUsername = handle.getCache().getMetadata(CacheGroup.ARTICLE, article.getID(), "bifrost-cache.old-author");
+            handle.getCache().remove(CacheGroup.CMSCAT_ARTICLES, oldCategory);
+            handle.getCache().remove(CacheGroup.ARTICLE_COUNT, oldCategory);
+            handle.getCache().remove(CacheGroup.ARTICLE_LAST_CATEGORY, oldCategory);
+            handle.getCache().remove(CacheGroup.ARTICLE_LIST_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.ARTICLE_COUNT_USER, oldUsername);
+            handle.getCache().remove(CacheGroup.ARTICLE_LAST_USER, oldUsername);
             break;
         }
 
