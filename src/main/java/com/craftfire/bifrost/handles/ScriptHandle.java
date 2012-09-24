@@ -40,6 +40,8 @@ import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.Script;
 
 /**
+ * This class contains methods relevant to methods to use for a generic script.
+ *
  * @see Script
  */
 public class ScriptHandle {
@@ -50,9 +52,11 @@ public class ScriptHandle {
     private ScriptHandle instance;
 
     /**
-     * @param script  The script using the enum list, for example: Scripts.SMF.
-     * @param version The version that the user has set in his config.
-     * @throws com.craftfire.bifrost.exceptions.UnsupportedVersion if the input version is not found in the list of supported versions.
+     * Creates a ScriptHandle.
+     *
+     * @param script   the script using the enum list, for example: Scripts.SMF.
+     * @param version  the version that the user has set in his config.
+     * @throws         UnsupportedVersion if the input version is not found in the list of supported versions.
      */
     public ScriptHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.scriptName = script;
@@ -107,6 +111,14 @@ public class ScriptHandle {
 
     public Cache getCache() {
         return this.script.getCache();
+    }
+
+    public Ban newBan(String name, String email, String ip) {
+        return new Ban(this.getScript(), name, email, ip);
+    }
+
+    public Group newGroup(String groupname) {
+        return new Group(this.getScript(), groupname);
     }
 
     public PrivateMessage newPrivateMessage(ScriptUser sender, List<ScriptUser> recipients) {

@@ -32,6 +32,9 @@ import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 
+/**
+ * This class contains methods relevant to direct methods for each cms script.
+ */
 public class CMSScript extends Script {
     protected CMSScript(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);

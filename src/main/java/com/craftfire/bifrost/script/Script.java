@@ -627,7 +627,7 @@ public class Script {
     /**
      * Returns the complete count of how many groups the script has.
      *
-     * @return the amount of how how many groups the script has, returns 0 if none
+     * @return the amount of how how many groups the script has, returns <code>0</code> if none
      * @throws UnsupportedMethod if the method is not supported by the script
      */
     public int getGroupCount() throws UnsupportedMethod {

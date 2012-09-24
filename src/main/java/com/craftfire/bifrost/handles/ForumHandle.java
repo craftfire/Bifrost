@@ -38,6 +38,11 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.ForumScript;
 
+/**
+ * This class contains methods relevant to methods to use for a forum script.
+ *
+ * @see ForumScript
+ */
 public class ForumHandle extends ScriptHandle {
     public ForumHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         super(script, version, dataManager);
@@ -45,14 +50,6 @@ public class ForumHandle extends ScriptHandle {
 
     public ForumScript getForumScript() {
         return (ForumScript) this.getScript();
-    }
-
-    public Ban newBan(String name, String email, String ip) {
-        return new Ban(this.getScript(), name, email, ip);
-    }
-
-    public Group newGroup(String groupname) {
-        return new Group(this.getScript(), groupname);
     }
 
     public ForumPost newPost(int threadid, int boardid) {

@@ -38,6 +38,11 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.script.CMSScript;
 
+/**
+ * This class contains methods relevant to methods to use for a cms script.
+ *
+ * @see CMSScript
+ */
 public class CMSHandle extends ScriptHandle {
 
     public CMSHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
@@ -46,14 +51,6 @@ public class CMSHandle extends ScriptHandle {
 
     public CMSScript getCMSScript() {
         return (CMSScript) this.getScript();
-    }
-
-    public Ban newBan(String name, String email, String ip) {
-        return new Ban(this.getScript(), name, email, ip);
-    }
-
-    public Group newGroup(String groupname) {
-        return new Group(this.getScript(), groupname);
     }
 
     public CMSComment newComment(int articleid) {
