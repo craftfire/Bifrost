@@ -192,7 +192,6 @@ public class BifrostScriptTest {
             printResult("getScriptShortname", handle.getScriptShortname(), true);
             printResult("getLatestVersion", handle.getLatestVersion(), true);
             printResult("getVersion", handle.getVersion(), true);
-            printResult("getEncryption", "" + handle.getEncryption(), true);
             printResult("getHomeURL", handle.getHomeURL(), true);
             printResult("getBanCount", "" + handle.getBanCount(), true);
             printResult("getBans", handle.getBans(0));
