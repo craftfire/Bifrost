@@ -174,14 +174,14 @@ public class PrivateMessage extends Message {
         }
         if (privateMessage.getRecipients() != null) {
             List<String> recipientNames = new ArrayList<String>();
-            Iterator<ScriptUser> I = privateMessage.getRecipients().iterator();
-            while (I.hasNext()) {
-                ScriptUser user = I.next();
+            Iterator<ScriptUser> iterator = privateMessage.getRecipients().iterator();
+            while (iterator.hasNext()) {
+                ScriptUser user = iterator.next();
                 if (user != null) {
                     recipientNames.add(user.getUsername());
                 }
             }
-            handle.getCache().setMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients", privateMessage.getRecipients());
+            handle.getCache().setMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients", recipientNames);
         } else {
             handle.getCache().removeMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients");
         }
@@ -213,9 +213,9 @@ public class PrivateMessage extends Message {
             handle.getCache().remove(CacheGroup.PM_SENT_COUNT, privateMessage.getAuthor().getUsername());
         }
         if (privateMessage.getRecipients() != null) {
-            Iterator<ScriptUser> I = privateMessage.getRecipients().iterator();
-            while (I.hasNext()) {
-                ScriptUser user = I.next();
+            Iterator<ScriptUser> iterator = privateMessage.getRecipients().iterator();
+            while (iterator.hasNext()) {
+                ScriptUser user = iterator.next();
                 if (user != null) {
                     handle.getCache().remove(CacheGroup.PM_RECEIVED, user.getUsername());
                     handle.getCache().remove(CacheGroup.PM_RECEIVED_COUNT, user.getUsername());
@@ -230,16 +230,16 @@ public class PrivateMessage extends Message {
             handle.getCache().clear(CacheGroup.PM_LIST);
             /* Passes through */
         case UPDATE:
-            Object old_parentid = handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-parent");
-            Object old_username = handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-author");
+            Object oldParentid = handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-parent");
+            Object oldUsername = handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-author");
             List<String> old_recipients = (List<String>) handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients");
-            handle.getCache().remove(CacheGroup.PM_REPLIES, old_parentid);
-            handle.getCache().remove(CacheGroup.PM_SENT, old_username);
-            handle.getCache().remove(CacheGroup.PM_SENT_COUNT, old_username);
+            handle.getCache().remove(CacheGroup.PM_REPLIES, oldParentid);
+            handle.getCache().remove(CacheGroup.PM_SENT, oldUsername);
+            handle.getCache().remove(CacheGroup.PM_SENT_COUNT, oldUsername);
             if (old_recipients != null) {
-                Iterator<String> I = old_recipients.iterator();
-                while (I.hasNext()) {
-                    String username = I.next();
+                Iterator<String> iterator = old_recipients.iterator();
+                while (iterator.hasNext()) {
+                    String username = iterator.next();
                     handle.getCache().remove(CacheGroup.PM_RECEIVED, username);
                     handle.getCache().remove(CacheGroup.PM_RECEIVED_COUNT, username);
                 }
