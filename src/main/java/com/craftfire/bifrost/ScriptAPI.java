@@ -33,6 +33,7 @@ import com.craftfire.bifrost.handles.CMSHandle;
 import com.craftfire.bifrost.handles.ForumHandle;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
+import com.craftfire.bifrost.scripts.cms.WordPress;
 import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
 
@@ -85,6 +86,8 @@ public class ScriptAPI {
 
     public static Script setScript(Scripts scriptName, String version, DataManager dataManager) {
         switch (scriptName) {
+            case WP:
+                return new WordPress(scriptName, version, dataManager);
             case SMF:
                 return new SMF(scriptName, version, dataManager);
             case XF:

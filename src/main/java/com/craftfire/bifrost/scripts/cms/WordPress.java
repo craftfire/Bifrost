@@ -21,6 +21,7 @@ package com.craftfire.bifrost.scripts.cms;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -132,7 +133,7 @@ public class WordPress extends CMSScript {
     @Override
     public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
         init();
-        return this.handle.getUser(this.dataManager.getIntegerField("SELEC `ID` FROM `" + this.dataManager.getPrefix() + "users` ORDER BY `user_registered` LIMIT 1"));
+        return this.handle.getUser(this.dataManager.getIntegerField("SELECT `ID` FROM `" + this.dataManager.getPrefix() + "users` ORDER BY `user_registered` LIMIT 1"));
     }
 
     @Override
@@ -217,8 +218,64 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public void createUser(ScriptUser user) {
-        /* TODO: Delete this method or implement it */
+    public void createUser(ScriptUser user) throws SQLException, UnsupportedMethod {
+        init();
+        HashMap<String, Object> data;
+        if (CraftCommons.unixHashIdentify(user.getPassword()) == null) {
+            user.setPassword(hashPassword(null, user.getPassword()));
+        }
+        user.setLastLogin(new Date());
+        // BUG: Resets the date to zero.
+        user.setRegDate(new Date());
+        data = new HashMap<String, Object>();
+        data.put("user_login", user.getUsername());
+        data.put("user_pass", user.getPassword());
+        data.put("user_nicename", user.getUsername().toLowerCase());
+        data.put("user_email", user.getEmail());
+        data.put("user_registered", user.getRegDate());
+        data.put("user_status", 0);
+        data.put("display_name", user.getUsername());
+        this.dataManager.insertFields(data, "users");
+        data.clear();
+        user.setID(this.dataManager.getLastID("ID", "users"));
+        data.put("user_id", user.getID());
+        data.put("meta_key", "nickname");
+        data.put("meta_value", user.getNickname());
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "first_name");
+        data.put("meta_value", user.getFirstName());
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "last_name");
+        data.put("meta_value", user.getLastName());
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "rich_editing");
+        data.put("meta_value", true);
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "comment_shortcuts");
+        data.put("meta_value", false);
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "admin_color");
+        data.put("meta_value", "fresh");
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "show_admin_bar_front");
+        data.put("meta_value", true);
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "use_ssl");
+        data.put("meta_value", 0);
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "default_password_nag");
+        data.put("meta_value", 1);
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "wp_user_level");
+        data.put("meta_value", 0);
+        this.dataManager.insertFields(data, "usermeta");
+        data.put("meta_key", "wp_capabilities");
+
+        // TODO: Should we add some default for groups?
+        setUserGroups(user.getUsername(), user.getGroups());
+        // data.put("meta_value", "a:1:{s:10:\"subscriber\";s:1:\"1\";}");
+
+        this.dataManager.insertFields(data, "usermeta");
     }
 
     @Override
