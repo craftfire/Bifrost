@@ -37,12 +37,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.craftfire.commons.enums.DataType;
-import com.craftfire.commons.managers.DataManager;
-
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
+
 import com.craftfire.bifrost.classes.cms.CMSUser;
 import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
@@ -60,6 +58,8 @@ import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.handles.CMSHandle;
 import com.craftfire.bifrost.handles.ForumHandle;
 import com.craftfire.bifrost.handles.ScriptHandle;
+import com.craftfire.commons.enums.DataType;
+import com.craftfire.commons.managers.DataManager;
 
 public class BifrostScriptTest {
     static final String newline = System.getProperty("line.separator");
@@ -914,6 +914,7 @@ public class BifrostScriptTest {
     public static void printResult(String function, String data, boolean assumeValid) {
         if (assumeValid) {
             print(function + "() = " + data);
+            return;
         }
         String line = "NOT SUPPORTED";
         String prefix = "-";
@@ -928,6 +929,7 @@ public class BifrostScriptTest {
         String line = "[";
         if (data == null) {
             printResult(function, "");
+            return;
         }
         Iterator<?> i = data.iterator();
         while (i.hasNext()) {

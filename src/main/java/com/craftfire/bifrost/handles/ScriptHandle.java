@@ -224,7 +224,7 @@ public class ScriptHandle {
             return ScriptUser.getCache(this, userid);
         }
         ScriptUser user = this.script.getUser(userid);
-        ScriptUser.addCache(this, user);
+        ScriptUser.addCache(this, userid, user);
         return user;
     }
 

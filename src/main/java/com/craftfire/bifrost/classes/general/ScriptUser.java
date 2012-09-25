@@ -24,8 +24,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import com.craftfire.commons.CraftCommons;
-
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
@@ -34,6 +32,7 @@ import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
+import com.craftfire.commons.CraftCommons;
 
 public class ScriptUser implements IDable {
     private int userid;
@@ -289,7 +288,15 @@ public class ScriptUser implements IDable {
     }
 
     public static void addCache(ScriptHandle handle, ScriptUser scriptUser) {
-        handle.getCache().putMetadatable(CacheGroup.USER, scriptUser.getID(), scriptUser);
+        ScriptUser.addCache(handle, 0, scriptUser);
+    }
+    public static void addCache(ScriptHandle handle, int id, ScriptUser scriptUser) {
+        if (scriptUser == null) {
+            if (id != 0) {
+                handle.getCache().putMetadatable(CacheGroup.USER, id, scriptUser);
+            }
+            return;
+        }
         handle.getCache().setMetadata(CacheGroup.USER, scriptUser.getID(), "bifrost-cache.old-username", scriptUser.getUsername());
     }
 
