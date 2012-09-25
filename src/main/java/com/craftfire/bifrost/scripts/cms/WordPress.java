@@ -19,35 +19,68 @@
 */
 package com.craftfire.bifrost.scripts.cms;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.database.DataRow;
+import com.craftfire.commons.database.Results;
+import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
-import com.craftfire.bifrost.script.CMSScript;
-import com.craftfire.bifrost.classes.general.Group;
-import com.craftfire.bifrost.classes.general.Ban;
-import com.craftfire.bifrost.classes.general.PrivateMessage;
-import com.craftfire.bifrost.classes.general.ScriptUser;
+import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
 import com.craftfire.bifrost.classes.cms.CMSUser;
+import com.craftfire.bifrost.classes.general.Ban;
+import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.PrivateMessage;
+import com.craftfire.bifrost.classes.general.ScriptUser;
+import com.craftfire.bifrost.enums.CacheCleanupReason;
+import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.handles.CMSHandle;
+import com.craftfire.bifrost.script.CMSScript;
 
 /**
  * This class contains all the methods for WordPress.
  */
 public class WordPress extends CMSScript {
+    private final String scriptName = "wordpress";
+    private final String shortName = "wp";
+    private final Encryption encryption = Encryption.PHPASS;
+    private final String[] versionRanges = { "3.4.0", "3.4.1" }; // TODO: Does it work with other versions?
+    private DataManager dataManager;
+    private CMSHandle handle;
+    private boolean init;
 
     public WordPress(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
-        /* TODO: Edit variables */
-        this.setScriptName("dupe");
-        this.setShortName("dupe");
-        this.setVersionRanges(new String[] {"1.0.0"});
+        this.dataManager = dataManager;
     }
 
     //Start Generic Methods
+
+    // FIXME: Workaround to get references to some objects that are not
+    // obtainable in constructor.
+    public void init() {
+        if (this.init) {
+            return;
+        }
+        this.handle = Bifrost.getInstance().getScriptAPI().getCMSHandle(Scripts.WP);
+        this.init = true;
+    }
+
+    @Override
+    public String[] getVersionRanges() {
+        return this.versionRanges;
+    }
 
     @Override
     public String getLatestVersion() {
@@ -56,50 +89,131 @@ public class WordPress extends CMSScript {
     }
 
     @Override
+    public String getScriptName() {
+        return this.scriptName;
+    }
+
+    @Override
+    public String getScriptShortname() {
+        return this.shortName;
+    }
+
+    @Override
     public boolean authenticate(String username, String password) {
-        /* TODO: Delete this method or implement it */
-        return false;
+        init();
+        String hash = this.dataManager.getStringField("users", "user_pass", "`user_login` = '" + username + "'");
+        if (hash == null) {
+            return false;
+        }
+        return hashPassword(hash, password).equals(hash);
     }
 
     @Override
     public String hashPassword(String salt, String password) {
-        /* TODO: Delete this method or implement it */
-        return null;
+        String hash = CraftCommons.encrypt(Encryption.PHPASS, password, salt);
+        if (hash.startsWith("*")) {
+            hash = CraftCommons.encrypt(CraftCommons.unixHashIdentify(salt), password, salt);
+        }
+        return hash;
     }
 
     @Override
     public String getUsername(int userid) {
-        /* TODO: Delete this method or implement it */
-        return null;
+        init();
+        return this.dataManager.getStringField("users", "user_login", "`ID` = '" + userid + "'");
     }
 
     @Override
     public int getUserID(String username) {
-        /* TODO: Delete this method or implement it */
-        return 0;
+        init();
+        return this.dataManager.getIntegerField("users", "ID", "`user_login` = '" + username + "'");
     }
 
     @Override
-    public CMSUser getUser(String username) {
-        /* TODO: Delete this method or implement it */
+    public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
+        init();
+        return this.handle.getUser(this.dataManager.getIntegerField("SELEC `ID` FROM `" + this.dataManager.getPrefix() + "users` ORDER BY `user_registered` LIMIT 1"));
+    }
+
+    @Override
+    public CMSUser getUser(String username) throws UnsupportedMethod, SQLException {
+        init();
+        return this.handle.getUser(getUserID(username));
+    }
+
+    @Override
+    public CMSUser getUser(int userid) throws SQLException {
+        init();
+        if (this.dataManager.exist("users", "ID", userid)) {
+            CMSUser user = new CMSUser(this, userid, null, null);
+            Results res = this.dataManager.getResults("SELECT * FROM `" + this.dataManager.getPrefix() + "users` WHERE `ID` = '" + userid + "' LIMIT 1");
+            if (res != null && res.getFirstResult() != null) {
+                DataRow record = res.getFirstResult();
+                String lastlogin;
+                String activation = this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + userid + "' AND `meta_key` = 'uae_user_activation_code'");
+                if (activation == null || activation.equalsIgnoreCase("active")) {
+                    user.setActivated(true);
+                } else {
+                    user.setActivated(false);
+                }
+                user.setEmail(record.getStringField("user_email"));
+                user.setGender(Gender.UNKNOWN);
+                user.setRegDate(record.getDateField("user_registered"));
+                user.setPassword(record.getStringField("user_pass"));
+                user.setUsername(record.getStringField("user_login"));
+                user.setAvatarURL("http://www.gravatar.com/avatar/" + CraftCommons.encrypt(Encryption.MD5, record.getStringField("user_email").toLowerCase()));
+                user.setFirstName(this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'first_name'"));
+                user.setLastName(this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_name'"));
+                user.setRealName(user.getFirstName() + user.getLastName());
+                user.setNickname(this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'nickname'"));
+                lastlogin = this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_user_login'");
+                if (!CraftCommons.isLong(lastlogin)) {
+                    lastlogin = this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'wp-last-login'");
+                }
+                if (CraftCommons.isLong(lastlogin)) {
+                    user.setLastLogin(new java.util.Date(Long.parseLong(lastlogin)));
+                }
+                return user;
+            }
+        }
         return null;
     }
 
     @Override
-    public CMSUser getUser(int userid) {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
+    public void updateUser(ScriptUser user) throws SQLException {
+        init();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("user_login", user.getUsername());
+        data.put("user_email", user.getEmail());
+        if (user.getRegDate() != null) {
+            // BUG: Resets the date to zero.
+            data.put("user_registered", new java.sql.Date(user.getRegDate().getTime()));
+        }
+        if (CraftCommons.unixHashIdentify(user.getPassword()) == null) {
+            user.setPassword(hashPassword(null, user.getPassword()));
+            data.put("user_pass", user.getPassword());
+        }
+        this.dataManager.updateFields(data, "users", "`ID` = '" + user.getID() + "'");
+        data.clear();
 
-    @Override
-    public CMSUser getLastRegUser() {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
-
-    @Override
-    public void updateUser(ScriptUser user) {
-        /* TODO: Delete this method or implement it */
+        data.put("meta_value", user.getNickname());
+        this.dataManager.updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'nickname'");
+        data.put("meta_value", user.getFirstName());
+        this.dataManager.updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'first_name'");
+        data.put("meta_value", user.getLastName());
+        this.dataManager.updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_name'");
+        if (user.getLastLogin() != null) {
+            data.put("meta_value", String.valueOf(user.getLastLogin().getTime()));
+            this.dataManager.updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_user_login'");
+            this.dataManager.updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'wp-last-login'");
+        }
+        data.clear();
+        // TODO: Should we skip setting groups if no groups are cached?
+        try {
+            setUserGroups(user.getUsername(), user.getGroups());
+        } catch (UnsupportedMethod e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -136,6 +250,56 @@ public class WordPress extends CMSScript {
         /* TODO: Delete this method or implement it */
         return null;
     }
+
+    public void setUserGroups(String username, List<Group> groups)
+            throws SQLException {
+        init();
+        int userid = this.getUserID(username);
+        Map<String, String> capmap = new HashMap<String, String>();
+        List<String> adminlist = null;
+        if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
+            String admins = this.dataManager.getStringField("sitemeta", "meta_value", "`meta_key` = 'site_admins'");
+            Object temp = CraftCommons.getUtil().phpUnserialize(admins);
+            if (temp instanceof Map<?,?>) {
+                @SuppressWarnings("unchecked")
+                Map<Object, String> adminmap = (Map<Object, String>) temp;
+                adminlist = new ArrayList<String>();
+                Iterator<Object> I1 = adminmap.keySet().iterator();
+                while (I1.hasNext()) {
+                    adminlist.add(adminmap.get(I1.next()));
+                }
+                adminlist.remove(username);
+            }
+        }
+        Iterator<Group> I = groups.iterator();
+        while (I.hasNext()) {
+            Group g = I.next();
+            if (g.getID() == 6) {
+                if (adminlist != null) {
+                    adminlist.add(username);
+                }
+            } else {
+                String gname = g.getName().toLowerCase();
+                capmap.put(gname, "1");
+            }
+        }
+        String capabilities = CraftCommons.getUtil().phpSerialize(capmap);
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("meta_value", capabilities);
+        this.dataManager.updateFields(data, "usermeta", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
+        if (adminlist != null) {
+            String admins = CraftCommons.getUtil().phpSerialize(adminlist);
+            data.put("meta_value", admins);
+            this.dataManager.updateFields(data, "sitemeta", "`meta_key` = 'site_admins'");
+        }
+        I = groups.iterator();
+        while (I.hasNext()) {
+            Group.cleanupCache(this.handle, I.next(), CacheCleanupReason.UPDATE);
+            // TODO: Isn't it already done in all ScriptHandle methods that cause this method to be called?
+        }
+        // getCache().getCacheManager().remove(CacheGroup.USER_GROUP.toString(), username);
+    }
+
 
     @Override
     public void updateGroup(Group group) {
@@ -178,18 +342,6 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public int getPMCount() {
-        /* TODO: Delete this method or implement it */
-        return 0;
-    }
-
-    @Override
-    public int getPMReplyCount(int pmid) {
-        /* TODO: Delete this method or implement it */
-        return 0;
-    }
-
-    @Override
     public int getPMSentCount(String username) {
         /* TODO: Delete this method or implement it */
         return 0;
@@ -209,6 +361,24 @@ public class WordPress extends CMSScript {
     @Override
     public void createPrivateMessage(PrivateMessage privateMessage) {
         /* TODO: Delete this method or implement it */
+    }
+
+    @Override
+    public int getUserCount() {
+        /*TODO*/
+        return 0;
+    }
+
+    @Override
+    public int getGroupCount() {
+        /*TODO*/
+        return 0;
+    }
+
+    @Override
+    public String getHomeURL() {
+        /*TODO*/
+        return null;
     }
 
     @Override
@@ -249,24 +419,6 @@ public class WordPress extends CMSScript {
     public boolean isRegistered(String username) {
         /* TODO: Delete this method or implement it */
         return false;
-    }
-
-    @Override
-    public int getUserCount() {
-        /* TODO: Delete this method or implement it */
-        return 0;
-    }
-
-    @Override
-    public int getGroupCount() {
-        /* TODO: Delete this method or implement it */
-        return 0;
-    }
-
-    @Override
-    public String getHomeURL() {
-        /* TODO: Delete this method or implement it */
-        return null;
     }
 
     //End Generic Script Methods
