@@ -38,9 +38,7 @@ import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
 import com.craftfire.bifrost.classes.cms.CMSUser;
-import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
-import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.Gender;
@@ -279,37 +277,151 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public List<Group> getGroups(int limit) {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public List<Group> getGroups(int limit) throws UnsupportedMethod, SQLException {
+        return getGroups(limit, false);
+    }
+
+    public List<Group> getGroups(int limit, boolean namesonly) throws UnsupportedMethod, SQLException {
+        init();
+        List<Group> groups = new ArrayList<Group>();
+        if (limit > getGroupCount() | limit <= 0) {
+            limit = getGroupCount();
+        }
+
+        // GroupID 0 might be used for none group if needed.
+        for (int i = 1; i <= limit; ++i) {
+            if (namesonly) {
+                groups.add(getGroup(i, true));
+            } else {
+                groups.add(this.handle.getGroup(i));
+            }
+        }
+        return groups;
     }
 
     @Override
-    public int getGroupID(String group) {
-        /* TODO: Delete this method or implement it */
+    public int getGroupID(String group) throws UnsupportedMethod, SQLException {
+        init();
+        List<Group> groups = getGroups(0, true);
+        for (Group grp : groups) {
+            if (grp.getName().equalsIgnoreCase(group)) {
+                return grp.getID();
+            }
+        }
         return 0;
     }
 
     @Override
-    public Group getGroup(int groupid) {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public Group getGroup(int groupid) throws UnsupportedMethod, SQLException {
+        return getGroup(groupid, false);
+    }
+
+    public Group getGroup(int groupid, boolean namesonly) throws UnsupportedMethod, SQLException {
+        String groupname = "";
+        Group group;
+        switch (groupid) {
+        case 1:
+            groupname = "Subscriber";
+            break;
+        case 2:
+            groupname = "Contributor";
+            break;
+        case 3:
+            groupname = "Author";
+            break;
+        case 4:
+            groupname = "Editor";
+            break;
+        case 5:
+            groupname = "Administrator";
+            break;
+        case 6:
+            groupname = "Super Admin";
+            break;
+        default:
+            return null;
+        }
+        group = new Group(this, groupid, groupname);
+        if (namesonly) {
+            return group;
+        }
+        init();
+        List<ScriptUser> userlist = new ArrayList<ScriptUser>();
+        if (groupid == 6) {
+            if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
+                String admins = this.dataManager.getStringField("sitemeta", "meta_value", "`meta_key` = 'site_admins'");
+                @SuppressWarnings("unchecked")
+                Map<Object, String> adminmap = (Map<Object, String>) CraftCommons.getUtil().phpUnserialize(admins);
+                Iterator<String> I = adminmap.values().iterator();
+                while (I.hasNext()) {
+                    userlist.add(this.handle.getUser(I.next()));
+                }
+            } else {
+                return null;
+            }
+        } else {
+            Results results = this.dataManager.getResults("SELECT `meta_value`, `user_id` FROM `" + this.dataManager.getPrefix() + "usermeta` WHERE `meta_key` = 'wp_capabilities'");
+            List<DataRow> records = results.getArray();
+            Iterator<DataRow> I = records.iterator();
+            while (I.hasNext()) {
+                DataRow d = I.next();
+                String capabilities = d.getStringField("meta_value");
+                int userid = d.getIntField("user_id");
+                Map<String, String> capmap = null;
+                try {
+                    capmap = (Map<String, String>) CraftCommons.getUtil().phpUnserialize(capabilities);
+                } catch (IllegalStateException e) {
+                    continue;
+                }
+                String gname = groupname.toLowerCase();
+                if (capmap.containsKey(gname) && capmap.get(gname).equals("1")) {
+                    userlist.add(this.handle.getUser(userid));
+                }
+            }
+            group.setUsers(userlist);
+            group.setUserCount(userlist.size());
+        }
+        return group;
     }
 
     @Override
-    public Group getGroup(String group) {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public Group getGroup(String group) throws UnsupportedMethod, SQLException {
+        return getGroup(getGroupID(group));
     }
 
     @Override
-    public List<Group> getUserGroups(String username) {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public List<Group> getUserGroups(String username) throws SQLException, UnsupportedMethod {
+        init();
+        int userid = this.handle.getUserID(username);
+        String capabilities = this.dataManager.getStringField("usermeta", "meta_value", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
+        Map<Object, Object> capmap = null;
+        if (capabilities != null && !capabilities.isEmpty()) {
+            capmap = (Map<Object, Object>) CraftCommons.getUtil().phpUnserialize(capabilities);
+        }
+        List<Group> allGroups = this.handle.getGroups(0);
+        List<Group> uGroups = new ArrayList<Group>();
+        Iterator<Group> I = allGroups.iterator();
+        while (I.hasNext()) {
+            Group g = I.next();
+            if (g.getID() == 6) {
+                if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
+                    String admins = this.dataManager.getStringField("sitemeta", "meta_value", "`meta_key` = 'site_admins'");
+                    Map<Object, Object> adminmap = (Map<Object, Object>) CraftCommons.getUtil().phpUnserialize(admins);
+                    if (adminmap.containsValue(username)) {
+                        uGroups.add(g);
+                    }
+                }
+            } else if (capmap != null) {
+                String gname = g.getName().toLowerCase();
+                if (capmap.containsKey(gname) && capmap.get(gname).equals("1")) {
+                    uGroups.add(g);
+                }
+            }
+        }
+        return uGroups;
     }
 
-    public void setUserGroups(String username, List<Group> groups)
-            throws SQLException {
+    public void setUserGroups(String username, List<Group> groups) throws SQLException {
         init();
         int userid = this.getUserID(username);
         Map<String, String> capmap = new HashMap<String, String>();
@@ -359,65 +471,45 @@ public class WordPress extends CMSScript {
 
 
     @Override
-    public void updateGroup(Group group) {
-        /* TODO: Delete this method or implement it */
-    }
-
-    @Override
-    public void createGroup(Group group) {
-        /* TODO: Delete this method or implement it */
-    }
-
-    @Override
-    public PrivateMessage getPM(int pmid) {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
-
-    @Override
-    public List<PrivateMessage> getPMs(int limit) {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
-
-    @Override
-    public List<PrivateMessage> getPMReplies(int pmid, int limit) {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
-
-    @Override
-    public List<PrivateMessage> getPMsSent(String username, int limit) {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
-
-    @Override
-    public List<PrivateMessage> getPMsReceived(String username, int limit) {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
-
-    @Override
-    public int getPMSentCount(String username) {
-        /* TODO: Delete this method or implement it */
-        return 0;
-    }
-
-    @Override
-    public int getPMReceivedCount(String username) {
-        /* TODO: Delete this method or implement it */
-        return 0;
-    }
-
-    @Override
-    public void updatePrivateMessage(PrivateMessage privateMessage) {
-        /* TODO: Delete this method or implement it */
-    }
-
-    @Override
-    public void createPrivateMessage(PrivateMessage privateMessage) {
-        /* TODO: Delete this method or implement it */
+    public void updateGroup(Group group) throws UnsupportedMethod, SQLException {
+        init();
+        if (!getGroup(group.getID(), true).getName().equalsIgnoreCase(group.getName())) {
+            throw new UnsupportedMethod("The script doesn't support changing group names or IDs.");
+        }
+        if (group.getID() == 6) {
+            if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
+                List<String> adminlist = new ArrayList<String>();
+                Iterator<ScriptUser> I = group.getUsers().iterator();
+                while (I.hasNext()) {
+                    adminlist.add(I.next().getUsername());
+                }
+                String admins = CraftCommons.getUtil().phpSerialize(adminlist);
+                HashMap<String, Object> data = new HashMap<String, Object>();
+                data.put("meta_value", admins);
+                this.dataManager.updateFields(data, "sitemeta", "`meta_key` = 'site_admins'");
+            }
+        } else {
+            List<ScriptUser> oldUsers = new ArrayList<ScriptUser>(getGroup(group.getID()).getUsers());
+            List<ScriptUser> newUsers = new ArrayList<ScriptUser>(group.getUsers());
+            List<ScriptUser> unchangedUsers = new ArrayList<ScriptUser>(oldUsers);
+            unchangedUsers.retainAll(newUsers);
+            oldUsers.removeAll(unchangedUsers);
+            newUsers.removeAll(unchangedUsers);
+            Iterator<ScriptUser> iOld = oldUsers.iterator();
+            while (iOld.hasNext()) {
+                ScriptUser u = iOld.next();
+                List<Group> groups = this.handle.getUserGroups(u.getUsername());
+                groups.remove(group);
+                setUserGroups(u.getUsername(), groups);
+            }
+            Iterator<ScriptUser> iNew = newUsers.iterator();
+            while (iNew.hasNext()) {
+                ScriptUser u = iNew.next();
+                List<Group> groups = this.handle.getUserGroups(u.getUsername());
+                groups.add(group);
+                setUserGroups(u.getUsername(), groups);
+            }
+        }
     }
 
     @Override
@@ -428,54 +520,28 @@ public class WordPress extends CMSScript {
 
     @Override
     public int getGroupCount() {
-        /*TODO*/
-        return 0;
+        /*
+         * 6 WordPress roles: Subscriber, Contributor, Author, Editor, Administrator, Super Admin
+         */
+        init();
+        if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
+            // Super Admin doesn't always exist.
+            return 6;
+        } else {
+            return 5;
+        }
     }
 
     @Override
     public String getHomeURL() {
-        /*TODO*/
-        return null;
-    }
-
-    @Override
-    public List<String> getIPs(String username) {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
-
-    @Override
-    public List<Ban> getBans(int limit) {
-        /* TODO: Delete this method or implement it */
-        return null;
-    }
-
-    @Override
-    public void updateBan(Ban ban) {
-        /* TODO: Delete this method or implement it */
-    }
-
-    @Override
-    public void addBan(Ban ban) {
-        /* TODO: Delete this method or implement it */
-    }
-
-    @Override
-    public int getBanCount() {
-        /* TODO: Delete this method or implement it */
-        return 0;
-    }
-
-    @Override
-    public boolean isBanned(String string) {
-        /* TODO: Delete this method or implement it */
-        return false;
+        init();
+        return this.dataManager.getStringField("options", "option_value", "`option_name` = 'siteurl'");
     }
 
     @Override
     public boolean isRegistered(String username) {
-        /* TODO: Delete this method or implement it */
-        return false;
+        init();
+        return this.dataManager.exist("users", "user_login", username);
     }
 
     //End Generic Script Methods
