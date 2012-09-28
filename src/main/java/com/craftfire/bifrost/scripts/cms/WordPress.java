@@ -421,8 +421,12 @@ public class WordPress extends CMSScript {
         return uGroups;
     }
 
-    public void setUserGroups(String username, List<Group> groups) throws SQLException {
+    public void setUserGroups(String username, List<Group> groups) throws SQLException, UnsupportedMethod {
         init();
+        if (groups == null) {
+            groups = new ArrayList<Group>();
+            groups.add(this.handle.getGroup(1));
+        }
         int userid = this.getUserID(username);
         Map<String, String> capmap = new HashMap<String, String>();
         List<String> adminlist = null;
