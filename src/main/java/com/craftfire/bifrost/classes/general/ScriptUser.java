@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import com.craftfire.commons.CraftCommons;
+
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
@@ -32,7 +34,6 @@ import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.handles.ScriptHandle;
 import com.craftfire.bifrost.script.Script;
-import com.craftfire.commons.CraftCommons;
 
 public class ScriptUser implements IDable {
     private int userid;
@@ -133,7 +134,7 @@ public class ScriptUser implements IDable {
         this.lastname = lastname;
     }
 
-    public List<Group> getGroups() throws UnsupportedMethod {
+    public List<Group> getGroups() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getUserGroups(this.username);
     }
 
