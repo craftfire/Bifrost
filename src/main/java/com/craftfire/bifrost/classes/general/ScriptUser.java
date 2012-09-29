@@ -134,7 +134,7 @@ public class ScriptUser implements IDable {
         this.lastname = lastname;
     }
 
-    public List<Group> getGroups() throws UnsupportedMethod {
+    public List<Group> getGroups() throws UnsupportedMethod, SQLException {
         return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getUserGroups(this.username);
     }
 
@@ -289,7 +289,15 @@ public class ScriptUser implements IDable {
     }
 
     public static void addCache(ScriptHandle handle, ScriptUser scriptUser) {
-        handle.getCache().putMetadatable(CacheGroup.USER, scriptUser.getID(), scriptUser);
+        ScriptUser.addCache(handle, 0, scriptUser);
+    }
+    public static void addCache(ScriptHandle handle, int id, ScriptUser scriptUser) {
+        if (scriptUser == null) {
+            if (id != 0) {
+                handle.getCache().putMetadatable(CacheGroup.USER, id, scriptUser);
+            }
+            return;
+        }
         handle.getCache().setMetadata(CacheGroup.USER, scriptUser.getID(), "bifrost-cache.old-username", scriptUser.getUsername());
     }
 

@@ -332,8 +332,9 @@ public class Script {
      * @param group  name of the group
      * @return       id of the group
      * @throws       UnsupportedMethod if the method is not supported by the script
+     * @throws       SQLException if a SQL exception occurred
      */
-    public int getGroupID(String group) throws UnsupportedMethod {
+    public int getGroupID(String group) throws UnsupportedMethod, SQLException {
         throw new UnsupportedMethod();
     }
 
@@ -345,8 +346,9 @@ public class Script {
      * @return         {@link Group} object, returns <code>null</code> if nothing was found
      * @see            Group
      * @throws         UnsupportedMethod if the method is not supported by the script
+     * @throws         SQLException if a SQL exception occurred
      */
-    public Group getGroup(int groupid) throws UnsupportedMethod {
+    public Group getGroup(int groupid) throws UnsupportedMethod, SQLException {
         throw new UnsupportedMethod();
     }
 
@@ -358,8 +360,9 @@ public class Script {
      * @return       {@link Group} object, returns <code>null</code> if nothing was found
      * @see          Group
      * @throws       UnsupportedMethod if the method is not supported by the script
+     * @throws       SQLException if a SQL exception occurred
      */
-    public Group getGroup(String group) throws UnsupportedMethod {
+    public Group getGroup(String group) throws UnsupportedMethod, SQLException {
         throw new UnsupportedMethod();
     }
 
@@ -372,8 +375,9 @@ public class Script {
      * @return          List with {@link Group} objects, returns an empty List if none are found.
      * @see             Group
      * @throws          UnsupportedMethod if the method is not supported by the script
+     * @throws          SQLException if a SQL exception occurred
      */
-    public List<Group> getUserGroups(String username) throws UnsupportedMethod {
+    public List<Group> getUserGroups(String username) throws UnsupportedMethod, SQLException {
         throw new UnsupportedMethod();
     }
 

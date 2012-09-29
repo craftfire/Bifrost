@@ -193,15 +193,27 @@ public class BifrostScriptTest {
             printResult("getLatestVersion", handle.getLatestVersion(), true);
             printResult("getVersion", handle.getVersion(), true);
             printResult("getHomeURL", handle.getHomeURL(), true);
-            printResult("getBanCount", "" + handle.getBanCount(), true);
-            printResult("getBans", handle.getBans(0));
-            printResult("getGroupCount", "" + handle.getGroupCount(), true);
-            printResult("getGroups", handle.getGroups(0));
-            printResult("getLastRegUser", "" + handle.getLastRegUser(), true);
-            printResult("getUserCount", "" + handle.getUserCount(), true);
-            printResult("isBanned", "" + handle.isBanned("test"), true);
         } catch (UnsupportedMethod e) {
             fail(e.toString());
+        }
+        try {
+            printResult("getBanCount", "" + handle.getBanCount(), true);
+            printResult("getBans", handle.getBans(0));
+            printResult("isBanned", "" + handle.isBanned("test"), true);
+        } catch (UnsupportedMethod e) {
+            e.printStackTrace();
+        }
+        try {
+            printResult("getGroupCount", "" + handle.getGroupCount(), true);
+            printResult("getGroups", handle.getGroups(0));
+        } catch (UnsupportedMethod e) {
+            e.printStackTrace();
+        }
+        try {
+            printResult("getLastRegUser", "" + handle.getLastRegUser(), true);
+            printResult("getUserCount", "" + handle.getUserCount(), true);
+        } catch (UnsupportedMethod e) {
+            e.printStackTrace();
         }
     }
 
@@ -216,18 +228,26 @@ public class BifrostScriptTest {
             printResult("getEmail", user.getEmail());
             printResult("getFirstName", user.getFirstName());
             printResult("getGender", "" + user.getGender());
-            printResult("getIPs", "" + user.getIPs());
+            printResult("getPassword", user.getPassword());
+            printResult("getPasswordSalt", user.getPasswordSalt());
+            printResult("getNickname", user.getNickname());
+            printResult("getProfileURL", user.getProfileURL());
             printResult("getLastIP", user.getLastIP());
             printResult("getLastLogin", "" + user.getLastLogin());
             printResult("getLastName", user.getLastName());
-            printResult("getNickname", user.getNickname());
-            printResult("getProfileURL", user.getProfileURL());
-            printResult("getPassword", user.getPassword());
-            printResult("getPasswordSalt", user.getPasswordSalt());
-            printResult("getPMReceivedCount", "" + user.getPMReceivedCount());
-            printResult("getPMSentCount", "" + user.getPMSentCount());
-            printResult("getPMsSent", "" + user.getPMsSent(0));
-            printResult("getPMsReceived", "" + user.getPMsReceived(0));
+            try {
+                printResult("getIPs", "" + user.getIPs());
+            } catch (UnsupportedMethod e) {
+                e.printStackTrace();
+            }
+            try {
+                printResult("getPMReceivedCount", "" + user.getPMReceivedCount());
+                printResult("getPMSentCount", "" + user.getPMSentCount());
+                printResult("getPMsSent", "" + user.getPMsSent(0));
+                printResult("getPMsReceived", "" + user.getPMsReceived(0));
+            } catch (UnsupportedMethod e) {
+                e.printStackTrace();
+            }
             printResult("getRealName", user.getRealName());
             printResult("getRegIP", user.getRegIP());
             printResult("getRegDate", "" + user.getRegDate());
@@ -238,7 +258,11 @@ public class BifrostScriptTest {
             printResult("getUserGroups", "" + user.getGroups());
             printResult("isActivated", "" + user.isActivated());
             printResult("isAnonymous", "" + user.isAnonymous());
-            printResult("isBanned", "" + user.isBanned());
+            try {
+                printResult("isBanned", "" + user.isBanned());
+            } catch (UnsupportedMethod e) {
+                e.printStackTrace();
+            }
             printResult("isRegistered", "" + user.isRegistered());
         } catch (UnsupportedMethod e) {
             fail(e.toString());
@@ -323,7 +347,7 @@ public class BifrostScriptTest {
         print(seperate);
         print(script.toString() + " - " + version + " - BAN CREATE");
         try {
-            Ban newBan = bifrost.getScriptAPI().getForumHandle(script).newBan("craftfire-ban-" + this.randomInt, "dev@craftfire.com", "127.0.0.1");
+            Ban newBan = handle.newBan("craftfire-ban-" + this.randomInt, "dev@craftfire.com", "127.0.0.1");
             newBan.setNotes("Staff notes");
             newBan.setReason("Hello world!");
             newBan.create();
@@ -371,7 +395,7 @@ public class BifrostScriptTest {
         print(seperate);
         print(script.toString() + " - " + version + " - GROUP CREATE");
         try {
-            Group newGroup = bifrost.getScriptAPI().getForumHandle(script).newGroup("craftfire_group_" + this.randomInt);
+            Group newGroup = handle.newGroup("craftfire_group_" + this.randomInt);
             newGroup.setDescription("Description is not needed!");
             newGroup.create();
         } catch (UnsupportedMethod e) {
@@ -914,6 +938,7 @@ public class BifrostScriptTest {
     public static void printResult(String function, String data, boolean assumeValid) {
         if (assumeValid) {
             print(function + "() = " + data);
+            return;
         }
         String line = "NOT SUPPORTED";
         String prefix = "-";
@@ -928,6 +953,7 @@ public class BifrostScriptTest {
         String line = "[";
         if (data == null) {
             printResult(function, "");
+            return;
         }
         Iterator<?> i = data.iterator();
         while (i.hasNext()) {

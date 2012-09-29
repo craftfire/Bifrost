@@ -224,7 +224,7 @@ public class ScriptHandle {
             return ScriptUser.getCache(this, userid);
         }
         ScriptUser user = this.script.getUser(userid);
-        ScriptUser.addCache(this, user);
+        ScriptUser.addCache(this, userid, user);
         return user;
     }
 
@@ -291,7 +291,7 @@ public class ScriptHandle {
     /**
      * @see Script#getGroup(int) Documentation for this method
      */
-    public Group getGroup(int groupID) throws UnsupportedMethod {
+    public Group getGroup(int groupID) throws UnsupportedMethod, SQLException {
         if (Group.hasCache(this, groupID)) {
             return Group.getCache(this, groupID);
         }
@@ -303,7 +303,7 @@ public class ScriptHandle {
     /**
      * @see Script#getGroup(String) Documentation for this method
      */
-    public Group getGroup(String groupString) throws UnsupportedMethod {
+    public Group getGroup(String groupString) throws UnsupportedMethod, SQLException {
         if (Group.hasCache(this, groupString)) {
             return Group.getCache(this, groupString);
         }
@@ -316,7 +316,7 @@ public class ScriptHandle {
      * @see Script#getUserGroups(String) Documentation for this method
      */
     @SuppressWarnings("unchecked")
-    public List<Group> getUserGroups(String username) throws UnsupportedMethod {
+    public List<Group> getUserGroups(String username) throws UnsupportedMethod, SQLException {
         if (this.script.getCache().contains(CacheGroup.USER_GROUP, username)) {
             return (List<Group>) this.script.getCache().get(CacheGroup.USER_GROUP, username);
         }
