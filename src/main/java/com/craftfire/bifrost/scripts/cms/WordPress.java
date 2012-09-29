@@ -518,8 +518,8 @@ public class WordPress extends CMSScript {
 
     @Override
     public int getUserCount() {
-        /*TODO*/
-        return 0;
+        init();
+        return this.dataManager.getCount("users");
     }
 
     @Override
