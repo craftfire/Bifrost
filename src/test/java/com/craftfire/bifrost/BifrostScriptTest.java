@@ -258,7 +258,11 @@ public class BifrostScriptTest {
             printResult("getUserGroups", "" + user.getGroups());
             printResult("isActivated", "" + user.isActivated());
             printResult("isAnonymous", "" + user.isAnonymous());
-            printResult("isBanned", "" + user.isBanned());
+            try {
+                printResult("isBanned", "" + user.isBanned());
+            } catch (UnsupportedMethod e) {
+                e.printStackTrace();
+            }
             printResult("isRegistered", "" + user.isRegistered());
         } catch (UnsupportedMethod e) {
             fail(e.toString());
