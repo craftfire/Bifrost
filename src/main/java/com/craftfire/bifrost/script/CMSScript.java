@@ -54,8 +54,8 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSComment objects.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
@@ -80,8 +80,8 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSComment objects from the given article ID.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
@@ -95,7 +95,7 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns the count of how many comments are there on the given {@param articleid}.
+     * Returns the count of how many comments are there on the given <code>articleid</code>.
      * 
      * @param  articleid          the article ID to count comments on
      * @return                    the amount of how many comments there are on the article
@@ -107,10 +107,10 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns a List with CMSComment objects that reply to the given {@param commentid}.
+     * Returns a List with CMSComment objects that reply to the given <code>commentid</code>.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      * 
@@ -124,7 +124,7 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns the count of how many comments replying to the given {@param commentid} are there.
+     * Returns the count of how many comments replying to the given <code>commentid</code> are there.
      * 
      * @param  commentid          the ID of the comment to count the replying comments
      * @return                    the amount of how many comments there are replying to given comment
@@ -135,10 +135,10 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns a List with CMSComment objects that have been made by specified {@param username}.
+     * Returns a List with CMSComment objects that have been made by specified <code>username</code>.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      * 
@@ -152,7 +152,7 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns an amount of how many comments {@param username} has made.
+     * Returns an amount of how many comments <code>username</code> has made.
      *
      * @param username  the username to get the count from.
      * @return          the amount of how many comments the username have made, returns 0 if none
@@ -174,7 +174,7 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns the CMSComment object of the last comment that has been made by {@param username}.
+     * Returns the CMSComment object of the last comment that has been made by <code>username</code>.
      *
      * @param  username           the username to grab the last comment from
      * @return                    CMSComment object of the last comment made by the user
@@ -230,8 +230,8 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSArticle objects.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
@@ -256,8 +256,8 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSArticle objects from the given category ID.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
@@ -282,10 +282,10 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns a List with CMSArticle objects that have been made by specified {@param username}.
+     * Returns a List with CMSArticle objects that have been made by specified <code>username</code>.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      * 
@@ -299,7 +299,7 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns an amount of how many articles {@param username} has made.
+     * Returns an amount of how many articles <code>username</code> has made.
      *
      * @param username  the username to get the count from.
      * @return          the amount of how many articles the username have made, returns 0 if none
@@ -320,7 +320,7 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns the CMSArticle object of the last article that has been made by {@param username}.
+     * Returns the CMSArticle object of the last article that has been made by <code>username</code>.
      *
      * @param  username           the username to grab the last article from
      * @return                    CMSArticle object of the last article made by the user
@@ -375,8 +375,8 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSCategory objects.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
@@ -401,8 +401,8 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSCategory objects that are subcategories of the given category ID.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
-     * Set {@param limit} to 0 to return all the objects.
+     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
+     * Set <code>limit</code> to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
