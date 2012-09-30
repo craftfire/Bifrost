@@ -51,10 +51,6 @@ import com.craftfire.bifrost.script.CMSScript;
  * This class contains all the methods for WordPress.
  */
 public class WordPress extends CMSScript {
-    private final String scriptName = "wordpress";
-    private final String shortName = "wp";
-    private final Encryption encryption = Encryption.PHPASS;
-    private final String[] versionRanges = { "3.4.0", "3.4.1", "3.4.2" }; // TODO: Does it work with other versions?
     private DataManager dataManager;
     private CMSHandle handle;
     private boolean init;
@@ -78,23 +74,23 @@ public class WordPress extends CMSScript {
 
     @Override
     public String[] getVersionRanges() {
-        return this.versionRanges;
+        return new String[] { "3.4.0", "3.4.1", "3.4.2" };
     }
 
     @Override
     public String getLatestVersion() {
         /* TODO: Is it that version for sure? */
-        return this.versionRanges[this.versionRanges.length - 1];
+        return getVersionRanges()[getVersionRanges().length - 1];
     }
 
     @Override
     public String getScriptName() {
-        return this.scriptName;
+        return "wordpress";
     }
 
     @Override
     public String getScriptShortname() {
-        return this.shortName;
+        return "wp";
     }
 
     @Override
