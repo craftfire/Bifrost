@@ -58,6 +58,9 @@ public class WordPress extends CMSScript {
     public WordPress(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
         this.dataManager = dataManager;
+        setScriptName("wordpress");
+        setShortName("wp");
+        setVersionRanges(new String[] { "3.4.0", "3.4.1", "3.4.2" });
     }
 
     //Start Generic Methods
@@ -73,24 +76,9 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public String[] getVersionRanges() {
-        return new String[] { "3.4.0", "3.4.1", "3.4.2" };
-    }
-
-    @Override
     public String getLatestVersion() {
         /* TODO: Is it that version for sure? */
         return getVersionRanges()[getVersionRanges().length - 1];
-    }
-
-    @Override
-    public String getScriptName() {
-        return "wordpress";
-    }
-
-    @Override
-    public String getScriptShortname() {
-        return "wp";
     }
 
     @Override
