@@ -23,6 +23,7 @@ package com.craftfire.bifrost.enums;
  * This enum holds all the different supported scripts.
  */
 public enum Scripts {
+    WP("wordpress", ScriptType.CMS),
     SMF("simplemachines", ScriptType.FORUM),
     XF("xenforo", ScriptType.FORUM);
 
