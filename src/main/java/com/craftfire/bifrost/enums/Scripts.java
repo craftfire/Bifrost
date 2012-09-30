@@ -24,7 +24,6 @@ package com.craftfire.bifrost.enums;
  */
 public enum Scripts {
     WP("wordpress", ScriptType.CMS),
-    MYBB("mybb", ScriptType.FORUM),
     SMF("simplemachines", ScriptType.FORUM),
     XF("xenforo", ScriptType.FORUM);
 
