@@ -54,7 +54,7 @@ public class WordPress extends CMSScript {
     private final String scriptName = "wordpress";
     private final String shortName = "wp";
     private final Encryption encryption = Encryption.PHPASS;
-    private final String[] versionRanges = { "3.4.0", "3.4.1" }; // TODO: Does it work with other versions?
+    private final String[] versionRanges = { "3.4.0", "3.4.1", "3.4.2" }; // TODO: Does it work with other versions?
     private DataManager dataManager;
     private CMSHandle handle;
     private boolean init;
@@ -83,8 +83,8 @@ public class WordPress extends CMSScript {
 
     @Override
     public String getLatestVersion() {
-        /* TODO: Delete this method or implement it */
-        return null;
+        /* TODO: Is it that version for sure? */
+        return this.versionRanges[this.versionRanges.length - 1];
     }
 
     @Override
@@ -140,8 +140,9 @@ public class WordPress extends CMSScript {
         return this.handle.getUser(getUserID(username));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public CMSUser getUser(int userid) throws SQLException {
+    public CMSUser getUser(int userid) throws SQLException, UnsupportedMethod {
         init();
         if (this.dataManager.exist("users", "ID", userid)) {
             CMSUser user = new CMSUser(this, userid, null, null);
@@ -165,6 +166,20 @@ public class WordPress extends CMSScript {
                 user.setLastName(this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_name'"));
                 user.setRealName(user.getFirstName() + user.getLastName());
                 user.setNickname(this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'nickname'"));
+                String capabilities = this.dataManager.getStringField("usermeta", "meta_value", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
+                Map<Object, Object> capmap = null;
+                if (capabilities != null && !capabilities.isEmpty()) {
+                    try {
+                        Object temp = CraftCommons.getUtil().phpUnserialize(capabilities);
+                        if (temp instanceof Map<?, ?>) {
+                            capmap = (Map<Object, Object>) temp;
+                        }
+                    } catch (IllegalStateException ignore) {
+                    }
+                }
+                if (capmap != null && !capmap.isEmpty()) {
+                    user.setUserTitle(capmap.keySet().toArray()[0].toString());
+                }
                 lastlogin = this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_user_login'");
                 if (!CraftCommons.isLong(lastlogin)) {
                     lastlogin = this.dataManager.getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'wp-last-login'");
@@ -185,7 +200,6 @@ public class WordPress extends CMSScript {
         data.put("user_login", user.getUsername());
         data.put("user_email", user.getEmail());
         if (user.getRegDate() != null) {
-            // BUG: Resets the date to zero.
             data.put("user_registered", new java.sql.Date(user.getRegDate().getTime()));
         }
         if (CraftCommons.unixHashIdentify(user.getPassword()) == null) {
@@ -223,7 +237,6 @@ public class WordPress extends CMSScript {
             user.setPassword(hashPassword(null, user.getPassword()));
         }
         user.setLastLogin(new Date());
-        // BUG: Resets the date to zero.
         user.setRegDate(new Date());
         data = new HashMap<String, Object>();
         data.put("user_login", user.getUsername());
@@ -262,18 +275,9 @@ public class WordPress extends CMSScript {
         data.put("meta_value", 0);
         this.dataManager.insertFields(data, "usermeta");
         data.put("meta_key", "default_password_nag");
-        data.put("meta_value", 1);
-        this.dataManager.insertFields(data, "usermeta");
-        data.put("meta_key", "wp_user_level");
         data.put("meta_value", 0);
         this.dataManager.insertFields(data, "usermeta");
-        data.put("meta_key", "wp_capabilities");
-
-        // TODO: Should we add some default for groups?
-        setUserGroups(user.getUsername(), user.getGroups());
-        // data.put("meta_value", "a:1:{s:10:\"subscriber\";s:1:\"1\";}");
-
-        this.dataManager.insertFields(data, "usermeta");
+        setUserGroups(user.getUsername(), null);
     }
 
     @Override
@@ -316,6 +320,7 @@ public class WordPress extends CMSScript {
         return getGroup(groupid, false);
     }
 
+    @SuppressWarnings("unchecked")
     public Group getGroup(int groupid, boolean namesonly) throws UnsupportedMethod, SQLException {
         String groupname = "";
         Group group;
@@ -350,11 +355,17 @@ public class WordPress extends CMSScript {
         if (groupid == 6) {
             if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
                 String admins = this.dataManager.getStringField("sitemeta", "meta_value", "`meta_key` = 'site_admins'");
-                @SuppressWarnings("unchecked")
-                Map<Object, String> adminmap = (Map<Object, String>) CraftCommons.getUtil().phpUnserialize(admins);
-                Iterator<String> I = adminmap.values().iterator();
-                while (I.hasNext()) {
-                    userlist.add(this.handle.getUser(I.next()));
+                Map<Object, String> adminmap = null;
+                try {
+                    adminmap = (Map<Object, String>) CraftCommons.getUtil().phpUnserialize(admins);
+                } catch (IllegalStateException e) {
+                    return null;
+                } catch (ClassCastException e) {
+                    return null;
+                }
+                Iterator<String> iterator = adminmap.values().iterator();
+                while (iterator.hasNext()) {
+                    userlist.add(this.handle.getUser(iterator.next()));
                 }
             } else {
                 return null;
@@ -362,15 +373,17 @@ public class WordPress extends CMSScript {
         } else {
             Results results = this.dataManager.getResults("SELECT `meta_value`, `user_id` FROM `" + this.dataManager.getPrefix() + "usermeta` WHERE `meta_key` = 'wp_capabilities'");
             List<DataRow> records = results.getArray();
-            Iterator<DataRow> I = records.iterator();
-            while (I.hasNext()) {
-                DataRow d = I.next();
+            Iterator<DataRow> iterator = records.iterator();
+            while (iterator.hasNext()) {
+                DataRow d = iterator.next();
                 String capabilities = d.getStringField("meta_value");
                 int userid = d.getIntField("user_id");
                 Map<String, String> capmap = null;
                 try {
                     capmap = (Map<String, String>) CraftCommons.getUtil().phpUnserialize(capabilities);
                 } catch (IllegalStateException e) {
+                    continue;
+                } catch (ClassCastException e) {
                     continue;
                 }
                 String gname = groupname.toLowerCase();
@@ -389,6 +402,7 @@ public class WordPress extends CMSScript {
         return getGroup(getGroupID(group));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Group> getUserGroups(String username) throws SQLException, UnsupportedMethod {
         init();
@@ -396,19 +410,31 @@ public class WordPress extends CMSScript {
         String capabilities = this.dataManager.getStringField("usermeta", "meta_value", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
         Map<Object, Object> capmap = null;
         if (capabilities != null && !capabilities.isEmpty()) {
-            capmap = (Map<Object, Object>) CraftCommons.getUtil().phpUnserialize(capabilities);
+            try {
+                capmap = (Map<Object, Object>) CraftCommons.getUtil().phpUnserialize(capabilities);
+            } catch (IllegalStateException ignore) {
+            } catch (ClassCastException ignore) {
+            }
         }
         List<Group> allGroups = this.handle.getGroups(0);
         List<Group> uGroups = new ArrayList<Group>();
-        Iterator<Group> I = allGroups.iterator();
-        while (I.hasNext()) {
-            Group g = I.next();
+        Iterator<Group> iterator = allGroups.iterator();
+        while (iterator.hasNext()) {
+            Group g = iterator.next();
             if (g.getID() == 6) {
                 if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
                     String admins = this.dataManager.getStringField("sitemeta", "meta_value", "`meta_key` = 'site_admins'");
-                    Map<Object, Object> adminmap = (Map<Object, Object>) CraftCommons.getUtil().phpUnserialize(admins);
-                    if (adminmap.containsValue(username)) {
-                        uGroups.add(g);
+                    Map<Object, Object> adminmap = null;
+                    Object temp = null;
+                    try {
+                        temp = CraftCommons.getUtil().phpUnserialize(admins);
+                    } catch (IllegalStateException ignore) {
+                    }
+                    if (temp != null && temp instanceof Map<?, ?>) {
+                        adminmap = (Map<Object, Object>) temp;
+                        if (adminmap.containsValue(username)) {
+                            uGroups.add(g);
+                        }
                     }
                 }
             } else if (capmap != null) {
@@ -425,28 +451,34 @@ public class WordPress extends CMSScript {
         init();
         if (groups == null) {
             groups = new ArrayList<Group>();
-            groups.add(this.handle.getGroup(1));
+            Group defaultGroup = this.handle.getGroup(this.dataManager.getStringField("options", "option_value", "`option_name` = 'default_role'"));
+            groups.add(defaultGroup);
         }
         int userid = this.getUserID(username);
         Map<String, String> capmap = new HashMap<String, String>();
+        int userLevel = 0;
         List<String> adminlist = null;
         if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
             String admins = this.dataManager.getStringField("sitemeta", "meta_value", "`meta_key` = 'site_admins'");
-            Object temp = CraftCommons.getUtil().phpUnserialize(admins);
-            if (temp instanceof Map<?,?>) {
+            Object temp = null;
+            try {
+                temp = CraftCommons.getUtil().phpUnserialize(admins);
+            } catch (IllegalStateException ignore) {
+            }
+            if (temp != null && temp instanceof Map<?, ?>) {
                 @SuppressWarnings("unchecked")
                 Map<Object, String> adminmap = (Map<Object, String>) temp;
                 adminlist = new ArrayList<String>();
-                Iterator<Object> I1 = adminmap.keySet().iterator();
-                while (I1.hasNext()) {
-                    adminlist.add(adminmap.get(I1.next()));
+                Iterator<Object> iterator1 = adminmap.keySet().iterator();
+                while (iterator1.hasNext()) {
+                    adminlist.add(adminmap.get(iterator1.next()));
                 }
                 adminlist.remove(username);
             }
         }
-        Iterator<Group> I = groups.iterator();
-        while (I.hasNext()) {
-            Group g = I.next();
+        Iterator<Group> iterator = groups.iterator();
+        while (iterator.hasNext()) {
+            Group g = iterator.next();
             if (g.getID() == 6) {
                 if (adminlist != null) {
                     adminlist.add(username);
@@ -454,23 +486,58 @@ public class WordPress extends CMSScript {
             } else {
                 String gname = g.getName().toLowerCase();
                 capmap.put(gname, "1");
+                int level = -1;
+                switch (g.getID()) {
+                case 1:
+                    level = 0;
+                    break;
+                case 2:
+                    level = 1;
+                    break;
+                case 3:
+                    level = 2;
+                    break;
+                case 4:
+                    level = 7;
+                    break;
+                case 5:
+                    level = 10;
+                    break;
+                }
+                if (level > userLevel) {
+                    userLevel = level;
+                }
             }
         }
         String capabilities = CraftCommons.getUtil().phpSerialize(capmap);
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("meta_value", capabilities);
-        this.dataManager.updateFields(data, "usermeta", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
+        if (this.dataManager.getCount("usermeta", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'") > 0) {
+            this.dataManager.updateFields(data, "usermeta", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
+        } else {
+            data.put("meta_key", "wp_capabilities");
+            data.put("user_id", userid);
+            this.dataManager.insertFields(data, "usermeta");
+        }
+        data.clear();
+        data.put("meta_value", userLevel);
+        if (this.dataManager.getCount("usermeta", "`meta_key` = 'wp_user_level' AND `user_id` = '" + userid + "'") > 0) {
+            this.dataManager.updateFields(data, "usermeta", "`meta_key` = 'wp_user_level' AND `user_id` = '" + userid + "'");
+        } else {
+            data.put("meta_key", "wp_user_level");
+            data.put("user_id", userid);
+            this.dataManager.insertFields(data, "usermeta");
+        }
+        data.clear();
         if (adminlist != null) {
             String admins = CraftCommons.getUtil().phpSerialize(adminlist);
             data.put("meta_value", admins);
             this.dataManager.updateFields(data, "sitemeta", "`meta_key` = 'site_admins'");
         }
-        I = groups.iterator();
-        while (I.hasNext()) {
-            Group.cleanupCache(this.handle, I.next(), CacheCleanupReason.UPDATE);
-            // TODO: Isn't it already done in all ScriptHandle methods that cause this method to be called?
+        iterator = groups.iterator();
+        while (iterator.hasNext()) {
+            Group.cleanupCache(this.handle, iterator.next(), CacheCleanupReason.UPDATE);
         }
-        // getCache().getCacheManager().remove(CacheGroup.USER_GROUP.toString(), username);
     }
 
 
@@ -483,9 +550,9 @@ public class WordPress extends CMSScript {
         if (group.getID() == 6) {
             if (this.dataManager.exist("sitemeta", "meta_key", "site_admins")) {
                 List<String> adminlist = new ArrayList<String>();
-                Iterator<ScriptUser> I = group.getUsers().iterator();
-                while (I.hasNext()) {
-                    adminlist.add(I.next().getUsername());
+                Iterator<ScriptUser> iterator = group.getUsers().iterator();
+                while (iterator.hasNext()) {
+                    adminlist.add(iterator.next().getUsername());
                 }
                 String admins = CraftCommons.getUtil().phpSerialize(adminlist);
                 HashMap<String, Object> data = new HashMap<String, Object>();
