@@ -60,7 +60,7 @@ public class WordPress extends CMSScript {
         this.dataManager = dataManager;
         setScriptName("wordpress");
         setShortName("wp");
-        setVersionRanges(new String[] { "3.4.0", "3.4.1", "3.4.2" });
+        setVersionRanges(new String[] { "3.4.2" }); // Should be 3.4.0 - 3.4.2
     }
 
     //Start Generic Methods
