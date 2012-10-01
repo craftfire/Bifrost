@@ -80,7 +80,7 @@ public abstract class Message implements IDable, MessageParent {
      * 
      * @param id  the ID of the message
      */
-    public void setID(int id) {
+    public void setMessageID(int id) {
         this.id = id;
     }
 
@@ -89,8 +89,7 @@ public abstract class Message implements IDable, MessageParent {
      * 
      * @return the ID of the message
      */
-    @Override
-    public int getID() {
+    public int getMessageID() {
         return this.id;
     }
 

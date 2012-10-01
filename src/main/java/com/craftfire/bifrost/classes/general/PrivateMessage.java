@@ -73,11 +73,11 @@ public class PrivateMessage extends Message {
      * @return ID of the PrivateMessage
      */
     public int getID() {
-        return super.getID();
+        return getMessageID();
     }
 
     public void setID(int id) {
-        super.setID(id);
+        setMessageID(id);
     }
 
     public ScriptUser getSender() {
