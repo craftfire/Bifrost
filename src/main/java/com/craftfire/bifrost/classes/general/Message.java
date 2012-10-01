@@ -29,7 +29,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * <p>
  * Should <code>not</code> be instanced.
  */
-public abstract class Message implements IDable, MessageParent {
+public abstract class Message implements GeneralMethods, MessageParent {
     private int id, categoryid;
     private ScriptUser author;
     private Date date;
@@ -79,7 +79,7 @@ public abstract class Message implements IDable, MessageParent {
      * 
      * @param id  the ID of the message
      */
-    public void setMessageID(int id) {
+    public void setID(int id) {
         this.id = id;
     }
 
@@ -88,7 +88,7 @@ public abstract class Message implements IDable, MessageParent {
      * 
      * @return the ID of the message
      */
-    public int getMessageID() {
+    public int getID() {
         return this.id;
     }
 
