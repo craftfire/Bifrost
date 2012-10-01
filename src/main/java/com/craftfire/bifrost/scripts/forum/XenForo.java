@@ -51,9 +51,19 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.ForumScript;
 
 //TODO: Convert arrays to use Result class
+/**
+ * This class contains all the methods for XenForo.
+ */
 public class XenForo extends ForumScript {
     private String currentUsername = null;
 
+    /**
+     * Default constructor for XenForo.
+     *
+     * @param script       the {@link Scripts} enum
+     * @param version      the version of the script
+     * @param dataManager  the {@link DataManager}
+     */
     public XenForo(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
 		this.setScriptName("xenforo");

@@ -36,12 +36,12 @@ import com.craftfire.bifrost.script.ForumScript;
  * This class should only be used with a forum post.
  * <p>
  * The first constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the post, run {@see #updatePost()}.
+ * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new ForumPost make sure you use the correct constructor:
- * {@see #ForumPost(Script, int, int)}.
+ * {@link #ForumPost(ForumScript, int, int)}.
  * <p>
- * Remember to run {@see #createPost()} after creating a post to insert it into the script.
+ * Remember to run {@link #create()} after creating a post to insert it into the script.
  */
 public class ForumPost extends Message {
     private int threadid;
@@ -61,7 +61,7 @@ public class ForumPost extends Message {
     /**
      * This constructor should be used when creating a new post for the script.
      * <p>
-     * Remember to run {@see #createPost()} after creating a post to insert it into the script.
+     * Remember to run {@link #create()} after creating a post to insert it into the script.
      *
      * @param script    the script
      * @param threadid  the ID of the thread which the post is going to be posted in

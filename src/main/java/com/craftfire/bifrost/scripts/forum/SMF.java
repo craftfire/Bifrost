@@ -47,10 +47,20 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.script.ForumScript;
 
 //TODO: Convert arrays to use Result class
+/**
+ * This class contains all the methods for SMF.
+ */
 public class SMF extends ForumScript {
     private String currentUsername = null;
     private String membernamefield = "member_name", groupfield = "additional_groups";
 
+    /**
+     * Default constructor for SMF.
+     *
+     * @param script       the {@link Scripts} enum
+     * @param version      the version of the script
+     * @param dataManager  the {@link DataManager}
+     */
     public SMF(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
         this.setScriptName("simplemachines");

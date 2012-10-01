@@ -35,10 +35,17 @@ import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.enums.Scripts;
 
 /**
- * This class contains all the methods for Dupe.
+ * This class contains all the methods for phpBB.
  */
 public class PhpBB extends ForumScript {
 
+    /**
+     * Default constructor for phpBB.
+     *
+     * @param script       the {@link Scripts} enum
+     * @param version      the version of the script
+     * @param dataManager  the {@link DataManager}
+     */
     public PhpBB(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
         /* TODO: Edit variables */

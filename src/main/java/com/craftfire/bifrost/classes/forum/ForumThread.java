@@ -38,24 +38,41 @@ import com.craftfire.bifrost.script.ForumScript;
  * This class should only be used with a forum thread/topic.
  * <p>
  * The first constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the thread, run {@see #updateThread()}.
+ * To update any changed values in the thread, run {@link #update()}.
  * <p>
  * When creating a new ForumThread make sure you use the correct constructor:
- * {@see #ForumThread(Script, int)}.
+ * {@link #ForumThread(ForumScript, int)}.
  * <p>
- * Remember to run {@see #createThread()} after creating a thread to insert it into the script.
+ * Remember to run {@link #create()} after creating a thread to insert it into the script.
  */
 public class ForumThread extends Message implements ViewsCounter {
     private int firstpostid, lastpostid;
     private int threadviews, threadreplies;
     private boolean locked, poll, sticky;
 
+    /**
+     * This constructor should only be used by the script and not by that library user.
+     *
+     * @param script       the script
+     * @param firstpostid  the ID of the first post in the thread
+     * @param lastpostid   the ID of the last post in the thread
+     * @param threadid     the ID of the thread which the post is posted in
+     * @param boardid      the ID of the board which the thread is posted in
+     */
     public ForumThread(ForumScript script, int firstpostid, int lastpostid, int threadid, int boardid) {
         super(script, threadid, boardid);
         this.firstpostid = firstpostid;
         this.lastpostid = lastpostid;
     }
 
+    /**
+     * This constructor may be used when creating a new thread for the script.
+     * <p>
+     * Remember to run {@link #create()} after creating a thread to insert it into the script.
+     *
+     * @param script   the script the thread is created for
+     * @param boardid  the ID of the board that the thread should be in
+     */
     public ForumThread(ForumScript script, int boardid) {
         super(script);
         setCategoryID(boardid);

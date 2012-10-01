@@ -35,19 +35,19 @@ import com.craftfire.bifrost.script.ForumScript;
  * This class should only be used with a forum board/category.
  * <p>
  * The second constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the board, run {@see #updateBoard()}.
+ * To update any changed values in the board, run {@link #update()}.
  * <p>
  * When creating a new ForumBoard make sure you use the correct constructor:
- * {@see #ForumBoard(com.craftfire.bifrost.script.Script, String, int)}.
+ * {@link #ForumBoard(ForumScript, String, int)}.
  * <p>
- * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+ * Remember to run {@link #create()} after creating a board to insert it into the script.
  */
 public class ForumBoard extends Category {
 
     /**
      * This constructor may be used when creating a new board for the script.
      * <p>
-     * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+     * Remember to run {@link #create()} after creating a board to insert it into the script.
      * 
      * @param script  the script the board is created for
      */
