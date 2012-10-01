@@ -103,8 +103,9 @@ public class SMF extends ForumScript {
 
     @Override
     public ForumUser getUser(int userid) {
+        int newUserid = userid;
         JTable userTable = new JTable(this.getDataManager().resultSetToTableModel(
-                "SELECT * FROM `" + this.getDataManager().getPrefix() + "members` WHERE `id_member` = '" + userid +
+                "SELECT * FROM `" + this.getDataManager().getPrefix() + "members` WHERE `id_member` = '" + newUserid +
                         "' LIMIT 1"));
         String title = null, savedusername = null, nickname = null, email = null, password = null, passwordsalt = null,
                 avatarurl = null, regip = null, lastip = null;
@@ -112,7 +113,7 @@ public class SMF extends ForumScript {
         Gender gender = null;
         boolean activated = false;
         if (userTable.getRowCount() == 1) {
-            userid = Integer.parseInt(userTable.getModel().getValueAt(0, 0).toString());
+            newUserid = Integer.parseInt(userTable.getModel().getValueAt(0, 0).toString());
             savedusername = userTable.getModel().getValueAt(0, 1).toString();
             nickname = userTable.getModel().getValueAt(0, 7).toString();
             regdate = new Date(Long.parseLong(userTable.getModel().getValueAt(0, 2).toString()) * 1000);
@@ -170,7 +171,7 @@ public class SMF extends ForumScript {
                 }
             }
         }
-        ForumUser user = new ForumUser(this, userid, savedusername, password);
+        ForumUser user = new ForumUser(this, newUserid, savedusername, password);
         user.setPasswordSalt(passwordsalt);
         user.setUserTitle(title);
         user.setNickname(nickname);
@@ -319,15 +320,16 @@ public class SMF extends ForumScript {
                         "' ORDER BY `id_group` ASC LIMIT 1"));
         String groupname = null, groupdescription = null;
         List<ScriptUser> users = new ArrayList<ScriptUser>();
+        int newGroupid = groupid;
         if (groupTable.getRowCount() == 1) {
-            groupid = Integer.parseInt(groupTable.getModel().getValueAt(0, 0).toString());
+            newGroupid = Integer.parseInt(groupTable.getModel().getValueAt(0, 0).toString());
             groupname = groupTable.getModel().getValueAt(0, 1).toString();
             if (! CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
                 groupdescription = groupTable.getModel().getValueAt(0, 2).toString();
             }
             JTable userTable = new JTable(this.getDataManager().resultSetToTableModel(
                     "SELECT `" + this.membernamefield + "` FROM `" + this.getDataManager().getPrefix() +
-                            "members` WHERE `id_group` = '" + groupid + "' ORDER BY `id_member` ASC"));
+                            "members` WHERE `id_group` = '" + newGroupid + "' ORDER BY `id_member` ASC"));
             for (int a = 0; groupTable.getRowCount() > a; a++) {
                 String username = userTable.getModel().getValueAt(a, 0).toString();
                 if (this.currentUsername != null && ! this.currentUsername.equalsIgnoreCase(username)) {
@@ -336,10 +338,10 @@ public class SMF extends ForumScript {
             }
         }
         this.currentUsername = null;
-        Group group = new Group(this, groupid, groupname);
+        Group group = new Group(this, newGroupid, groupname);
         group.setDescription(groupdescription);
         group.setUserCount(this.getDataManager().getIntegerField(
-                "SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "members` WHERE `id_group` = '" + groupid +
+                "SELECT COUNT(*) FROM `" + this.getDataManager().getPrefix() + "members` WHERE `id_group` = '" + newGroupid +
                         "'"));
         group.setUsers(users);
         return group;
