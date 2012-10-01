@@ -26,14 +26,14 @@ import java.util.Map;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
+import com.craftfire.bifrost.classes.cms.CMSHandle;
+import com.craftfire.bifrost.classes.forum.ForumHandle;
+import com.craftfire.bifrost.classes.general.Script;
+import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
-import com.craftfire.bifrost.handles.CMSHandle;
-import com.craftfire.bifrost.handles.ForumHandle;
-import com.craftfire.bifrost.handles.ScriptHandle;
-import com.craftfire.bifrost.script.Script;
 import com.craftfire.bifrost.scripts.cms.WordPress;
 import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;

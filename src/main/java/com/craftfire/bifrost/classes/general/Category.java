@@ -22,7 +22,6 @@ package com.craftfire.bifrost.classes.general;
 import java.util.List;
 
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.script.Script;
 
 /**
  * Base class for all categories like ForumBoard, ArticleCategory, WikiCategory, IssueCategory.

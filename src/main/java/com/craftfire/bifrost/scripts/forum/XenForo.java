@@ -39,6 +39,7 @@ import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.classes.forum.ForumPost;
+import com.craftfire.bifrost.classes.forum.ForumScript;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
@@ -48,7 +49,6 @@ import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.script.ForumScript;
 
 //TODO: Convert arrays to use Result class
 /**

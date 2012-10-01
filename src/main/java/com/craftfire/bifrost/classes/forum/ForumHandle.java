@@ -17,24 +17,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.handles;
+package com.craftfire.bifrost.classes.forum;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.commons.managers.DataManager;
 
-import com.craftfire.bifrost.classes.forum.ForumBoard;
-import com.craftfire.bifrost.classes.forum.ForumPost;
-import com.craftfire.bifrost.classes.forum.ForumThread;
-import com.craftfire.bifrost.classes.forum.ForumUser;
+import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
-import com.craftfire.bifrost.script.ForumScript;
 
 /**
  * This class contains methods relevant to methods to use for a forum script.
