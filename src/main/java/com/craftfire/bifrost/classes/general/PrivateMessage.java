@@ -20,10 +20,7 @@
 package com.craftfire.bifrost.classes.general;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.Cache;
@@ -48,9 +45,9 @@ import com.craftfire.bifrost.script.Script;
 public class PrivateMessage extends Message {
     private int parentid;
     private List<ScriptUser> recipients;
-    private HashMap<ScriptUser, Boolean> isnew = new HashMap<ScriptUser, Boolean>();
-    private HashMap<ScriptUser, Boolean> read = new HashMap<ScriptUser, Boolean>();
-    private HashMap<ScriptUser, Boolean> deleted = new HashMap<ScriptUser, Boolean>();
+    private Map<ScriptUser, Boolean> isnew = new HashMap<ScriptUser, Boolean>();
+    private Map<ScriptUser, Boolean> read = new HashMap<ScriptUser, Boolean>();
+    private Map<ScriptUser, Boolean> deleted = new HashMap<ScriptUser, Boolean>();
     private boolean deletedbysender;
 
     public PrivateMessage(Script script, int pmid) {

@@ -21,6 +21,7 @@ package com.craftfire.bifrost;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
@@ -38,7 +39,7 @@ import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
 
 public class ScriptAPI {
-    private HashMap<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
+    private Map<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
     private ScriptHandle lastHandle = null;
 
     /**
@@ -97,7 +98,7 @@ public class ScriptAPI {
         }
     }
 
-    public HashMap<Scripts, ScriptHandle> getHandles() {
+    public Map<Scripts, ScriptHandle> getHandles() {
         return this.handles;
     }
 

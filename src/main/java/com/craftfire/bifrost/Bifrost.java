@@ -24,7 +24,7 @@ import com.craftfire.commons.managers.LoggingManager;
 //TODO: Javadoc, analytics and logging.
 public class Bifrost {
     private static Bifrost instance;
-    private final String version = "1.0.0";
+    private String version = "1.0.0";
     private final ScriptAPI scriptAPI;
     private final LoggingManager loggingManager = new LoggingManager("CraftFire.Bifrost", "[Bifrost]");
 
