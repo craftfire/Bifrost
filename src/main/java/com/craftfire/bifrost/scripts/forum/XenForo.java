@@ -767,10 +767,10 @@ public class XenForo extends ForumScript {
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "post` WHERE `post_id` = '" + postid + "' LIMIT 1");
         //TODO: figure out how to use nodeID
-        int nodeID = this.getDataManager().getIntegerField("thread", "node_id", "`thread_id` = '" +
+       /* int nodeID = this.getDataManager().getIntegerField("thread", "node_id", "`thread_id` = '" +
                 Integer.parseInt(array.get("thread_id")
                         .toString()) +
-                "'");
+                "'");      */
         ForumPost post =
                 new ForumPost(this, Integer.parseInt(array.get("post_id").toString()),
                         Integer.parseInt(array.get("thread_id").toString()));

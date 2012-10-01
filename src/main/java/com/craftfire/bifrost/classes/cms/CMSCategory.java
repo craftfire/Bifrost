@@ -231,9 +231,9 @@ public class CMSCategory extends Category {
             handle.getCache().clear(CacheGroup.CMSCAT_COUNT);
             /* Passes through */
         case UPDATE:
-            Object old_parent = handle.getCache().getMetadata(CacheGroup.CMSCAT, category.getID(), "bifrost-cache.old-parent");
-            handle.getCache().remove(CacheGroup.CMSCAT_SUBS, old_parent);
-            handle.getCache().remove(CacheGroup.CMSCAT_SUB_COUNT, old_parent);
+            Object oldParent = handle.getCache().getMetadata(CacheGroup.CMSCAT, category.getID(), "bifrost-cache.old-parent");
+            handle.getCache().remove(CacheGroup.CMSCAT_SUBS, oldParent);
+            handle.getCache().remove(CacheGroup.CMSCAT_SUB_COUNT, oldParent);
             break;
         }
     }

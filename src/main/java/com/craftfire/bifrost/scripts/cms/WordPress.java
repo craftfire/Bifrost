@@ -90,10 +90,7 @@ public class WordPress extends CMSScript {
     public boolean authenticate(String username, String password) {
         init();
         String hash = this.getDataManager().getStringField("users", "user_pass", "`user_login` = '" + username + "'");
-        if (hash == null) {
-            return false;
-        }
-        return hashPassword(hash, password).equals(hash);
+        return hash != null && hashPassword(hash, password).equals(hash);
     }
 
     @Override
@@ -419,7 +416,7 @@ public class WordPress extends CMSScript {
                         temp = CraftCommons.getUtil().phpUnserialize(admins);
                     } catch (IllegalStateException ignore) {
                     }
-                    if (temp != null && temp instanceof Map<?, ?>) {
+                    if (temp instanceof Map<?, ?>) {
                         adminmap = (Map<Object, Object>) temp;
                         if (adminmap.containsValue(username)) {
                             uGroups.add(g);
@@ -454,7 +451,7 @@ public class WordPress extends CMSScript {
                 temp = CraftCommons.getUtil().phpUnserialize(admins);
             } catch (IllegalStateException ignore) {
             }
-            if (temp != null && temp instanceof Map<?, ?>) {
+            if (temp instanceof Map<?, ?>) {
                 @SuppressWarnings("unchecked")
                 Map<Object, String> adminmap = (Map<Object, String>) temp;
                 adminlist = new ArrayList<String>();

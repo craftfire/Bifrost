@@ -67,10 +67,10 @@ public class BifrostDebug {
         }
         System.out.print(newline + "Please select a number for which script you wish to use." + newline);
         InputStreamReader reader = new InputStreamReader(System.in);
-        BufferedReader buf_reader = new BufferedReader(reader);
+        BufferedReader bufferReader = new BufferedReader(reader);
         int tmp;
         try {
-            String s = buf_reader.readLine();
+            String s = bufferReader.readLine();
             tmp = Integer.parseInt(s.trim());
             Scripts ss = scriptsh.get(tmp);
             script = ss;

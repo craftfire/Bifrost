@@ -75,12 +75,10 @@ public class PrivateMessage extends Message {
      *
      * @return ID of the PrivateMessage
      */
-    @Override
     public int getID() {
         return super.getID();
     }
 
-    @Override
     public void setID(int id) {
         super.setID(id);
     }
@@ -232,12 +230,12 @@ public class PrivateMessage extends Message {
         case UPDATE:
             Object oldParentid = handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-parent");
             Object oldUsername = handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-author");
-            List<String> old_recipients = (List<String>) handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients");
+            List<String> oldRecipients = (List<String>) handle.getCache().getMetadata(CacheGroup.PM, privateMessage.getID(), "bifrost-cache.pm.old-recipients");
             handle.getCache().remove(CacheGroup.PM_REPLIES, oldParentid);
             handle.getCache().remove(CacheGroup.PM_SENT, oldUsername);
             handle.getCache().remove(CacheGroup.PM_SENT_COUNT, oldUsername);
-            if (old_recipients != null) {
-                Iterator<String> iterator = old_recipients.iterator();
+            if (oldRecipients != null) {
+                Iterator<String> iterator = oldRecipients.iterator();
                 while (iterator.hasNext()) {
                     String username = iterator.next();
                     handle.getCache().remove(CacheGroup.PM_RECEIVED, username);

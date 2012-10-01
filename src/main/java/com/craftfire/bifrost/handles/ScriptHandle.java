@@ -46,7 +46,7 @@ import com.craftfire.bifrost.script.Script;
 public class ScriptHandle {
     private Script script;
     private Scripts scriptName;
-    public final String version;
+    private final String version;
     private final DataManager dataManager;
     private ScriptHandle instance;
 

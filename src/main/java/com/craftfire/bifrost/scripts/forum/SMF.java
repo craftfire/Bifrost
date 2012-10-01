@@ -627,12 +627,13 @@ public class SMF extends ForumScript {
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "messages` WHERE `id_msg` = '" + postid +
                         "' LIMIT 1"));
         //TODO: Figure out how to use boardid
-        int threadid = 0, boardid = 0, authorid = 0;
+        //boardid = 0,
+        int threadid = 0, authorid = 0;
         Date postdate = null;
         String subject = null, body = null;
         if (postTable.getRowCount() == 1) {
             threadid = Integer.parseInt(postTable.getModel().getValueAt(0, 1).toString());
-            boardid = Integer.parseInt(postTable.getModel().getValueAt(0, 2).toString());
+            //TODO: boardid = Integer.parseInt(postTable.getModel().getValueAt(0, 2).toString());
             postdate = new Date(Long.parseLong(postTable.getModel().getValueAt(0, 3).toString()) * 1000);
             authorid = Integer.parseInt(postTable.getModel().getValueAt(0, 4).toString());
             subject = postTable.getModel().getValueAt(0, 6).toString();
@@ -929,14 +930,10 @@ public class SMF extends ForumScript {
         if (thread.isLocked()) {
             data.put("locked", "1");
         }
-        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
-            if (thread.isSticky()) {
-                data.put("issticky", "1");
-            }
-        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
-            if (thread.isSticky()) {
-                data.put("is_sticky", "1");
-            }
+        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion()) && thread.isSticky()) {
+            data.put("issticky", "1");
+        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion()) && thread.isSticky()) {
+            data.put("is_sticky", "1");
         }
         this.getDataManager().insertFields(data, "topics");
         thread.setID(this.getDataManager().getLastID("id_topic", "topics"));
