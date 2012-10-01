@@ -63,6 +63,9 @@ public class CMSHandle extends ScriptHandle {
         return new CMSCategory(getCMSScript(), name, parentid);
     }
 
+    /**
+     * @see CMSScript#getComment(int) Documentation for this method
+     */
     public CMSComment getComment(int commentid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT, commentid)) {
             return (CMSComment) getCache().get(CacheGroup.COMMENT, commentid);
@@ -72,6 +75,9 @@ public class CMSHandle extends ScriptHandle {
         return cmt;
     }
 
+    /**
+     * @see CMSScript#getComments(int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LIST)) {
@@ -87,6 +93,9 @@ public class CMSHandle extends ScriptHandle {
         return cmts;
     }
 
+    /**
+     * @see CMSScript#getCommentTotalCount() Documentation for this method
+     */
     public int getCommentTotalCount() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_COUNT_TOTAL)) {
             return (Integer) getCache().get(CacheGroup.COMMENT_COUNT_TOTAL);
@@ -96,6 +105,9 @@ public class CMSHandle extends ScriptHandle {
         return cmts;
     }
 
+    /**
+     * @see CMSScript#getCommentsOnArticle(int, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSComment> getCommentsOnArticle(int articleid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_COMMENTS, articleid)) {
@@ -111,6 +123,9 @@ public class CMSHandle extends ScriptHandle {
         return cmts;
     }
 
+    /**
+     * @see CMSScript#getCommentCount(int) Documentation for this method
+     */
     public int getCommentCount(int articleid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_COUNT, articleid)) {
             return (Integer) getCache().get(CacheGroup.COMMENT_COUNT, articleid);
@@ -120,6 +135,9 @@ public class CMSHandle extends ScriptHandle {
         return cmts;
     }
 
+    /**
+     * @see CMSScript#getCommentReplies(int, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSComment> getCommentReplies(int commentid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_REPLIES, commentid)) {
@@ -135,6 +153,9 @@ public class CMSHandle extends ScriptHandle {
         return cmts;
     }
 
+    /**
+     * @see CMSScript#getCommentReplyCount(int) Documentation for this method
+     */
     public int getCommentReplyCount(int commentid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_REPLY_COUNT, commentid)) {
             return (Integer) getCache().get(CacheGroup.COMMENT_REPLY_COUNT, commentid);
@@ -144,6 +165,9 @@ public class CMSHandle extends ScriptHandle {
         return cmts;
     }
 
+    /**
+     * @see CMSScript#getUserComments(String, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSComment> getUserComments(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LIST_USER, username)) {
@@ -159,6 +183,9 @@ public class CMSHandle extends ScriptHandle {
         return cmts;
     }
 
+    /**
+     * @see CMSScript#getUserCommentCount(String) Documentation for this method
+     */
     public int getUserCommentCount(String username) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_COUNT_USER, username)) {
             return (Integer) getCache().get(CacheGroup.COMMENT_COUNT_USER, username);
@@ -168,6 +195,9 @@ public class CMSHandle extends ScriptHandle {
         return cmts;
     }
 
+    /**
+     * @see CMSScript#getLastComment() Documentation for this method
+     */
     public CMSComment getLastComment() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LAST)) {
             return (CMSComment) getCache().get(CacheGroup.COMMENT_LAST);
@@ -177,6 +207,9 @@ public class CMSHandle extends ScriptHandle {
         return cmt;
     }
 
+    /**
+     * @see CMSScript#getLastUserComment(String) Documentation for this method
+     */
     public CMSComment getLastUserComment(String username) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LAST_USER, username)) {
             return (CMSComment) getCache().get(CacheGroup.COMMENT_LAST_USER, username);
@@ -186,6 +219,9 @@ public class CMSHandle extends ScriptHandle {
         return cmt;
     }
 
+    /**
+     * @see CMSScript#getLastCommentOnArticle(int) Documentation for this method
+     */
     public CMSComment getLastCommentOnArticle(int articleid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.COMMENT_LAST_ARTICLE, articleid)) {
             return (CMSComment) getCache().get(CacheGroup.COMMENT_LAST_ARTICLE, articleid);
@@ -195,18 +231,27 @@ public class CMSHandle extends ScriptHandle {
         return cmt;
     }
 
+    /**
+     * @see CMSScript#updateComment(CMSComment) Documentation for this method
+     */
     public void updateComment(CMSComment comment) throws UnsupportedMethod {
         getCMSScript().updateComment(comment);
         CMSComment.cleanupCache(this, comment, CacheCleanupReason.UPDATE);
         CMSComment.addCache(this, comment);
     }
 
+    /**
+     * @see CMSScript#createComment(CMSComment) Documentation for this method
+     */
     public void createComment(CMSComment comment) throws UnsupportedMethod {
         getCMSScript().createComment(comment);
         CMSComment.cleanupCache(this, comment, CacheCleanupReason.CREATE);
         CMSComment.addCache(this, comment);
     }
 
+    /**
+     * @see CMSScript#getArticle(int) Documentation for this method
+     */
     public CMSArticle getArticle(int articleid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE, articleid)) {
             return (CMSArticle) getCache().get(CacheGroup.ARTICLE, articleid);
@@ -216,6 +261,9 @@ public class CMSHandle extends ScriptHandle {
         return art;
     }
 
+    /**
+     * @see CMSScript#getArticles(int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LIST)) {
@@ -231,6 +279,9 @@ public class CMSHandle extends ScriptHandle {
         return arts;
     }
 
+    /**
+     * @see CMSScript#getArticleTotalCount() Documentation for this method
+     */
     public int getArticleTotalCount() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_COUNT_TOTAL)) {
             return (Integer) getCache().get(CacheGroup.ARTICLE_COUNT_TOTAL);
@@ -240,6 +291,9 @@ public class CMSHandle extends ScriptHandle {
         return arts;
     }
 
+    /**
+     * @see CMSScript#getArticlesFromCategory(int, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSArticle> getArticlesFromCategory(int catid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_ARTICLES, catid)) {
@@ -255,6 +309,9 @@ public class CMSHandle extends ScriptHandle {
         return arts;
     }
 
+    /**
+     * @see CMSScript#getArticleCount(int) Documentation for this method
+     */
     public int getArticleCount(int catid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_COUNT, catid)) {
             return (Integer) getCache().get(CacheGroup.ARTICLE_COUNT, catid);
@@ -264,6 +321,9 @@ public class CMSHandle extends ScriptHandle {
         return arts;
     }
 
+    /**
+     * @see CMSScript#getUserArticles(String, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSArticle> getUserArticles(String username, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LIST_USER, username)) {
@@ -279,6 +339,9 @@ public class CMSHandle extends ScriptHandle {
         return arts;
     }
 
+    /**
+     * @see CMSScript#getUserArticleCount(String) Documentation for this method
+     */
     public int getUserArticleCount(String username) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_COUNT_USER, username)) {
             return (Integer) getCache().get(CacheGroup.ARTICLE_COUNT_USER, username);
@@ -288,6 +351,9 @@ public class CMSHandle extends ScriptHandle {
         return arts;
     }
 
+    /**
+     * @see CMSScript#getLastArticle() Documentation for this method
+     */
     public CMSArticle getLastArticle() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LAST)) {
             return (CMSArticle) getCache().get(CacheGroup.ARTICLE_LAST);
@@ -297,6 +363,9 @@ public class CMSHandle extends ScriptHandle {
         return art;
     }
 
+    /**
+     * @see CMSScript#getLastUserArticle(String) Documentation for this method
+     */
     public CMSArticle getLastUserArticle(String username) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LAST_USER, username)) {
             return (CMSArticle) getCache().get(CacheGroup.ARTICLE_LAST_USER, username);
@@ -306,6 +375,9 @@ public class CMSHandle extends ScriptHandle {
         return art;
     }
 
+    /**
+     * @see CMSScript#getLastArticleFromCategory(int) Documentation for this method
+     */
     public CMSArticle getLastArticleFromCategory(int catid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.ARTICLE_LAST_CATEGORY, catid)) {
             return (CMSArticle) getCache().get(CacheGroup.ARTICLE_LAST_CATEGORY, catid);
@@ -315,18 +387,27 @@ public class CMSHandle extends ScriptHandle {
         return art;
     }
 
+    /**
+     * @see CMSScript#updateArticle(CMSArticle) Documentation for this method
+     */
     public void updateArticle(CMSArticle article) throws UnsupportedMethod, SQLException {
         getCMSScript().updateArticle(article);
         CMSArticle.cleanupCache(this, article, CacheCleanupReason.UPDATE);
         CMSArticle.addCache(this, article);
     }
 
+    /**
+     * @see CMSScript#createArticle(CMSArticle) Documentation for this method
+     */
     public void createArticle(CMSArticle article) throws UnsupportedMethod, SQLException {
         getCMSScript().createArticle(article);
         CMSArticle.cleanupCache(this, article, CacheCleanupReason.CREATE);
         CMSArticle.addCache(this, article);
     }
 
+    /**
+     * @see CMSScript#getCategory(int) Documentation for this method
+     */
     public CMSCategory getCategory(int catid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT, catid)) {
             return (CMSCategory) getCache().get(CacheGroup.CMSCAT, catid);
@@ -336,6 +417,9 @@ public class CMSHandle extends ScriptHandle {
         return cat;
     }
 
+    /**
+     * @see CMSScript#getCategories(int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSCategory> getCategories(int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_LIST)) {
@@ -351,6 +435,9 @@ public class CMSHandle extends ScriptHandle {
         return cats;
     }
 
+    /**
+     * @see CMSScript#getCategoryCount() Documentation for this method
+     */
     public int getCategoryCount() throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_COUNT)) {
             return (Integer) getCache().get(CacheGroup.CMSCAT_COUNT);
@@ -360,6 +447,9 @@ public class CMSHandle extends ScriptHandle {
         return cats;
     }
 
+    /**
+     * @see CMSScript#getSubCategories(int, int) Documentation for this method
+     */
     @SuppressWarnings("unchecked")
     public List<CMSCategory> getSubCategories(int catid, int limit) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_SUBS, catid)) {
@@ -375,6 +465,9 @@ public class CMSHandle extends ScriptHandle {
         return cats;
     }
 
+    /**
+     * @see CMSScript#getSubCategoryCount(int) Documentation for this method
+     */
     public int getSubCategoryCount(int catid) throws UnsupportedMethod {
         if (getCache().contains(CacheGroup.CMSCAT_SUB_COUNT, catid)) {
             return (Integer) getCache().get(CacheGroup.CMSCAT_SUB_COUNT, catid);
@@ -384,39 +477,60 @@ public class CMSHandle extends ScriptHandle {
         return cats;
     }
 
+    /**
+     * @see CMSScript#updateCategory(CMSCategory) Documentation for this method
+     */
     public void updateCategory(CMSCategory category) throws UnsupportedMethod {
         getCMSScript().updateCategory(category);
         CMSCategory.cleanupCache(this, category, CacheCleanupReason.UPDATE);
         CMSCategory.addCache(this, category);
     }
 
+    /**
+     * @see CMSScript#createCategory(CMSCategory) Documentation for this method
+     */
     public void createCategory(CMSCategory category) throws UnsupportedMethod {
         getCMSScript().createCategory(category);
         CMSCategory.cleanupCache(this, category, CacheCleanupReason.CREATE);
         CMSCategory.addCache(this, category);
     }
 
+    /**
+     * @see CMSScript#getUser(String) Documentation for this method
+     */
     @Override
     public CMSUser getUser(String username) throws UnsupportedMethod, SQLException {
         return (CMSUser) super.getUser(username);
     }
 
+    /**
+     * @see CMSScript#getUser(int) Documentation for this method
+     */
     @Override
     public CMSUser getUser(int userid) throws UnsupportedMethod, SQLException {
         return (CMSUser) super.getUser(userid);
     }
 
+    /**
+     * @see CMSScript#getLastRegUser() Documentation for this method
+     */
     @Override
     public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
         return (CMSUser) super.getLastRegUser();
     }
 
+    /**
+     * @see CMSScript#updateUser(CMSUser) Documentation for this method
+     */
     public void updateUser(CMSUser user) throws SQLException, UnsupportedMethod {
         getCMSScript().updateUser(user);
         ScriptUser.cleanupCache(this, user, CacheCleanupReason.UPDATE);
         ScriptUser.addCache(this, user);
     }
 
+    /**
+     * @see CMSScript#createUser(CMSUser) Documentation for this method
+     */
     public void createUser(CMSUser user) throws SQLException, UnsupportedMethod {
         getCMSScript().createUser(user);
         ScriptUser.cleanupCache(this, user, CacheCleanupReason.CREATE);
