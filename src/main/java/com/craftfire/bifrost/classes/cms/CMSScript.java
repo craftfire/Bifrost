@@ -17,17 +17,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.script;
+package com.craftfire.bifrost.classes.cms;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.commons.managers.DataManager;
 
-import com.craftfire.bifrost.classes.cms.CMSArticle;
-import com.craftfire.bifrost.classes.cms.CMSCategory;
-import com.craftfire.bifrost.classes.cms.CMSComment;
-import com.craftfire.bifrost.classes.cms.CMSUser;
+import com.craftfire.bifrost.classes.general.Script;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
@@ -471,14 +468,14 @@ public class CMSScript extends Script {
     }
 
     /**
-     * @see com.craftfire.bifrost.script.Script#updateUser()
+     * @see com.craftfire.bifrost.classes.general.Script#updateUser()
      */
     public void updateUser(CMSUser user) throws SQLException, UnsupportedMethod {
         updateUser((ScriptUser) user);
     }
 
     /**
-     * @see com.craftfire.bifrost.script.Script#createUser()
+     * @see com.craftfire.bifrost.classes.general.Script#createUser()
      */
     public void createUser(CMSUser user) throws SQLException, UnsupportedMethod {
         createUser((ScriptUser) user);

@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.script.Script;
 
 /**
  * Base class for all messages like Thread, Post, Article, Comment, PrivateMessage, etc.

@@ -32,8 +32,6 @@ import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.handles.ScriptHandle;
-import com.craftfire.bifrost.script.Script;
 
 public class ScriptUser implements IDable {
     private int userid;

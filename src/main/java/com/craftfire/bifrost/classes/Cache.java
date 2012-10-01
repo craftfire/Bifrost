@@ -25,7 +25,7 @@ import com.craftfire.commons.managers.CacheManager;
 import com.craftfire.bifrost.enums.CacheGroup;
 
 /**
- * Handles all different cache within each {@link com.craftfire.bifrost.script.Script}
+ * Handles all different cache within each {@link com.craftfire.bifrost.classes.general.Script}
  * <p>
  * It uses the {@link CacheManager} to store the different objects.
  */

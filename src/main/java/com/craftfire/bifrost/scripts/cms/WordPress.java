@@ -37,6 +37,8 @@ import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
+import com.craftfire.bifrost.classes.cms.CMSHandle;
+import com.craftfire.bifrost.classes.cms.CMSScript;
 import com.craftfire.bifrost.classes.cms.CMSUser;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.ScriptUser;
@@ -44,8 +46,6 @@ import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.handles.CMSHandle;
-import com.craftfire.bifrost.script.CMSScript;
 
 /**
  * This class contains all the methods for WordPress.

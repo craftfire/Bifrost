@@ -17,24 +17,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.handles;
+package com.craftfire.bifrost.classes.cms;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.commons.managers.DataManager;
 
-import com.craftfire.bifrost.classes.cms.CMSArticle;
-import com.craftfire.bifrost.classes.cms.CMSCategory;
-import com.craftfire.bifrost.classes.cms.CMSComment;
-import com.craftfire.bifrost.classes.cms.CMSUser;
+import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
-import com.craftfire.bifrost.script.CMSScript;
 
 /**
  * This class contains methods relevant to methods to use for a cms script.

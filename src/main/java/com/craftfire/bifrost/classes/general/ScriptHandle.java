@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.handles;
+package com.craftfire.bifrost.classes.general;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,17 +26,12 @@ import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.ScriptAPI;
 import com.craftfire.bifrost.classes.Cache;
-import com.craftfire.bifrost.classes.general.Ban;
-import com.craftfire.bifrost.classes.general.Group;
-import com.craftfire.bifrost.classes.general.PrivateMessage;
-import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
-import com.craftfire.bifrost.script.Script;
 
 /**
  * This class contains methods relevant to methods to use for a generic script.

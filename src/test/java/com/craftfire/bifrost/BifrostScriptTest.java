@@ -43,23 +43,23 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
+import com.craftfire.bifrost.classes.cms.CMSHandle;
 import com.craftfire.bifrost.classes.cms.CMSUser;
 import com.craftfire.bifrost.classes.forum.ForumBoard;
+import com.craftfire.bifrost.classes.forum.ForumHandle;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.forum.ForumUser;
 import com.craftfire.bifrost.classes.general.Ban;
 import com.craftfire.bifrost.classes.general.Group;
 import com.craftfire.bifrost.classes.general.PrivateMessage;
+import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
-import com.craftfire.bifrost.handles.CMSHandle;
-import com.craftfire.bifrost.handles.ForumHandle;
-import com.craftfire.bifrost.handles.ScriptHandle;
 
 public class BifrostScriptTest {
     static final String newline = System.getProperty("line.separator");

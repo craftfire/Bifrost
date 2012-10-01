@@ -24,7 +24,6 @@ import java.sql.SQLException;
 import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.script.CMSScript;
 
 public class CMSUser extends ScriptUser {
 
