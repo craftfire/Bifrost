@@ -45,9 +45,6 @@ import com.craftfire.bifrost.script.Script;
  */
 public class ScriptHandle {
     private Script script;
-    private Scripts scriptName;
-    private final String version;
-    private final DataManager dataManager;
     private ScriptHandle instance;
 
     /**
@@ -58,10 +55,7 @@ public class ScriptHandle {
      * @throws         UnsupportedVersion if the input version is not found in the list of supported versions.
      */
     public ScriptHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        this.scriptName = script;
-        this.version = version;
-        this.dataManager = dataManager;
-        this.script = ScriptAPI.setScript(this.scriptName, version, dataManager);
+        this.script = ScriptAPI.setScript(script, version, dataManager);
         if (!this.script.isSupportedVersion()) {
             throw new UnsupportedVersion();
         }
@@ -70,8 +64,6 @@ public class ScriptHandle {
 
     public ScriptHandle(Script script) throws UnsupportedVersion {
         this.script = script;
-        this.version = script.getVersion();
-        this.dataManager = script.getDataManager();
         this.instance = this;
     }
 
@@ -83,10 +75,7 @@ public class ScriptHandle {
      */
     public ScriptHandle(String script, String version, DataManager dataManager) throws UnsupportedScript,
             UnsupportedVersion {
-        this.scriptName = ScriptAPI.stringToScript(script);
-        this.version = version;
-        this.dataManager = dataManager;
-        this.script = ScriptAPI.setScript(this.scriptName, version, dataManager);
+        this.script = ScriptAPI.setScript(ScriptAPI.stringToScript(script), version, dataManager);
         if (!this.script.isSupportedVersion()) {
             throw new UnsupportedVersion();
         }
@@ -105,7 +94,7 @@ public class ScriptHandle {
     }
 
     public DataManager getDataManager() {
-        return this.dataManager;
+        return this.script.getDataManager();
     }
 
     public Cache getCache() {
