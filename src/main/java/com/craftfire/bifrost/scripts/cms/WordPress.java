@@ -90,7 +90,7 @@ public class WordPress extends CMSScript {
     public boolean authenticate(String username, String password) {
         init();
         String hash = this.getDataManager().getStringField("users", "user_pass", "`user_login` = '" + username + "'");
-        return hash != null && hashPassword(hash, password).equals(hash);
+        return hash != null && hash.equals(hashPassword(hash, password));
     }
 
     @Override
@@ -274,12 +274,13 @@ public class WordPress extends CMSScript {
     public List<Group> getGroups(int limit, boolean namesonly) throws UnsupportedMethod, SQLException {
         init();
         List<Group> groups = new ArrayList<Group>();
-        if (limit > getGroupCount() | limit <= 0) {
-            limit = getGroupCount();
+        int newLimit = limit;
+        if (newLimit > getGroupCount() | newLimit <= 0) {
+            newLimit = getGroupCount();
         }
 
         // GroupID 0 might be used for none group if needed.
-        for (int i = 1; i <= limit; ++i) {
+        for (int i = 1; i <= newLimit; ++i) {
             if (namesonly) {
                 groups.add(getGroup(i, true));
             } else {
@@ -435,10 +436,11 @@ public class WordPress extends CMSScript {
 
     public void setUserGroups(String username, List<Group> groups) throws SQLException, UnsupportedMethod {
         init();
-        if (groups == null) {
-            groups = new ArrayList<Group>();
+        List<Group> newGroups = groups;
+        if (newGroups == null) {
+            newGroups = new ArrayList<Group>();
             Group defaultGroup = this.handle.getGroup(this.getDataManager().getStringField("options", "option_value", "`option_name` = 'default_role'"));
-            groups.add(defaultGroup);
+            newGroups.add(defaultGroup);
         }
         int userid = this.getUserID(username);
         Map<String, String> capmap = new HashMap<String, String>();
@@ -462,7 +464,7 @@ public class WordPress extends CMSScript {
                 adminlist.remove(username);
             }
         }
-        Iterator<Group> iterator = groups.iterator();
+        Iterator<Group> iterator = newGroups.iterator();
         while (iterator.hasNext()) {
             Group g = iterator.next();
             if (g.getID() == 6) {
@@ -520,7 +522,7 @@ public class WordPress extends CMSScript {
             data.put("meta_value", admins);
             this.getDataManager().updateFields(data, "sitemeta", "`meta_key` = 'site_admins'");
         }
-        iterator = groups.iterator();
+        iterator = newGroups.iterator();
         while (iterator.hasNext()) {
             Group.cleanupCache(this.handle, iterator.next(), CacheCleanupReason.UPDATE);
         }
