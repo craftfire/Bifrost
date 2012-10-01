@@ -29,7 +29,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * <p>
  * Should <code>not</code> be instanced.
  */
-public abstract class Message implements GeneralMethods, MessageParent {
+public abstract class Message implements IDable, MessageParent {
     private int id, categoryid;
     private ScriptUser author;
     private Date date;

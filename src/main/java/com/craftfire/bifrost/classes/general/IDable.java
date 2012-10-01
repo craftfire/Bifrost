@@ -26,7 +26,13 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 /**
  * Basically everything that has an ID and can be kept in a database.
  */
-public interface GeneralMethods {
+public interface IDable {
+    /**
+     * Returns the ID.
+     *
+     * @return the ID
+     */
+    int getID();
 
     /**
      * This method applies the changed values of the object into the database. Should be run after changing any values in the object.
