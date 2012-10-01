@@ -70,12 +70,14 @@ public class PrivateMessage extends Message {
      *
      * @return ID of the PrivateMessage
      */
+    @Override
     public int getID() {
-        return getMessageID();
+        return super.getID();
     }
 
+    @Override
     public void setID(int id) {
-        setMessageID(id);
+        super.setID(id);
     }
 
     public ScriptUser getSender() {
