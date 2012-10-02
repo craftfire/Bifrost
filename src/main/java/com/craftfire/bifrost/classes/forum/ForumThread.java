@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.craftfire.bifrost.Bifrost;
-import com.craftfire.bifrost.classes.Cache;
+import com.craftfire.bifrost.classes.general.Cache;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.classes.general.ScriptUser;

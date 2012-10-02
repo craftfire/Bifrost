@@ -308,7 +308,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @param handle   the handle the method is called from
      * @param article  the article to cleanup related cache
      * @param reason   the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
-     * @see            com.craftfire.bifrost.classes.Cache
+     * @see            com.craftfire.bifrost.classes.general.Cache
      */
     public static void cleanupCache(ScriptHandle handle, CMSArticle article, CacheCleanupReason reason) {
         handle.getCache().remove(CacheGroup.CMSCAT_ARTICLES, article.getCategoryID());

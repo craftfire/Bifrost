@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.craftfire.bifrost.Bifrost;
-import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;

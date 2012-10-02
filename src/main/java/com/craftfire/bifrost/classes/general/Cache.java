@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.craftfire.bifrost.classes;
+package com.craftfire.bifrost.classes.general;
 
 import com.craftfire.commons.classes.MetadatableCacheItem;
 import com.craftfire.commons.managers.CacheManager;

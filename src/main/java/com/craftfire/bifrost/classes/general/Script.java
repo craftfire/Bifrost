@@ -28,7 +28,6 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
 import com.craftfire.bifrost.Bifrost;
-import com.craftfire.bifrost.classes.Cache;
 import com.craftfire.bifrost.enums.ScriptType;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
