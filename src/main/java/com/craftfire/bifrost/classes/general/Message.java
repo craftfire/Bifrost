@@ -217,11 +217,9 @@ public abstract class Message implements IDable, MessageParent {
     /**
      * Sets the category of this message.
      * 
-     * @param  categoryid                the ID of the category
-     * @throws IllegalArgumentException  if the category id is wrong
+     * @param  categoryid  the ID of the category
      */
-    public void setCategoryID(int categoryid) throws IllegalArgumentException {
-        //TODO: Throw exception?
+    public void setCategoryID(int categoryid) {
         this.categoryid = categoryid;
     }
 
