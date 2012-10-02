@@ -55,7 +55,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class contains all the methods for XenForo.
  */
 public class XenForo extends ForumScript {
-    private String currentUsername = null;
+    //TODO: Remove? private String currentUsername = null;
 
     /**
      * Default constructor for XenForo.
@@ -429,10 +429,9 @@ public class XenForo extends ForumScript {
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "user_group` WHERE `user_group_id` = '" + groupid +
                         "'");
         List<ScriptUser> users = new ArrayList<ScriptUser>();
-        List<HashMap<String, Object>> arrayList = this.getDataManager().getArrayList(
+        /*List<HashMap<String, Object>> arrayList = this.getDataManager().getArrayList(
                 "SELECT `username` FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_group_id` = '" +
                         groupid + "' ORDER BY `user_id` ASC");
-        /*
         TODO: Fix loop
         for (HashMap<String, Object> map : arrayList) {
             String username = map.get("username").toString();
