@@ -99,45 +99,56 @@ public class ScriptAPI {
     }
 
     public Map<Scripts, ScriptHandle> getHandles() {
+        this.getLoggingManager().debug("ScriptAPI: Getting all handles, size: " + this.handles.size());
         return this.handles;
     }
 
     public ScriptHandle getHandle(Scripts script) {
         if (handleExists(script)) {
+            this.getLoggingManager().debug("ScriptAPI: Found handle for '" + script.getAlias() + "!");
             return this.handles.get(script);
         } else {
+            this.getLoggingManager().debug("ScriptAPI: Handle for '" + script.getAlias() + "' does not exist, " +
+                                            "returning null");
             return null;
         }
     }
 
     public ForumHandle getForumHandle(Scripts script) {
         if (handleExists(script)) {
+            this.getLoggingManager().debug("ScriptAPI: Found forum handle for '" + script.getAlias() + "!");
             return (ForumHandle) this.handles.get(script);
         } else {
+            this.getLoggingManager().debug("ScriptAPI: Forum handle for '" + script.getAlias() + "' does not exist, " +
+                                            "returning null");
             return null;
         }
     }
 
     public CMSHandle getCMSHandle(Scripts script) {
         if (handleExists(script)) {
+            this.getLoggingManager().debug("ScriptAPI: Found cms handle for '" + script.getAlias() + "!");
             return (CMSHandle) this.handles.get(script);
         } else {
+            this.getLoggingManager().debug("ScriptAPI: CMS handle for '" + script.getAlias() + "' does not exist, " +
+                                            "returning null");
             return null;
         }
     }
 
     public ScriptHandle getHandle() {
+        this.getLoggingManager().debug("ScriptAPI: Returning last handle: " + this.lastHandle);
         return this.lastHandle;
     }
 
     public ForumHandle getForumHandle() {
+        this.getLoggingManager().debug("ScriptAPI: Returning last forum handle: " + this.lastHandle);
         return (ForumHandle) this.lastHandle;
     }
 
-    public void addHandle(String script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
-        ScriptHandle handle = new ScriptHandle(script, version, dataManager);
-        this.handles.put(handle.getScript().getScript(), handle);
-        this.lastHandle = handle;
+    public CMSHandle getCMSHandle() {
+        this.getLoggingManager().debug("ScriptAPI: Returning last cms handle: " + this.lastHandle);
+        return (CMSHandle) this.lastHandle;
     }
 
     public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
@@ -152,6 +163,8 @@ public class ScriptAPI {
         default:
             handle = new ScriptHandle(script, version, dataManager);
         }
+        this.getLoggingManager().debug("ScriptAPI: Adding handle with type: '" + script.getType() + "' for script: '" +
+                                        script.getAlias() + "', version: '" + version + "'");
         this.handles.put(handle.getScript().getScript(), handle);
         this.lastHandle = handle;
     }

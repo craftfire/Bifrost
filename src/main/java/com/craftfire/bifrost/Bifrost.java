@@ -19,10 +19,6 @@
  */
 package com.craftfire.bifrost;
 
-import com.craftfire.bifrost.classes.forum.ForumBoard;
-import com.craftfire.bifrost.classes.forum.ForumUser;
-import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.commons.enums.DataType;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
