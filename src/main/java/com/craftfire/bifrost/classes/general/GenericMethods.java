@@ -29,8 +29,8 @@ import java.sql.SQLException;
  * Generic methods that are being used by most of the script classes.
  */
 public class GenericMethods {
-    public int id;
-    public final ScriptHandle handle;
+    private int id;
+    private final ScriptHandle handle;
 
     /**
      * Default constructor.
