@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.classes.Version;
+import com.craftfire.commons.classes.VersionRange;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
@@ -61,15 +63,15 @@ public class WordPress extends CMSScript {
         super(script, version, dataManager);
         setScriptName("wordpress");
         setShortName("wp");
-        setVersionRanges(new String[] { "3.4.2" }); // Should be 3.4.0 - 3.4.2
+        setVersionRanges(new VersionRange[] { new VersionRange("3.4.0", "3.4.2") });
     }
 
     //Start Generic Methods
 
     @Override
-    public String getLatestVersion() {
+    public Version getLatestVersion() {
         /* TODO: Is it that version for sure? */
-        return getVersionRanges()[getVersionRanges().length - 1];
+        return getVersionRanges()[0].getMax();
     }
 
     @Override
