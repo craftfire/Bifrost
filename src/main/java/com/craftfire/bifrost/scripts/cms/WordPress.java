@@ -263,7 +263,7 @@ public class WordPress extends CMSScript {
             if (namesonly) {
                 groups.add(getGroup(i, true));
             } else {
-                groups.add(this.handle.getGroup(i));
+                groups.add(this.getHandle().getGroup(i));
             }
         }
         return groups;
@@ -329,7 +329,7 @@ public class WordPress extends CMSScript {
                 }
                 Iterator<String> iterator = adminmap.values().iterator();
                 while (iterator.hasNext()) {
-                    userlist.add(this.handle.getUser(iterator.next()));
+                    userlist.add(this.getHandle().getUser(iterator.next()));
                 }
             } else {
                 return null;
@@ -352,7 +352,7 @@ public class WordPress extends CMSScript {
                 }
                 String gname = groupname.toLowerCase();
                 if (capmap.containsKey(gname) && capmap.get(gname).equals("1")) {
-                    userlist.add(this.handle.getUser(userid));
+                    userlist.add(this.getHandle().getUser(userid));
                 }
             }
             group.setUsers(userlist);
@@ -369,7 +369,7 @@ public class WordPress extends CMSScript {
     @SuppressWarnings("unchecked")
     @Override
     public List<Group> getUserGroups(String username) throws SQLException, UnsupportedMethod {
-        int userid = this.handle.getUserID(username);
+        int userid = this.getHandle().getUserID(username);
         String capabilities = this.getDataManager().getStringField("usermeta", "meta_value", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
         Map<Object, Object> capmap = null;
         if (capabilities != null && !capabilities.isEmpty()) {
@@ -379,7 +379,7 @@ public class WordPress extends CMSScript {
             } catch (ClassCastException ignore) {
             }
         }
-        List<Group> allGroups = this.handle.getGroups(0);
+        List<Group> allGroups = this.getHandle().getGroups(0);
         List<Group> uGroups = new ArrayList<Group>();
         Iterator<Group> iterator = allGroups.iterator();
         while (iterator.hasNext()) {
@@ -414,7 +414,7 @@ public class WordPress extends CMSScript {
         List<Group> newGroups = groups;
         if (newGroups == null) {
             newGroups = new ArrayList<Group>();
-            Group defaultGroup = this.handle.getGroup(this.getDataManager().getStringField("options", "option_value", "`option_name` = 'default_role'"));
+            Group defaultGroup = this.getHandle().getGroup(this.getDataManager().getStringField("options", "option_value", "`option_name` = 'default_role'"));
             newGroups.add(defaultGroup);
         }
         int userid = this.getUserID(username);
@@ -499,7 +499,7 @@ public class WordPress extends CMSScript {
         }
         iterator = newGroups.iterator();
         while (iterator.hasNext()) {
-            Group.cleanupCache(this.handle, iterator.next(), CacheCleanupReason.UPDATE);
+            Group.cleanupCache(this.getHandle(), iterator.next(), CacheCleanupReason.UPDATE);
         }
     }
 
@@ -531,14 +531,14 @@ public class WordPress extends CMSScript {
             Iterator<ScriptUser> iOld = oldUsers.iterator();
             while (iOld.hasNext()) {
                 ScriptUser u = iOld.next();
-                List<Group> groups = this.handle.getUserGroups(u.getUsername());
+                List<Group> groups = this.getHandle().getUserGroups(u.getUsername());
                 groups.remove(group);
                 setUserGroups(u.getUsername(), groups);
             }
             Iterator<ScriptUser> iNew = newUsers.iterator();
             while (iNew.hasNext()) {
                 ScriptUser u = iNew.next();
-                List<Group> groups = this.handle.getUserGroups(u.getUsername());
+                List<Group> groups = this.getHandle().getUserGroups(u.getUsername());
                 groups.add(group);
                 setUserGroups(u.getUsername(), groups);
             }
