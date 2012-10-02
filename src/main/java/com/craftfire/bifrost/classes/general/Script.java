@@ -119,13 +119,13 @@ public class Script {
     /**
      * Sets the version ranges of the script.
      *
-     * @param versionRanges  the version ranges of the script
+     * @param newVersionRanges  the version ranges of the script
      */
-    protected void setVersionRanges(String[] versionRanges) {
+    protected void setVersionRanges(String[] newVersionRanges) {
         if (versionRanges == null) {
             this.versionRanges = new String[0];
         } else {
-            this.versionRanges = Arrays.copyOf(versionRanges, versionRanges.length);
+            this.versionRanges = Arrays.copyOf(newVersionRanges, newVersionRanges.length);
         }
     }
 
