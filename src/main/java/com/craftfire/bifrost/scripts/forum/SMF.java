@@ -1194,7 +1194,7 @@ public class SMF extends ForumScript {
     private String valuesToIP(String ip1, String ip2) {
         String[] split1 = ip1.split("\\.");
         String[] split2 = ip2.split("\\.");
-        StringBuffer newIP = new StringBuffer();
+        StringBuilder newIP = new StringBuilder();
         String delim = ".";
         for (int i = 0; split1.length > i; i++) {
             if (i == (split1.length - 1)) {
