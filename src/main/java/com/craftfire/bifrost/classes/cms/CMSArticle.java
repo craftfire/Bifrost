@@ -35,12 +35,12 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class should only be used with a CMS article.
  * <p>
  * The second constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the article, run {@see #updateArticle()}.
+ * To update any changed values in the article, run {@link #update()}.
  * <p>
  * When creating a new CMSArticle make sure you use the correct constructor:
- * {@see #CMSArticle(Script, int)}.
+ * {@link #CMSArticle(CMSScript, int)}.
  * <p>
- * Remember to run {@see #createArticle()} after creating an article to insert it into the script.
+ * Remember to run {@link #create()} after creating an article to insert it into the script.
  */
 public class CMSArticle extends Message implements ViewsCounter {
     private String intro, url;
@@ -50,7 +50,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     /**
      * This constructor should be used when creating a new article for the script.
      * <p>
-     * Remember to run {@see #createArticle()} after creating an article to insert it into the script.
+     * Remember to run {@link #create()} after creating an article to insert it into the script.
      * 
      * @param script      the script the article is created for
      * @param categoryid  the id of the category of the script
@@ -308,7 +308,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @param handle   the handle the method is called from
      * @param article  the article to cleanup related cache
      * @param reason   the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
-     * @see            Cache
+     * @see            com.craftfire.bifrost.classes.Cache
      */
     public static void cleanupCache(ScriptHandle handle, CMSArticle article, CacheCleanupReason reason) {
         handle.getCache().remove(CacheGroup.CMSCAT_ARTICLES, article.getCategoryID());

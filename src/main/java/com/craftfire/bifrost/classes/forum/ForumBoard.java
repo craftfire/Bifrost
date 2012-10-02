@@ -67,7 +67,7 @@ public class ForumBoard extends Category {
     /**
      * This constructor should be preferred when creating a new board for the script.
      * <p>
-     * Remember to run {@see #createBoard()} after creating a board to insert it into the script.
+     * Remember to run {@link #create()} after creating a board to insert it into the script.
      * 
      * @param script    the script the board is created for
      * @param name      the name of the board

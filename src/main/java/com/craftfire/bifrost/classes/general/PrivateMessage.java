@@ -35,7 +35,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new PrivateMessage make sure you use the correct constructor:
- * {@see #PrivateMessage(Script, ScriptUser, List<ScriptUser>, int)}.
+ * {@link #PrivateMessage(Script, ScriptUser, List<ScriptUser>, int)}.
  * <p>
  * Remember to run {@link #create()} after creating a private/conversation message
  * to insert it into the script.

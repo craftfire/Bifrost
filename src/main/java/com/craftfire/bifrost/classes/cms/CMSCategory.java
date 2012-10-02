@@ -34,12 +34,12 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class should only be used with a CMS category.
  * <p>
  * The second constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the category, run {@see #updateCategory()}.
+ * To update any changed values in the category, run {@link #update()}.
  * <p>
  * When creating a new CMSCategory make sure you use the correct constructor:
- * {@see #CMSCategory(com.craftfire.bifrost.script.Script, String, int)}.
+ * {@link #CMSCategory(CMSScript, String, int)}.
  * <p>
- * Remember to run {@see #createCategory()} after creating a category to insert it into the script.
+ * Remember to run {@link #create()} after creating a category to insert it into the script.
  */
 public class CMSCategory extends Category {
     private boolean isPublic;
@@ -47,10 +47,10 @@ public class CMSCategory extends Category {
     /**
      * This constructor may be used when creating a new category for the script.
      * <p>
-     * Remember to run {@see #createCategory()} after creating a board to insert it into the script.
+     * Remember to run {@link #create()} after creating a category to insert it into the script.
      * 
      * @param script  the script the board is created for
-     * @param name
+     * @param name    the name of the category
      */
     public CMSCategory(CMSScript script, String name) {
         super(script);

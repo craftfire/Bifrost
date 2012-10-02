@@ -35,7 +35,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new Ban make sure you use the correct constructor:
- * {@see #Ban(Script, String, String, String)}.
+ * {@link #Ban(Script, String, String, String)}.
  * <p>
  * Remember to run {@link #create()} after creating a ban to insert it into the script.
  */

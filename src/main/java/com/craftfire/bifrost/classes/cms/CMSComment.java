@@ -37,12 +37,12 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class should only be used with a CMS comment.
  * <p>
  * The second constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the comment, run {@see #updateComment()}.
+ * To update any changed values in the comment, run {@link #update()}.
  * <p>
  * When creating a new CMSComment make sure you use the correct constructor:
- * {@see #CMSComment(Script, int)}.
+ * {@link #CMSComment(CMSScript, int)}.
  * <p>
- * Remember to run {@see #createComment()} after creating a comment to insert it into the script.
+ * Remember to run {@link #create()} after creating a comment to insert it into the script.
  */
 public class CMSComment extends Message {
     private int articleid, parentid;
@@ -50,7 +50,7 @@ public class CMSComment extends Message {
     /**
      * This constructor should be used when creating a new comment for the script.
      * <p>
-     * Remember to run {@see #createComment()} after creating a comment to insert it into the script.
+     * Remember to run {@link #create()} after creating a comment to insert it into the script.
      * 
      * @param script     the script the comment is created for
      * @param articleid  the ID of the article the comment is on

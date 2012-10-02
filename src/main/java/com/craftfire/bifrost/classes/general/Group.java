@@ -36,7 +36,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new Group make sure you use the correct constructor:
- * {@see #Group(Script, String)}.
+ * {@link #Group(Script, String)}.
  * <p>
  * Remember to run {@link #create()} after creating a group to insert it into the script.
  */
@@ -62,7 +62,7 @@ public class Group implements IDable {
     /**
      * This constructor should be used when creating a new group for the script.
      * <p>
-     * Remember to run {@see #createGroup()} after creating a group to insert it into the script.
+     * Remember to run {@link #create()} after creating a group to insert it into the script.
      *
      * @param script     the script
      * @param groupname  the name of the group
