@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Message;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.classes.general.ScriptUser;

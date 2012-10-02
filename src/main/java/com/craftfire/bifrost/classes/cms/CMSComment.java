@@ -22,7 +22,6 @@ package com.craftfire.bifrost.classes.cms;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.Cache;
 import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.Message;

@@ -21,7 +21,6 @@ package com.craftfire.bifrost.classes.forum;
 
 import java.sql.SQLException;
 
-import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 

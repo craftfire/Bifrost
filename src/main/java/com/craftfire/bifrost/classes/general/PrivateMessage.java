@@ -22,7 +22,6 @@ package com.craftfire.bifrost.classes.general;
 import java.sql.SQLException;
 import java.util.*;
 
-import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;

@@ -19,8 +19,6 @@
  */
 package com.craftfire.bifrost.classes.general;
 
-import com.craftfire.bifrost.classes.cms.CMSHandle;
-import com.craftfire.bifrost.classes.forum.ForumHandle;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 
 import java.sql.SQLException;
