@@ -97,9 +97,9 @@ public class XenForo extends ForumScript {
                     stringBuffer.append(buffer, 0, offset);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                this.getLoggingManager().stackTrace(e);
             } catch (SQLException e) {
-                e.printStackTrace();
+                this.getLoggingManager().stackTrace(e);
             }
             String cache = stringBuffer.toString();
             hash = CraftCommons.forumCacheValue(cache, "hash");
@@ -178,9 +178,9 @@ public class XenForo extends ForumScript {
                         stringBuffer.append(buffer, 0, offset);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    this.getLoggingManager().stackTrace(e);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    this.getLoggingManager().stackTrace(e);
                 }
                 String cache = stringBuffer.toString();
                 //TODO: php deserializer
@@ -210,7 +210,7 @@ public class XenForo extends ForumScript {
                 SimpleDateFormat format = new SimpleDateFormat("d M yyyy");
                 user.setBirthday(format.parse(bdate));
             } catch (ParseException e) {
-                e.printStackTrace();
+                this.getLoggingManager().stackTrace(e);
             }
             if (!row.getStringField("status").isEmpty()) {
                 user.setStatusMessage(row.getStringField("status"));

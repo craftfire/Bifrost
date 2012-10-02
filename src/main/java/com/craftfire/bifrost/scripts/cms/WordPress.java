@@ -211,7 +211,7 @@ public class WordPress extends CMSScript {
         try {
             setUserGroups(user.getUsername(), user.getGroups());
         } catch (UnsupportedMethod e) {
-            e.printStackTrace();
+            this.getLoggingManager().stackTrace(e);
         }
     }
 
