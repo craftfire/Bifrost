@@ -150,8 +150,8 @@ public class BifrostScriptTest {
         username = data.get("script_username");
         try {
             bifrost = new Bifrost();
-            bifrost.getScriptAPI().addHandle(script, version, dataManager);
-            handle = bifrost.getScriptAPI().getHandle(script);
+            int handleID = bifrost.getScriptAPI().addHandle(script, version, dataManager);
+            handle = bifrost.getScriptAPI().getHandle(handleID);
         } catch (UnsupportedVersion unsupportedVersion) {
             throw new RuntimeException(unsupportedVersion);
         } catch (UnsupportedScript unsupportedScript) {
@@ -290,7 +290,7 @@ public class BifrostScriptTest {
     public void testUserCreate() throws SQLException {
         print(seperate);
         print(script.toString() + " - " + version + " - USER CREATE");
-        ScriptUser newUser = bifrost.getScriptAPI().getHandle(script).newScriptUser("craftfire" + this.randomInt, "craftfire");
+        ScriptUser newUser = handle.newScriptUser("craftfire" + this.randomInt, "craftfire");
         newUser.setNickname("testing" + this.randomInt);
         newUser.setUserTitle("title");
         newUser.setRegIP("127.0.0.1");
@@ -530,7 +530,7 @@ public class BifrostScriptTest {
             fail("Not a forum script.");
         }
         try {
-            ForumPost newPost = fhandle.newPost(1, 2);
+            ForumPost newPost = fhandle.newPost(1);
             newPost.setBody("Test: This is the body of the post?!");
             newPost.setAuthor(handle.getUser("craftfire" + this.randomInt));
             newPost.setSubject("Test " + this.randomInt + ": This is the subject of the post!");
@@ -964,7 +964,7 @@ public class BifrostScriptTest {
 
     public static ForumHandle getForumHandle() {
         try {
-            return bifrost.getScriptAPI().getForumHandle(script);
+            return (ForumHandle) handle;
         } catch (ClassCastException ignore) {
         }
         return null;
@@ -972,7 +972,7 @@ public class BifrostScriptTest {
 
     public static CMSHandle getCMSHandle() {
         try {
-            return bifrost.getScriptAPI().getCMSHandle(script);
+            return (CMSHandle) handle;
         } catch (ClassCastException ignore) {
         }
         return null;
