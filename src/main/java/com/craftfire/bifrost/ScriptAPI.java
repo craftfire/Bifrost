@@ -19,7 +19,6 @@
  */
 package com.craftfire.bifrost;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,13 +30,18 @@ import com.craftfire.bifrost.classes.forum.ForumHandle;
 import com.craftfire.bifrost.classes.general.Script;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.scripts.cms.WordPress;
 import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
 
+//TODO: Add example to the description
+/**
+ * ScriptAPI contains all the methods for creating and grabbing script handles.
+ *
+ * @see ScriptHandle
+ */
 public class ScriptAPI {
     private Map<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
     private ScriptHandle lastHandle = null;
@@ -85,24 +89,45 @@ public class ScriptAPI {
         throw new UnsupportedScript();
     }
 
-    public static Script setScript(Scripts scriptName, String version, DataManager dataManager) {
-        switch (scriptName) {
+    /**
+     * Returns a {@link Script} object depending on which <code>script</code> and <code>version</code> has been used.
+     * <p>
+     * Returns <code>null</code> if the <code>script</code> is not supported.
+     *
+     * @param script       the script
+     * @param version      the version of the script
+     * @param dataManager  the {@link DataManager} for the script
+     * @return             a {@link Script} object, returns null if not supported
+     */
+    public static Script setScript(Scripts script, String version, DataManager dataManager) {
+        switch (script) {
             case WP:
-                return new WordPress(scriptName, version, dataManager);
+                return new WordPress(script, version, dataManager);
             case SMF:
-                return new SMF(scriptName, version, dataManager);
+                return new SMF(script, version, dataManager);
             case XF:
-                return new XenForo(scriptName, version, dataManager);
+                return new XenForo(script, version, dataManager);
             default:
                 return null;
         }
     }
 
+    /**
+     * Returns a Map with all the {@link ScriptHandle}s that have been created.
+     *
+     * @return Map with all the script handles
+     */
     public Map<Scripts, ScriptHandle> getHandles() {
         this.getLoggingManager().debug("ScriptAPI: Getting all handles, size: " + this.handles.size());
         return this.handles;
     }
 
+    /**
+     * Returns the {@link ScriptHandle} for the specified <code>script</code>.
+     *
+     * @param script  the script you want to grab the script handle from
+     * @return        the script handle for the specified <code>script</code>
+     */
     public ScriptHandle getHandle(Scripts script) {
         if (handleExists(script)) {
             this.getLoggingManager().debug("ScriptAPI: Found handle for '" + script.getAlias() + "!");
@@ -114,6 +139,12 @@ public class ScriptAPI {
         }
     }
 
+    /**
+     * Returns the {@link ForumHandle} for the specified <code>script</code>.
+     *
+     * @param script  the script you want to grab the forum handle from
+     * @return        the forum handle for the specified <code>script</code>
+     */
     public ForumHandle getForumHandle(Scripts script) {
         if (handleExists(script)) {
             this.getLoggingManager().debug("ScriptAPI: Found forum handle for '" + script.getAlias() + "!");
@@ -125,6 +156,12 @@ public class ScriptAPI {
         }
     }
 
+    /**
+     * Returns the {@link CMSHandle} for the specified <code>script</code>.
+     *
+     * @param script  the script you want to grab the cms handle from
+     * @return        the cms handle for the specified <code>script</code>
+     */
     public CMSHandle getCMSHandle(Scripts script) {
         if (handleExists(script)) {
             this.getLoggingManager().debug("ScriptAPI: Found cms handle for '" + script.getAlias() + "!");
@@ -136,21 +173,45 @@ public class ScriptAPI {
         }
     }
 
+    /**
+     * Returns the latest script handle, returns null if there are no handles.
+     *
+     * @return latest script handle, return null if there are no handles
+     */
     public ScriptHandle getHandle() {
         this.getLoggingManager().debug("ScriptAPI: Returning last handle: " + this.lastHandle);
         return this.lastHandle;
     }
 
+    /**
+     * Returns the latest forum handle, returns null if there are no handles.
+     *
+     * @return latest forum handle, return null if there are no handles
+     */
     public ForumHandle getForumHandle() {
         this.getLoggingManager().debug("ScriptAPI: Returning last forum handle: " + this.lastHandle);
         return (ForumHandle) this.lastHandle;
     }
 
+    /**
+     * Returns the latest cms handle, returns null if there are no handles.
+     *
+     * @return latest cms handle, return null if there are no handles
+     */
     public CMSHandle getCMSHandle() {
         this.getLoggingManager().debug("ScriptAPI: Returning last cms handle: " + this.lastHandle);
         return (CMSHandle) this.lastHandle;
     }
 
+    /**
+     * Adds a handle to the list.
+     *
+     * @param script               the script
+     * @param version              the version of the script
+     * @param dataManager          the {@link DataManager} of the script
+     * @throws UnsupportedScript   if the specified <code>script</code> is not supported by Bifrost
+     * @throws UnsupportedVersion  if the specified <code>version</code> is not supported by the script
+     */
     public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
         ScriptHandle handle;
         switch (script.getType()) {
@@ -169,17 +230,12 @@ public class ScriptAPI {
         this.lastHandle = handle;
     }
 
-    public void addCustomHandle(Script script) throws UnsupportedScript, UnsupportedVersion {
-        ScriptHandle handle = new ScriptHandle(script);
-        this.handles.put(handle.getScript().getScript(), handle);
-        this.lastHandle = handle;
-    }
-
-    public boolean convert(ScriptHandle from, ScriptHandle to) throws SQLException, UnsupportedMethod {
-        //TODO: Create script converter, need to add methods to scripts
-        return false;
-    }
-
+    /**
+     * Checks if a script handle already exists, returns true if it does, false if not
+     *
+     * @param script  the script you want to check
+     * @return        true if exists, false if not
+     */
     protected boolean handleExists(Scripts script) {
         return this.handles.containsKey(script);
     }
