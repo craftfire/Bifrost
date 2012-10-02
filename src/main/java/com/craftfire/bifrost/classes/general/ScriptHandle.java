@@ -22,6 +22,8 @@ package com.craftfire.bifrost.classes.general;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.craftfire.commons.classes.Version;
+import com.craftfire.commons.classes.VersionRange;
 import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.ScriptAPI;
@@ -161,7 +163,7 @@ public class ScriptHandle {
     /**
      * @see Script#getLatestVersion() Documentation for this method
      */
-    public String getLatestVersion() {
+    public Version getLatestVersion() {
         return this.script.getLatestVersion();
     }
 
@@ -175,14 +177,14 @@ public class ScriptHandle {
     /**
      * @see Script#getVersion() Documentation for this method
      */
-    public String getVersion() {
+    public Version getVersion() {
         return this.script.getVersion();
     }
 
     /**
      * @see Script#getVersionRanges() Documentation for this method
      */
-    public String[] getVersionRanges() {
+    public VersionRange[] getVersionRanges() {
         return this.script.getVersionRanges();
     }
 

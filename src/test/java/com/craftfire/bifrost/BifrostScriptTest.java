@@ -190,8 +190,8 @@ public class BifrostScriptTest {
         try {
             printResult("getScriptName", handle.getScriptName(), true);
             printResult("getScriptShortname", handle.getScriptShortname(), true);
-            printResult("getLatestVersion", handle.getLatestVersion(), true);
-            printResult("getVersion", handle.getVersion(), true);
+            printResult("getLatestVersion", handle.getLatestVersion().toString(), true);
+            printResult("getVersion", handle.getVersion().toString(), true);
             printResult("getHomeURL", handle.getHomeURL(), true);
         } catch (UnsupportedMethod e) {
             fail(e.toString());
