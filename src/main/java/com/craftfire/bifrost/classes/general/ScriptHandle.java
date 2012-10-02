@@ -45,9 +45,9 @@ public class ScriptHandle {
     /**
      * Creates a ScriptHandle.
      *
-     * @param script   the script using the enum list, for example: Scripts.SMF.
-     * @param version  the version that the user has set in his config.
-     * @throws         UnsupportedVersion if the input version is not found in the list of supported versions.
+     * @param script   the script using the enum list, for example: Scripts.SMF
+     * @param version  the version that the user has set in his config
+     * @throws         UnsupportedVersion if the input version is not found in the list of supported versions
      */
     public ScriptHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.script = ScriptAPI.setScript(script, version, dataManager);
@@ -57,6 +57,12 @@ public class ScriptHandle {
         this.instance = this;
     }
 
+    /**
+     * Creates a ScriptHandle.
+     *
+     * @param script  the script object
+     * @throws        UnsupportedVersion if the input version is not found in the list of supported version
+     */
     public ScriptHandle(Script script) throws UnsupportedVersion {
         this.script = script;
         this.instance = this;
@@ -78,36 +84,73 @@ public class ScriptHandle {
     }
 
     /**
-     * @return The Script object.
+     * Returns the Script object
+     *
+     * @return the Script object
      */
     public Script getScript() {
         return this.script;
     }
 
+    /**
+     * Returns the handle of the script.
+     *
+     * @return handle of the script
+     */
     public ScriptHandle getHandle() {
         return this.instance;
     }
 
+    /**
+     * Returns the {@link DataManager} of the handle/script.
+     *
+     * @return DataManager of the handle/script
+     */
     public DataManager getDataManager() {
         return this.script.getDataManager();
     }
 
+    /**
+     * Returns the {@link Cache} of the handle/script.
+     *
+     * @return Cache of the handle/Script
+     */
     public Cache getCache() {
         return this.script.getCache();
     }
 
+    /**
+     * Creates a new ban in the script.
+     *
+     * @see Ban#Ban(Script, String, String, String) Documentation for this method
+     */
     public Ban newBan(String name, String email, String ip) {
         return new Ban(this.getScript(), name, email, ip);
     }
 
+    /**
+     * Creates a new group in the script.
+     *
+     * @see Group#Group(Script, String) Documentation for this method
+     */
     public Group newGroup(String groupname) {
         return new Group(this.getScript(), groupname);
     }
 
+    /**
+     * Creates a new private message in the script.
+     *
+     * @see PrivateMessage#PrivateMessage(Script, ScriptUser, List) Documentation for this method
+     */
     public PrivateMessage newPrivateMessage(ScriptUser sender, List<ScriptUser> recipients) {
         return new PrivateMessage(this.script, sender, recipients);
     }
 
+    /**
+     * Creates a new user in the script.
+     *
+     * @see ScriptUser#ScriptUser(Script, String, String) Documentation for this method
+     */
     public ScriptUser newScriptUser(String username, String password) {
         return new ScriptUser(this.script, username, password);
     }

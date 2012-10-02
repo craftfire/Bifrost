@@ -33,12 +33,12 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class should only be used with a group.
  * <p>
  * The first constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the post, run {@see #updateGroup()}.
+ * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new Group make sure you use the correct constructor:
  * {@see #Group(Script, String)}.
  * <p>
- * Remember to run {@see #createGroup()} after creating a group to insert it into the script.
+ * Remember to run {@link #create()} after creating a group to insert it into the script.
  */
 public class Group implements IDable {
     private int groupid, usercount;
@@ -62,10 +62,10 @@ public class Group implements IDable {
     /**
      * This constructor should be used when creating a new group for the script.
      * <p>
-     * Remember to run {@see #createGroup()} after creating a ban to insert it into the script.
+     * Remember to run {@see #createGroup()} after creating a group to insert it into the script.
      *
      * @param script     the script
-     * @param groupname  the ID of the group
+     * @param groupname  the name of the group
      */
     public Group(Script script, String groupname) {
         this.script = script;

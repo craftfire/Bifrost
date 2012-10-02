@@ -33,6 +33,17 @@ import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 
+/**
+ * This class should only be used with a script user.
+ * <p>
+ * The first constructor should only be used by the script itself and not by the library user.
+ * To update any changed values in the post, run {@link #update()}.
+ * <p>
+ * When creating a new script user make sure you use the correct constructor:
+ * {@link #ScriptUser(Script, String, String)}.
+ * <p>
+ * Remember to run {@link #create()} after creating a user to insert it into the script.
+ */
 public class ScriptUser implements IDable {
     private int userid;
     private Date regdate, lastlogin, birthday;
@@ -42,6 +53,14 @@ public class ScriptUser implements IDable {
     private boolean activated, anonymous;
     private final Script script;
 
+    /**
+     * This constructor should only be used by the script and not by that library user.
+     *
+     * @param script    the script
+     * @param userid    the ID of the user
+     * @param username  the username of the user
+     * @param password  the password for the user
+     */
     public ScriptUser(Script script, int userid, String username, String password) {
         this.script = script;
         this.username = username;

@@ -32,12 +32,12 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class should only be used with a ban.
  * <p>
  * The first constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the post, run {@see #updateBan()}.
+ * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new Ban make sure you use the correct constructor:
  * {@see #Ban(Script, String, String, String)}.
  * <p>
- * Remember to run {@see #addBan()} after creating a ban to insert it into the script.
+ * Remember to run {@link #create()} after creating a ban to insert it into the script.
  */
 public class Ban implements IDable {
     private String name, email, ip, reason, notes;
@@ -65,7 +65,7 @@ public class Ban implements IDable {
     /**
      * This constructor should be used when creating a new ban for the script.
      * <p>
-     * Remember to run {@see #addBan()} after creating a ban to insert it into the script.
+     * Remember to run {@link #create()} after creating a ban to insert it into the script.
      *
      * @param script  the script
      * @param name    the name/username of the ban, set to null if none.

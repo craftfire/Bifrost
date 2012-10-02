@@ -32,12 +32,12 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class should only be used with a private/conversation message.
  * <p>
  * The first constructor should only be used by the script itself and not by the library user.
- * To update any changed values in the post, run {@see #updatePrivateMessage()}.
+ * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new PrivateMessage make sure you use the correct constructor:
  * {@see #PrivateMessage(Script, ScriptUser, List<ScriptUser>, int)}.
  * <p>
- * Remember to run {@see #createPrivateMessage()} after creating a private/conversation message
+ * Remember to run {@link #create()} after creating a private/conversation message
  * to insert it into the script.
  */
 public class PrivateMessage extends Message {
