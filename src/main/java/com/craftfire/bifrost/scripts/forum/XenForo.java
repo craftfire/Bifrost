@@ -439,8 +439,8 @@ public class XenForo extends ForumScript {
                 //System.out.println("user: " + this.currentUsername + " - " + username);
                 //users.add(getUser(username));
             }
-        }*/
-        this.currentUsername = null;
+        }
+        this.currentUsername = null;*/
         Group group =
                 new Group(this, Integer.parseInt(array.get("user_group_id").toString()),
                         array.get("title").toString());
@@ -465,7 +465,7 @@ public class XenForo extends ForumScript {
 
     @Override
     public List<Group> getUserGroups(String username) {
-        this.currentUsername = username;
+        //TODO: Finish this: this.currentUsername = username;
         List<Group> groups = new ArrayList<Group>();
         HashMap<String, Object> array = this.getDataManager().getArray(
                 "SELECT `user_group_id`, `secondary_group_ids` FROM `" + this.getDataManager().getPrefix() +
@@ -476,7 +476,7 @@ public class XenForo extends ForumScript {
             if (additional.contains(",")) {
                 String[] split = additional.split("\\,");
                 for (int i = 0; split.length > i; i++) {
-                    this.currentUsername = username;
+                    //TODO: Finish this: this.currentUsername = username;
                     groups.add(getGroup(Integer.parseInt(split[i])));
                 }
             } else {
