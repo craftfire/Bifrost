@@ -69,10 +69,13 @@ public class ScriptHandle {
     }
 
     /**
-     * @param script  The script in a string, for example: smf.
-     * @param version The version that the user has set in his config.
-     * @throws com.craftfire.bifrost.exceptions.UnsupportedScript if the input string is not found in the list of supported scripts.
-     * @throws UnsupportedVersion if the input version is not found in the list of supported versions.
+     * Creates a ScriptHandle, similar to {@link #ScriptHandle(Scripts, String, DataManager)},
+     * just with a string instead.
+     *
+     * @param script   the script in a string, for example: smf
+     * @param version  the version that the user has set in his config
+     * @throws         UnsupportedScript if the input string is not found in the list of supported scripts
+     * @throws         UnsupportedVersion if the input version is not found in the list of supported versions
      */
     public ScriptHandle(String script, String version, DataManager dataManager) throws UnsupportedScript,
             UnsupportedVersion {
