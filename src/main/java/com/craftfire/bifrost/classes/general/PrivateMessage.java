@@ -34,7 +34,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new PrivateMessage make sure you use the correct constructor:
- * {@link #PrivateMessage(Script, ScriptUser, List<ScriptUser>, int)}.
+ * {@link #PrivateMessage(ScriptHandle, ScriptUser, List<ScriptUser>, int)}.
  * <p>
  * Remember to run {@link #create()} after creating a private/conversation message
  * to insert it into the script.
@@ -48,17 +48,17 @@ public class PrivateMessage extends Message {
     private boolean deletedbysender;
 
     public PrivateMessage(Script script, int pmid) {
-        super(script, pmid);
+        super(script.getHandle(), pmid);
     }
 
-    public PrivateMessage(Script script, ScriptUser sender, List<ScriptUser> recipients) {
-        super(script);
+    public PrivateMessage(ScriptHandle handle, ScriptUser sender, List<ScriptUser> recipients) {
+        super(handle);
         setAuthor(sender);
         this.recipients = recipients;
     }
 
-    public PrivateMessage(Script script, ScriptUser sender, List<ScriptUser> recipients, int parentid) {
-        super(script);
+    public PrivateMessage(ScriptHandle handle, ScriptUser sender, List<ScriptUser> recipients, int parentid) {
+        super(handle);
         setAuthor(sender);
         this.recipients = recipients;
         this.parentid = parentid;
@@ -131,12 +131,12 @@ public class PrivateMessage extends Message {
 
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).updatePrivateMessage(this);
+        getHandle().updatePrivateMessage(this);
     }
 
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).createPrivateMessage(this);
+       getHandle().createPrivateMessage(this);
     }
 
     public static boolean hasCache(ScriptHandle handle, Object id) {
@@ -266,7 +266,7 @@ public class PrivateMessage extends Message {
      */
     @Override
     public PrivateMessage getParent() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).getPM(this.parentid);
+        return getHandle().getPM(this.parentid);
     }
 
     /**
@@ -276,6 +276,6 @@ public class PrivateMessage extends Message {
      */
     @Override
     public List<PrivateMessage> getChildMessages(int limit) throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getHandle(getScript().getScript()).getPMReplies(getID(), limit);
+        return getHandle().getPMReplies(getID(), limit);
     }
 }

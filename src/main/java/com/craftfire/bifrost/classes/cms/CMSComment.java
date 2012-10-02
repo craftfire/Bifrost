@@ -40,7 +40,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the comment, run {@link #update()}.
  * <p>
  * When creating a new CMSComment make sure you use the correct constructor:
- * {@link #CMSComment(CMSScript, int)}.
+ * {@link #CMSComment(CMSHandle, int)}.
  * <p>
  * Remember to run {@link #create()} after creating a comment to insert it into the script.
  */
@@ -52,11 +52,11 @@ public class CMSComment extends Message {
      * <p>
      * Remember to run {@link #create()} after creating a comment to insert it into the script.
      * 
-     * @param script     the script the comment is created for
+     * @param handle     the handle the comment is created for
      * @param articleid  the ID of the article the comment is on
      */
-    public CMSComment(CMSScript script, int articleid) {
-        super(script);
+    public CMSComment(CMSHandle handle, int articleid) {
+        super(handle);
         this.articleid = articleid;
     }
 
@@ -68,7 +68,7 @@ public class CMSComment extends Message {
      * @param articleid  the ID of the article the comment is on
      */
     public CMSComment(CMSScript script, int id, int articleid) {
-        super(script, id);
+        super(script.getHandle(), id);
         this.articleid = articleid;
     }
 
@@ -81,7 +81,7 @@ public class CMSComment extends Message {
      */
     @Override
     public List<CMSComment> getChildMessages(int limit) throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getCommentReplies(getID(), limit);
+        return getCMSHandle().getCommentReplies(getID(), limit);
     }
 
     /**
@@ -111,7 +111,7 @@ public class CMSComment extends Message {
     @Override
     public MessageParent getParent() throws UnsupportedMethod {
         if (this.parentid != 0) {
-            return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getComment(this.parentid);
+            return getCMSHandle().getComment(this.parentid);
         } else {
             return getArticle();
         }
@@ -142,7 +142,7 @@ public class CMSComment extends Message {
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public CMSArticle getArticle() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getArticle(this.articleid);
+        return getCMSHandle().getArticle(this.articleid);
     }
 
     /*
@@ -179,7 +179,7 @@ public class CMSComment extends Message {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateComment(this);
+        getCMSHandle().updateComment(this);
     }
 
     /**
@@ -192,7 +192,7 @@ public class CMSComment extends Message {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createComment(this);
+        getCMSHandle().createComment(this);
     }
 
     /**
@@ -284,14 +284,6 @@ public class CMSComment extends Message {
             handle.getCache().remove(CacheGroup.COMMENT_REPLY_COUNT, oldParent);
             break;
         }
-    }
-
-    /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getScript()
-     */
-    @Override
-    public CMSScript getScript() {
-        return (CMSScript) super.getScript();
     }
 
     /* (non-Javadoc)

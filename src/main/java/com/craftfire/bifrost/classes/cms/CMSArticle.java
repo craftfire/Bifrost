@@ -38,7 +38,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the article, run {@link #update()}.
  * <p>
  * When creating a new CMSArticle make sure you use the correct constructor:
- * {@link #CMSArticle(CMSScript, int)}.
+ * {@link #CMSArticle(CMSHandle, int)}.
  * <p>
  * Remember to run {@link #create()} after creating an article to insert it into the script.
  */
@@ -52,11 +52,11 @@ public class CMSArticle extends Message implements ViewsCounter {
      * <p>
      * Remember to run {@link #create()} after creating an article to insert it into the script.
      * 
-     * @param script      the script the article is created for
+     * @param handle      the handle the article is created for
      * @param categoryid  the id of the category of the script
      */
-    public CMSArticle(CMSScript script, int categoryid) {
-        super(script);
+    public CMSArticle(CMSHandle handle, int categoryid) {
+        super(handle);
         setCategoryID(categoryid);
     }
 
@@ -68,7 +68,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @param categoryid  the ID of the category of the article
      */
     public CMSArticle(CMSScript script, int id, int categoryid) {
-        super(script, id, categoryid);
+        super(script.getHandle(), id, categoryid);
     }
 
     /**
@@ -81,7 +81,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getCommentsOnArticle(getID(), limit);
+        return getCMSHandle().getCommentsOnArticle(getID(), limit);
     }
 
     /**
@@ -111,7 +111,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      */
     @Override
     public CMSCategory getCategory() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getCategory(getCategoryID());
+        return getCMSHandle().getCategory(getCategoryID());
     }
 
     /**
@@ -241,7 +241,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateArticle(this);
+        getCMSHandle().updateArticle(this);
     }
 
     /**
@@ -254,7 +254,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createArticle(this);
+        getCMSHandle().createArticle(this);
     }
 
     /**
@@ -341,14 +341,6 @@ public class CMSArticle extends Message implements ViewsCounter {
             break;
         }
 
-    }
-
-    /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getScript()
-     */
-    @Override
-    public CMSScript getScript() {
-        return (CMSScript) super.getScript();
     }
 
     /* (non-Javadoc)

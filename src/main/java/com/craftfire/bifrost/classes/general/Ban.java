@@ -34,15 +34,14 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new Ban make sure you use the correct constructor:
- * {@link #Ban(Script, String, String, String)}.
+ * {@link #Ban(ScriptHandle, String, String, String)}.
  * <p>
  * Remember to run {@link #create()} after creating a ban to insert it into the script.
  */
-public class Ban implements IDable {
+public class Ban extends GenericMethods {
     private String name, email, ip, reason, notes;
-    private int banid, userid;
+    private int userid;
     private Date startdate, enddate;
-    private final Script script;
 
     /**
      * This constructor should only be used by the script and not by that library user.
@@ -54,8 +53,8 @@ public class Ban implements IDable {
      * @param ip      the ip which is set in the ban entry
      */
     public Ban(Script script, int banid, String name, String email, String ip) {
-        this.script = script;
-        this.banid = banid;
+        super(script.getHandle());
+        this.id = banid;
         this.name = name;
         this.email = email;
         this.ip = ip;
@@ -66,25 +65,16 @@ public class Ban implements IDable {
      * <p>
      * Remember to run {@link #create()} after creating a ban to insert it into the script.
      *
-     * @param script  the script
+     * @param handle  the handle
      * @param name    the name/username of the ban, set to null if none.
      * @param email   the email of the ban, set to null if none.
      * @param ip      the ip of the ban, set to null if none.
      */
-    public Ban(Script script, String name, String email, String ip) {
-        this.script = script;
+    public Ban(ScriptHandle handle, String name, String email, String ip) {
+        super(handle);
         this.name = name;
         this.email = email;
         this.ip = ip;
-    }
-
-    @Override
-    public int getID() {
-        return this.banid;
-    }
-
-    public void setID(int id) {
-        this.banid = id;
     }
 
     /**
@@ -306,7 +296,7 @@ public class Ban implements IDable {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateBan(this);
+        getHandle().updateBan(this);
     }
 
     /**
@@ -319,7 +309,7 @@ public class Ban implements IDable {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).addBan(this);
+        getHandle().addBan(this);
     }
 
     /**

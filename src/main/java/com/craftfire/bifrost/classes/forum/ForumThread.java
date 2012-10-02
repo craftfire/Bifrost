@@ -40,7 +40,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the thread, run {@link #update()}.
  * <p>
  * When creating a new ForumThread make sure you use the correct constructor:
- * {@link #ForumThread(ForumScript, int)}.
+ * {@link #ForumThread(ForumHandle, int)}.
  * <p>
  * Remember to run {@link #create()} after creating a thread to insert it into the script.
  */
@@ -59,7 +59,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @param boardid      the ID of the board which the thread is posted in
      */
     public ForumThread(ForumScript script, int firstpostid, int lastpostid, int threadid, int boardid) {
-        super(script, threadid, boardid);
+        super(script.getHandle(), threadid, boardid);
         this.firstpostid = firstpostid;
         this.lastpostid = lastpostid;
     }
@@ -69,11 +69,11 @@ public class ForumThread extends Message implements ViewsCounter {
      * <p>
      * Remember to run {@link #create()} after creating a thread to insert it into the script.
      *
-     * @param script   the script the thread is created for
+     * @param handle   the script the thread is created for
      * @param boardid  the ID of the board that the thread should be in
      */
-    public ForumThread(ForumScript script, int boardid) {
-        super(script);
+    public ForumThread(ForumHandle handle, int boardid) {
+        super(handle);
         setCategoryID(boardid);
     }
 
@@ -103,7 +103,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @throws SQLException       if a MySQL exception occurred
      */
     public ForumBoard getBoard() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getCategoryID());
+        return getForumHandle().getBoard(getCategoryID());
     }
 
     /**
@@ -118,9 +118,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @see                  ForumPost
      */
     public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI()
-                .getForumHandle(getScript().getScript())
-                .getPostsFromThread(getID(), limit);
+        return getForumHandle().getPostsFromThread(getID(), limit);
     }
 
     /**
@@ -132,9 +130,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @see                        ForumPost
      */
     public ForumPost getFirstPost() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI()
-                .getForumHandle(getScript().getScript())
-                .getPost(this.firstpostid);
+        return getForumHandle().getPost(this.firstpostid);
     }
 
     /**
@@ -146,9 +142,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @see                        ForumPost
      */
     public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI()
-                .getForumHandle(getScript().getScript())
-                .getPost(this.lastpostid);
+        return getForumHandle().getPost(this.lastpostid);
     }
 
     /**
@@ -291,8 +285,7 @@ public class ForumThread extends Message implements ViewsCounter {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI()
-                .getForumHandle(getScript().getScript()).updateThread(this);
+        getForumHandle().updateThread(this);
     }
 
     /**
@@ -305,8 +298,7 @@ public class ForumThread extends Message implements ViewsCounter {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI()
-                .getForumHandle(getScript().getScript()).createThread(this);
+        getForumHandle().createThread(this);
     }
 
     /**
@@ -419,14 +411,6 @@ public class ForumThread extends Message implements ViewsCounter {
     @Override
     public ForumBoard getParent() throws UnsupportedMethod, SQLException {
         return getBoard();
-    }
-
-    /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getScript()
-     */
-    @Override
-    public ForumScript getScript() {
-        return (ForumScript) super.getScript();
     }
 
     /* (non-Javadoc)

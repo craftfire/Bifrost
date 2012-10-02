@@ -51,8 +51,6 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class contains all the methods for WordPress.
  */
 public class WordPress extends CMSScript {
-    private CMSHandle handle;
-    private boolean init;
 
     /**
      * Default constructor for Wordpress.
@@ -70,16 +68,6 @@ public class WordPress extends CMSScript {
 
     //Start Generic Methods
 
-    // FIXME: Workaround to get references to some objects that are not
-    // obtainable in constructor.
-    public void init() {
-        if (this.init) {
-            return;
-        }
-        this.handle = Bifrost.getInstance().getScriptAPI().getCMSHandle(Scripts.WP);
-        this.init = true;
-    }
-
     @Override
     public String getLatestVersion() {
         /* TODO: Is it that version for sure? */
@@ -88,7 +76,6 @@ public class WordPress extends CMSScript {
 
     @Override
     public boolean authenticate(String username, String password) {
-        init();
         String hash = this.getDataManager().getStringField("users", "user_pass", "`user_login` = '" + username + "'");
         return hash != null && hash.equals(hashPassword(hash, password));
     }
@@ -104,32 +91,27 @@ public class WordPress extends CMSScript {
 
     @Override
     public String getUsername(int userid) {
-        init();
         return this.getDataManager().getStringField("users", "user_login", "`ID` = '" + userid + "'");
     }
 
     @Override
     public int getUserID(String username) {
-        init();
         return this.getDataManager().getIntegerField("users", "ID", "`user_login` = '" + username + "'");
     }
 
     @Override
     public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
-        init();
-        return this.handle.getUser(this.getDataManager().getIntegerField("SELECT `ID` FROM `" + this.getDataManager().getPrefix() + "users` ORDER BY `user_registered` LIMIT 1"));
+        return this.getHandle().getUser(this.getDataManager().getIntegerField("SELECT `ID` FROM `" + this.getDataManager().getPrefix() + "users` ORDER BY `user_registered` LIMIT 1"));
     }
 
     @Override
     public CMSUser getUser(String username) throws UnsupportedMethod, SQLException {
-        init();
-        return this.handle.getUser(getUserID(username));
+        return this.getHandle().getUser(getUserID(username));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public CMSUser getUser(int userid) throws SQLException, UnsupportedMethod {
-        init();
         if (this.getDataManager().exist("users", "ID", userid)) {
             CMSUser user = new CMSUser(this, userid, null, null);
             Results res = this.getDataManager().getResults("SELECT * FROM `" + this.getDataManager().getPrefix() + "users` WHERE `ID` = '" + userid + "' LIMIT 1");
@@ -181,7 +163,6 @@ public class WordPress extends CMSScript {
 
     @Override
     public void updateUser(ScriptUser user) throws SQLException {
-        init();
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("user_login", user.getUsername());
         data.put("user_email", user.getEmail());
@@ -217,7 +198,6 @@ public class WordPress extends CMSScript {
 
     @Override
     public void createUser(ScriptUser user) throws SQLException, UnsupportedMethod {
-        init();
         HashMap<String, Object> data;
         if (CraftCommons.unixHashIdentify(user.getPassword()) == null) {
             user.setPassword(hashPassword(null, user.getPassword()));
@@ -272,7 +252,6 @@ public class WordPress extends CMSScript {
     }
 
     public List<Group> getGroups(int limit, boolean namesonly) throws UnsupportedMethod, SQLException {
-        init();
         List<Group> groups = new ArrayList<Group>();
         int newLimit = limit;
         if (newLimit > getGroupCount() | newLimit <= 0) {
@@ -292,7 +271,6 @@ public class WordPress extends CMSScript {
 
     @Override
     public int getGroupID(String group) throws UnsupportedMethod, SQLException {
-        init();
         List<Group> groups = getGroups(0, true);
         for (Group grp : groups) {
             if (grp.getName().equalsIgnoreCase(group)) {
@@ -337,7 +315,6 @@ public class WordPress extends CMSScript {
         if (namesonly) {
             return group;
         }
-        init();
         List<ScriptUser> userlist = new ArrayList<ScriptUser>();
         if (groupid == 6) {
             if (this.getDataManager().exist("sitemeta", "meta_key", "site_admins")) {
@@ -392,7 +369,6 @@ public class WordPress extends CMSScript {
     @SuppressWarnings("unchecked")
     @Override
     public List<Group> getUserGroups(String username) throws SQLException, UnsupportedMethod {
-        init();
         int userid = this.handle.getUserID(username);
         String capabilities = this.getDataManager().getStringField("usermeta", "meta_value", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
         Map<Object, Object> capmap = null;
@@ -435,7 +411,6 @@ public class WordPress extends CMSScript {
     }
 
     public void setUserGroups(String username, List<Group> groups) throws SQLException, UnsupportedMethod {
-        init();
         List<Group> newGroups = groups;
         if (newGroups == null) {
             newGroups = new ArrayList<Group>();
@@ -531,7 +506,6 @@ public class WordPress extends CMSScript {
 
     @Override
     public void updateGroup(Group group) throws UnsupportedMethod, SQLException {
-        init();
         if (!getGroup(group.getID(), true).getName().equalsIgnoreCase(group.getName())) {
             throw new UnsupportedMethod("The script doesn't support changing group names or IDs.");
         }
@@ -573,7 +547,6 @@ public class WordPress extends CMSScript {
 
     @Override
     public int getUserCount() {
-        init();
         return this.getDataManager().getCount("users");
     }
 
@@ -582,7 +555,6 @@ public class WordPress extends CMSScript {
         /*
          * 6 WordPress roles: Subscriber, Contributor, Author, Editor, Administrator, Super Admin
          */
-        init();
         if (this.getDataManager().exist("sitemeta", "meta_key", "site_admins")) {
             // Super Admin doesn't always exist.
             return 6;
@@ -593,13 +565,11 @@ public class WordPress extends CMSScript {
 
     @Override
     public String getHomeURL() {
-        init();
         return this.getDataManager().getStringField("options", "option_value", "`option_name` = 'siteurl'");
     }
 
     @Override
     public boolean isRegistered(String username) {
-        init();
         return this.getDataManager().exist("users", "user_login", username);
     }
 

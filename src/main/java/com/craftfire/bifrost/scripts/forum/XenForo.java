@@ -1016,17 +1016,17 @@ public class XenForo extends ForumScript {
                 this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                         "ban_email` " + limitstring);
         for (HashMap<String, Object> map : array) {
-            bans.add(new Ban(this, null, map.get("banned_email").toString(), null));
+            bans.add(new Ban(this.getHandle(), null, map.get("banned_email").toString(), null));
         }
         array = this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                 "ip_match` " + limitstring);
         for (HashMap<String, Object> map : array) {
-            bans.add(new Ban(this, null, null, map.get("ip").toString()));
+            bans.add(new Ban(this.getHandle(), null, null, map.get("ip").toString()));
         }
         array = this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                 "user_ban` " + limitstring);
         for (HashMap<String, Object> map : array) {
-            Ban ban = new Ban(this, null, null, null);
+            Ban ban = new Ban(this.getHandle(), null, null, null);
             ban.setUserID(Integer.parseInt(map.get("ban_user_id").toString()));
             ban.setReason(map.get("user_reason").toString());
             ban.setStartDate(new Date(Long.parseLong(map.get("ban_date").toString()) * 1000));

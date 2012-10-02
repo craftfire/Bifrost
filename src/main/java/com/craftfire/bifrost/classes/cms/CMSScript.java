@@ -33,8 +33,14 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class contains methods relevant to direct methods for each cms script.
  */
 public class CMSScript extends Script {
+
     protected CMSScript(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
+    }
+
+    @Override
+    public CMSHandle getHandle() {
+        return (CMSHandle) this.handle;
     }
 
     /**
@@ -468,14 +474,15 @@ public class CMSScript extends Script {
     }
 
     /**
-     * @see com.craftfire.bifrost.classes.general.Script#updateUser()
+     * @see com.craftfire.bifrost.classes.general.Script#updateUser(ScriptUser)
      */
     public void updateUser(CMSUser user) throws SQLException, UnsupportedMethod {
         updateUser((ScriptUser) user);
     }
 
     /**
-     * @see com.craftfire.bifrost.classes.general.Script#createUser()
+     * @see com.craftfire.bifrost.classes.general.Script#createUser(ScriptUser)
+     * ()
      */
     public void createUser(CMSUser user) throws SQLException, UnsupportedMethod {
         createUser((ScriptUser) user);

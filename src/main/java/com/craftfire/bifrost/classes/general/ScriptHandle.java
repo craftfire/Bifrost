@@ -38,22 +38,24 @@ import com.craftfire.bifrost.exceptions.UnsupportedVersion;
  * @see Script Documentation of all the methods
  */
 public class ScriptHandle {
+    private final int handleID;
     private Script script;
-    private ScriptHandle instance;
 
     /**
      * Creates a ScriptHandle.
      *
-     * @param script   the script using the enum list, for example: Scripts.SMF
-     * @param version  the version that the user has set in his config
-     * @throws         UnsupportedVersion if the input version is not found in the list of supported versions
+     * @param handleID  the ID of the handle
+     * @param script    the script using the enum list, for example: Scripts.SMF
+     * @param version   the version that the user has set in his config
+     * @throws          UnsupportedVersion if the input version is not found in the list of supported versions
      */
-    public ScriptHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+    public ScriptHandle(int handleID, Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+        this.handleID = handleID;
         this.script = ScriptAPI.setScript(script, version, dataManager);
         if (!this.script.isSupportedVersion()) {
             throw new UnsupportedVersion();
         }
-        this.instance = this;
+        this.script.setHandle(this);
     }
 
     /**
@@ -63,26 +65,25 @@ public class ScriptHandle {
      * @throws        UnsupportedVersion if the input version is not found in the list of supported version
      */
     public ScriptHandle(Script script) throws UnsupportedVersion {
+        this.handleID = script.getHandle().getID();
         this.script = script;
-        this.instance = this;
+        this.script.setHandle(this);
     }
 
     /**
-     * Creates a ScriptHandle, similar to {@link #ScriptHandle(Scripts, String, DataManager)},
+     * Creates a ScriptHandle, similar to {@link #ScriptHandle(int, Scripts, String, DataManager)},
      * just with a string instead.
      *
-     * @param script   the script in a string, for example: smf
-     * @param version  the version that the user has set in his config
-     * @throws         UnsupportedScript if the input string is not found in the list of supported scripts
-     * @throws         UnsupportedVersion if the input version is not found in the list of supported versions
+     * @param handleID  the ID of the handle
+     * @param script    the script in a string, for example: smf
+     * @param version   the version that the user has set in his config
+     * @throws          UnsupportedScript if the input string is not found in the list of supported scripts
+     * @throws          UnsupportedVersion if the input version is not found in the list of supported versions
      */
-    public ScriptHandle(String script, String version, DataManager dataManager) throws UnsupportedScript,
+    public ScriptHandle(int handleID, String script, String version, DataManager dataManager, int handleID1) throws UnsupportedScript,
             UnsupportedVersion {
-        this.script = ScriptAPI.setScript(ScriptAPI.stringToScript(script), version, dataManager);
-        if (!this.script.isSupportedVersion()) {
-            throw new UnsupportedVersion();
-        }
-        this.instance = this;
+        this.handleID = handleID;
+        new ScriptHandle(handleID, ScriptAPI.stringToScript(script), version, dataManager);
     }
 
     /**
@@ -95,12 +96,12 @@ public class ScriptHandle {
     }
 
     /**
-     * Returns the handle of the script.
+     * Returns the ID of the handle for the script.
      *
-     * @return handle of the script
+     * @return ID of the handle for the script
      */
-    public ScriptHandle getHandle() {
-        return this.instance;
+    public int getID() {
+        return this.handleID;
     }
 
     /**
@@ -124,37 +125,37 @@ public class ScriptHandle {
     /**
      * Creates a new ban in the script.
      *
-     * @see Ban#Ban(Script, String, String, String) Documentation for this method
+     * @see Ban#Ban(ScriptHandle, String, String, String) Documentation for this method
      */
     public Ban newBan(String name, String email, String ip) {
-        return new Ban(this.getScript(), name, email, ip);
+        return new Ban(this, name, email, ip);
     }
 
     /**
      * Creates a new group in the script.
      *
-     * @see Group#Group(Script, String) Documentation for this method
+     * @see Group#Group(ScriptHandle, String) Documentation for this method
      */
     public Group newGroup(String groupname) {
-        return new Group(this.getScript(), groupname);
+        return new Group(this, groupname);
     }
 
     /**
      * Creates a new private message in the script.
      *
-     * @see PrivateMessage#PrivateMessage(Script, ScriptUser, List) Documentation for this method
+     * @see PrivateMessage#PrivateMessage(ScriptHandle, ScriptUser, List) Documentation for this method
      */
     public PrivateMessage newPrivateMessage(ScriptUser sender, List<ScriptUser> recipients) {
-        return new PrivateMessage(this.script, sender, recipients);
+        return new PrivateMessage(this, sender, recipients);
     }
 
     /**
      * Creates a new user in the script.
      *
-     * @see ScriptUser#ScriptUser(Script, String, String) Documentation for this method
+     * @see ScriptUser#ScriptUser(ScriptHandle, String, String) Documentation for this method
      */
     public ScriptUser newScriptUser(String username, String password) {
-        return new ScriptUser(this.script, username, password);
+        return new ScriptUser(this, username, password);
     }
 
     /**
@@ -174,7 +175,7 @@ public class ScriptHandle {
     /**
      * @see Script#getVersion() Documentation for this method
      */
-    public String getVersion() throws UnsupportedMethod {
+    public String getVersion() {
         return this.script.getVersion();
     }
 
@@ -188,14 +189,14 @@ public class ScriptHandle {
     /**
      * @see Script#getScriptName() Documentation for this method
      */
-    public String getScriptName() throws UnsupportedMethod {
+    public String getScriptName() {
         return this.script.getScriptName();
     }
 
     /**
      * @see Script#getScriptShortname() Documentation for this method
      */
-    public String getScriptShortname() throws UnsupportedMethod {
+    public String getScriptShortname() {
         return this.script.getScriptShortname();
     }
 
@@ -249,7 +250,7 @@ public class ScriptHandle {
      * @see Script#getUser(int) Documentation for this method
      */
     public ScriptUser getUser(int userid) throws UnsupportedMethod, SQLException {
-        if (ScriptUser.hasCache(this.getHandle(), userid)) {
+        if (ScriptUser.hasCache(this, userid)) {
             return ScriptUser.getCache(this, userid);
         }
         ScriptUser user = this.script.getUser(userid);

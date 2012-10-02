@@ -41,10 +41,10 @@ public class ForumUser extends ScriptUser {
     }
 
     /**
-     * @see ForumUser#ForumUser(ForumScript, String, String) Documentation for this constructor
+     * @see ForumUser#ForumUser(ForumHandle, String, String) Documentation for this constructor
      */
-    public ForumUser(ForumScript script, String username, String password) {
-        super(script, username, password);
+    public ForumUser(ForumHandle handle, String username, String password) {
+        super(handle, username, password);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ForumUser extends ScriptUser {
      * @see ForumScript#getPostCount(String) Documentation for this method
      */
     public int getPostCount() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getPostCount(getUsername());
+        return getForumHandle().getPostCount(getUsername());
     }
 
     /**
@@ -62,7 +62,7 @@ public class ForumUser extends ScriptUser {
      * @see ForumScript#getThreadCount(String) Documentation for this method
      */
     public int getThreadCount() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThreadCount(getUsername());
+        return getForumHandle().getThreadCount(getUsername());
     }
 
     /**
@@ -71,7 +71,7 @@ public class ForumUser extends ScriptUser {
      * @see ForumScript#getLastUserThread(String) Documentation for this method
      */
     public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getLastUserThread(getUsername());
+        return getForumHandle().getLastUserThread(getUsername());
     }
 
     /**
@@ -80,21 +80,16 @@ public class ForumUser extends ScriptUser {
      * @see ForumScript#getLastUserPost(String) Documentation for this method
      */
     public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getLastUserPost(getUsername());
-    }
-
-    @Override
-    public ForumScript getScript() {
-        return (ForumScript) super.getScript();
+        return getForumHandle().getLastUserPost(getUsername());
     }
 
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updateUser(this);
+        getForumHandle().updateUser(this);
     }
 
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createUser(this);
+        getForumHandle().createUser(this);
     }
 }

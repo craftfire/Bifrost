@@ -37,6 +37,11 @@ public class ForumScript extends Script {
         super(script, version, dataManager);
     }
 
+    @Override
+    public ForumHandle getHandle() {
+        return (ForumHandle) this.handle;
+    }
+
     /**
      * Returns an amount of how many posts are there in {@param threadid}.
      *

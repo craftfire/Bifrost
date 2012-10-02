@@ -38,7 +38,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new ForumPost make sure you use the correct constructor:
- * {@link #ForumPost(ForumScript, int, int)}.
+ * {@link #ForumPost(ForumHandle, int)}.
  * <p>
  * Remember to run {@link #create()} after creating a post to insert it into the script.
  */
@@ -53,7 +53,7 @@ public class ForumPost extends Message {
      * @param threadid  the ID of the thread which the post is posted in
      */
     public ForumPost(ForumScript script, int postid, int threadid) {
-        super(script, postid);
+        super(script.getHandle(), postid);
         this.threadid = threadid;
     }
 
@@ -62,11 +62,11 @@ public class ForumPost extends Message {
      * <p>
      * Remember to run {@link #create()} after creating a post to insert it into the script.
      *
-     * @param script    the script
+     * @param handle    the handle
      * @param threadid  the ID of the thread which the post is going to be posted in
      */
-    public ForumPost(ForumScript script, int threadid) {
-        super(script);
+    public ForumPost(ForumHandle handle, int threadid) {
+        super(handle);
         this.threadid = threadid;
     }
 
@@ -121,8 +121,7 @@ public class ForumPost extends Message {
      * @throws SQLException       if a MySQL exception occurred
      */
     public ForumThread getThread() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript())
-                                                                                    .getThread(this.threadid);
+        return getForumHandle().getThread(this.threadid);
     }
 
     /**
@@ -171,7 +170,7 @@ public class ForumPost extends Message {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updatePost(this);
+        getForumHandle().updatePost(this);
     }
 
     /**
@@ -184,7 +183,7 @@ public class ForumPost extends Message {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createPost(this);
+        getForumHandle().createPost(this);
     }
 
     /**
@@ -309,14 +308,6 @@ public class ForumPost extends Message {
     @Override
     public ForumThread getParent() throws UnsupportedMethod, SQLException {
         return getThread();
-    }
-
-    /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getScript()
-     */
-    @Override
-    public ForumScript getScript() {
-        return (ForumScript) super.getScript();
     }
 
     /* (non-Javadoc)

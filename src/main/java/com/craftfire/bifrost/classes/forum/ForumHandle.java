@@ -42,10 +42,10 @@ public class ForumHandle extends ScriptHandle {
     /**
      * Creates a ForumScriptHandle.
      *
-     * @see ScriptHandle#ScriptHandle(Scripts, String, DataManager) Documentation for this constructor
+     * @see ScriptHandle#ScriptHandle(int, Scripts, String, DataManager) Documentation for this constructor
      */
-    public ForumHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        super(script, version, dataManager);
+    public ForumHandle(int handleID, Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+        super(handleID, script, version, dataManager);
     }
 
     /**
@@ -78,10 +78,10 @@ public class ForumHandle extends ScriptHandle {
     /**
      * Creates a new board in the forum.
      *
-     * @see ForumBoard#ForumBoard(ForumScript, String, int) Documentation for this method
+     * @see ForumBoard#ForumBoard(ForumHandle, String, int) Documentation for this method
      */
     public ForumBoard newBoard(int parentid) {
-        return new ForumBoard(getForumScript(), "", parentid);
+        return new ForumBoard(this, "", parentid);
     }
 
     /**

@@ -31,38 +31,33 @@ public class CMSUser extends ScriptUser {
         super(script, userid, username, password);
     }
 
-    public CMSUser(CMSScript script, String username, String password) {
-        super(script, username, password);
+    public CMSUser(CMSHandle handle, String username, String password) {
+        super(handle, username, password);
     }
 
     public int getCommentCount() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getUserCommentCount(getUsername());
+        return getCMSHandle().getUserCommentCount(getUsername());
     }
 
     public int getArticleCount() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getUserArticleCount(getUsername());
+        return getCMSHandle().getUserArticleCount(getUsername());
     }
 
     public CMSComment getLastComment() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getLastUserComment(getUsername());
+        return getCMSHandle().getLastUserComment(getUsername());
     }
 
     public CMSArticle getLastArticle() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getLastUserArticle(getUsername());
-    }
-
-    @Override
-    public CMSScript getScript() {
-        return (CMSScript) super.getScript();
+        return getCMSHandle().getLastUserArticle(getUsername());
     }
 
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateUser(this);
+        getCMSHandle().updateUser(this);
     }
 
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createUser(this);
+        getCMSHandle().createUser(this);
     }
 }

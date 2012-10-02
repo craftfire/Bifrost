@@ -42,6 +42,7 @@ public class Script {
     private final Cache cache;
     private String[] versionRanges;
     private String scriptName, shortName;
+    protected ScriptHandle handle;
 
     protected Script(Scripts script, String version, DataManager dataManager) {
         this.version = version;
@@ -94,6 +95,25 @@ public class Script {
      */
     public Scripts getScript() {
         return this.script;
+    }
+
+    /**
+     * Returns the {@link ScriptHandle} of the current script.
+     *
+     * @return {@link ScriptHandle} of the current script
+     * @see ScriptHandle
+     */
+    public ScriptHandle getHandle() {
+        return this.handle;
+    }
+
+    /**
+     * Sets the {@link ScriptHandle} for the current script.
+     *
+     * @param handle  {@link ScriptHandle} of the current script
+     */
+    public void setHandle(ScriptHandle handle) {
+        this.handle = handle;
     }
 
     /**

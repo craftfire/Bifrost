@@ -36,15 +36,14 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new Group make sure you use the correct constructor:
- * {@link #Group(Script, String)}.
+ * {@link #Group(ScriptHandle, String)}.
  * <p>
  * Remember to run {@link #create()} after creating a group to insert it into the script.
  */
-public class Group implements IDable {
-    private int groupid, usercount;
+public class Group extends GenericMethods {
+    private int usercount;
     private String groupname, groupdescription;
     private List<ScriptUser> users;
-    private final Script script;
 
     /**
      * This constructor should only be used by the script and not by that library user.
@@ -54,8 +53,8 @@ public class Group implements IDable {
      * @param groupname  the name of the group
      */
     public Group(Script script, int groupid, String groupname) {
-        this.script = script;
-        this.groupid = groupid;
+        super(script.getHandle());
+        this.id = groupid;
         this.groupname = groupname;
     }
 
@@ -64,21 +63,12 @@ public class Group implements IDable {
      * <p>
      * Remember to run {@link #create()} after creating a group to insert it into the script.
      *
-     * @param script     the script
+     * @param handle     the handle
      * @param groupname  the name of the group
      */
-    public Group(Script script, String groupname) {
-        this.script = script;
+    public Group(ScriptHandle handle, String groupname) {
+        super(handle);
         this.groupname = groupname;
-    }
-
-    @Override
-    public int getID() {
-        return this.groupid;
-    }
-
-    public void setID(int id) {
-        this.groupid = id;
     }
 
     /**
@@ -169,7 +159,7 @@ public class Group implements IDable {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateGroup(this);
+        this.handle.updateGroup(this);
     }
 
     /**
@@ -182,7 +172,7 @@ public class Group implements IDable {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createGroup(this);
+        this.handle.createGroup(this);
     }
 
     /**

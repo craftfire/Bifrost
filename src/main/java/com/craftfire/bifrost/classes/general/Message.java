@@ -29,33 +29,31 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * <p>
  * Should <code>not</code> be instanced.
  */
-public abstract class Message implements IDable, MessageParent {
-    private int id, categoryid;
+public abstract class Message extends GenericMethods implements MessageParent {
+    private int categoryid;
     private ScriptUser author;
     private Date date;
     private String title, body;
     private boolean deleted;
-    private final Script script;
-
     /**
      * This constructor should be used in extending class's constructor, which
      * is used to create new messages.
      * 
-     * @param script  a Script Object of the script this message comes from
+     * @param handle  a ScriptHandle Object of the script this message comes from
      */
-    protected Message(Script script) {
-        this.script = script;
+    protected Message(ScriptHandle handle) {
+        super(handle);
     }
 
     /**
      * This constructor should be used in extending class's constructor, which
      * is used only when loading the message from a database.
      * 
-     * @param script  a Script Object of the script this message comes from.
+     * @param handle  a ScriptHandle Object of the script this message comes from.
      * @param id      the ID of the message.
      */
-    protected Message(Script script, int id) {
-        this.script = script;
+    protected Message(ScriptHandle handle, int id) {
+        super(handle);
         this.id = id;
     }
 
@@ -63,12 +61,12 @@ public abstract class Message implements IDable, MessageParent {
      * This constructor should be used in extending class's constructor, which
      * is used only when loading the message from a database.
      * 
-     * @param script      a Script Object of the script this message comes from.
+     * @param handle      a ScriptHandle Object of the script this message comes from.
      * @param id          the ID of the message.
      * @param categoryid  the ID of the category of the message
      */
-    protected Message(Script script, int id, int categoryid) {
-        this.script = script;
+    protected Message(ScriptHandle handle, int id, int categoryid) {
+        super(handle);
         this.id = id;
         this.categoryid = categoryid;
     }
@@ -224,12 +222,12 @@ public abstract class Message implements IDable, MessageParent {
     }
 
     /**
-     * Returns a Script object of the script this message comes from.
+     * Returns a ScriptHandle object of the script this message comes from.
      * 
-     * @return Script object of the script this message comes from
+     * @return ScriptHandle object of the script this message comes from
      */
-    public Script getScript() {
-        return this.script;
+    public ScriptHandle getHandle() {
+        return this.handle;
     }
 
     /**

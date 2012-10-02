@@ -42,10 +42,10 @@ public class CMSHandle extends ScriptHandle {
     /**
      * Creates a CMSHandle.
      *
-     * @see ScriptHandle#ScriptHandle(Scripts, String, DataManager) Documentation for this constructor
+     * @see ScriptHandle#ScriptHandle(int, Scripts, String, DataManager) Documentation for this constructor
      */
-    public CMSHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        super(script, version, dataManager);
+    public CMSHandle(int handleID, Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+        super(handleID, script, version, dataManager);
     }
 
     /**
@@ -60,28 +60,28 @@ public class CMSHandle extends ScriptHandle {
     /**
      * Creates a new comment in the specified <code>articleid</code>.
      *
-     * @see CMSComment#CMSComment(CMSScript, int) Documentation for this method
+     * @see CMSComment#CMSComment(CMSHandle, int) Documentation for this method
      */
     public CMSComment newComment(int articleid) {
-        return new CMSComment(getCMSScript(), articleid);
+        return new CMSComment(this, articleid);
     }
 
     /**
      * Creates a new article in the specified <code>categoryid</code>.
      *
-     * @see CMSArticle#CMSArticle(CMSScript, int) Documentation for this method
+     * @see CMSArticle#CMSArticle(CMSHandle, int) Documentation for this method
      */
     public CMSArticle newArticle(int categoryid) {
-        return new CMSArticle(getCMSScript(), categoryid);
+        return new CMSArticle(this, categoryid);
     }
 
     /**
      * Creates a new category with the specified name.
      *
-     * @see CMSCategory#CMSCategory(CMSScript, String, int) Documentation for this method
+     * @see CMSCategory#CMSCategory(CMSHandle, String, int) Documentation for this method
      */
     public CMSCategory newCategory(String name, int parentid) {
-        return new CMSCategory(getCMSScript(), name, parentid);
+        return new CMSCategory(this, name, parentid);
     }
 
     /**

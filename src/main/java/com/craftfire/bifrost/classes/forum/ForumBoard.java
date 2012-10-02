@@ -37,7 +37,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the board, run {@link #update()}.
  * <p>
  * When creating a new ForumBoard make sure you use the correct constructor:
- * {@link #ForumBoard(ForumScript, String, int)}.
+ * {@link #ForumBoard(ForumHandle, String, int)}.
  * <p>
  * Remember to run {@link #create()} after creating a board to insert it into the script.
  */
@@ -48,10 +48,10 @@ public class ForumBoard extends Category {
      * <p>
      * Remember to run {@link #create()} after creating a board to insert it into the script.
      * 
-     * @param script  the script the board is created for
+     * @param handle  the handle the board is created for
      */
-    public ForumBoard(ForumScript script) {
-        super(script);
+    public ForumBoard(ForumHandle handle) {
+        super(handle);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ForumBoard extends Category {
      * @param boardid  the ID of the board
      */
     public ForumBoard(ForumScript script, int boardid) {
-        super(script, boardid);
+        super(script.getHandle(), boardid);
     }
 
     /**
@@ -69,12 +69,12 @@ public class ForumBoard extends Category {
      * <p>
      * Remember to run {@link #create()} after creating a board to insert it into the script.
      * 
-     * @param script    the script the board is created for
+     * @param handle    the handle the board is created for
      * @param name      the name of the board
      * @param parentid  the id of the parent board or 0 if none
      */
-    public ForumBoard(ForumScript script, String name, int parentid) {
-        super(script, name, parentid);
+    public ForumBoard(ForumHandle handle, String name, int parentid) {
+        super(handle, name, parentid);
     }
 
     /**
@@ -97,7 +97,7 @@ public class ForumBoard extends Category {
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getThreadsFromBoard(getID(), limit);
+        return getForumHandle().getThreadsFromBoard(getID(), limit);
     }
 
     /**
@@ -110,7 +110,7 @@ public class ForumBoard extends Category {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).updateBoard(this);
+        getForumHandle().updateBoard(this);
     }
 
     /**
@@ -123,7 +123,7 @@ public class ForumBoard extends Category {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).createBoard(this);
+        getForumHandle().createBoard(this);
     }
 
     /**
@@ -195,7 +195,7 @@ public class ForumBoard extends Category {
      */
     @Override
     public ForumBoard getParent() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getBoard(getParentID());
+        return getForumHandle().getBoard(getParentID());
     }
 
     /* (non-javadoc)
@@ -203,14 +203,6 @@ public class ForumBoard extends Category {
      */
     @Override
     public List<ForumBoard> getSubcategories(int limit) throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getForumHandle(getScript().getScript()).getSubBoards(getID(), limit);
-    }
-
-    /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getScript()
-     */
-    @Override
-    public ForumScript getScript() {
-        return (ForumScript) super.getScript();
+        return getForumHandle().getSubBoards(getID(), limit);
     }
 }

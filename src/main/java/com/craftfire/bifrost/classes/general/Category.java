@@ -28,65 +28,44 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * <p>
  * Should <code>not</code> be instanced.
  */
-public abstract class Category implements IDable, MessageParent {
-    private int categoryid, parentid;
+public abstract class Category extends GenericMethods implements MessageParent {
+    private int parentid;
     private String name, description;
-    private final Script script;
 
     /**
      * This constructor should be used in extending class's constructor, which
      * may be used to create new categories.
      * 
-     * @param script  a Script Object of the script this category comes from
+     * @param handle  a ScriptHandle Object of the script this category comes from
      */
-    protected Category(Script script) {
-        this.script = script;
+    protected Category(ScriptHandle handle) {
+        super(handle);
     }
 
     /**
      * This constructor should be used in extending class's constructor, which
      * is used only when loading the category from a database.
      * 
-     * @param script      a Script Object of the script this category comes from.
+     * @param handle      a ScriptHandle Object of the script this category comes from.
      * @param categoryid  the ID of the category.
      */
-    protected Category(Script script, int categoryid) {
-        this.script = script;
-        this.categoryid = categoryid;
+    protected Category(ScriptHandle handle, int categoryid) {
+        super(handle);
+        this.id = categoryid;
     }
 
     /**
      * This constructor should be used in extending class's constructor that
      * will be preferred when creating a new category.
      * 
-     * @param script    a Script Object of the script this category comes from.
+     * @param handle    a ScriptHandle Object of the script this category comes from.
      * @param name      the name of the category.
      * @param parentid  the ID of the parent category
      */
-    protected Category(Script script, String name, int parentid) {
-        this.script = script;
+    protected Category(ScriptHandle handle, String name, int parentid) {
+        super(handle);
         this.name = name;
         this.parentid = parentid;
-    }
-
-    /**
-     * Returns the ID of the category.
-     * 
-     * @see IDable#getID()
-     */
-    @Override
-    public int getID() {
-        return this.categoryid;
-    }
-
-    /**
-     * Sets the ID of the category, this should be used only when putting the
-     * category into a database.
-     * 
-     * @param id  the ID of the category
-     */
-    public void setID(int id) {
-        this.categoryid = id;
     }
 
     /**
@@ -182,22 +161,13 @@ public abstract class Category implements IDable, MessageParent {
     public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod {
         return getMessages(limit);
     }
-    
-    /**
-     * Returns a Script Object for the script this category comes from.
-     * 
-     * @return a Script Object
-     */
-    public Script getScript() {
-        return this.script;
-    }
 
     /**
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return "Category " + this.categoryid + " named " + this.name + " from script: " + this.script.getScriptName();
+        return "Category " + this.getID() + " named " + this.name + " from script: " + this.getHandle().getScriptName();
     }
 
 }

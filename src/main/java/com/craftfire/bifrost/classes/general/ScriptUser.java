@@ -39,18 +39,16 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new script user make sure you use the correct constructor:
- * {@link #ScriptUser(Script, String, String)}.
+ * {@link #ScriptUser(ScriptHandle, String, String)}.
  * <p>
  * Remember to run {@link #create()} after creating a user to insert it into the script.
  */
-public class ScriptUser implements IDable {
-    private int userid;
+public class ScriptUser extends GenericMethods {
     private Date regdate, lastlogin, birthday;
     private Gender gender;
     private String username, title, nickname, realname, firstname, lastname, email, password, passwordsalt,
             statusmessage, avatarurl, profileurl, regip, lastip;
     private boolean activated, anonymous;
-    private final Script script;
 
     /**
      * This constructor should only be used by the script and not by that library user.
@@ -61,33 +59,20 @@ public class ScriptUser implements IDable {
      * @param password  the password for the user
      */
     public ScriptUser(Script script, int userid, String username, String password) {
-        this.script = script;
+        super(script.getHandle());
         this.username = username;
-        this.userid = userid;
+        this.id = userid;
         this.password = password;
     }
 
-    public ScriptUser(Script script, String username, String password) {
-        this.script = script;
+    public ScriptUser(ScriptHandle handle, String username, String password) {
+        super(handle);
         this.username = username;
         this.password = password;
     }
 
     public String getUsername() {
         return this.username;
-    }
-
-    public Script getScript() {
-        return this.script;
-    }
-
-    @Override
-    public int getID() {
-        return this.userid;
-    }
-
-    public void setID(int id) {
-        this.userid = id;
     }
 
     public Date getRegDate() {
@@ -151,7 +136,7 @@ public class ScriptUser implements IDable {
     }
 
     public List<Group> getGroups() throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getUserGroups(this.username);
+        return getHandle().getUserGroups(this.username);
     }
 
     public String getEmail() {
@@ -255,49 +240,49 @@ public class ScriptUser implements IDable {
     }
 
     public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMsSent(this.username, limit);
+        return getHandle().getPMsSent(this.username, limit);
     }
 
     public List<PrivateMessage> getPMsReceived(int limit) throws UnsupportedMethod, SQLException {
-        return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMsReceived(this.username, limit);
+        return getHandle().getPMsReceived(this.username, limit);
     }
 
     public int getPMSentCount() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMSentCount(this.username);
+        return getHandle().getPMSentCount(this.username);
     }
 
     public int getPMReceivedCount() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getPMReceivedCount(this.username);
+        return getHandle().getPMReceivedCount(this.username);
     }
 
     public boolean isBanned() throws UnsupportedMethod, SQLException {
-        if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.username)) {
+        if (getHandle().isBanned(this.username)) {
             return true;
-        } else if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.email)) {
+        } else if (getHandle().isBanned(this.email)) {
             return true;
-        } else if (Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.lastip)) {
+        } else if (getHandle().isBanned(this.lastip)) {
             return true;
         } else {
-            return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isBanned(this.regip);
+            return getHandle().isBanned(this.regip);
         }
     }
 
     public boolean isRegistered() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).isRegistered(this.username);
+        return getHandle().isRegistered(this.username);
     }
 
     public List<String> getIPs() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).getIPs(this.username);
+        return getHandle().getIPs(this.username);
     }
 
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).updateUser(this);
+        getHandle().updateUser(this);
     }
 
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getHandle(this.script.getScript()).createUser(this);
+        getHandle().createUser(this);
     }
 
     public static boolean hasCache(ScriptHandle handle, Object id) {

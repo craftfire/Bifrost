@@ -43,7 +43,8 @@ import com.craftfire.bifrost.scripts.forum.XenForo;
  * @see ScriptHandle
  */
 public class ScriptAPI {
-    private Map<Scripts, ScriptHandle> handles = new HashMap<Scripts, ScriptHandle>();
+    private int handleID = 0;
+    private Map<Integer, ScriptHandle> handles = new HashMap<Integer, ScriptHandle>();
     private ScriptHandle lastHandle = null;
 
     /**
@@ -64,6 +65,24 @@ public class ScriptAPI {
      */
     public LoggingManager getLoggingManager() {
         return Bifrost.getInstance().getLoggingManager();
+    }
+
+    /**
+     * Returns the current handle ID.
+     *
+     * @return current handle ID
+     */
+    public int getHandleID() {
+        return this.handleID;
+    }
+
+    /**
+     * Creates a new handle ID.
+     *
+     * @return the new handle ID
+     */
+    protected int getNewHandleID() {
+        return this.handleID++;
     }
 
     /**
@@ -117,7 +136,7 @@ public class ScriptAPI {
      *
      * @return Map with all the script handles
      */
-    public Map<Scripts, ScriptHandle> getHandles() {
+    public Map<Integer, ScriptHandle> getHandles() {
         this.getLoggingManager().debug("ScriptAPI: Getting all handles, size: " + this.handles.size());
         return this.handles;
     }
@@ -125,15 +144,15 @@ public class ScriptAPI {
     /**
      * Returns the {@link ScriptHandle} for the specified <code>script</code>.
      *
-     * @param script  the script you want to grab the script handle from
-     * @return        the script handle for the specified <code>script</code>
+     * @param handleID  the ID you want to grab the script handle from
+     * @return          the script handle for the specified <code>script</code>
      */
-    public ScriptHandle getHandle(Scripts script) {
-        if (handleExists(script)) {
-            this.getLoggingManager().debug("ScriptAPI: Found handle for '" + script.getAlias() + "!");
-            return this.handles.get(script);
+    public ScriptHandle getHandle(int handleID) {
+        if (handleExists(handleID)) {
+            this.getLoggingManager().debug("ScriptAPI: Found handle for ID '" + handleID + "!");
+            return this.handles.get(handleID);
         } else {
-            this.getLoggingManager().debug("ScriptAPI: Handle for '" + script.getAlias() + "' does not exist, " +
+            this.getLoggingManager().debug("ScriptAPI: Handle for ID '" + handleID + "' does not exist, " +
                                             "returning null");
             return null;
         }
@@ -142,35 +161,21 @@ public class ScriptAPI {
     /**
      * Returns the {@link ForumHandle} for the specified <code>script</code>.
      *
-     * @param script  the script you want to grab the forum handle from
-     * @return        the forum handle for the specified <code>script</code>
+     * @param handleID  the ID you want to grab the forum handle from
+     * @return          the forum handle for the specified <code>script</code>
      */
-    public ForumHandle getForumHandle(Scripts script) {
-        if (handleExists(script)) {
-            this.getLoggingManager().debug("ScriptAPI: Found forum handle for '" + script.getAlias() + "!");
-            return (ForumHandle) this.handles.get(script);
-        } else {
-            this.getLoggingManager().debug("ScriptAPI: Forum handle for '" + script.getAlias() + "' does not exist, " +
-                                            "returning null");
-            return null;
-        }
+    public ForumHandle getForumHandle(int handleID) {
+        return (ForumHandle) getHandle(handleID);
     }
 
     /**
      * Returns the {@link CMSHandle} for the specified <code>script</code>.
      *
-     * @param script  the script you want to grab the cms handle from
-     * @return        the cms handle for the specified <code>script</code>
+     * @param handleID  the ID you want to grab the cms handle from
+     * @return          the cms handle for the specified <code>script</code>
      */
-    public CMSHandle getCMSHandle(Scripts script) {
-        if (handleExists(script)) {
-            this.getLoggingManager().debug("ScriptAPI: Found cms handle for '" + script.getAlias() + "!");
-            return (CMSHandle) this.handles.get(script);
-        } else {
-            this.getLoggingManager().debug("ScriptAPI: CMS handle for '" + script.getAlias() + "' does not exist, " +
-                                            "returning null");
-            return null;
-        }
+    public CMSHandle getCMSHandle(int handleID) {
+        return (CMSHandle) getHandle(handleID);
     }
 
     /**
@@ -212,31 +217,34 @@ public class ScriptAPI {
      * @throws UnsupportedScript   if the specified <code>script</code> is not supported by Bifrost
      * @throws UnsupportedVersion  if the specified <code>version</code> is not supported by the script
      */
-    public void addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
+    public int addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
         ScriptHandle handle;
+        int handleID = this.getNewHandleID();
         switch (script.getType()) {
         case CMS:
-            handle = new CMSHandle(script, version, dataManager);
+            handle = new CMSHandle(handleID, script, version, dataManager);
             break;
         case FORUM:
-            handle = new ForumHandle(script, version, dataManager);
+            handle = new ForumHandle(handleID, script, version, dataManager);
             break;
         default:
-            handle = new ScriptHandle(script, version, dataManager);
+            handle = new ScriptHandle(handleID, script, version, dataManager);
         }
-        this.getLoggingManager().debug("ScriptAPI: Adding handle with type: '" + script.getType() + "' for script: '" +
-                                        script.getAlias() + "', version: '" + version + "'");
-        this.handles.put(handle.getScript().getScript(), handle);
+        this.getLoggingManager().debug("ScriptAPI: Adding handle ID: '" + handleID + "' with type: '" +
+                                         script.getType() + "' for script: '" + script.getAlias() + "', version: '" +
+                                         version + "'");
+        this.handles.put(handleID, handle);
         this.lastHandle = handle;
+        return handleID;
     }
 
     /**
      * Checks if a script handle already exists, returns true if it does, false if not
      *
-     * @param script  the script you want to check
-     * @return        true if exists, false if not
+     * @param handleID  the handle ID you want to check
+     * @return          true if exists, false if not
      */
-    protected boolean handleExists(Scripts script) {
-        return this.handles.containsKey(script);
+    protected boolean handleExists(int handleID) {
+        return this.handles.containsKey(handleID);
     }
 }

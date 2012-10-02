@@ -19,38 +19,92 @@
  */
 package com.craftfire.bifrost.classes.general;
 
-import java.sql.SQLException;
-
+import com.craftfire.bifrost.classes.cms.CMSHandle;
+import com.craftfire.bifrost.classes.forum.ForumHandle;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 
+import java.sql.SQLException;
+
 /**
- * Basically everything that has an ID and can be kept in a database.
+ * Generic methods that are being used by most of the script classes.
  */
-public interface IDable {
+public class GenericMethods {
+    public int id;
+    public final ScriptHandle handle;
+
+    /**
+     * Default constructor.
+     *
+     * @param handle  the script handle
+     */
+    public GenericMethods(ScriptHandle handle) {
+        this.handle = handle;
+    }
+
     /**
      * Returns the ID.
      *
      * @return the ID
      */
-    int getID();
+    public int getID() {
+        return this.id;
+    }
+
+    /**
+     * Sets the ID.
+     *
+     * @param id  the ID
+     */
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Returns the handle.
+     *
+     * @return the handle
+     */
+    public ScriptHandle getHandle() {
+        return this.handle;
+    }
+
+    /**
+     * Returns the forum handle.
+     *
+     * @return the forum handle
+     */
+    public ForumHandle getForumHandle() {
+        return (ForumHandle) this.handle;
+    }
+
+    /**
+     * Returns the CMS handle.
+     *
+     * @return the CMS handle
+     */
+    public CMSHandle getCMSHandle() {
+        return (CMSHandle) this.handle;
+    }
 
     /**
      * This method applies the changed values of the object into the database. Should be run after changing any values in the object.
      * <p>
      * It should <b>not</b> be run when creating a new object, only when editing an already existing object.
      *
-     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    void update() throws SQLException, UnsupportedMethod;
+    public void update() throws SQLException,UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
 
     /**
      * This method puts the object into the database. Should be run after creating a new object.
      * <p>
      * It should <b>not</b> be run when updating an object, only when creating a new object.
      *
-     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
-    void create() throws SQLException, UnsupportedMethod;
+    public void create() throws SQLException, UnsupportedMethod {
+        throw new UnsupportedMethod();
+    }
 }

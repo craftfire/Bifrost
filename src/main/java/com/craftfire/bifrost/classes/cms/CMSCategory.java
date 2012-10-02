@@ -37,7 +37,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the category, run {@link #update()}.
  * <p>
  * When creating a new CMSCategory make sure you use the correct constructor:
- * {@link #CMSCategory(CMSScript, String, int)}.
+ * {@link #CMSCategory(CMSHandle, String, int)}.
  * <p>
  * Remember to run {@link #create()} after creating a category to insert it into the script.
  */
@@ -53,7 +53,7 @@ public class CMSCategory extends Category {
      * @param name    the name of the category
      */
     public CMSCategory(CMSScript script, String name) {
-        super(script);
+        super(script.getHandle());
         setName(name);
     }
 
@@ -64,7 +64,7 @@ public class CMSCategory extends Category {
      * @param categoryid  the ID of the category
      */
     public CMSCategory(CMSScript script, int categoryid) {
-        super(script, categoryid);
+        super(script.getHandle(), categoryid);
     }
 
     /**
@@ -72,12 +72,12 @@ public class CMSCategory extends Category {
      * <p>
      * Remember to run {@see #createCategory()} after creating a category to insert it into the script.
      * 
-     * @param script    the script the category is created for
+     * @param handle    the handle the category is created for
      * @param name      the name of the category
      * @param parentid  the ID of parent category of the category
      */
-    public CMSCategory(CMSScript script, String name, int parentid) {
-        super(script, name, parentid);
+    public CMSCategory(CMSHandle handle, String name, int parentid) {
+        super(handle, name, parentid);
     }
 
     /**
@@ -90,7 +90,7 @@ public class CMSCategory extends Category {
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getArticlesFromCategory(getID(), limit);
+        return getCMSHandle().getArticlesFromCategory(getID(), limit);
     }
 
     /*
@@ -100,7 +100,7 @@ public class CMSCategory extends Category {
      */
     @Override
     public CMSCategory getParent() throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getCategory(getParentID());
+        return getCMSHandle().getCategory(getParentID());
     }
 
     /*
@@ -110,7 +110,7 @@ public class CMSCategory extends Category {
      */
     @Override
     public List<CMSCategory> getSubcategories(int limit) throws UnsupportedMethod {
-        return Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).getSubCategories(getID(), limit);
+        return getCMSHandle().getSubCategories(getID(), limit);
     }
 
     /**
@@ -153,7 +153,7 @@ public class CMSCategory extends Category {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).updateCategory(this);
+        getCMSHandle().updateCategory(this);
     }
 
     /**
@@ -166,7 +166,7 @@ public class CMSCategory extends Category {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        Bifrost.getInstance().getScriptAPI().getCMSHandle(getScript().getScript()).createCategory(this);
+        getCMSHandle().createCategory(this);
     }
 
     /**
@@ -235,13 +235,5 @@ public class CMSCategory extends Category {
             handle.getCache().remove(CacheGroup.CMSCAT_SUB_COUNT, oldParent);
             break;
         }
-    }
-
-    /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getScript()
-     */
-    @Override
-    public CMSScript getScript() {
-        return (CMSScript) super.getScript();
     }
 }
