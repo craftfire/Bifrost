@@ -19,15 +19,48 @@
  */
 package com.craftfire.bifrost;
 
+import com.craftfire.bifrost.classes.forum.ForumBoard;
+import com.craftfire.bifrost.classes.forum.ForumUser;
+import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.commons.enums.DataType;
+import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
 //TODO: Javadoc, analytics and logging.
+
+/**
+ * This is the main class for Bifrost.
+ * <p>
+ * This contains all the required methods to use the scripts.
+ * To use Bifrost in your projects, you have to use {@link DataManager} and
+ * {@link ScriptAPI}, which is provided with Bifrost.
+ * <p>
+ * Using Bifrost is simple, here's an example on how to initialize Bifrost and ScriptAPI:
+ * <pre>
+ *      Bifrost bifrost = new Bifrost();
+ *      bifrost.getLoggingManager().setDebug(true);
+ *      DataManager dataManager = new DataManager(DataType.MYSQL, "username", "password");
+ *      dataManager.setDatabase("craftfire");
+ *      dataManager.setKeepAlive(true);
+ *      dataManager.setPort(3306);
+ *      ScriptAPI scriptAPI = bifrost.getScriptAPI();
+ *      scriptAPI.addHandle(Scripts.SMF, "2.0.2", dataManager);
+ *      ForumUser forumUser = scriptAPI.getForumHandle(Scripts.SMF).getLastRegUser();
+ * </pre>
+ *
+ * @see LoggingManager
+ * @see DataManager
+ * @see ScriptAPI
+ */
 public class Bifrost {
     private static Bifrost instance;
     private String version = "1.0.0";
     private final ScriptAPI scriptAPI;
     private final LoggingManager loggingManager = new LoggingManager("CraftFire.Bifrost", "[Bifrost]");
 
+    /**
+     * Default constructor for Bifrost.
+     */
     public Bifrost() {
         instance = this;
         this.scriptAPI = new ScriptAPI();

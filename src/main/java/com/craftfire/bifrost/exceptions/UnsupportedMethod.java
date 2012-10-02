@@ -19,19 +19,35 @@
  */
 package com.craftfire.bifrost.exceptions;
 
+/**
+ * This exception should be thrown when the library user uses a method which is not supported by the script.
+ */
 @SuppressWarnings("serial")
 public class UnsupportedMethod extends Exception {
     private String message;
 
+    /**
+     * Default constructor with a default message.
+     */
     public UnsupportedMethod() {
         this.message = "This method is not supported by this script.";
     }
 
+    /**
+     * Constructs the exception with the specified <code>message</code>.
+     *
+     * @param message  the message for the exception
+     */
     public UnsupportedMethod(String message) {
         super(message);
         this.message = message;
     }
-    
+
+    /**
+     * Returns the error message for the exception.
+     *
+     * @return error message
+     */
     public String getError() {
         return this.message;
     }

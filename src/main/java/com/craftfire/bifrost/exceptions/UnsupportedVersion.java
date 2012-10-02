@@ -19,19 +19,36 @@
  */
 package com.craftfire.bifrost.exceptions;
 
+/**
+ * This exception should be thrown when the library user uses a version of the script,
+ * which is not supported by Bifrost.
+ */
 @SuppressWarnings("serial")
 public class UnsupportedVersion extends Exception {
     private String message;
 
+    /**
+     * Default constructor with a default message.
+     */
     public UnsupportedVersion() {
         this.message = "This version is not supported by the script.";
     }
 
+    /**
+     * Constructs the exception with the specified <code>message</code>.
+     *
+     * @param message  the message for the exception
+     */
     public UnsupportedVersion(String message) {
         super(message);
         this.message = message;
     }
 
+    /**
+     * Returns the error message for the exception.
+     *
+     * @return error message
+     */
     public String getError() {
         return this.message;
     }
