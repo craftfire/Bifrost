@@ -65,21 +65,6 @@ public class PrivateMessage extends Message {
         this.parentid = parentid;
     }
 
-    /**
-     * Returns the ID of the PrivateMessage, this is unique per PrivateMessage.
-     *
-     * @return ID of the PrivateMessage
-     */
-    @Override
-    public int getID() {
-        return super.getID();
-    }
-
-    @Override
-    public void setID(int id) {
-        super.setID(id);
-    }
-
     public ScriptUser getSender() {
         return getAuthor();
     }
