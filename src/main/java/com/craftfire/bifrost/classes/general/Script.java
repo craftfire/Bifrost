@@ -42,7 +42,7 @@ public class Script {
     private final Cache cache;
     private String[] versionRanges;
     private String scriptName, shortName;
-    protected ScriptHandle handle;
+    private ScriptHandle handle;
 
     protected Script(Scripts script, String version, DataManager dataManager) {
         this.version = version;
