@@ -61,7 +61,7 @@ public class ScriptUser extends GenericMethods {
     public ScriptUser(Script script, int userid, String username, String password) {
         super(script.getHandle());
         this.username = username;
-        this.id = userid;
+        this.setID(userid);
         this.password = password;
     }
 

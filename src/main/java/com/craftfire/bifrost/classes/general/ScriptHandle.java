@@ -80,7 +80,7 @@ public class ScriptHandle {
      * @throws          UnsupportedScript if the input string is not found in the list of supported scripts
      * @throws          UnsupportedVersion if the input version is not found in the list of supported versions
      */
-    public ScriptHandle(int handleID, String script, String version, DataManager dataManager, int handleID1) throws UnsupportedScript,
+    public ScriptHandle(int handleID, String script, String version, DataManager dataManager) throws UnsupportedScript,
             UnsupportedVersion {
         this.handleID = handleID;
         new ScriptHandle(handleID, ScriptAPI.stringToScript(script), version, dataManager);

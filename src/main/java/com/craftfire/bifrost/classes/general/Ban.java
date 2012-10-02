@@ -54,7 +54,7 @@ public class Ban extends GenericMethods {
      */
     public Ban(Script script, int banid, String name, String email, String ip) {
         super(script.getHandle());
-        this.id = banid;
+        this.setID(banid);
         this.name = name;
         this.email = email;
         this.ip = ip;

@@ -219,23 +219,23 @@ public class ScriptAPI {
      */
     public int addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
         ScriptHandle handle;
-        int handleID = this.getNewHandleID();
+        int id = this.getNewHandleID();
         switch (script.getType()) {
         case CMS:
-            handle = new CMSHandle(handleID, script, version, dataManager);
+            handle = new CMSHandle(id, script, version, dataManager);
             break;
         case FORUM:
-            handle = new ForumHandle(handleID, script, version, dataManager);
+            handle = new ForumHandle(id, script, version, dataManager);
             break;
         default:
-            handle = new ScriptHandle(handleID, script, version, dataManager);
+            handle = new ScriptHandle(id, script, version, dataManager);
         }
-        this.getLoggingManager().debug("ScriptAPI: Adding handle ID: '" + handleID + "' with type: '" +
+        this.getLoggingManager().debug("ScriptAPI: Adding handle ID: '" + id + "' with type: '" +
                                          script.getType() + "' for script: '" + script.getAlias() + "', version: '" +
                                          version + "'");
-        this.handles.put(handleID, handle);
+        this.handles.put(id, handle);
         this.lastHandle = handle;
-        return handleID;
+        return id;
     }
 
     /**

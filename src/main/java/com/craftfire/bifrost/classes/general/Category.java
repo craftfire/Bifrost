@@ -51,7 +51,7 @@ public abstract class Category extends GenericMethods implements MessageParent {
      */
     protected Category(ScriptHandle handle, int categoryid) {
         super(handle);
-        this.id = categoryid;
+        this.setID(categoryid);
     }
 
     /**

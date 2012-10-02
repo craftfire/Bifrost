@@ -54,7 +54,7 @@ public abstract class Message extends GenericMethods implements MessageParent {
      */
     protected Message(ScriptHandle handle, int id) {
         super(handle);
-        this.id = id;
+        this.setID(id);
     }
 
     /**
@@ -67,27 +67,8 @@ public abstract class Message extends GenericMethods implements MessageParent {
      */
     protected Message(ScriptHandle handle, int id, int categoryid) {
         super(handle);
-        this.id = id;
+        this.setID(id);
         this.categoryid = categoryid;
-    }
-
-    /**
-     * Sets the ID of the message, this should be used only when putting the
-     * message into a database.
-     * 
-     * @param id  the ID of the message
-     */
-    public void setID(int id) {
-        this.id = id;
-    }
-
-    /**
-     * Returns the ID of the message.
-     * 
-     * @return the ID of the message
-     */
-    public int getID() {
-        return this.id;
     }
 
     /**
@@ -222,20 +203,11 @@ public abstract class Message extends GenericMethods implements MessageParent {
     }
 
     /**
-     * Returns a ScriptHandle object of the script this message comes from.
-     * 
-     * @return ScriptHandle object of the script this message comes from
-     */
-    public ScriptHandle getHandle() {
-        return this.handle;
-    }
-
-    /**
      * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return "Message " + this.id + " by " + this.author + " at " + this.date + " containing: " + this.body;
+        return "Message " + this.getID() + " by " + this.author + " at " + this.date + " containing: " + this.body;
     }
 }

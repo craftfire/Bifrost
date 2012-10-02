@@ -54,7 +54,7 @@ public class Group extends GenericMethods {
      */
     public Group(Script script, int groupid, String groupname) {
         super(script.getHandle());
-        this.id = groupid;
+        this.setID(groupid);
         this.groupname = groupname;
     }
 
@@ -159,7 +159,7 @@ public class Group extends GenericMethods {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        this.handle.updateGroup(this);
+        this.getHandle().updateGroup(this);
     }
 
     /**
@@ -172,7 +172,7 @@ public class Group extends GenericMethods {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        this.handle.createGroup(this);
+        this.getHandle().createGroup(this);
     }
 
     /**
