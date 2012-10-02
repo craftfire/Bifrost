@@ -20,6 +20,7 @@
 package com.craftfire.bifrost.classes.general;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import com.craftfire.commons.CraftCommons;
@@ -111,7 +112,7 @@ public class Script {
      *
      * @return the version ranges
      */
-    public String[] getVersionRanges()  {
+    public String[] getVersionRanges() {
         return this.versionRanges;
     }
 
@@ -121,7 +122,11 @@ public class Script {
      * @param versionRanges  the version ranges of the script
      */
     protected void setVersionRanges(String[] versionRanges) {
-        this.versionRanges = versionRanges;
+        if (versionRanges == null) {
+            this.versionRanges = new String[0];
+        } else {
+            this.versionRanges = Arrays.copyOf(versionRanges, versionRanges.length);
+        }
     }
 
     /**
