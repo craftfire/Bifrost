@@ -70,6 +70,11 @@ public class ForumPost extends Message {
         this.threadid = threadid;
     }
 
+    @Override
+    public ForumHandle getHandle() {
+        return (ForumHandle) super.getHandle();
+    }
+
     /**
      * Returns the ID of the thread that the post is posted in.
      *
@@ -121,7 +126,7 @@ public class ForumPost extends Message {
      * @throws SQLException       if a MySQL exception occurred
      */
     public ForumThread getThread() throws UnsupportedMethod, SQLException {
-        return getForumHandle().getThread(this.threadid);
+        return getHandle().getThread(this.threadid);
     }
 
     /**
@@ -170,7 +175,7 @@ public class ForumPost extends Message {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        getForumHandle().updatePost(this);
+        getHandle().updatePost(this);
     }
 
     /**
@@ -183,7 +188,7 @@ public class ForumPost extends Message {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        getForumHandle().createPost(this);
+        getHandle().createPost(this);
     }
 
     /**

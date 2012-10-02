@@ -72,6 +72,11 @@ public class CMSComment extends Message {
         this.articleid = articleid;
     }
 
+    @Override
+    public CMSHandle getHandle() {
+        return (CMSHandle) super.getHandle();
+    }
+
     /**
      * Returns the list of comments replying to this comment.
      * <p>
@@ -81,7 +86,7 @@ public class CMSComment extends Message {
      */
     @Override
     public List<CMSComment> getChildMessages(int limit) throws UnsupportedMethod {
-        return getCMSHandle().getCommentReplies(getID(), limit);
+        return getHandle().getCommentReplies(getID(), limit);
     }
 
     /**
@@ -111,7 +116,7 @@ public class CMSComment extends Message {
     @Override
     public MessageParent getParent() throws UnsupportedMethod {
         if (this.parentid != 0) {
-            return getCMSHandle().getComment(this.parentid);
+            return getHandle().getComment(this.parentid);
         } else {
             return getArticle();
         }
@@ -142,7 +147,7 @@ public class CMSComment extends Message {
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public CMSArticle getArticle() throws UnsupportedMethod {
-        return getCMSHandle().getArticle(this.articleid);
+        return getHandle().getArticle(this.articleid);
     }
 
     /*
@@ -179,7 +184,7 @@ public class CMSComment extends Message {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        getCMSHandle().updateComment(this);
+        getHandle().updateComment(this);
     }
 
     /**
@@ -192,7 +197,7 @@ public class CMSComment extends Message {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        getCMSHandle().createComment(this);
+        getHandle().createComment(this);
     }
 
     /**

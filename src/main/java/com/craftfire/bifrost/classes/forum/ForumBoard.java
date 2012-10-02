@@ -77,6 +77,11 @@ public class ForumBoard extends Category {
         super(handle, name, parentid);
     }
 
+    @Override
+    public ForumHandle getHandle() {
+        return (ForumHandle) super.getHandle();
+    }
+
     /**
      * Returns the list of messages contained in this category.
      * <p>
@@ -97,7 +102,7 @@ public class ForumBoard extends Category {
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
-        return getForumHandle().getThreadsFromBoard(getID(), limit);
+        return getHandle().getThreadsFromBoard(getID(), limit);
     }
 
     /**
@@ -110,7 +115,7 @@ public class ForumBoard extends Category {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        getForumHandle().updateBoard(this);
+        getHandle().updateBoard(this);
     }
 
     /**
@@ -123,7 +128,7 @@ public class ForumBoard extends Category {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        getForumHandle().createBoard(this);
+        getHandle().createBoard(this);
     }
 
     /**
@@ -195,7 +200,7 @@ public class ForumBoard extends Category {
      */
     @Override
     public ForumBoard getParent() throws UnsupportedMethod {
-        return getForumHandle().getBoard(getParentID());
+        return getHandle().getBoard(getParentID());
     }
 
     /* (non-javadoc)
@@ -203,6 +208,6 @@ public class ForumBoard extends Category {
      */
     @Override
     public List<ForumBoard> getSubcategories(int limit) throws UnsupportedMethod {
-        return getForumHandle().getSubBoards(getID(), limit);
+        return getHandle().getSubBoards(getID(), limit);
     }
 }

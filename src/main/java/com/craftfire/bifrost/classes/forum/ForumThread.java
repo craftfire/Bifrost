@@ -77,6 +77,11 @@ public class ForumThread extends Message implements ViewsCounter {
         setCategoryID(boardid);
     }
 
+    @Override
+    public ForumHandle getHandle() {
+        return (ForumHandle) super.getHandle();
+    }
+
     /**
      * Gets the board/category ID of the thread.
      *
@@ -103,7 +108,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @throws SQLException       if a MySQL exception occurred
      */
     public ForumBoard getBoard() throws UnsupportedMethod, SQLException {
-        return getForumHandle().getBoard(getCategoryID());
+        return getHandle().getBoard(getCategoryID());
     }
 
     /**
@@ -118,7 +123,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @see                  ForumPost
      */
     public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
-        return getForumHandle().getPostsFromThread(getID(), limit);
+        return getHandle().getPostsFromThread(getID(), limit);
     }
 
     /**
@@ -130,7 +135,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @see                        ForumPost
      */
     public ForumPost getFirstPost() throws UnsupportedMethod, SQLException {
-        return getForumHandle().getPost(this.firstpostid);
+        return getHandle().getPost(this.firstpostid);
     }
 
     /**
@@ -142,7 +147,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * @see                        ForumPost
      */
     public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
-        return getForumHandle().getPost(this.lastpostid);
+        return getHandle().getPost(this.lastpostid);
     }
 
     /**
@@ -285,7 +290,7 @@ public class ForumThread extends Message implements ViewsCounter {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        getForumHandle().updateThread(this);
+        getHandle().updateThread(this);
     }
 
     /**
@@ -298,7 +303,7 @@ public class ForumThread extends Message implements ViewsCounter {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        getForumHandle().createThread(this);
+        getHandle().createThread(this);
     }
 
     /**

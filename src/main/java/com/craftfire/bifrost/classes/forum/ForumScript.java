@@ -39,7 +39,7 @@ public class ForumScript extends Script {
 
     @Override
     public ForumHandle getHandle() {
-        return (ForumHandle) this.handle;
+        return (ForumHandle) super.getHandle();
     }
 
     /**

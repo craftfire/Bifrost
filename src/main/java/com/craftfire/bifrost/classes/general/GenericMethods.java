@@ -69,24 +69,6 @@ public class GenericMethods {
     }
 
     /**
-     * Returns the forum handle.
-     *
-     * @return the forum handle
-     */
-    public ForumHandle getForumHandle() {
-        return (ForumHandle) this.handle;
-    }
-
-    /**
-     * Returns the CMS handle.
-     *
-     * @return the CMS handle
-     */
-    public CMSHandle getCMSHandle() {
-        return (CMSHandle) this.handle;
-    }
-
-    /**
      * This method applies the changed values of the object into the database. Should be run after changing any values in the object.
      * <p>
      * It should <b>not</b> be run when creating a new object, only when editing an already existing object.

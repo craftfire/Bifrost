@@ -71,6 +71,11 @@ public class CMSArticle extends Message implements ViewsCounter {
         super(script.getHandle(), id, categoryid);
     }
 
+    @Override
+    public CMSHandle getHandle() {
+        return (CMSHandle) super.getHandle();
+    }
+
     /**
      * Returns the list of comments on the article.
      * <p>
@@ -81,7 +86,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
-        return getCMSHandle().getCommentsOnArticle(getID(), limit);
+        return getHandle().getCommentsOnArticle(getID(), limit);
     }
 
     /**
@@ -111,7 +116,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      */
     @Override
     public CMSCategory getCategory() throws UnsupportedMethod, SQLException {
-        return getCMSHandle().getCategory(getCategoryID());
+        return getHandle().getCategory(getCategoryID());
     }
 
     /**
@@ -241,7 +246,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        getCMSHandle().updateArticle(this);
+        getHandle().updateArticle(this);
     }
 
     /**
@@ -254,7 +259,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        getCMSHandle().createArticle(this);
+        getHandle().createArticle(this);
     }
 
     /**

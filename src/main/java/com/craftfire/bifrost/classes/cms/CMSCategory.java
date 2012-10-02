@@ -80,6 +80,11 @@ public class CMSCategory extends Category {
         super(handle, name, parentid);
     }
 
+    @Override
+    public CMSHandle getHandle() {
+        return (CMSHandle) super.getHandle();
+    }
+
     /**
      * Returns the list of articles contained in the category.
      * <p>
@@ -90,7 +95,7 @@ public class CMSCategory extends Category {
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
-        return getCMSHandle().getArticlesFromCategory(getID(), limit);
+        return getHandle().getArticlesFromCategory(getID(), limit);
     }
 
     /*
@@ -100,7 +105,7 @@ public class CMSCategory extends Category {
      */
     @Override
     public CMSCategory getParent() throws UnsupportedMethod {
-        return getCMSHandle().getCategory(getParentID());
+        return getHandle().getCategory(getParentID());
     }
 
     /*
@@ -110,7 +115,7 @@ public class CMSCategory extends Category {
      */
     @Override
     public List<CMSCategory> getSubcategories(int limit) throws UnsupportedMethod {
-        return getCMSHandle().getSubCategories(getID(), limit);
+        return getHandle().getSubCategories(getID(), limit);
     }
 
     /**
@@ -153,7 +158,7 @@ public class CMSCategory extends Category {
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        getCMSHandle().updateCategory(this);
+        getHandle().updateCategory(this);
     }
 
     /**
@@ -166,7 +171,7 @@ public class CMSCategory extends Category {
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        getCMSHandle().createCategory(this);
+        getHandle().createCategory(this);
     }
 
     /**

@@ -35,29 +35,34 @@ public class CMSUser extends ScriptUser {
         super(handle, username, password);
     }
 
+    @Override
+    public CMSHandle getHandle() {
+        return (CMSHandle) super.getHandle();
+    }
+
     public int getCommentCount() throws UnsupportedMethod {
-        return getCMSHandle().getUserCommentCount(getUsername());
+        return getHandle().getUserCommentCount(getUsername());
     }
 
     public int getArticleCount() throws UnsupportedMethod {
-        return getCMSHandle().getUserArticleCount(getUsername());
+        return getHandle().getUserArticleCount(getUsername());
     }
 
     public CMSComment getLastComment() throws UnsupportedMethod {
-        return getCMSHandle().getLastUserComment(getUsername());
+        return getHandle().getLastUserComment(getUsername());
     }
 
     public CMSArticle getLastArticle() throws UnsupportedMethod {
-        return getCMSHandle().getLastUserArticle(getUsername());
+        return getHandle().getLastUserArticle(getUsername());
     }
 
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        getCMSHandle().updateUser(this);
+        getHandle().updateUser(this);
     }
 
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        getCMSHandle().createUser(this);
+        getHandle().createUser(this);
     }
 }

@@ -40,7 +40,7 @@ public class CMSScript extends Script {
 
     @Override
     public CMSHandle getHandle() {
-        return (CMSHandle) this.handle;
+        return (CMSHandle) super.getHandle();
     }
 
     /**

@@ -47,13 +47,18 @@ public class ForumUser extends ScriptUser {
         super(handle, username, password);
     }
 
+    @Override
+    public ForumHandle getHandle() {
+        return (ForumHandle) super.getHandle();
+    }
+
     /**
      * Returns the last forum post of this user.
      *
      * @see ForumScript#getPostCount(String) Documentation for this method
      */
     public int getPostCount() throws UnsupportedMethod {
-        return getForumHandle().getPostCount(getUsername());
+        return getHandle().getPostCount(getUsername());
     }
 
     /**
@@ -62,7 +67,7 @@ public class ForumUser extends ScriptUser {
      * @see ForumScript#getThreadCount(String) Documentation for this method
      */
     public int getThreadCount() throws UnsupportedMethod {
-        return getForumHandle().getThreadCount(getUsername());
+        return getHandle().getThreadCount(getUsername());
     }
 
     /**
@@ -71,7 +76,7 @@ public class ForumUser extends ScriptUser {
      * @see ForumScript#getLastUserThread(String) Documentation for this method
      */
     public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
-        return getForumHandle().getLastUserThread(getUsername());
+        return getHandle().getLastUserThread(getUsername());
     }
 
     /**
@@ -80,16 +85,16 @@ public class ForumUser extends ScriptUser {
      * @see ForumScript#getLastUserPost(String) Documentation for this method
      */
     public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
-        return getForumHandle().getLastUserPost(getUsername());
+        return getHandle().getLastUserPost(getUsername());
     }
 
     @Override
     public void update() throws SQLException, UnsupportedMethod {
-        getForumHandle().updateUser(this);
+        getHandle().updateUser(this);
     }
 
     @Override
     public void create() throws SQLException, UnsupportedMethod {
-        getForumHandle().createUser(this);
+        getHandle().createUser(this);
     }
 }
