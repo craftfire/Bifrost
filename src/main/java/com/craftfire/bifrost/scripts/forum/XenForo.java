@@ -432,14 +432,15 @@ public class XenForo extends ForumScript {
         List<HashMap<String, Object>> arrayList = this.getDataManager().getArrayList(
                 "SELECT `username` FROM `" + this.getDataManager().getPrefix() + "user` WHERE `user_group_id` = '" +
                         groupid + "' ORDER BY `user_id` ASC");
+        /*
+        TODO: Fix loop
         for (HashMap<String, Object> map : arrayList) {
             String username = map.get("username").toString();
             if (this.currentUsername != null && ! this.currentUsername.equalsIgnoreCase(username)) {
-                /* TODO: Fix loop */
                 //System.out.println("user: " + this.currentUsername + " - " + username);
                 //users.add(getUser(username));
             }
-        }
+        }*/
         this.currentUsername = null;
         Group group =
                 new Group(this, Integer.parseInt(array.get("user_group_id").toString()),
