@@ -146,7 +146,7 @@ public class Script {
      * @param newVersionRanges  the version ranges of the script
      */
     protected void setVersionRanges(VersionRange[] newVersionRanges) {
-        if (this.versionRanges == null) {
+        if (newVersionRanges == null) {
             this.versionRanges = new VersionRange[0];
         } else {
             this.versionRanges = Arrays.copyOf(newVersionRanges, newVersionRanges.length);
