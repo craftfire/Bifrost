@@ -23,7 +23,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.classes.Version;
+import com.craftfire.commons.classes.VersionRange;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
@@ -36,15 +37,19 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * This class contains methods relevant to direct methods for each script.
  */
 public class Script {
-    private final String version;
+    private final Version version;
     private final Scripts script;
     private final DataManager dataManager;
     private final Cache cache;
-    private String[] versionRanges;
+    private VersionRange[] versionRanges;
     private String scriptName, shortName;
     private ScriptHandle handle;
 
     protected Script(Scripts script, String version, DataManager dataManager) {
+        this(script, new Version(version), dataManager);
+    }
+
+    protected Script(Scripts script, Version version, DataManager dataManager) {
         this.version = version;
         this.script = script;
         this.dataManager = dataManager;
@@ -131,7 +136,7 @@ public class Script {
      *
      * @return the version ranges
      */
-    public String[] getVersionRanges() {
+    public VersionRange[] getVersionRanges() {
         return this.versionRanges;
     }
 
@@ -140,9 +145,9 @@ public class Script {
      *
      * @param newVersionRanges  the version ranges of the script
      */
-    protected void setVersionRanges(String[] newVersionRanges) {
-        if (versionRanges == null) {
-            this.versionRanges = new String[0];
+    protected void setVersionRanges(VersionRange[] newVersionRanges) {
+        if (this.versionRanges == null) {
+            this.versionRanges = new VersionRange[0];
         } else {
             this.versionRanges = Arrays.copyOf(newVersionRanges, newVersionRanges.length);
         }
@@ -190,7 +195,7 @@ public class Script {
      *
      * @return latest supported version of the script
      */
-    public String getLatestVersion() {
+    public Version getLatestVersion() {
         return null;
     }
 
@@ -201,7 +206,7 @@ public class Script {
      */
     public boolean isSupportedVersion() {
         for (int i = 0; this.getVersionRanges().length > i; i++) {
-            if (CraftCommons.inVersionRange(this.getVersionRanges()[i], this.version)) {
+            if (this.getVersionRanges()[i].inVersionRange(this.version)) {
                 return true;
             }
         }
@@ -213,7 +218,7 @@ public class Script {
      *
      * @return the version
      */
-    public String getVersion() {
+    public Version getVersion() {
         return this.version;
     }
 

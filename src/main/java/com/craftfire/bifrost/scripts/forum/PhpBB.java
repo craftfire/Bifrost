@@ -21,17 +21,19 @@ package com.craftfire.bifrost.scripts.forum;
 
 import java.util.List;
 
+import com.craftfire.commons.classes.Version;
+import com.craftfire.commons.classes.VersionRange;
 import com.craftfire.commons.managers.DataManager;
 
-import com.craftfire.bifrost.classes.general.Ban;
-import com.craftfire.bifrost.classes.general.Group;
-import com.craftfire.bifrost.classes.general.PrivateMessage;
-import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.classes.forum.ForumBoard;
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumScript;
 import com.craftfire.bifrost.classes.forum.ForumThread;
 import com.craftfire.bifrost.classes.forum.ForumUser;
+import com.craftfire.bifrost.classes.general.Ban;
+import com.craftfire.bifrost.classes.general.Group;
+import com.craftfire.bifrost.classes.general.PrivateMessage;
+import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
 
 /**
@@ -51,13 +53,13 @@ public class PhpBB extends ForumScript {
         /* TODO: Edit variables */
         this.setScriptName("phpbb");
         this.setShortName("phpbb");
-        this.setVersionRanges(new String[] {"1.0.0"});
+        this.setVersionRanges(new VersionRange[] { new VersionRange("0", "1.0.0") });
     }
 
     //Start Generic Script Methods
 
     @Override
-    public String getLatestVersion() {
+    public Version getLatestVersion() {
         /* TODO: Delete this method or implement it */
         return null;
     }

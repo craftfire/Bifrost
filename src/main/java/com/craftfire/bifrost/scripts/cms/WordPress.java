@@ -28,16 +28,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.classes.Version;
+import com.craftfire.commons.classes.VersionRange;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
-import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
 import com.craftfire.bifrost.classes.cms.CMSComment;
-import com.craftfire.bifrost.classes.cms.CMSHandle;
 import com.craftfire.bifrost.classes.cms.CMSScript;
 import com.craftfire.bifrost.classes.cms.CMSUser;
 import com.craftfire.bifrost.classes.general.Group;
@@ -63,15 +63,15 @@ public class WordPress extends CMSScript {
         super(script, version, dataManager);
         setScriptName("wordpress");
         setShortName("wp");
-        setVersionRanges(new String[] { "3.4.2" }); // Should be 3.4.0 - 3.4.2
+        setVersionRanges(new VersionRange[] { new VersionRange("3.4.0", "3.4.2") });
     }
 
     //Start Generic Methods
 
     @Override
-    public String getLatestVersion() {
+    public Version getLatestVersion() {
         /* TODO: Is it that version for sure? */
-        return getVersionRanges()[getVersionRanges().length - 1];
+        return getVersionRanges()[0].getMax();
     }
 
     @Override
@@ -251,7 +251,7 @@ public class WordPress extends CMSScript {
         return getGroups(limit, false);
     }
 
-    public List<Group> getGroups(int limit, boolean namesonly) throws UnsupportedMethod, SQLException {
+    protected List<Group> getGroups(int limit, boolean namesonly) throws UnsupportedMethod, SQLException {
         List<Group> groups = new ArrayList<Group>();
         int newLimit = limit;
         if (newLimit > getGroupCount() | newLimit <= 0) {
@@ -286,7 +286,7 @@ public class WordPress extends CMSScript {
     }
 
     @SuppressWarnings("unchecked")
-    public Group getGroup(int groupid, boolean namesonly) throws UnsupportedMethod, SQLException {
+    protected Group getGroup(int groupid, boolean namesonly) throws UnsupportedMethod, SQLException {
         String groupname = "";
         Group group;
         switch (groupid) {
@@ -410,7 +410,7 @@ public class WordPress extends CMSScript {
         return uGroups;
     }
 
-    public void setUserGroups(String username, List<Group> groups) throws SQLException, UnsupportedMethod {
+    protected void setUserGroups(String username, List<Group> groups) throws SQLException, UnsupportedMethod {
         List<Group> newGroups = groups;
         if (newGroups == null) {
             newGroups = new ArrayList<Group>();

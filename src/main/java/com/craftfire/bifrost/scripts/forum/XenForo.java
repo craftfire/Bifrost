@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.craftfire.commons.CraftCommons;
+import com.craftfire.commons.classes.Version;
+import com.craftfire.commons.classes.VersionRange;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
 import com.craftfire.commons.enums.Encryption;
@@ -68,12 +70,12 @@ public class XenForo extends ForumScript {
         super(script, version, dataManager);
 		this.setScriptName("xenforo");
         this.setShortName("xf");
-        this.setVersionRanges(new String[] {"1.0.4", "1.1.2"});
+        this.setVersionRanges(new VersionRange[] { new VersionRange("1.0.0", "1.0.4"), new VersionRange("1.1.0", "1.1.2") });
     }
 
     @Override
-    public String getLatestVersion() {
-        return this.getVersionRanges()[1];
+    public Version getLatestVersion() {
+        return this.getVersionRanges()[1].getMax();
     }
 
     @Override
@@ -354,9 +356,9 @@ public class XenForo extends ForumScript {
             data.put("dob_year", format.format(user.getBirthday()));
         }
         this.getDataManager().insertFields(data, "user_profile");
-        if (CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
+        if (this.getVersionRanges()[0].inVersionRange(this.getVersion())) {
             this.getDataManager().updateBlob("user_profile", "identities", "`user_id` = '" + user.getID() + "'", "a:0:{}");
-        } else if (CraftCommons.inVersionRange(this.getVersionRanges()[1], this.getVersion())) {
+        } else if (this.getVersionRanges()[1].inVersionRange(this.getVersion())) {
             this.getDataManager().updateBlob("user_profile", "custom_fields", "`user_id` = '" + user.getID() + "'", "a:0:{}");
         }
         if (user.getStatusMessage() != null && ! user.getStatusMessage().isEmpty()) {
@@ -660,7 +662,7 @@ public class XenForo extends ForumScript {
         data.put("user_id", pm.getSender().getID());
         data.put("username", pm.getSender().getUsername());
         data.put("message", pm.getBody());
-        if (!CraftCommons.inVersionRange(this.getVersionRanges()[0], this.getVersion())) {
+        if (!this.getVersionRanges()[0].inVersionRange(this.getVersion())) {
             data.put("ip_id", ipID);
         }
         this.getDataManager().insertFields(data, "conversation_message");
