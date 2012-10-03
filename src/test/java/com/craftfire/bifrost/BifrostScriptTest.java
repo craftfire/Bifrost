@@ -20,6 +20,7 @@
 package com.craftfire.bifrost;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -177,8 +178,9 @@ public class BifrostScriptTest {
         print("getDataType = " + dataManager.getDataType());
         print("getPort = " + dataManager.getPort());
         print("getTimeout = " + dataManager.getTimeout());
-        print("isConnected = " + dataManager.isConnected());
         print("isKeepAlive = " + dataManager.isKeepAlive());
+        print("isConnected = " + dataManager.isConnected());
+        assertTrue("Not connected!", dataManager.isConnected());
     }
 
     // ----------------------------------------------------------- GENERAL TESTS
@@ -190,8 +192,8 @@ public class BifrostScriptTest {
         try {
             printResult("getScriptName", handle.getScriptName(), true);
             printResult("getScriptShortname", handle.getScriptShortname(), true);
-            printResult("getLatestVersion", handle.getLatestVersion().toString(), true);
-            printResult("getVersion", handle.getVersion().toString(), true);
+            printResult("getLatestVersion", "" + handle.getLatestVersion(), true);
+            printResult("getVersion", "" + handle.getVersion(), true);
             printResult("getHomeURL", handle.getHomeURL(), true);
         } catch (UnsupportedMethod e) {
             fail(e.toString());
