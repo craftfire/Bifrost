@@ -100,7 +100,7 @@ public class WordPress extends CMSScript {
 
     @Override
     public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
-        return this.getHandle().getUser(this.getDataManager().getIntegerField("SELECT `ID` FROM `" + this.getDataManager().getPrefix() + "users` ORDER BY `user_registered` LIMIT 1"));
+        return this.getHandle().getUser(this.getDataManager().getIntegerField("SELECT `ID` FROM `" + this.getDataManager().getPrefix() + "users` ORDER BY `user_registered` DESC LIMIT 1"));
     }
 
     @Override
@@ -118,11 +118,7 @@ public class WordPress extends CMSScript {
                 DataRow record = res.getFirstResult();
                 String lastlogin;
                 String activation = this.getDataManager().getStringField("usermeta", "meta_value", "`user_id` = '" + userid + "' AND `meta_key` = 'uae_user_activation_code'");
-                if (activation == null || activation.equalsIgnoreCase("active")) {
-                    user.setActivated(true);
-                } else {
-                    user.setActivated(false);
-                }
+                user.setActivated(activation == null || activation.equalsIgnoreCase("active"));
                 user.setEmail(record.getStringField("user_email"));
                 user.setGender(Gender.UNKNOWN);
                 user.setRegDate(record.getDateField("user_registered"));
