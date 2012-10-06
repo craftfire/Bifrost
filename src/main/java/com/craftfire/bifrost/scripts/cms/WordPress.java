@@ -70,7 +70,6 @@ public class WordPress extends CMSScript {
 
     @Override
     public Version getLatestVersion() {
-        /* TODO: Is it that version for sure? */
         return getVersionRanges()[0].getMax();
     }
 
