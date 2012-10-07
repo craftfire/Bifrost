@@ -53,7 +53,7 @@ public class ScriptHandle {
      */
     public ScriptHandle(int handleID, Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.handleID = handleID;
-        this.script = ScriptAPI.setScript(script, version, dataManager);
+        this.script = Scripts.getScript(script, version, dataManager);
         if (!this.script.isSupportedVersion()) {
             throw new UnsupportedVersion();
         }

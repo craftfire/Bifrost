@@ -19,11 +19,19 @@
  */
 package com.craftfire.bifrost.enums;
 
+import com.craftfire.bifrost.classes.general.Script;
+import com.craftfire.bifrost.scripts.cms.WordPress;
+import com.craftfire.bifrost.scripts.forum.PhpBB;
+import com.craftfire.bifrost.scripts.forum.SMF;
+import com.craftfire.bifrost.scripts.forum.XenForo;
+import com.craftfire.commons.managers.DataManager;
+
 /**
  * This enum holds all the different supported scripts.
  */
 public enum Scripts {
     WP("wordpress", ScriptType.CMS),
+    PHPBB("phpbb", ScriptType.FORUM),
     SMF("simplemachines", ScriptType.FORUM),
     XF("xenforo", ScriptType.FORUM);
 
@@ -57,5 +65,30 @@ public enum Scripts {
      */
     public ScriptType getType() {
         return this.type;
+    }
+
+    /**
+     * Returns a {@link Script} object depending on which <code>script</code> and <code>version</code> has been used.
+     * <p>
+     * Returns <code>null</code> if the <code>script</code> is not supported.
+     *
+     * @param script       the script
+     * @param version      the version of the script
+     * @param dataManager  the {@link com.craftfire.commons.managers.DataManager} for the script
+     * @return             a {@link Script} object, returns null if not supported
+     */
+    public static Script getScript(Scripts script, String version, DataManager dataManager) {
+        switch (script) {
+            case WP:
+                return new WordPress(script, version, dataManager);
+            case PHPBB:
+                return new PhpBB(script, version, dataManager);
+            case SMF:
+                return new SMF(script, version, dataManager);
+            case XF:
+                return new XenForo(script, version, dataManager);
+            default:
+                return null;
+        }
     }
 }
