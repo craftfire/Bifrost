@@ -157,7 +157,7 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public void updateUser(ScriptUser user) throws SQLException {
+    public void updateUser(ScriptUser user) throws SQLException, UnsupportedMethod {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("user_login", user.getUsername());
         data.put("user_email", user.getEmail());
@@ -172,11 +172,29 @@ public class WordPress extends CMSScript {
         data.clear();
 
         data.put("meta_value", user.getNickname());
-        this.getDataManager().updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'nickname'");
+        if (getDataManager().getCount("usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'nickname'") > 0) {
+            this.getDataManager().updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'nickname'");
+        } else {
+            data.put("user_id", user.getID());
+            data.put("meta_key", "nickname");
+            getDataManager().insertFields(data, "usermeta");
+        }
         data.put("meta_value", user.getFirstName());
-        this.getDataManager().updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'first_name'");
+        if (getDataManager().getCount("usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'first_name'") > 0) {
+            this.getDataManager().updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'first_name'");
+        } else {
+            data.put("user_id", user.getID());
+            data.put("meta_key", "first_name");
+            getDataManager().insertFields(data, "usermeta");
+        }
         data.put("meta_value", user.getLastName());
-        this.getDataManager().updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_name'");
+        if (getDataManager().getCount("usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_name'") > 0) {
+            this.getDataManager().updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_name'");
+        } else {
+            data.put("user_id", user.getID());
+            data.put("meta_key", "last_name");
+            getDataManager().insertFields(data, "usermeta");
+        }
         if (user.getLastLogin() != null) {
             data.put("meta_value", String.valueOf(user.getLastLogin().getTime()));
             this.getDataManager().updateFields(data, "usermeta", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_user_login'");
@@ -184,11 +202,7 @@ public class WordPress extends CMSScript {
         }
         data.clear();
         // TODO: Should we skip setting groups if no groups are cached?
-        try {
-            setUserGroups(user.getUsername(), user.getGroups());
-        } catch (UnsupportedMethod e) {
-            this.getLoggingManager().stackTrace(e);
-        }
+        setUserGroups(user.getUsername(), user.getGroups());
     }
 
     @Override
@@ -197,8 +211,12 @@ public class WordPress extends CMSScript {
         if (CraftCommons.unixHashIdentify(user.getPassword()) == null) {
             user.setPassword(hashPassword(null, user.getPassword()));
         }
-        user.setLastLogin(new Date());
-        user.setRegDate(new Date());
+        if (user.getLastLogin() == null) {
+            user.setLastLogin(new Date());
+        }
+        if (user.getRegDate() == null) {
+            user.setRegDate(new Date());
+        }
         data = new HashMap<String, Object>();
         data.put("user_login", user.getUsername());
         data.put("user_pass", user.getPassword());
