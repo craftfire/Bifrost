@@ -19,10 +19,17 @@
 */
 package com.craftfire.bifrost.scripts.forum;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.classes.Version;
 import com.craftfire.commons.classes.VersionRange;
+import com.craftfire.commons.database.DataRow;
+import com.craftfire.commons.database.Results;
+import com.craftfire.commons.enums.Encryption;
 import com.craftfire.commons.managers.DataManager;
 
 import com.craftfire.bifrost.classes.forum.ForumBoard;
@@ -51,59 +58,71 @@ public class PhpBB extends ForumScript {
     public PhpBB(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
         /* TODO: Edit variables */
-        this.setScriptName("phpbb");
-        this.setShortName("phpbb");
-        this.setVersionRanges(new VersionRange[] { new VersionRange("0", "1.0.0") });
+        setScriptName("phpbb");
+        setShortName("phpbb");
+        setVersionRanges(new VersionRange[]{new VersionRange("3.0.0", "3.0.11")});
     }
 
     //Start Generic Script Methods
 
     @Override
     public Version getLatestVersion() {
-        /* TODO: Delete this method or implement it */
-        return null;
+        return getVersionRanges()[0].getMax();
     }
 
     @Override
     public boolean authenticate(String username, String password) {
-        /* TODO: Delete this method or implement it */
-        return false;
+        String passwordHash = this.getDataManager().getStringField("users",
+                "user_password", "`username` = '" + username + "'");
+        return hashPassword(username, password).equals(passwordHash);
     }
 
     @Override
-    public String hashPassword(String salt, String password) {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public String hashPassword(String username, String password) {
+        return CraftCommons.encrypt(Encryption.PHPASS, username.toLowerCase() + password, null, 0);
     }
 
     @Override
     public String getUsername(int userid) {
-        /* TODO: Delete this method or implement it */
-        return null;
+        return this.getDataManager().getStringField("users", "username", "`user_id` = '" + userid + "'");
     }
 
     @Override
     public int getUserID(String username) {
-        /* TODO: Delete this method or implement it */
-        return 0;
+        return this.getDataManager().getIntegerField("users", "user_id", "`username` = '" + username + "'");
     }
 
     @Override
-    public ForumUser getUser(String username) {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public ForumUser getUser(String username) throws SQLException {
+        return getUser(getUserID(username));
     }
 
     @Override
-    public ForumUser getUser(int userid) {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public ForumUser getUser(int userid) throws SQLException {
+        /*TODO*/
+        Results results = getDataManager().getResults("SELECT * FROM `" + getDataManager().getPrefix() +
+                                                      "` WHERE `user_id` = " + userid);
+        DataRow row = results.getFirstResult();
+        ForumUser user = new ForumUser(this,
+                                       row.getIntField("user_id"),
+                                       row.getStringField("username"),
+                                       row.getStringField("user_password"));
+        //user.setActivated();
+        //user.setAvatarURL();
+        //user.setBirthday();
+        user.setEmail(row.getStringField("user_email"));
+        //user.setGender();
+        //user.setLastIP();
+        //user.setLastLogin();
+
+        user.setRegDate(new Date(row.getIntField("user_regdate")));
+        user.setRegIP(row.getStringField("user_regdate"));
+        return user;
     }
 
     @Override
-    public ForumUser getLastRegUser() {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public ForumUser getLastRegUser() throws SQLException {
+        return getUser(getDataManager().getLastID("user_id", "users"));
     }
 
     @Override
@@ -117,15 +136,23 @@ public class PhpBB extends ForumScript {
     }
 
     @Override
-    public List<Group> getGroups(int limit) {
-        /* TODO: Delete this method or implement it */
-        return null;
+    public List<Group> getGroups(int limit) throws SQLException {
+        String limitstring = "";
+        if (limit > 0) {
+            limitstring = " LIMIT 0 , " + limit;
+        }
+        List<Group> groups = new ArrayList<Group>();
+        Results results = getDataManager().getResults("SELECT `group_id` FROM `" +
+                          getDataManager().getPrefix() + "groups` ORDER BY `group_id` ASC" + limitstring);
+        for (DataRow row : results.getArray()) {
+            groups.add(getGroup(row.getIntField("group_id")));
+        }
+        return groups;
     }
 
     @Override
     public int getGroupID(String group) {
-        /* TODO: Delete this method or implement it */
-        return 0;
+        return this.getDataManager().getIntegerField("groups", "group_id", "`group_name` = '" + group + "'");
     }
 
     @Override
