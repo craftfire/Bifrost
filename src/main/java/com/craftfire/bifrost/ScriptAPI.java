@@ -109,6 +109,29 @@ public class ScriptAPI {
     }
 
     /**
+     * Returns a {@link Script} object depending on which <code>script</code> and <code>version</code> has been used.
+     * <p>
+     * Returns <code>null</code> if the <code>script</code> is not supported.
+     *
+     * @param script       the script
+     * @param version      the version of the script
+     * @param dataManager  the {@link DataManager} for the script
+     * @return             a {@link Script} object, returns null if not supported
+     */
+    public static Script setScript(Scripts script, String version, DataManager dataManager) {
+        switch (script) {
+            case WP:
+                return new WordPress(script, version, dataManager);
+            case SMF:
+                return new SMF(script, version, dataManager);
+            case XF:
+                return new XenForo(script, version, dataManager);
+            default:
+                return null;
+        }
+    }
+
+    /**
      * Returns a Map with all the {@link ScriptHandle}s that have been created.
      *
      * @return Map with all the script handles
