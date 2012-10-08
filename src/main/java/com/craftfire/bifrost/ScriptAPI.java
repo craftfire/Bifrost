@@ -33,6 +33,7 @@ import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.scripts.cms.WordPress;
+import com.craftfire.bifrost.scripts.forum.PhpBB;
 import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
 
@@ -122,6 +123,8 @@ public class ScriptAPI {
         switch (script) {
             case WP:
                 return new WordPress(script, version, dataManager);
+        case PHPBB:
+            return new PhpBB(script, version, dataManager);
             case SMF:
                 return new SMF(script, version, dataManager);
             case XF:
