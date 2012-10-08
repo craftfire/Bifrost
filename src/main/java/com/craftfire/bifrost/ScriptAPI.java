@@ -33,6 +33,7 @@ import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.scripts.cms.WordPress;
+import com.craftfire.bifrost.scripts.forum.PhpBB;
 import com.craftfire.bifrost.scripts.forum.SMF;
 import com.craftfire.bifrost.scripts.forum.XenForo;
 
@@ -86,26 +87,28 @@ public class ScriptAPI {
     }
 
     /**
-     * Converts a string into a script enum.
+     * Returns a {@link Script} object depending on which <code>script</code> and <code>version</code> has been used.
+     * <p>
+     * Returns <code>null</code> if the <code>script</code> is not supported.
      *
-     * @param string  the string which contains the script name
-     * @return        the script for the string, if none are found it returns null.
-     * @throws        UnsupportedScript if the input string is not found in the list of supported scripts.
+     * @param script       the script
+     * @param version      the version of the script
+     * @param dataManager  the {@link DataManager} for the script
+     * @return             a {@link Script} object, returns null if not supported
      */
-    public static Scripts stringToScript(String string) throws UnsupportedScript {
-        for (Scripts script : Scripts.values()) {
-            if (string.equalsIgnoreCase(script.toString()) || string.equalsIgnoreCase(script.getAlias())) {
-                return script;
-            } else if (script.getAlias().contains(",")) {
-                String[] aliases = script.getAlias().split(",");
-                for (String alias : aliases) {
-                    if (string.equalsIgnoreCase(alias)) {
-                        return script;
-                    }
-                }
-            }
+    public static Script setScript(Scripts script, String version, DataManager dataManager) {
+        switch (script) {
+            case WP:
+                return new WordPress(script, version, dataManager);
+        case PHPBB:
+            return new PhpBB(script, version, dataManager);
+            case SMF:
+                return new SMF(script, version, dataManager);
+            case XF:
+                return new XenForo(script, version, dataManager);
+            default:
+                return null;
         }
-        throw new UnsupportedScript();
     }
 
     /**

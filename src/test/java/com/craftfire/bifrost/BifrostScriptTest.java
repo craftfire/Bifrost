@@ -20,6 +20,8 @@
 package com.craftfire.bifrost;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -70,6 +72,7 @@ public class BifrostScriptTest {
     static DataManager dataManager;
     static HashMap<String, String> data = new HashMap<String, String>();
     static String username;
+    static String passwd;
     static ScriptHandle handle;
     Random randomGenerator = new Random();
     int randomInt = this.randomGenerator.nextInt(1000000);
@@ -125,6 +128,7 @@ public class BifrostScriptTest {
         ask("MySQL password", "mysql_password", "craftfire");
         ask("MySQL prefix", "mysql_prefix", "smf__202__");
         ask("Script user username", "script_username", "Contex");
+        ask("Script user password", "script_password", "");
 
         boolean keepalive = false;
         if (data.get("mysql_keepalive").equalsIgnoreCase("true") || data.get("mysql_keepalive").equalsIgnoreCase("1")) {
@@ -148,6 +152,7 @@ public class BifrostScriptTest {
         dataManager.setTimeout(timeout);
         dataManager.setKeepAlive(keepalive);
         username = data.get("script_username");
+        passwd = data.get("script_password");
         try {
             bifrost = new Bifrost();
             int handleID = bifrost.getScriptAPI().addHandle(script, version, dataManager);
@@ -177,8 +182,9 @@ public class BifrostScriptTest {
         print("getDataType = " + dataManager.getDataType());
         print("getPort = " + dataManager.getPort());
         print("getTimeout = " + dataManager.getTimeout());
-        print("isConnected = " + dataManager.isConnected());
         print("isKeepAlive = " + dataManager.isKeepAlive());
+        print("isConnected = " + dataManager.isConnected());
+        assertTrue("Not connected!", dataManager.isConnected());
     }
 
     // ----------------------------------------------------------- GENERAL TESTS
@@ -190,8 +196,8 @@ public class BifrostScriptTest {
         try {
             printResult("getScriptName", handle.getScriptName(), true);
             printResult("getScriptShortname", handle.getScriptShortname(), true);
-            printResult("getLatestVersion", handle.getLatestVersion().toString(), true);
-            printResult("getVersion", handle.getVersion().toString(), true);
+            printResult("getLatestVersion", "" + handle.getLatestVersion(), true);
+            printResult("getVersion", "" + handle.getVersion(), true);
             printResult("getHomeURL", handle.getHomeURL(), true);
         } catch (UnsupportedMethod e) {
             fail(e.toString());
@@ -215,6 +221,14 @@ public class BifrostScriptTest {
         } catch (UnsupportedMethod e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testAuthenticate() throws UnsupportedMethod {
+        print(seperate);
+        print(script.toString() + " - " + version + " - AUTHENTICATE");
+        assertTrue("Wrong password", handle.authenticate(username, passwd));
+        assertFalse("Other passwords work aswell", handle.authenticate(username, passwd + "1"));
     }
 
     @Test
