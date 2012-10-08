@@ -46,10 +46,25 @@ public class PrivateMessage extends Message {
     private Map<ScriptUser, Boolean> deleted = new HashMap<ScriptUser, Boolean>();
     private boolean deletedbysender;
 
+    /**
+     * This constructor should only be used by the script and not by that library user.
+     *
+     * @param script  the script
+     * @param pmid    the ID of the private message
+     */
     public PrivateMessage(Script script, int pmid) {
         super(script.getHandle(), pmid);
     }
 
+    /**
+     * This constructor should be used when creating a new private message for the script.
+     * <p>
+     * Remember to run {@link #create()} after creating a private message to insert it into the script.
+     *
+     * @param handle      the handle
+     * @param sender      the sender of the private message
+     * @param recipients  a list with {@link ScriptUser}s, these are the recipients of the private message
+     */
     public PrivateMessage(ScriptHandle handle, ScriptUser sender, List<ScriptUser> recipients) {
         super(handle);
         setAuthor(sender);
@@ -63,12 +78,24 @@ public class PrivateMessage extends Message {
         this.parentid = parentid;
     }
 
+    /**
+     * Returns a ScriptUser object of the sender, null if error.
+     *
+     * @return  private message sender, null if error
+     * @see     ScriptUser
+     */
     public ScriptUser getSender() {
         return getAuthor();
     }
 
-    public void setSender(ScriptUser user) {
-        setAuthor(user);
+    /**
+     * Sets the private message sender.
+     *
+     * @param sender  a ScriptUser object containing the sender
+     * @see           ScriptUser
+     */
+    public void setSender(ScriptUser sender) {
+        setAuthor(sender);
     }
 
     public List<ScriptUser> getRecipients() {

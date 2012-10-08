@@ -116,10 +116,11 @@ public class ForumThread extends Message implements ViewsCounter {
      * <p>
      * List will be empty if there were no posts.
      *
-     * @param  limit         how many ForumPosts that should be returned, 0 = returns all.
-     * @return               a List of ForumPost's
-     * @throws SQLException  if a MySQL exception occurred
-     * @see                  ForumPost
+     * @param  limit             how many ForumPosts that should be returned, 0 = returns all.
+     * @return                   a List of ForumPost's
+     * @throws UnsupportedMethod if the method is not supported by the script
+     * @throws SQLException      if a MySQL exception occurred
+     * @see                      ForumPost
      */
     public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
         return getHandle().getPostsFromThread(getID(), limit);
@@ -426,7 +427,7 @@ public class ForumThread extends Message implements ViewsCounter {
     }
 
     /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#setAuthor(com.craftfire.bifrost.classes.general.ScriptUser)
+     * @see Message#setAuthor(ScriptUser)
      */
     @Override
     public void setAuthor(ScriptUser author) {

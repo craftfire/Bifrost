@@ -23,24 +23,31 @@ import java.sql.SQLException;
 
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.classes.general.Script;
+import com.craftfire.bifrost.classes.general.ScriptHandle;
 
-//TODO: Fix Javadoc
 /**
- * This class contains methods relevant to methods to use for a forum user.
- *
- * @see ScriptUser Documentation of all the methods
+ * This class should only be used with a forum user.
+ * <p>
+ * The first constructor should only be used by the script itself and not by the library user.
+ * To update any changed values in the post, run {@link #update()}.
+ * <p>
+ * When creating a new forum user make sure you use the correct constructor:
+ * {@link #ForumUser(ForumHandle, String, String)}.
+ * <p>
+ * Remember to run {@link #create()} after creating a user to insert it into the script.
  */
 public class ForumUser extends ScriptUser {
 
     /**
-     * @see ForumUser#ForumUser(ForumScript, int, String, String) Documentation for this constructor
+     * @see ScriptUser#ScriptUser(Script, int, String, String) Documentation for this constructor
      */
     public ForumUser(ForumScript script, int userid, String username, String password) {
         super(script, userid, username, password);
     }
 
     /**
-     * @see ForumUser#ForumUser(ForumHandle, String, String) Documentation for this constructor
+     * @see ScriptUser#ScriptUser(ScriptHandle, String, String) Documentation for this constructor
      */
     public ForumUser(ForumHandle handle, String username, String password) {
         super(handle, username, password);
@@ -52,46 +59,70 @@ public class ForumUser extends ScriptUser {
     }
 
     /**
-     * Returns the last forum post of this user.
+     * Returns the post count of this user.
      *
-     * @see ForumScript#getPostCount(String) Documentation for this method
+     * @return                    post count
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public int getPostCount() throws UnsupportedMethod {
         return getHandle().getPostCount(getUsername());
     }
 
     /**
-     * Returns the last forum post of this user.
+     * Returns the thread count of this user.
      *
-     * @see ForumScript#getThreadCount(String) Documentation for this method
+     * @return                    thread count
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public int getThreadCount() throws UnsupportedMethod {
         return getHandle().getThreadCount(getUsername());
     }
 
     /**
-     * Returns the last forum post of this user.
+     * Returns the last forum thread of this user, returns null if no threads were found.
      *
-     * @see ForumScript#getLastUserThread(String) Documentation for this method
+     * @return                    last forum thread, null if empty
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
         return getHandle().getLastUserThread(getUsername());
     }
 
     /**
-     * Returns the last forum post of this user.
+     * Returns the last forum post of this user, return null if no posts were found.
      *
-     * @see ForumScript#getLastUserPost(String) Documentation for this method
+     * @return                    last forum post, null if empty
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
         return getHandle().getLastUserPost(getUsername());
     }
 
+    /**
+     * This method should be run after changing any forum user values.
+     * <p>
+     * It should <b>not</b> be run when creating a new forum user, only when editing an already existing forum user.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see #create()             for creating an user
+     */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
         getHandle().updateUser(this);
     }
 
+    /**
+     * This method should be run after creating a new forum user.
+     * <p>
+     * It should <b>not</b> be run when updating a forum user, only when creating a forum user.
+     *
+     * @throws SQLException       if a SQL error concurs
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see #update()             for updating an user
+     */
     @Override
     public void create() throws SQLException, UnsupportedMethod {
         getHandle().createUser(this);
