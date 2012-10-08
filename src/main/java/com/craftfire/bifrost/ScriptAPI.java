@@ -87,29 +87,6 @@ public class ScriptAPI {
     }
 
     /**
-     * Converts a string into a script enum.
-     *
-     * @param string  the string which contains the script name
-     * @return        the script for the string, if none are found it returns null.
-     * @throws        UnsupportedScript if the input string is not found in the list of supported scripts.
-     */
-    public static Scripts stringToScript(String string) throws UnsupportedScript {
-        for (Scripts script : Scripts.values()) {
-            if (string.equalsIgnoreCase(script.toString()) || string.equalsIgnoreCase(script.getAlias())) {
-                return script;
-            } else if (script.getAlias().contains(",")) {
-                String[] aliases = script.getAlias().split(",");
-                for (String alias : aliases) {
-                    if (string.equalsIgnoreCase(alias)) {
-                        return script;
-                    }
-                }
-            }
-        }
-        throw new UnsupportedScript();
-    }
-
-    /**
      * Returns a {@link Script} object depending on which <code>script</code> and <code>version</code> has been used.
      * <p>
      * Returns <code>null</code> if the <code>script</code> is not supported.

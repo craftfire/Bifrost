@@ -85,7 +85,7 @@ public class ScriptHandle {
     public ScriptHandle(int handleID, String script, String version, DataManager dataManager) throws UnsupportedScript,
             UnsupportedVersion {
         this.handleID = handleID;
-        new ScriptHandle(handleID, ScriptAPI.stringToScript(script), version, dataManager);
+        new ScriptHandle(handleID, Scripts.stringToScript(script), version, dataManager);
     }
 
     /**
