@@ -91,7 +91,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     /**
      * Returns the list of messages whose parent is this object.
      * <p>
-     * For CMSArticle it always has the same result as {@see #getComments(int)}.
+     * For CMSArticle it always has the same result as {@link #getComments(int)}.
      */
     @Override
     public List<CMSComment> getChildMessages(int limit) throws UnsupportedMethod {
@@ -101,7 +101,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     /**
      * Returns the parent of the message.
      * <p>
-     * For CMSArticle it always has the same result as {@see #getCategory()}.
+     * For CMSArticle it always has the same result as {@link #getCategory()}.
      */
     @Override
     public CMSCategory getParent() throws UnsupportedMethod, SQLException {
@@ -111,7 +111,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     /*
      * (non-Javadoc)
      * 
-     * @see com.craftfire.bifrost.classes.general.Message#getCategory()
+     * @see Message#getCategory()
      */
     @Override
     public CMSCategory getCategory() throws UnsupportedMethod, SQLException {
@@ -159,7 +159,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     /*
      * (non-Javadoc)
      * 
-     * @see com.craftfire.bifrost.classes.general.ViewsCounter#getViewsCount()
+     * @see ViewsCounter#getViewsCount()
      */
     @Override
     public int getViewsCount() {
@@ -169,8 +169,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * com.craftfire.bifrost.classes.general.ViewsCounter#setViewsCount(int)
+     * @see ViewsCounter#setViewsCount(int)
      */
     @Override
     public void setViewsCount(int views) {
@@ -304,7 +303,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param article} from cache.
+     * Removes outdated cache elements related to given {@code article} from cache.
      * <p>
      * The method should be called when updating or creating a {@link CMSArticle}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.
@@ -348,7 +347,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getAuthor()
+     * @see Message#getAuthor()
      */
     @Override
     public CMSUser getAuthor() {
@@ -356,7 +355,7 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#setAuthor(com.craftfire.bifrost.classes.general.ScriptUser)
+     * @see Message#setAuthor(ScriptUser)
      */
     @Override
     public void setAuthor(ScriptUser author) {

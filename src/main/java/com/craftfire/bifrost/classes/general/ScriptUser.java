@@ -632,7 +632,7 @@ public class ScriptUser extends GenericMethods {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param user} from cache.
+     * Removes outdated cache elements related to given {@code user} from cache.
      * <p>
      * The method should be called when updating or creating a {@link ScriptUser}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.

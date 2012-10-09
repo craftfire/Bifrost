@@ -348,7 +348,7 @@ public class Ban extends GenericMethods {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param ban} from cache.
+     * Removes outdated cache elements related to given {@code ban} from cache.
      * <p>
      * The method should be called when updating or creating a {@link Ban}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.

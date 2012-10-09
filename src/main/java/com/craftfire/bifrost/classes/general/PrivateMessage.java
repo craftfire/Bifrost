@@ -33,7 +33,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
  * To update any changed values in the post, run {@link #update()}.
  * <p>
  * When creating a new PrivateMessage make sure you use the correct constructor:
- * {@link #PrivateMessage(ScriptHandle, ScriptUser, List<ScriptUser>, int)}.
+ * {@link #PrivateMessage(ScriptHandle, ScriptUser, List, int)}.
  * <p>
  * Remember to run {@link #create()} after creating a private/conversation message
  * to insert it into the script.
@@ -313,7 +313,7 @@ public class PrivateMessage extends Message {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param privateMessage} from cache.
+     * Removes outdated cache elements related to given {@code privateMessage} from cache.
      * <p>
      * The method should be called when updating or creating a {@link PrivateMessage}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.

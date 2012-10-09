@@ -84,7 +84,7 @@ public class ForumBoard extends Category {
     /**
      * Returns the list of messages contained in this category.
      * <p>
-     * For ForumBoard it has the same effect as {@see #getThreads(int)}
+     * For ForumBoard it has the same effect as {@link #getThreads(int)}
      */
     @Override
     public List<ForumThread> getMessages(int limit) throws UnsupportedMethod {
@@ -168,7 +168,7 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param board} from cache.
+     * Removes outdated cache elements related to given {@code board} from cache.
      * <p>
      * The method should be called when updating or creating a {@link ForumBoard}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.

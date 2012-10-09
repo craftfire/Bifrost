@@ -349,7 +349,7 @@ public class ForumThread extends Message implements ViewsCounter {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param thread} from cache.
+     * Removes outdated cache elements related to given {@code thread} from cache.
      * <p>
      * The method should be called when updating or creating a {@link ForumThread}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.
@@ -401,7 +401,7 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns the list of messages whose parent is this object.
      * <p>
-     * For ForumThread it has always the same result as {@see #getPosts(int)}.
+     * For ForumThread it has always the same result as {@link #getPosts(int)}.
      */
     @Override
     public List<ForumPost> getChildMessages(int limit) throws UnsupportedMethod, SQLException {
@@ -411,7 +411,7 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns the parent of the message.
      * <p>
-     * For ForumThread it always has the same result as {@see #getBoard()}.
+     * For ForumThread it always has the same result as {@link #getBoard()}.
      */
     @Override
     public ForumBoard getParent() throws UnsupportedMethod, SQLException {
@@ -419,7 +419,7 @@ public class ForumThread extends Message implements ViewsCounter {
     }
 
     /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getAuthor()
+     * @see Message#getAuthor()
      */
     @Override
     public ForumUser getAuthor() {

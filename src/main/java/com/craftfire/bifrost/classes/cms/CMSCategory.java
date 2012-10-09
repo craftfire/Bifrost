@@ -69,7 +69,7 @@ public class CMSCategory extends Category {
     /**
      * This constructor should be preferred when creating a new category for the script.
      * <p>
-     * Remember to run {@see #createCategory()} after creating a category to insert it into the script.
+     * Remember to run {@link #create()} after creating a category to insert it into the script.
      * 
      * @param handle    the handle the category is created for
      * @param name      the name of the category
@@ -120,7 +120,7 @@ public class CMSCategory extends Category {
     /**
      * Returns the list of messages contained in this category.
      * <p>
-     * For CMSCategory it always has the same result as {@see #getArticles(int)}.
+     * For CMSCategory it always has the same result as {@link #getArticles(int)}.
      */
     @Override
     public List<CMSArticle> getMessages(int limit) throws UnsupportedMethod {
@@ -211,7 +211,7 @@ public class CMSCategory extends Category {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param category} from cache.
+     * Removes outdated cache elements related to given {@code category} from cache.
      * <p>
      * The method should be called when updating or creating a {@link CMSCategory}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.

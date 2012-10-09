@@ -223,7 +223,7 @@ public class Group extends GenericMethods {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param group} from cache.
+     * Removes outdated cache elements related to given {@code group} from cache.
      * <p>
      * The method should be called when updating or creating a {@link Group}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.

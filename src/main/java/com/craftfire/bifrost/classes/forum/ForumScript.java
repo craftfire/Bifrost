@@ -43,7 +43,7 @@ public class ForumScript extends Script {
     }
 
     /**
-     * Returns an amount of how many posts are there in {@param threadid}.
+     * Returns an amount of how many posts are there in {@code threadid}.
      *
      * @param threadid            the ID of the thread to count posts from
      * @return                    the amount of how many posts the are there in the thread
@@ -54,7 +54,7 @@ public class ForumScript extends Script {
     }
 
     /**
-     * Returns an amount of how many posts {@param username} has made.
+     * Returns an amount of how many posts {@code username} has made.
      *
      * @param username  the username to get the count from.
      * @return          the amount of how many posts the username have made, returns 0 if none
@@ -87,7 +87,7 @@ public class ForumScript extends Script {
 	}
 
     /**
-     * Returns the ForumPost object of the last post that has been made by {@param username}.
+     * Returns the ForumPost object of the last post that has been made by {@code username}.
      *
      * @param username  The username to grab the last post from
      * @return          ForumPost object of the last post made by the user
@@ -113,7 +113,7 @@ public class ForumScript extends Script {
     /**
      * Returns a List with ForumPost objects from the given thread/topic ID.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
      * Set {@param limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
@@ -130,7 +130,7 @@ public class ForumScript extends Script {
 	}
 
     /**
-     * Returns a List with ForumPost objects that have been made by the {@param username}.
+     * Returns a List with ForumPost objects that have been made by the {@code username}.
      * <p>
      * Parameter {@param limit} can be used as a limit of how many objects should be returned.
      * <p>
@@ -218,7 +218,7 @@ public class ForumScript extends Script {
 	}
 
     /**
-     * Returns the Thread object of the last thread that has been made by {@param username}.
+     * Returns the Thread object of the last thread that has been made by {@code username}.
      *
      * @param username  the username to grab the last thread from
      * @return          ForumThread object of the last post made by the user
@@ -246,9 +246,9 @@ public class ForumScript extends Script {
 	/**
      * Returns a List with ForumThread objects from the given board/category ID.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@param limit} to 0 to return all the objects.
+     * Set {@code limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
      *
      * @param  boardid            the board ID to grab the threads from
@@ -263,7 +263,7 @@ public class ForumScript extends Script {
     }
 
     /**
-     * Returns a List with ForumThread objects that have been made by {@param username}.
+     * Returns a List with ForumThread objects that have been made by {@code username}.
      * <p>
      * Parameter {@param limit} can be used as a limit of how many objects should be returned.
      * <p>
@@ -283,9 +283,9 @@ public class ForumScript extends Script {
     /**
      * Returns a List with @Override objects.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@param limit} to 0 to return all the objects.
+     * Set {@code limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
      *
      * @param limit  the limit. Set to 0 if you want to return all.
@@ -358,9 +358,9 @@ public class ForumScript extends Script {
     /**
      * Returns a List with ForumBoard objects that are subboards of the given board/category ID.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@param limit} to 0 to return all the objects.
+     * Set {@code limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
      *
      * @param  boardid            the board ID to grab the subboards from
@@ -377,9 +377,9 @@ public class ForumScript extends Script {
     /**
      * Returns a List with ForumBoard objects.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@param limit} to 0 to return all the objects.
+     * Set {@code limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
      *
      * @param  limit              the limit (set to 0 if you want to return all)
@@ -409,7 +409,6 @@ public class ForumScript extends Script {
      *
      * @param  board              the ForumBoard object
      * @see    ForumBoard
-     * @throws SQLException       if a MySQL exception occurred
      * @throws UnsupportedMethod  if the function is not supported by the script
      */
     public void createBoard(ForumBoard board) throws UnsupportedMethod {

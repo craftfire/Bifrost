@@ -152,7 +152,7 @@ public class CMSComment extends Message {
     /*
      * (non-Javadoc)
      * 
-     * @see com.craftfire.bifrost.classes.general.Message#getCategoryID()
+     * @see Message#getCategoryID()
      */
     @Override
     public int getCategoryID() {
@@ -166,7 +166,7 @@ public class CMSComment extends Message {
     /*
      * (non-Javadoc)
      * 
-     * @see com.craftfire.bifrost.classes.general.Message#getCategory()
+     * @see Message#getCategory()
      */
     @Override
     public Category getCategory() throws UnsupportedMethod, SQLException {
@@ -243,7 +243,7 @@ public class CMSComment extends Message {
     }
 
     /**
-     * Removes outdated cache elements related to given {@param comment} from cache.
+     * Removes outdated cache elements related to given {@code comment} from cache.
      * <p>
      * The method should be called when updating or creating a {@link CMSComment}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.
@@ -291,7 +291,7 @@ public class CMSComment extends Message {
     }
 
     /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#getAuthor()
+     * @see Message#getAuthor()
      */
     @Override
     public CMSUser getAuthor() {
@@ -299,7 +299,7 @@ public class CMSComment extends Message {
     }
 
     /* (non-Javadoc)
-     * @see com.craftfire.bifrost.classes.general.Message#setAuthor(com.craftfire.bifrost.classes.general.ScriptUser)
+     * @see Message#setAuthor(ScriptUser)
      */
     @Override
     public void setAuthor(ScriptUser author) {
