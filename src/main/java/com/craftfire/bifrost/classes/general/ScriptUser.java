@@ -426,36 +426,36 @@ public class ScriptUser extends GenericMethods {
     }
 
     /**
-     * Returns if an user is activated or not, <code>true</code> if activated, <code>false</code> if not.
+     * Returns if an user is activated or not, {@code true} if activated, {@code false} if not.
      *
-     * @return <code>true</code> if user is activated, <code>false</code> if not
+     * @return {@code true} if user is activated, {@code false} if not
      */
     public boolean isActivated() {
         return this.activated;
     }
 
     /**
-     * Sets if an user is activated or not, <code>true</code> if activated, <code>false</code> if not.
+     * Sets if an user is activated or not, {@code true} if activated, {@code false} if not.
      *
-     * @param activated  <code>true</code> if user is activated, <code>false</code> if not
+     * @param activated  {@code true} if user is activated, {@code false} if not
      */
     public void setActivated(boolean activated) {
         this.activated = activated;
     }
 
     /**
-     * Returns if an user is anonymous or not, <code>true</code> if anonymous, <code>false</code> if not.
+     * Returns if an user is anonymous or not, {@code true} if anonymous, {@code false} if not.
      *
-     * @return <code>true</code> if user is anonymous, <code>false</code> if not
+     * @return {@code true} if user is anonymous, {@code false} if not
      */
     public boolean isAnonymous() {
         return this.anonymous;
     }
 
     /**
-     * Sets if an user is anonymous or not, <code>true</code> if anonymous, <code>false</code> if not.
+     * Sets if an user is anonymous or not, {@code true} if anonymous, {@code false} if not.
      *
-     * @param anonymous  <code>true</code> if user is anonymous, <code>false</code> if not
+     * @param anonymous  {@code true} if user is anonymous, {@code false} if not
      */
     public void setAnonymous(boolean anonymous) {
         this.anonymous = anonymous;
@@ -510,9 +510,9 @@ public class ScriptUser extends GenericMethods {
     }
 
     /**
-     * Returns if an user is banned or not, <code>true</code> if banned, <code>false</code> if not.
+     * Returns if an user is banned or not, {@code true} if banned, {@code false} if not.
      *
-     * @return <code>true</code> if user is banned, <code>false</code> if not
+     * @return {@code true} if user is banned, {@code false} if not
      */
     public boolean isBanned() throws UnsupportedMethod, SQLException {
         if (getHandle().isBanned(this.username)) {
@@ -527,9 +527,9 @@ public class ScriptUser extends GenericMethods {
     }
 
     /**
-     * Returns if an user is registered or not, <code>true</code> if registered, <code>false</code> if not.
+     * Returns if an user is registered or not, {@code true} if registered, {@code false} if not.
      *
-     * @return <code>true</code> if user is registered, <code>false</code> if not
+     * @return {@code true} if user is registered, {@code false} if not
      */
     public boolean isRegistered() throws UnsupportedMethod {
         return getHandle().isRegistered(this.username);
@@ -579,12 +579,12 @@ public class ScriptUser extends GenericMethods {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains a user cache with the given id parameter,
-     * <code>false</code> if not.
+     * Returns {@code true} if the handle contains a user cache with the given id parameter,
+     * {@code false} if not.
      *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, Object id) {
         return handle.getCache().contains(CacheGroup.USER, id);
@@ -618,11 +618,11 @@ public class ScriptUser extends GenericMethods {
     }
 
     /**
-     * Returns the ScriptUser object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the ScriptUser object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the user
-     * @return        ScriptUser object if cache was found, <code>null</code> if no cache was found
+     * @return ScriptUser object if cache was found, {@code null} if no cache was found
      */
     public static ScriptUser getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.USER, id)) {

@@ -135,29 +135,29 @@ public class PrivateMessage extends Message {
     }
 
     /**
-     * Returns <code>true</code> if the private message has been deleted by the sender, <code>false</code> if not.
+     * Returns {@code true} if the private message has been deleted by the sender, {@code false} if not.
      *
-     * @return <code>true</code> if deleted by sender, <code>false</code> if not.
+     * @return {@code true} if deleted by sender, {@code false} if not.
      */
     public boolean isDeletedBySender() {
         return this.deletedbysender;
     }
 
     /**
-     * Set to <code>true</code> if the private message is deleted by the sender, <code>false</code> if not.
+     * Set to {@code true} if the private message is deleted by the sender, {@code false} if not.
      *
-     * @param deleted  <code>true</code> if deleted by the sender, <code>false</code> if not
+     * @param deleted  {@code true} if deleted by the sender, {@code false} if not
      */
     public void setDeletedBySender(boolean deleted) {
         this.deletedbysender = deleted;
     }
 
     /**
-     * Returns <code>true</code> if the private message has been read by the <code>recipient</code>,
-     * <code>false</code> if not.
+     * Returns {@code true} if the private message has been read by the {@code recipient},
+     * {@code false} if not.
      *
      * @param recipient  the recipient
-     * @return           <code>true</code> if read by the <code>recipient</code>, <code>false</code> if not.
+     * @return           {@code true} if read by the {@code recipient}, {@code false} if not.
      */
     public boolean isRead(ScriptUser recipient) {
         if (this.read.containsKey(recipient)) {
@@ -167,21 +167,21 @@ public class PrivateMessage extends Message {
     }
 
     /**
-     * Set to <code>true</code> if the private message is read by the <code>recipient</code>, <code>false</code> if not.
+     * Set to {@code true} if the private message is read by the {@code recipient}, {@code false} if not.
      *
      * @param recipient  the recipient
-     * @param read       <code>true</code> if read by the <code>recipient</code>, <code>false</code> if not
+     * @param read       {@code true} if read by the {@code recipient}, {@code false} if not
      */
     public void setRead(ScriptUser recipient, boolean read) {
         this.read.put(recipient, read);
     }
 
     /**
-     * Returns <code>true</code> if the private message is new for the <code>recipient</code>,
-     * <code>false</code> if not.
+     * Returns {@code true} if the private message is new for the {@code recipient},
+     * {@code false} if not.
      *
      * @param recipient  the recipient
-     * @return           <code>true</code> if new for the <code>recipient</code>, <code>false</code> if not.
+     * @return           {@code true} if new for the {@code recipient}, {@code false} if not.
      */
     public boolean isNew(ScriptUser recipient) {
         if (this.isnew.containsKey(recipient)) {
@@ -191,21 +191,21 @@ public class PrivateMessage extends Message {
     }
 
     /**
-     * Set to <code>true</code> if the private message is new for the <code>recipient</code>, <code>false</code> if not.
+     * Set to {@code true} if the private message is new for the {@code recipient}, {@code false} if not.
      *
      * @param recipient  the recipient
-     * @param isnew      <code>true</code> if new for the <code>recipient</code>, <code>false</code> if not
+     * @param isnew      {@code true} if new for the {@code recipient}, {@code false} if not
      */
     public void setNew(ScriptUser recipient, boolean isnew) {
         this.isnew.put(recipient, isnew);
     }
 
     /**
-     * Returns <code>true</code> if the private message is deleted by the <code>recipient</code>,
-     * <code>false</code> if not.
+     * Returns {@code true} if the private message is deleted by the {@code recipient},
+     * {@code false} if not.
      *
      * @param recipient  the recipient
-     * @return           <code>true</code> if deleted by the <code>recipient</code>, <code>false</code> if not.
+     * @return           {@code true} if deleted by the {@code recipient}, {@code false} if not.
      */
     public boolean isDeleted(ScriptUser recipient) {
         if (this.deleted.containsKey(recipient)) {
@@ -215,11 +215,11 @@ public class PrivateMessage extends Message {
     }
 
     /**
-     * Set to <code>true</code> if the private message is deleted by the <code>recipient</code>,
-     * <code>false</code> if not.
+     * Set to {@code true} if the private message is deleted by the {@code recipient},
+     * {@code false} if not.
      *
      * @param recipient  the recipient
-     * @param deleted    <code>true</code> if deleted by the <code>recipient</code>, <code>false</code> if not
+     * @param deleted    {@code true} if deleted by the {@code recipient}, {@code false} if not
      */
     public void setDeleted(ScriptUser recipient, boolean deleted) {
         this.deleted.put(recipient, deleted);
@@ -258,12 +258,12 @@ public class PrivateMessage extends Message {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains a private message cache with the given id parameter,
-     * <code>false</code> if not.
+     * Returns {@code true} if the handle contains a private message cache with the given id parameter,
+     * {@code false} if not.
      *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, Object id) {
         return handle.getCache().contains(CacheGroup.PM, id);
@@ -299,11 +299,11 @@ public class PrivateMessage extends Message {
     }
 
     /**
-     * Returns the PrivateMessage object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the PrivateMessage object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the private message
-     * @return        PrivateMessage object if cache was found, <code>null</code> if no cache was found
+     * @return PrivateMessage object if cache was found, {@code null} if no cache was found
      */
     public static PrivateMessage getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.PM, id)) {

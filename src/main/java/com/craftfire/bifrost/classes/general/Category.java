@@ -26,7 +26,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 /**
  * Base class for all categories like ForumBoard, ArticleCategory, WikiCategory, IssueCategory.
  * <p>
- * Should <code>not</code> be instanced.
+ * Should <b>NOT</b> be instanced.
  */
 public abstract class Category extends GenericMethods implements MessageParent {
     private int parentid;

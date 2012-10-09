@@ -131,12 +131,12 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains a board cache with the given id parameter,
-     * <code>false</code> if not.
-     * 
+     * Returns {@code true} if the handle contains a board cache with the given id parameter,
+     * {@code false} if not.
+     *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.BOARD, id);
@@ -154,11 +154,11 @@ public class ForumBoard extends Category {
     }
 
     /**
-     * Returns the board object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the board object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the board
-     * @return        board object if cache was found, <code>null</code> if no cache was found
+     * @return board object if cache was found, {@code null} if no cache was found
      */
     public static ForumBoard getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.BOARD, id)) {

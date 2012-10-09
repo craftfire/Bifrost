@@ -58,7 +58,7 @@ public class CMSHandle extends ScriptHandle {
     }
 
     /**
-     * Creates a new comment in the specified <code>articleid</code>.
+     * Creates a new comment in the specified {@code articleid}.
      *
      * @see CMSComment#CMSComment(CMSHandle, int) Documentation for this method
      */
@@ -67,7 +67,7 @@ public class CMSHandle extends ScriptHandle {
     }
 
     /**
-     * Creates a new article in the specified <code>categoryid</code>.
+     * Creates a new article in the specified {@code categoryid}.
      *
      * @see CMSArticle#CMSArticle(CMSHandle, int) Documentation for this method
      */

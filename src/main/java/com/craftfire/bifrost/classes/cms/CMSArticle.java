@@ -137,20 +137,20 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * Returns <code>true</code> if article has been published, <code>false</code> if not published.
+     * Returns {@code true} if article has been published, {@code false} if not published.
      *
-     * @return <code>true</code> if published, <code>false</code> if not published
+     * @return {@code true} if published, {@code false} if not published
      */
     public boolean isPublic() {
         return this.isPublic;
     }
 
     /**
-     * Sets the article's published state to whatever <code>Boolean</code> the <code>isPublic</code> parameter is.
+     * Sets the article's published state to whatever {@code Boolean} the {@code isPublic} parameter is.
      * <p>
-     * <code>true</code> = published and <code>false</code> = not published.
+     * {@code true} = published and {@code false} = not published.
      *
-     * @param isPublic  <code>true</code> for published, <code>false</code> for not published
+     * @param isPublic  {@code true} for published, {@code false} for not published
      */
     public void setPublic(boolean isPublic) {
         this.isPublic = isPublic;
@@ -177,29 +177,29 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * Returns <code>true</code> if article is featured, <code>false</code> if not featured.
+     * Returns {@code true} if article is featured, {@code false} if not featured.
      *
-     * @return <code>true</code> if featured, <code>false</code> if not featured
+     * @return {@code true} if featured, {@code false} if not featured
      */
     public boolean isFeatured() {
         return this.featured;
     }
 
     /**
-     * Sets the article's featured flag to whatever <code>Boolean</code> the <code>isFeatured</code> parameter is.
+     * Sets the article's featured flag to whatever {@code Boolean} the {@code isFeatured} parameter is.
      * <p>
-     * <code>true</code> = featured and <code>false</code> = not featured.
+     * {@code true} = featured and {@code false} = not featured.
      *
-     * @param isFeatured  <code>true</code> for featured, <code>false</code> for not featured
+     * @param isFeatured  {@code true} for featured, {@code false} for not featured
      */
     public void setFeatured(boolean isFeatured) {
         this.featured = isFeatured;
     }
 
     /**
-     * Returns <code>true</code> if article is allowing comments, <code>false</code> if not allowing.
+     * Returns {@code true} if article is allowing comments, {@code false} if not allowing.
      *
-     * @return <code>true</code> if allowing comments, <code>false</code> if not allowing
+     * @return {@code true} if allowing comments, {@code false} if not allowing
      */
     public boolean isAllowingComments() {
         return this.allowComments;
@@ -208,9 +208,9 @@ public class CMSArticle extends Message implements ViewsCounter {
     /**
      * Sets the if the article should allow comments or not.
      * <p>
-     * <code>true</code> = allow comments and <code>false</code> = deny comments.
+     * {@code true} = allow comments and {@code false} = deny comments.
      *
-     * @param allowComments  <code>true</code> to allow, <code>false</code> to deny
+     * @param allowComments  {@code true} to allow, {@code false} to deny
      */
     public void setAllowComments(boolean allowComments) {
         this.allowComments = allowComments;
@@ -261,12 +261,12 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains an article cache with the given id parameter,
-     * <code>false</code> if not.
+     * Returns {@code true} if the handle contains an article cache with the given id parameter,
+     * {@code false} if not.
      *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.ARTICLE, id);
@@ -289,11 +289,11 @@ public class CMSArticle extends Message implements ViewsCounter {
     }
 
     /**
-     * Returns the CMSArticle object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the CMSArticle object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the article
-     * @return        CMSArticle object if cache was found, <code>null</code> if no cache was found
+     * @return CMSArticle object if cache was found, {@code null} if no cache was found
      */
     public static CMSArticle getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.ARTICLE, id)) {

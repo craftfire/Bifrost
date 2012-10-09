@@ -191,12 +191,12 @@ public class ForumPost extends Message {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains a post cache with the given id parameter,
-     * <code>false</code> if not.
+     * Returns {@code true} if the handle contains a post cache with the given id parameter,
+     * {@code false} if not.
      *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.POST, id);
@@ -219,11 +219,11 @@ public class ForumPost extends Message {
     }
 
     /**
-     * Returns the ForumPost object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the ForumPost object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the post
-     * @return        ForumPost object if cache was found, <code>null</code> if no cache was found
+     * @return ForumPost object if cache was found, {@code null} if no cache was found
      */
     public static ForumPost getCache(ScriptHandle handle, int id) {
         ForumPost temp = null;
@@ -234,11 +234,11 @@ public class ForumPost extends Message {
     }
 
     /**
-     * Removes outdated cache elements related to given <code>post</code> from cache.
+     * Removes outdated cache elements related to given {@code post} from cache.
      * <p>
      * The method should be called when updating or creating a {@link ForumPost}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.
-     * 
+     *
      * @param handle  the handle the method is called from
      * @param post    the post to cleanup related cache
      * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup

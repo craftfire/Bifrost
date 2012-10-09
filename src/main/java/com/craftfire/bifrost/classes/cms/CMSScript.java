@@ -57,13 +57,13 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSComment objects.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSComment objects, if none are found it returns an empty List
+     * @return List with CMSComment objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
@@ -83,14 +83,14 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSComment objects from the given article ID.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
      * @param  articleid          the artcile ID to grab the comments from
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSComment objects, if none are found it returns an empty List
+     * @return List with CMSComment objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSComment> getCommentsOnArticle(int articleid, int limit) throws UnsupportedMethod {
@@ -98,10 +98,10 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns the count of how many comments are there on the given <code>articleid</code>.
-     * 
+     * Returns the count of how many comments are there on the given {@code articleid}.
+     *
      * @param  articleid          the article ID to count comments on
-     * @return                    the amount of how many comments there are on the article
+     * @return the amount of how many comments there are on the article
      * @see                       CMSArticle
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
@@ -110,16 +110,16 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns a List with CMSComment objects that reply to the given <code>commentid</code>.
+     * Returns a List with CMSComment objects that reply to the given {@code commentid}.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
-     * 
+     *
      * @param  commentid          the ID of the comment to grab the replying comments from
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSComment objects, if none are found it returns an empty List
+     * @return List with CMSComment objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSComment> getCommentReplies(int commentid, int limit) throws UnsupportedMethod {
@@ -127,10 +127,10 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns the count of how many comments replying to the given <code>commentid</code> are there.
-     * 
+     * Returns the count of how many comments replying to the given {@code commentid} are there.
+     *
      * @param  commentid          the ID of the comment to count the replying comments
-     * @return                    the amount of how many comments there are replying to given comment
+     * @return the amount of how many comments there are replying to given comment
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public int getCommentReplyCount(int commentid) throws UnsupportedMethod {
@@ -138,16 +138,16 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns a List with CMSComment objects that have been made by specified <code>username</code>.
+     * Returns a List with CMSComment objects that have been made by specified {@code username}.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
-     * 
+     *
      * @param  username           the username to grab the comments from
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSComment objects, if none are found it returns an empty List
+     * @return List with CMSComment objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSComment> getUserComments(String username, int limit) throws UnsupportedMethod {
@@ -155,11 +155,11 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns an amount of how many comments <code>username</code> has made.
+     * Returns an amount of how many comments {@code username} has made.
      *
      * @param username  the username to get the count from.
-     * @return          the amount of how many comments the username have made, returns 0 if none
-     * @throws          UnsupportedMethod if the method is not supported by the script
+     * @return the amount of how many comments the username have made, returns 0 if none
+     * @throws UnsupportedMethod if the method is not supported by the script
      */
     public int getUserCommentCount(String username) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -177,10 +177,10 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns the CMSComment object of the last comment that has been made by <code>username</code>.
+     * Returns the CMSComment object of the last comment that has been made by {@code username}.
      *
      * @param  username           the username to grab the last comment from
-     * @return                    CMSComment object of the last comment made by the user
+     * @return CMSComment object of the last comment made by the user
      * @see                       CMSComment
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
@@ -233,13 +233,13 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSArticle objects.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSArticle objects, if none are found it returns an empty List
+     * @return List with CMSArticle objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
@@ -259,14 +259,14 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSArticle objects from the given category ID.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
      * @param  catid              the category ID to grab the articles from
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSArticle objects, if none are found it returns an empty List
+     * @return List with CMSArticle objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSArticle> getArticlesFromCategory(int catid, int limit) throws UnsupportedMethod {
@@ -285,16 +285,16 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns a List with CMSArticle objects that have been made by specified <code>username</code>.
+     * Returns a List with CMSArticle objects that have been made by specified {@code username}.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
-     * 
+     *
      * @param  username           the username to grab the articles from
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSArticle objects, if none are found it returns an empty List
+     * @return List with CMSArticle objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSArticle> getUserArticles(String username, int limit) throws UnsupportedMethod {
@@ -302,11 +302,11 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns an amount of how many articles <code>username</code> has made.
+     * Returns an amount of how many articles {@code username} has made.
      *
      * @param username  the username to get the count from.
-     * @return          the amount of how many articles the username have made, returns 0 if none
-     * @throws          UnsupportedMethod if the method is not supported by the script
+     * @return the amount of how many articles the username have made, returns 0 if none
+     * @throws UnsupportedMethod if the method is not supported by the script
      */
     public int getUserArticleCount(String username) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -323,10 +323,10 @@ public class CMSScript extends Script {
     }
 
     /**
-     * Returns the CMSArticle object of the last article that has been made by <code>username</code>.
+     * Returns the CMSArticle object of the last article that has been made by {@code username}.
      *
      * @param  username           the username to grab the last article from
-     * @return                    CMSArticle object of the last article made by the user
+     * @return CMSArticle object of the last article made by the user
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public CMSArticle getLastUserArticle(String username) throws UnsupportedMethod {
@@ -378,13 +378,13 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSCategory objects.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSCategory objects, if none are found it returns an empty List
+     * @return List with CMSCategory objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSCategory> getCategories(int limit) throws UnsupportedMethod {
@@ -404,14 +404,14 @@ public class CMSScript extends Script {
     /**
      * Returns a List with CMSCategory objects that are subcategories of the given category ID.
      * <p>
-     * Parameter <code>limit</code> can be used as a limit of how many objects should be returned.
-     * Set <code>limit</code> to 0 to return all the objects.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
+     * Set {@code limit} to 0 to return all the objects.
      * <p>
      * If none are found, the List will be empty.
      *
      * @param  catid              the category ID to grab the subcategories from
      * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with CMSCategory objects, if none are found it returns an empty List
+     * @return List with CMSCategory objects, if none are found it returns an empty List
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public List<CMSCategory> getSubCategories(int catid, int limit) throws UnsupportedMethod {

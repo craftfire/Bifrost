@@ -73,9 +73,9 @@ public class Group extends GenericMethods {
     /**
      * Returns the name.
      * <p>
-     * Returns <code>null</code> if no name was found.
+     * Returns {@code null} if no name was found.
      *
-     * @return name of the group, <code>null</code> if no name was found
+     * @return name of the group, {@code null} if no name was found
      */
     public String getName() {
         return this.groupname;
@@ -93,9 +93,9 @@ public class Group extends GenericMethods {
     /**
      * Returns the description.
      * <p>
-     * Returns <code>null</code> if no description was found.
+     * Returns {@code null} if no description was found.
      *
-     * @return description of the group, <code>null</code> if no description was found
+     * @return description of the group, {@code null} if no description was found
      */
     public String getDescription() {
         return this.groupdescription;
@@ -175,12 +175,12 @@ public class Group extends GenericMethods {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains a group cache with the given id parameter,
-     * <code>false</code> if not.
+     * Returns {@code true} if the handle contains a group cache with the given id parameter,
+     * {@code false} if not.
      *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, Object id) {
         return handle.getCache().contains(CacheGroup.GROUP, id);
@@ -209,11 +209,11 @@ public class Group extends GenericMethods {
     }
 
     /**
-     * Returns the Group object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the Group object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the post
-     * @return        Group object if cache was found, <code>null</code> if no cache was found
+     * @return Group object if cache was found, {@code null} if no cache was found
      */
     public static Group getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.GROUP, id)) {

@@ -128,20 +128,20 @@ public class CMSCategory extends Category {
     }
 
     /**
-     * Returns <code>true</code> if category has been published, <code>false</code> if not published.
+     * Returns {@code true} if category has been published, {@code false} if not published.
      *
-     * @return <code>true</code> if published, <code>false</code> if not published
+     * @return {@code true} if published, {@code false} if not published
      */
     public boolean isPublic() {
         return this.isPublic;
     }
 
     /**
-     * Sets the category's published state to whatever <code>Boolean</code> the <code>isPublic</code> parameter is.
+     * Sets the category's published state to whatever {@code Boolean} the {@code isPublic} parameter is.
      * <p>
-     * <code>true</code> = published and <code>false</code> = not published.
+     * {@code true} = published and {@code false} = not published.
      *
-     * @param isPublic  <code>true</code> for published, <code>false</code> for not published
+     * @param isPublic  {@code true} for published, {@code false} for not published
      */
     public void setPublic(boolean isPublic) {
         this.isPublic = isPublic;
@@ -174,12 +174,12 @@ public class CMSCategory extends Category {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains a category cache with the given id parameter,
-     * <code>false</code> if not.
-     * 
+     * Returns {@code true} if the handle contains a category cache with the given id parameter,
+     * {@code false} if not.
+     *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.CMSCAT, id);
@@ -197,11 +197,11 @@ public class CMSCategory extends Category {
     }
 
     /**
-     * Returns the category object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the category object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the category
-     * @return        category object if cache was found, <code>null</code> if no cache was found
+     * @return category object if cache was found, {@code null} if no cache was found
      */
     public static CMSCategory getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.CMSCAT, id)) {

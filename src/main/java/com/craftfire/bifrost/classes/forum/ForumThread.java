@@ -112,7 +112,7 @@ public class ForumThread extends Message implements ViewsCounter {
 
     /**
      * Returns a List of {@link ForumPost}'s depending on the limit,
-     * <code>limit = 0</code> returns all the posts.
+     * {@code limit = 0} returns all the posts.
      * <p>
      * List will be empty if there were no posts.
      *
@@ -225,47 +225,47 @@ public class ForumThread extends Message implements ViewsCounter {
     }
 
     /**
-     * Returns <code>true</code> if thread is locked, <code>false</code> if not locked.
+     * Returns {@code true} if thread is locked, {@code false} if not locked.
      *
-     * @return <code>true</code> if locked, <code>false</code> if locked
+     * @return {@code true} if locked, {@code false} if locked
      */
     public boolean isLocked() {
         return this.locked;
     }
 
     /**
-     * Sets the topic's lock to whatever <code>Boolean</code> the <code>isLocked</code> parameter is.
+     * Sets the topic's lock to whatever {@code Boolean} the {@code isLocked} parameter is.
      * <p>
-     * <code>true</code> = locked and <code>false</code> = unlocked.
+     * {@code true} = locked and {@code false} = unlocked.
      *
-     * @param isLocked  <code>true</code> for locked, <code>false</code> for not locked
+     * @param isLocked  {@code true} for locked, {@code false} for not locked
      */
     public void setLocked(boolean isLocked) {
         this.locked = isLocked;
     }
 
     /**
-     * Returns <code>true</code> if thread is a poll, false if error not a poll.
+     * Returns {@code true} if thread is a poll, false if error not a poll.
      *
-     * @return <code>true</code> if poll, false if error nr not a poll
+     * @return {@code true} if poll, false if error nr not a poll
      */
     public boolean isPoll() {
         return this.poll;
     }
 
     /**
-     * Sets the thread to a poll if parameter <code>isPoll</code> is <code>true</code>.
+     * Sets the thread to a poll if parameter {@code isPoll} is {@code true}.
      *
-     * @param isPoll  <code>true</code> for poll, <code>false</code> for not a poll
+     * @param isPoll  {@code true} for poll, {@code false} for not a poll
      */
     public void setPoll(boolean isPoll) {
         this.poll = isPoll;
     }
 
     /**
-     * Returns <code>true</code> if the thread is sticky, <code>false</code> if not sticky.
+     * Returns {@code true} if the thread is sticky, {@code false} if not sticky.
      *
-     * @return <code>true</code> if sticky, <code>false</code> if not sticky
+     * @return {@code true} if sticky, {@code false} if not sticky
      */
     public boolean isSticky() {
         return this.sticky;
@@ -274,7 +274,7 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Sets the thread to be a sticky or not.
      *
-     * @param isSticky  <code>true</code> if sticky, <code>false</code> if not sticky
+     * @param isSticky  {@code true} if sticky, {@code false} if not sticky
      */
     public void setSticky(boolean isSticky) {
         this.sticky = isSticky;
@@ -307,12 +307,12 @@ public class ForumThread extends Message implements ViewsCounter {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains a thread cache with the given id parameter,
-     * <code>false</code> if not.
+     * Returns {@code true} if the handle contains a thread cache with the given id parameter,
+     * {@code false} if not.
      *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.THREAD, id);
@@ -335,11 +335,11 @@ public class ForumThread extends Message implements ViewsCounter {
     }
 
     /**
-     * Returns the ForumThread object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the ForumThread object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the thread
-     * @return        ForumThread object if cache was found, <code>null</code> if no cache was found
+     * @return ForumThread object if cache was found, {@code null} if no cache was found
      */
     public static ForumThread getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.THREAD, id)) {

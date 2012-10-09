@@ -115,27 +115,27 @@ public class Cache {
     }
 
     /**
-     * Returns <code>true</code> if the {@link CacheManager} contains an object with the specified group parameter,
-     * returns <code>false</code> if not.
+     * Returns {@code true} if the {@link CacheManager} contains an object with the specified group parameter,
+     * returns {@code false} if not.
      * <p>
      * This should only be used when checking an object which has been stored without an ID.
      *
      * @param group  the {@link CacheGroup} to check
-     * @return       <code>true</code> if contains <code>false</code> if not
+     * @return       {@code true} if contains {@code false} if not
      */
     public boolean contains(CacheGroup group) {
         return contains(group, 1);
     }
 
     /**
-     * Returns <code>true</code> if the {@link CacheManager} group parameter contains the id parameter,
-     * returns <code>false</code> if not.
+     * Returns {@code true} if the {@link CacheManager} group parameter contains the id parameter,
+     * returns {@code false} if not.
      * <p>
      * The object id is specified by the id param and the group is specified by the group param.
      *
      * @param group  the {@link CacheGroup} to check
      * @param id     the ID of the object to check
-     * @return       <code>true</code> if contains <code>false</code> if not
+     * @return       {@code true} if contains {@code false} if not
      */
     public boolean contains(CacheGroup group, Object id) {
          return this.cacheManager.contains(group.toString(), id);
@@ -163,15 +163,15 @@ public class Cache {
     /**
      * Sets the value of the metadata key of specified cached object.
      * <p>
-     * If operation succeeded, returns <code>true</code>
+     * If operation succeeded, returns {@code true}
      * <p>
-     * If the object is not metadatable, not present in cache, or other error occurred, returns <code>false</code>.
-     * 
+     * If the object is not metadatable, not present in cache, or other error occurred, returns {@code false}.
+     *
      * @param group  the {@link CacheGroup} of the object
      * @param id     the id of the object
      * @param key    the meta key to set
      * @param value  the meta value
-     * @return       <code>true</code> if succeeded, <code>false</code> if not
+     * @return       {@code true} if succeeded, {@code false} if not
      */
     public boolean setMetadata(CacheGroup group, Object id, String key, Object value) {
         MetadatableCacheItem item = this.cacheManager.getMetadatableItem(group.toString(), id);
@@ -201,14 +201,14 @@ public class Cache {
     /**
      * Removes the metadata key from specified cached object.
      * <p>
-     * If operation succeeded, returns <code>true</code>
+     * If operation succeeded, returns {@code true}
      * <p>
-     * If the object is not metadatable, not present in cache, or other error occurred, returns <code>false</code>.
-     * 
+     * If the object is not metadatable, not present in cache, or other error occurred, returns {@code false}.
+     *
      * @param group  the {@link CacheGroup} of the object
      * @param id     the id of the object
      * @param key    the meta key to set
-     * @return       <code>true</code> if succeeded, <code>false</code> if not
+     * @return       {@code true} if succeeded, {@code false} if not
      */
     public boolean removeMetadata(CacheGroup group, Object id, String key) {
         MetadatableCacheItem item = this.cacheManager.getMetadatableItem(group.toString(), id);

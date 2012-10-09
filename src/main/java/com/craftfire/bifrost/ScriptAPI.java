@@ -97,14 +97,14 @@ public class ScriptAPI {
     }
 
     /**
-     * Returns a {@link Script} object depending on which <code>script</code> and <code>version</code> has been used.
+     * Returns a {@link Script} object depending on which {@code script} and {@code version} has been used.
      * <p>
-     * Returns <code>null</code> if the <code>script</code> is not supported.
+     * Returns {@code null} if the {@code script} is not supported.
      *
      * @param script       the script
      * @param version      the version of the script
      * @param dataManager  the {@link DataManager} for the script
-     * @return             a {@link Script} object, returns null if not supported
+     * @return a {@link Script} object, returns null if not supported
      */
     public static Script setScript(Scripts script, String version, DataManager dataManager) {
         switch (script) {
@@ -132,10 +132,10 @@ public class ScriptAPI {
     }
 
     /**
-     * Returns the {@link ScriptHandle} for the specified <code>script</code>.
+     * Returns the {@link ScriptHandle} for the specified {@code script}.
      *
      * @param handleID  the ID you want to grab the script handle from
-     * @return          the script handle for the specified <code>script</code>
+     * @return the script handle for the specified {@code script}
      */
     public ScriptHandle getHandle(int handleID) {
         if (handleExists(handleID)) {
@@ -149,20 +149,20 @@ public class ScriptAPI {
     }
 
     /**
-     * Returns the {@link ForumHandle} for the specified <code>script</code>.
+     * Returns the {@link ForumHandle} for the specified {@code script}.
      *
      * @param handleID  the ID you want to grab the forum handle from
-     * @return          the forum handle for the specified <code>script</code>
+     * @return the forum handle for the specified {@code script}
      */
     public ForumHandle getForumHandle(int handleID) {
         return (ForumHandle) getHandle(handleID);
     }
 
     /**
-     * Returns the {@link CMSHandle} for the specified <code>script</code>.
+     * Returns the {@link CMSHandle} for the specified {@code script}.
      *
      * @param handleID  the ID you want to grab the cms handle from
-     * @return          the cms handle for the specified <code>script</code>
+     * @return the cms handle for the specified {@code script}
      */
     public CMSHandle getCMSHandle(int handleID) {
         return (CMSHandle) getHandle(handleID);
@@ -204,8 +204,8 @@ public class ScriptAPI {
      * @param script               the script
      * @param version              the version of the script
      * @param dataManager          the {@link DataManager} of the script
-     * @throws UnsupportedScript   if the specified <code>script</code> is not supported by Bifrost
-     * @throws UnsupportedVersion  if the specified <code>version</code> is not supported by the script
+     * @throws UnsupportedScript   if the specified {@code script} is not supported by Bifrost
+     * @throws UnsupportedVersion  if the specified {@code version} is not supported by the script
      */
     public int addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
         ScriptHandle handle;

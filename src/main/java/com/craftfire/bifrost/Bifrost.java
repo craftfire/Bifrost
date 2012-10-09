@@ -56,7 +56,7 @@ public class Bifrost {
     /**
      * Default constructor for Bifrost.
      */
-    public Bifrost() {
+    protected Bifrost() {
         this.scriptAPI = new ScriptAPI(this);
         this.loggingManager.info("Initialized Bifrost version " + this.version); // TODO
     }

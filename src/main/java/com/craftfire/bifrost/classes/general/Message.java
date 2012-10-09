@@ -27,7 +27,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 /**
  * Base class for all messages like Thread, Post, Article, Comment, PrivateMessage, etc.
  * <p>
- * Should <code>not</code> be instanced.
+ * Should <b>NOT</b> be instanced.
  */
 public abstract class Message extends GenericMethods implements MessageParent {
     private int categoryid;
@@ -146,20 +146,20 @@ public abstract class Message extends GenericMethods implements MessageParent {
     }
 
     /**
-     * Sets the messages's deleted state to whatever <code>Boolean</code> the <code>isDeleted</code> parameter is.
+     * Sets the messages's deleted state to whatever {@code Boolean} the {@code isDeleted} parameter is.
      * <p>
-     * <code>true</code> = deleted and <code>false</code> = not deleted.
+     * {@code true} = deleted and {@code false} = not deleted.
      *
-     * @param isDeleted  <code>true</code> for deleted, <code>false</code> for not deleted
+     * @param isDeleted  {@code true} for deleted, {@code false} for not deleted
      */
     public void setDeleted(boolean isDeleted) {
         this.deleted = isDeleted;
     }
 
     /**
-     * Returns <code>true</code> if message is deleted, <code>false</code> if not deleted.
+     * Returns {@code true} if message is deleted, {@code false} if not deleted.
      *
-     * @return <code>true</code> if deleted, <code>false</code> if not deleted
+     * @return {@code true} if deleted, {@code false} if not deleted
      */
     public boolean isDeleted() {
         return this.deleted;

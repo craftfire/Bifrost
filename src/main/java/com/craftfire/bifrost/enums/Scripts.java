@@ -26,7 +26,7 @@ import com.craftfire.bifrost.exceptions.UnsupportedScript;
  */
 public enum Scripts {
     WP("wordpress", ScriptType.CMS),
- PHPBB("phpbb", ScriptType.FORUM),
+    PHPBB("phpbb", ScriptType.FORUM),
     SMF("simplemachines", ScriptType.FORUM),
     XF("xenforo", ScriptType.FORUM);
 

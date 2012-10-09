@@ -79,9 +79,9 @@ public class Ban extends GenericMethods {
     /**
      * Returns the name/username.
      * <p>
-     * Returns <code>null</code> if no name/username was found.
+     * Returns {@code null} if no name/username was found.
      *
-     * @return name/username of the ban entry, <code>null</code> if no name/username was found
+     * @return name/username of the ban entry, {@code null} if no name/username was found
      */
     public String getName() {
         return this.name;
@@ -99,9 +99,9 @@ public class Ban extends GenericMethods {
     /**
      * Returns the ID of the name/username.
      * <p>
-     * Returns <code>null</code> if no ID was found.
+     * Returns {@code null} if no ID was found.
      *
-     * @return ID of the name/username if any, <code>null</code> if no ID was found
+     * @return ID of the name/username if any, {@code null} if no ID was found
      */
     public int getUserID() {
         return this.userid;
@@ -119,9 +119,9 @@ public class Ban extends GenericMethods {
     /**
      * Returns the email.
      * <p>
-     * Returns <code>null</code> if no email was found.
+     * Returns {@code null} if no email was found.
      *
-     * @return email of the ban entry, <code>null</code> if no email was found
+     * @return email of the ban entry, {@code null} if no email was found
      */
     public String getEmail() {
         return this.email;
@@ -139,9 +139,9 @@ public class Ban extends GenericMethods {
     /**
      * Returns the IP-address.
      * <p>
-     * Returns <code>null</code> if no IP-address was found.
+     * Returns {@code null} if no IP-address was found.
      *
-     * @return IP-address of the ban entry, <code>null</code> if no IP-address was found
+     * @return IP-address of the ban entry, {@code null} if no IP-address was found
      */
     public String getIP() {
         return this.ip;
@@ -159,11 +159,11 @@ public class Ban extends GenericMethods {
     /**
      * Returns the length of the ban in seconds.
      * <p>
-     * Returns <code>0</code> if the ban is permanent or not supported.
+     * Returns {@code 0} if the ban is permanent or not supported.
      * <p>
      * Use {@link #isPermanent()} to check if the ban is permanent.
      *
-     * @return the length of the ban in seconds, <code>0</code> if permanent or not supported
+     * @return the length of the ban in seconds, {@code 0} if permanent or not supported
      */
     public long getTimeLength() {
         if (!isPermanent()) {
@@ -175,11 +175,11 @@ public class Ban extends GenericMethods {
     /**
      * Returns amount of seconds remaining of the ban.
      * <p>
-     * Returns <code>0</code> if the ban is permanent or not supported.
+     * Returns {@code 0} if the ban is permanent or not supported.
      * <p>
      * Use {@link #isPermanent()} to check if the ban is permanent.
      *
-     * @return amount of second remaining of the ban, <code>0</code> if permanent or not supported
+     * @return amount of second remaining of the ban, {@code 0} if permanent or not supported
      */
     public long getTimeRemaining() {
         if (!isPermanent()) {
@@ -191,11 +191,11 @@ public class Ban extends GenericMethods {
     /**
      * Returns the reason for the ban.
      * <p>
-     * Returns <code>null</code> if no reason given or not supported.
+     * Returns {@code null} if no reason given or not supported.
      * <p>
      * The reason is the public message that is being shown to the banned name/username/email/IP-address.
      *
-     * @return reason of the ban, <code>null</code> if no reason given or not supported
+     * @return reason of the ban, {@code null} if no reason given or not supported
      */
     public String getReason() {
         return this.reason;
@@ -215,11 +215,11 @@ public class Ban extends GenericMethods {
     /**
      * Returns the notes for the ban.
      * <p>
-     * Returns <code>null</code> if no notes were found or not supported.
+     * Returns {@code null} if no notes were found or not supported.
      * <p>
      * The notes is the private message that is being shown to the staff of the script only.
      *
-     * @return notes for the ban, <code>null</code> if no notes were found or not supported
+     * @return notes for the ban, {@code null} if no notes were found or not supported
      */
     public String getNotes() {
         return this.notes;
@@ -239,9 +239,9 @@ public class Ban extends GenericMethods {
     /**
      * Returns the date of when the ban is valid.
      * <p>
-     * Returns <code>null</code> if no start date was set or not supported.
+     * Returns {@code null} if no start date was set or not supported.
      *
-     * @return the date of when the ban is valid, <code>null</code> if no date set or not supported
+     * @return the date of when the ban is valid, {@code null} if no date set or not supported
      */
     public Date getStartDate() {
         return this.startdate;
@@ -259,9 +259,9 @@ public class Ban extends GenericMethods {
     /**
      * Returns the date of when the ban is ends.
      * <p>
-     * Returns <code>null</code> if no end date was set or not supported.
+     * Returns {@code null} if no end date was set or not supported.
      *
-     * @return the date of when the ban ends, <code>null</code> if no date set or not supported
+     * @return the date of when the ban ends, {@code null} if no date set or not supported
      */
     public Date getEndDate() {
         return this.enddate;
@@ -277,9 +277,9 @@ public class Ban extends GenericMethods {
     }
 
     /**
-     * Returns <code>true</code> if the ban is permanent, <code>false</code> if not.
+     * Returns {@code true} if the ban is permanent, {@code false} if not.
      *
-     * @return <code>true</code> if ban is permanent, <code>false</code> if not
+     * @return {@code true} if ban is permanent, {@code false} if not
      */
     public boolean isPermanent() {
         return getEndDate() == null;
@@ -312,12 +312,12 @@ public class Ban extends GenericMethods {
     }
 
     /**
-     * Returns <code>true</code> if the handle contains a ban cache with the given id parameter,
-     * <code>false</code> if not.
+     * Returns {@code true} if the handle contains a ban cache with the given id parameter,
+     * {@code false} if not.
      *
      * @param handle  the script handle
      * @param id      the id of the object to look for
-     * @return        <code>true</code> if contains, <code>false</code> if not
+     * @return        {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, Object id) {
         return handle.getCache().contains(CacheGroup.BAN, id);
@@ -334,11 +334,11 @@ public class Ban extends GenericMethods {
     }
 
     /**
-     * Returns the Ban object by the given id if found, returns <code>null</code> if no cache was found.
+     * Returns the Ban object by the given id if found, returns {@code null} if no cache was found.
      *
      * @param handle  the script handle
      * @param id      the id of the ban
-     * @return        Ban object if cache was found, <code>null</code> if no cache was found
+     * @return Ban object if cache was found, {@code null} if no cache was found
      */
     public static Ban getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.BAN, id)) {

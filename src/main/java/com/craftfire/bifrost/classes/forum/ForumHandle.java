@@ -58,7 +58,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     /**
-     * Creates a new forum post in the specified <code>threadid</code> and <code>boardid</code>.
+     * Creates a new forum post in the specified {@code threadid} and {@code boardid}.
      *
      * @see ForumPost#ForumPost(ForumHandle, int) Documentation for this method
      */
@@ -67,7 +67,7 @@ public class ForumHandle extends ScriptHandle {
     }
 
     /**
-     * Creates a new forum thread in the specified <code>boardid</code>.
+     * Creates a new forum thread in the specified {@code boardid}.
      *
      * @see ForumThread#ForumThread(ForumHandle, int) Documentation for this method
      */
