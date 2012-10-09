@@ -307,7 +307,7 @@ public class ForumPost extends Message {
     /**
      * Returns the parent of the message.
      * <p>
-     * For ForumPost it always has the same result as {@see #getThread()}.
+     * For ForumPost it always has the same result as {@link #getThread()}.
      */
     @Override
     public ForumThread getParent() throws UnsupportedMethod, SQLException {

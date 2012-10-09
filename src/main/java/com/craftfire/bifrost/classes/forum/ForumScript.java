@@ -185,7 +185,7 @@ public class ForumScript extends Script {
 	}
 
     /**
-     * Returns an amount of how many threads {@param username} has made.
+     * Returns an amount of how many threads {@code username} has made.
      *
      * @param username  the username to get the count from
      * @return          the amount of how many threads the username have made, returns 0 if none
@@ -265,9 +265,9 @@ public class ForumScript extends Script {
     /**
      * Returns a List with ForumThread objects that have been made by {@code username}.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@param limit} to 0 to return all the objects.
+     * Set {@code limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
      *
      * @param username            the username to grab the thread list from
@@ -281,42 +281,42 @@ public class ForumScript extends Script {
     }
 
     /**
-     * Returns a List with @Override objects.
+     * Returns a List with ForumThread objects.
      * <p>
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
      * Set {@code limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
      *
-     * @param limit  the limit. Set to 0 if you want to return all.
-     * @return       List with @Override objects, if none are found it returns an empty List.
-     * @see          ForumThread
-     * @throws       UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException  if a MySQL exception occurred
+     * @param limit               the limit. Set to 0 if you want to return all
+     * @return                    List with ForumThread objects, if none are found it returns an empty List
+     * @see                       ForumThread
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException       if a MySQL exception occurred
      */
     public List<ForumThread> getThreads(int limit) throws UnsupportedMethod, SQLException {
 		throw new UnsupportedMethod();
 	}
 
     /**
-     * Updated the @Override object with whatever values set by the user.
+     * Updated the ForumThread object with whatever values set by the user.
      *
-     * @param thread the @Override object.
-     * @see          @Override
-     * @throws       SQLException if a SQL exception occurred
-     * @throws       UnsupportedMethod if the method is not supported by the script
+     * @param thread              the ForumThread object
+     * @see                       ForumThread
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
 	public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     /**
-     * Creates the @Override object with whatever values set by the user.
+     * Creates the ForumThread object with whatever values set by the user.
      *
-     * @param thread The @Override object.
-     * @see          @Override
-     * @throws       SQLException if a SQL exception occurred
-     * @throws       UnsupportedMethod if the method is not supported by the script
+     * @param thread              the ForumThread object
+     * @see                       ForumThread
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
 	public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
@@ -325,8 +325,8 @@ public class ForumScript extends Script {
     /**
      * Returns the complete count of how many boards have been made.
      *
-     * @return the amount of how many boards have been made, returns 0 if none.
-     * @throws UnsupportedMethod if the method is not supported by the script
+     * @return                    the amount of how many boards have been made, returns 0 if none.
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public int getBoardCount() throws UnsupportedMethod {
         throw new UnsupportedMethod();
