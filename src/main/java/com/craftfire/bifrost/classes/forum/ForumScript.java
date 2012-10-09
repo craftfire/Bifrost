@@ -115,7 +115,7 @@ public class ForumScript extends Script {
      * <p>
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@param limit} to 0 to return all the objects.
+     * Set {@code limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
      *
      * @param threadid  The thread ID to grab the posts from
@@ -132,9 +132,9 @@ public class ForumScript extends Script {
     /**
      * Returns a List with ForumPost objects that have been made by the {@code username}.
      * <p>
-     * Parameter {@param limit} can be used as a limit of how many objects should be returned.
+     * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@param limit} to 0 to return all the objects.
+     * Set {@code limit} to 0 to return all the objects.
      * If none are found, the List will be empty.
      * 
      * @param username            the username to grab the posts from

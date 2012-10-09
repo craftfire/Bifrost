@@ -391,7 +391,7 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns a Category object for the category of the message.
      * <p>
-     * For ForumThread it has always the same result as {@see #getBoard()}.
+     * For ForumThread it has always the same result as {@link #getBoard()}.
      */
     @Override
     public ForumBoard getCategory() throws UnsupportedMethod, SQLException {
