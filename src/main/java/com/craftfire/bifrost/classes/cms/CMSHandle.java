@@ -30,7 +30,6 @@ import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 
 /**
  * This class contains methods relevant to methods to use for a cms script.
@@ -44,8 +43,8 @@ public class CMSHandle extends ScriptHandle {
      *
      * @see ScriptHandle#ScriptHandle(int, Scripts, String, DataManager) Documentation for this constructor
      */
-    public CMSHandle(int handleID, Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        super(handleID, script, version, dataManager);
+    public CMSHandle(int handleID, CMSScript script) {
+        super(handleID, script);
     }
 
     /**

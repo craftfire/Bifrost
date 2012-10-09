@@ -26,12 +26,9 @@ import com.craftfire.commons.classes.Version;
 import com.craftfire.commons.classes.VersionRange;
 import com.craftfire.commons.managers.DataManager;
 
-import com.craftfire.bifrost.ScriptAPI;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.UnsupportedMethod;
-import com.craftfire.bifrost.exceptions.UnsupportedScript;
 import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 
 /**
@@ -51,41 +48,10 @@ public class ScriptHandle {
      * @param  version             the version that the user has set in his config
      * @throws UnsupportedVersion  if the input version is not found in the list of supported versions
      */
-    public ScriptHandle(int handleID, Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+    public ScriptHandle(int handleID, Script script) {
         this.handleID = handleID;
-        this.script = ScriptAPI.setScript(script, version, dataManager);
-        if (!this.script.isSupportedVersion()) {
-            throw new UnsupportedVersion(this);
-        }
-        this.script.setHandle(this);
-    }
-
-    /**
-     * Creates a ScriptHandle.
-     *
-     * @param  script              the script object
-     * @throws UnsupportedVersion  if the input version is not found in the list of supported version
-     */
-    public ScriptHandle(Script script) throws UnsupportedVersion {
-        this.handleID = script.getHandle().getID();
         this.script = script;
         this.script.setHandle(this);
-    }
-
-    /**
-     * Creates a ScriptHandle, similar to {@link #ScriptHandle(int, Scripts, String, DataManager)},
-     * just with a string instead.
-     *
-     * @param  handleID            the ID of the handle
-     * @param  script              the script in a string, for example: smf
-     * @param  version             the version that the user has set in his config
-     * @throws UnsupportedScript   if the input string is not found in the list of supported scripts
-     * @throws UnsupportedVersion  if the input version is not found in the list of supported versions
-     */
-    public ScriptHandle(int handleID, String script, String version, DataManager dataManager) throws UnsupportedScript,
-            UnsupportedVersion {
-        this.handleID = handleID;
-        new ScriptHandle(handleID, Scripts.stringToScript(script), version, dataManager);
     }
 
     /**
