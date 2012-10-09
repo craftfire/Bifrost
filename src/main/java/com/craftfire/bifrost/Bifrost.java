@@ -49,7 +49,6 @@ import com.craftfire.commons.managers.LoggingManager;
  * @see ScriptAPI
  */
 public class Bifrost {
-    private static Bifrost instance;
     private String version = "1.0.0";
     private final ScriptAPI scriptAPI;
     private final LoggingManager loggingManager = new LoggingManager("CraftFire.Bifrost", "[Bifrost]");
@@ -58,19 +57,8 @@ public class Bifrost {
      * Default constructor for Bifrost.
      */
     public Bifrost() {
-        instance = this;
-        this.scriptAPI = new ScriptAPI();
+        this.scriptAPI = new ScriptAPI(this);
         this.loggingManager.info("Initialized Bifrost version " + this.version); // TODO
-    }
-
-    /**
-     * Returns the instance of Bifrost.
-     * <p>
-     * Only one instance of Bifrost should be run at all times, this method can be used to grab the instance of Bifrost.
-     * @return Bifrost instance
-     */
-    public static Bifrost getInstance() {
-        return instance;
     }
 
     /**

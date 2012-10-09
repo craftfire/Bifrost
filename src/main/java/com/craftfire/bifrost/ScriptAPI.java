@@ -44,9 +44,19 @@ import com.craftfire.bifrost.scripts.forum.XenForo;
  * @see ScriptHandle
  */
 public class ScriptAPI {
+    private final Bifrost bifrost;
     private int handleID = 0;
     private Map<Integer, ScriptHandle> handles = new HashMap<Integer, ScriptHandle>();
     private ScriptHandle lastHandle = null;
+
+    /**
+     * The default constructor.
+     *
+     * @param bifrost  Bifrost instance
+     */
+    protected ScriptAPI(Bifrost bifrost) {
+        this.bifrost = bifrost;
+    }
 
     /**
      * Returns the Bifrost instance.
@@ -55,7 +65,7 @@ public class ScriptAPI {
      * @see Bifrost
      */
     public Bifrost getBifrost() {
-        return Bifrost.getInstance();
+        return this.bifrost;
     }
 
     /**
@@ -65,7 +75,7 @@ public class ScriptAPI {
      * @see LoggingManager
      */
     public LoggingManager getLoggingManager() {
-        return Bifrost.getInstance().getLoggingManager();
+        return getBifrost().getLoggingManager();
     }
 
     /**
