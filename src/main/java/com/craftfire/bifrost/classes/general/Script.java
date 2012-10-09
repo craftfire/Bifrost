@@ -57,21 +57,13 @@ public class Script {
     }
 
     /**
-     * Returns the {@link Bifrost} instance.
-     *
-     * @return {@link Bifrost} instance
-     */
-    public Bifrost getBifrost() {
-        return Bifrost.getInstance();
-    }
-
-    /**
      * Returns the Bifrost {@link LoggingManager}.
      *
      * @return Bifrost {@link LoggingManager}
      */
     public LoggingManager getLoggingManager() {
-        return Bifrost.getInstance().getLoggingManager();
+        return null;
+        //TODO: return Bifrost.getInstance().getLoggingManager();
     }
 
     /**
