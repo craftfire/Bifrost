@@ -110,27 +110,27 @@ public class ScriptAPI {
      * @throws UnsupportedVersion  if the {@code version} is not supported by the script
      */
     public static Script setScript(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
-        Script scrInstance;
+        Script scriptInstance;
         switch (script) {
             case WP:
-                scrInstance = new WordPress(script, version, dataManager);
+                scriptInstance = new WordPress(script, version, dataManager);
             break;
             case PHPBB:
-                scrInstance = new PhpBB(script, version, dataManager);
+                scriptInstance = new PhpBB(script, version, dataManager);
             break;
             case SMF:
-                scrInstance = new SMF(script, version, dataManager);
+                scriptInstance = new SMF(script, version, dataManager);
             break;
             case XF:
-                scrInstance = new XenForo(script, version, dataManager);
+                scriptInstance = new XenForo(script, version, dataManager);
             break;
             default:
                 return null;
         }
-        if (!scrInstance.isSupportedVersion()) {
-            throw new UnsupportedVersion();
+        if (!scriptInstance.isSupportedVersion()) {
+            throw new UnsupportedVersion("Version " + scriptInstance.getVersion() + " of " + scriptInstance.getScriptName() + " is not currently supported");
         }
-        return scrInstance;
+        return scriptInstance;
     }
 
     /**
