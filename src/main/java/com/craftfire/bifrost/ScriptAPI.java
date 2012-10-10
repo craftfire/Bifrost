@@ -26,7 +26,9 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
 import com.craftfire.bifrost.classes.cms.CMSHandle;
+import com.craftfire.bifrost.classes.cms.CMSScript;
 import com.craftfire.bifrost.classes.forum.ForumHandle;
+import com.craftfire.bifrost.classes.forum.ForumScript;
 import com.craftfire.bifrost.classes.general.Script;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.enums.Scripts;
@@ -101,24 +103,34 @@ public class ScriptAPI {
      * <p>
      * Returns {@code null} if the {@code script} is not supported.
      *
-     * @param  script       the script
-     * @param  version      the version of the script
-     * @param  dataManager  the {@link DataManager} for the script
-     * @return              a {@link Script} object, returns null if not supported
+     * @param script               the script
+     * @param version              the version of the script
+     * @param dataManager          the {@link DataManager} for the script
+     * @return                     a {@link Script} object, returns null if not supported
+     * @throws UnsupportedVersion  if the {@code version} is not supported by the script
      */
-    public static Script setScript(Scripts script, String version, DataManager dataManager) {
+    public static Script setScript(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+        Script scriptInstance;
         switch (script) {
             case WP:
-                return new WordPress(script, version, dataManager);
-        case PHPBB:
-            return new PhpBB(script, version, dataManager);
+                scriptInstance = new WordPress(script, version, dataManager);
+            break;
+            case PHPBB:
+                scriptInstance = new PhpBB(script, version, dataManager);
+            break;
             case SMF:
-                return new SMF(script, version, dataManager);
+                scriptInstance = new SMF(script, version, dataManager);
+            break;
             case XF:
-                return new XenForo(script, version, dataManager);
+                scriptInstance = new XenForo(script, version, dataManager);
+            break;
             default:
                 return null;
         }
+        if (!scriptInstance.isSupportedVersion()) {
+            throw new UnsupportedVersion("Version " + scriptInstance.getVersion() + " of " + scriptInstance.getScriptName() + " is not currently supported");
+        }
+        return scriptInstance;
     }
 
     /**
@@ -199,7 +211,7 @@ public class ScriptAPI {
     }
 
     /**
-     * Adds a handle to the list.
+     * Creates an instance of given standard Bifrost-supported script. Creates a handle for it and adds the handle to the list.
      *
      * @param  script              the script
      * @param  version             the version of the script
@@ -208,21 +220,46 @@ public class ScriptAPI {
      * @throws UnsupportedVersion  if the specified {@code version} is not supported by the script
      */
     public int addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
+        if (script == null || version == null || dataManager == null) {
+            throw new IllegalArgumentException("None of the arguments can be null!");
+        }
+        Script scriptInstance = ScriptAPI.setScript(script, version, dataManager);
+        if (scriptInstance == null) {
+            throw new UnsupportedScript();
+        }
+        return addHandle(scriptInstance);
+    }
+
+    /**
+     * Creates a handle for given script and adds it to the list.
+     * 
+     * @param script  the script to create handle for
+     * @return        an id assigned to the handle
+     */
+    public int addHandle(Script script) {
+        if (script == null) {
+            throw new IllegalArgumentException("Argumnent 'script' must not be null.");
+        }
         ScriptHandle handle;
         int id = this.getNewHandleID();
         switch (script.getType()) {
         case CMS:
-            handle = new CMSHandle(id, script, version, dataManager);
+            if (!(script instanceof CMSScript)) {
+                throw new IllegalStateException("Script type is CMS but the script is not instance of CMSScript!");
+            }
+            handle = new CMSHandle(id, (CMSScript) script);
             break;
         case FORUM:
-            handle = new ForumHandle(id, script, version, dataManager);
+            if (!(script instanceof ForumScript)) {
+                throw new IllegalStateException("Script type is FORUM but the script is not instance of ForumScript!");
+            }
+            handle = new ForumHandle(id, (ForumScript) script);
             break;
         default:
-            handle = new ScriptHandle(id, script, version, dataManager);
+            handle = new ScriptHandle(id, script);
         }
-        this.getLoggingManager().debug("ScriptAPI: Adding handle ID: '" + id + "' with type: '" +
-                                         script.getType() + "' for script: '" + script.getAlias() + "', version: '" +
-                                         version + "'");
+        this.getLoggingManager().debug(
+                "ScriptAPI: Adding handle ID: '" + id + "' with type: '" + script.getType() + "' for script: '" + script.getScriptName() + "', version: '" + script.getVersion() + "'");
         this.handles.put(id, handle);
         this.lastHandle = handle;
         return id;
