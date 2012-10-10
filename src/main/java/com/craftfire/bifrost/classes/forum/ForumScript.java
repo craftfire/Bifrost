@@ -45,7 +45,7 @@ public class ForumScript extends Script {
     /**
      * Returns an amount of how many posts are there in {@code threadid}.
      *
-     * @param threadid            the ID of the thread to count posts from
+     * @param  threadid           the ID of the thread to count posts from
      * @return                    the amount of how many posts the are there in the thread
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
@@ -56,9 +56,9 @@ public class ForumScript extends Script {
     /**
      * Returns an amount of how many posts {@code username} has made.
      *
-     * @param username  the username to get the count from.
-     * @return          the amount of how many posts the username have made, returns 0 if none
-     * @throws          UnsupportedMethod if the method is not supported by the script
+     * @param  username           the username to get the count from.
+     * @return                    the amount of how many posts the username have made, returns 0 if none
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
     public int getPostCount(String username) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -67,8 +67,8 @@ public class ForumScript extends Script {
     /**
      * Returns the complete count of how many posts have been made.
      *
-     * @return the amount of how many posts have been made, returns 0 if none
-     * @throws UnsupportedMethod if the method is not supported by the script
+     * @return                    the amount of how many posts have been made, returns 0 if none
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
 	public int getTotalPostCount() throws UnsupportedMethod {
 		throw new UnsupportedMethod();
@@ -77,36 +77,37 @@ public class ForumScript extends Script {
     /**
      * Returns the ForumPost object of the last post that has been made.
      *
-     * @return ForumPost object of the last post
-     * @see    ForumPost
-     * @throws UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException if a SQL exception occurred
+     * @return                    ForumPost object of the last post
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumPost
      */
-    public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
+    public ForumPost getLastPost() throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     /**
      * Returns the ForumPost object of the last post that has been made by {@code username}.
      *
-     * @param username  The username to grab the last post from
-     * @return          ForumPost object of the last post made by the user
-     * @see             ForumPost
-     * @throws          UnsupportedMethod if the method is not supported by the script
-     * @throws          SQLException  if a MySQL exception occurred
+     * @param  username           the username to grab the last post from
+     * @return                    ForumPost object of the last post made by the user
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException       if a SQL exception occurred
+     * @see                       ForumPost
      */
-    public ForumPost getLastUserPost(String username) throws UnsupportedMethod, SQLException {
+    public ForumPost getLastUserPost(String username) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     /**
+     * TODO: Javadoc
      * Returns the complete count of how many threads have been made.
      *
-     * @return The amount of how many threads have been made, returns 0 if none
-     * @throws UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException  if a MySQL exception occurred
+     * @return                    the amount of how many threads have been made, returns {@code 0} if none
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException       if a SQL exception occurred
      */
-    public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
+    public List<ForumPost> getPosts(int limit) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
@@ -115,17 +116,18 @@ public class ForumScript extends Script {
      * <p>
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@code limit} to 0 to return all the objects.
+     * Set {@code limit} to {@code 0} to return all the objects.
+     * <p>
      * If none are found, the List will be empty.
      *
-     * @param threadid  The thread ID to grab the posts from
-     * @param limit     The limit. Set to 0 if you want to return all
-     * @return          List with ForumPost objects, if none are found it returns an empty List
-     * @see             ForumPost
-     * @throws          UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException  if a MySQL exception occurred
+     * @param  threadid           the thread ID to grab the posts from
+     * @param  limit              the limit, set to {@code 0} if you want to return all
+     * @return                    List with ForumPost objects, if none are found it returns an empty List
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumPost
      */
-    public List<ForumPost> getPostsFromThread(int threadid, int limit) throws UnsupportedMethod, SQLException {
+    public List<ForumPost> getPostsFromThread(int threadid, int limit) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
@@ -134,14 +136,15 @@ public class ForumScript extends Script {
      * <p>
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
-     * Set {@code limit} to 0 to return all the objects.
+     * Set {@code limit} to {@code 0} to return all the objects.
+     * <p>
      * If none are found, the List will be empty.
      * 
-     * @param username            the username to grab the posts from
-     * @param limit               the limit, set to 0 if you want to return all
+     * @param  username           the username to grab the posts from
+     * @param  limit              the limit, set to {@code 0} if you want to return all
      * @return                    List with ForumPost objects, if none are found it returns an empty List
-     * @see                       ForumPost
      * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumPost
      */
     public List<ForumPost> getUserPosts(String username, int limit) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -150,23 +153,23 @@ public class ForumScript extends Script {
     /**
      * Returns a ForumPost object of the given post id, if nothing is found it returns null.
      *
-     * @param postid The post ID.
-     * @return       ForumPost object, null if nothing was found.
-     * @see          ForumPost
-     * @throws       UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException  if a MySQL exception occurred
+     * @param  postid             the post ID
+     * @return                    ForumPost object, null if nothing was found
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumPost
      */
-    public ForumPost getPost(int postid) throws UnsupportedMethod, SQLException {
+    public ForumPost getPost(int postid) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     /**
      * Updates the ForumThread object with whatever values set by the user.
      *
-     * @param post  the ForumThread object.
-     * @see         ForumPost
-     * @throws      SQLException if a SQL exception occurred.
-     * @throws      UnsupportedMethod if the method is not supported by the script
+     * @param  post               the ForumThread object
+     * @throws SQLException       if a SQL exception occurred.
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumPost
      */
 	public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
@@ -175,10 +178,10 @@ public class ForumScript extends Script {
     /**
      * Creates the Post object with whatever values set by the user.
      *
-     * @param post the ForumThread object.
-     * @see        ForumPost
-     * @throws     SQLException if a SQL exception occurred
-     * @throws     UnsupportedMethod if the method is not supported by the script
+     * @param  post               the ForumThread object
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumPost
      */
 	public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
@@ -187,9 +190,9 @@ public class ForumScript extends Script {
     /**
      * Returns an amount of how many threads {@code username} has made.
      *
-     * @param username  the username to get the count from
-     * @return          the amount of how many threads the username have made, returns 0 if none
-     * @throws          UnsupportedMethod if the method is not supported by the script
+     * @param  username           the username to get the count from
+     * @return                    the amount of how many threads the username have made, returns 0 if none
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
 	public int getThreadCount(String username) throws UnsupportedMethod {
 		throw new UnsupportedMethod();
@@ -198,48 +201,48 @@ public class ForumScript extends Script {
     /**
      * Returns the complete count of how many threads have been made.
      *
-     * @return the amount of how many threads have been made, returns 0 if none
-     * @throws UnsupportedMethod if the method is not supported by the script
+     * @return                    the amount of how many threads have been made, returns 0 if none
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
 	public int getTotalThreadCount() throws UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     /**
-     * Returns the Thread object of the last thread that has been made.
+     * Returns the ForumThread object of the last thread that has been made.
      *
-     * @return ForumThread object of the last thread
+     * @return                    ForumThread object of the last thread
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
      * @see    ForumThread
-     * @throws UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException  if a MySQL exception occurred
      */
-    public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
+    public ForumThread getLastThread() throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     /**
-     * Returns the Thread object of the last thread that has been made by {@code username}.
+     * Returns the ForumThread object of the last thread that has been made by {@code username}.
      *
-     * @param username  the username to grab the last thread from
-     * @return          ForumThread object of the last post made by the user
-     * @see             ForumThread
-     * @throws          UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException  if a MySQL exception occurred
+     * @param  username           the username to grab the last thread from
+     * @return                    ForumThread object of the last post made by the user
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumThread
      */
-    public ForumThread getLastUserThread(String username) throws UnsupportedMethod, SQLException {
+    public ForumThread getLastUserThread(String username) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     /**
-     * Returns a Thread object of the given thread ID, if nothing is found it returns null.
+     * Returns a ForumThread object of the given thread ID, if nothing is found it returns null.
      *
-     * @param threadid  the post ID
-     * @return          ForumThread object, null if nothing was found
-     * @see             ForumThread
-     * @throws          UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException  if a MySQL exception occurred
+     * @param  threadid           the thread ID
+     * @return                    ForumThread object, {@code null} if nothing was found
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumThread
      */
-    public ForumThread getThread(int threadid) throws UnsupportedMethod, SQLException {
+    public ForumThread getThread(int threadid) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
@@ -249,14 +252,14 @@ public class ForumScript extends Script {
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
      * Set {@code limit} to 0 to return all the objects.
+     * <p>
      * If none are found, the List will be empty.
      *
      * @param  boardid            the board ID to grab the threads from
      * @param  limit              the limit (set to 0 if you want to return all)
      * @return                    List with ForumThread objects (if none are found it returns an empty List)
+     * @throws UnsupportedMethod  if the function is not supported by the script
      * @see                       ForumThread
-     * @see                       List
-     * @throws UnsupportedMethod  if the function is not supported by the script.
      */
 	public List<ForumThread> getThreadsFromBoard(int boardid, int limit) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -268,13 +271,14 @@ public class ForumScript extends Script {
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
      * Set {@code limit} to 0 to return all the objects.
+     * <p>
      * If none are found, the List will be empty.
      *
      * @param username            the username to grab the thread list from
      * @param limit               the limit, set to 0 if you want to return all
      * @return                    List with ForumThread objects, if none are found it returns an empty List
-     * @see                       ForumThread
      * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumThread
      */
     public List<ForumThread> getUserThreads(String username, int limit) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -286,25 +290,26 @@ public class ForumScript extends Script {
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
      * Set {@code limit} to 0 to return all the objects.
+     * <p>
      * If none are found, the List will be empty.
      *
-     * @param limit               the limit. Set to 0 if you want to return all
+     * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with ForumThread objects, if none are found it returns an empty List
-     * @see                       ForumThread
+     * @throws SQLException       if a SQL exception occurred
      * @throws UnsupportedMethod  if the method is not supported by the script
-     * @throws SQLException       if a MySQL exception occurred
+     * @see                       ForumThread
      */
-    public List<ForumThread> getThreads(int limit) throws UnsupportedMethod, SQLException {
+    public List<ForumThread> getThreads(int limit) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     /**
      * Updated the ForumThread object with whatever values set by the user.
      *
-     * @param thread              the ForumThread object
-     * @see                       ForumThread
+     * @param  thread             the ForumThread object
      * @throws SQLException       if a SQL exception occurred
      * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumThread
      */
 	public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
@@ -313,10 +318,10 @@ public class ForumScript extends Script {
     /**
      * Creates the ForumThread object with whatever values set by the user.
      *
-     * @param thread              the ForumThread object
-     * @see                       ForumThread
+     * @param  thread             the ForumThread object
      * @throws SQLException       if a SQL exception occurred
      * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumThread
      */
 	public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
 		throw new UnsupportedMethod();
@@ -335,7 +340,7 @@ public class ForumScript extends Script {
     /**
      * Returns the count of how many sub-boards the board has.
      *
-     * @param boardid             the ID of the board
+     * @param  boardid            the board ID
      * @return                    the number of sub-boards of the board
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
@@ -356,19 +361,19 @@ public class ForumScript extends Script {
     }
     
     /**
-     * Returns a List with ForumBoard objects that are subboards of the given board/category ID.
+     * Returns a List with ForumBoard objects that are sub boards of the given board/category ID.
      * <p>
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
      * Set {@code limit} to 0 to return all the objects.
+     * <p>
      * If none are found, the List will be empty.
      *
-     * @param  boardid            the board ID to grab the subboards from
+     * @param  boardid            the board ID to grab the sub boards from
      * @param  limit              the limit (set to 0 if you want to return all)
      * @return                    list with ForumBoard objects (if none are found it returns an empty List)
-     * @see    ForumBoard
-     * @see    List
      * @throws UnsupportedMethod  if the function is not supported by the script.
+     * @see    ForumBoard
      */
     public List<ForumBoard> getSubBoards(int boardid, int limit) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -380,13 +385,13 @@ public class ForumScript extends Script {
      * Parameter {@code limit} can be used as a limit of how many objects should be returned.
      * <p>
      * Set {@code limit} to 0 to return all the objects.
+     * <p>
      * If none are found, the List will be empty.
      *
      * @param  limit              the limit (set to 0 if you want to return all)
      * @return                    list with ForumBoard objects (if none are found it returns an empty List)
-     * @see    ForumBoard
-     * @see    List
      * @throws UnsupportedMethod  if the function is not supported by the script
+     * @see                       ForumBoard
      */
     public List<ForumBoard> getBoards(int limit) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -395,12 +400,12 @@ public class ForumScript extends Script {
     /**
      * Update the ForumBoard object with whatever values set by the user.
      *
-     * @param  board              the ForumBoard object.
-     * @see    ForumBoard
+     * @param  board              the ForumBoard object
      * @throws SQLException       if a SQL exception occurred
      * @throws UnsupportedMethod  if the function is not supported by the script
+     * @see                       ForumBoard
      */
-    public void updateBoard(ForumBoard board) throws UnsupportedMethod, SQLException {
+    public void updateBoard(ForumBoard board) throws SQLException, UnsupportedMethod {
         throw new UnsupportedMethod();
     }
 
@@ -408,8 +413,8 @@ public class ForumScript extends Script {
      * Creates the ForumBoard object with whatever values set by the user.
      *
      * @param  board              the ForumBoard object
-     * @see    ForumBoard
      * @throws UnsupportedMethod  if the function is not supported by the script
+     * @see                       ForumBoard
      */
     public void createBoard(ForumBoard board) throws UnsupportedMethod {
         throw new UnsupportedMethod();
@@ -418,35 +423,35 @@ public class ForumScript extends Script {
     /**
      * Returns the script's forum URL.
      *
-     * @return forum URL of the script.
-     * @throws UnsupportedMethod if the method is not supported by the script
+     * @return                    forum URL of the script
+     * @throws UnsupportedMethod  if the method is not supported by the script
      */
 	public String getForumURL() throws UnsupportedMethod {
 		throw new UnsupportedMethod();
 	}
 
     @Override
-    public ForumUser getUser(String username) throws UnsupportedMethod, SQLException {
+    public ForumUser getUser(String username) throws SQLException, UnsupportedMethod {
         return (ForumUser) super.getUser(username);
     }
 
     @Override
-    public ForumUser getUser(int userid) throws UnsupportedMethod, SQLException {
+    public ForumUser getUser(int userid) throws SQLException, UnsupportedMethod {
         return (ForumUser) super.getUser(userid);
     }
 
     @Override
-    public ForumUser getLastRegUser() throws UnsupportedMethod, SQLException {
+    public ForumUser getLastRegUser() throws SQLException, UnsupportedMethod {
         return (ForumUser) super.getLastRegUser();
     }
 
     /**
      * Updates the ForumUser object with whatever values set by the user.
      *
-     * @param user  the ForumUser object.
-     * @see         ForumUser
-     * @throws      SQLException if a SQL exception occurred
-     * @throws      UnsupportedMethod if the method is not supported by the script
+     * @param  user               the ForumUser object
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumUser
      */
     public void updateUser(ForumUser user) throws SQLException, UnsupportedMethod {
         updateUser((ScriptUser) user);
@@ -455,10 +460,10 @@ public class ForumScript extends Script {
     /**
      * Creates a ForumUser with whatever values set by the user.
      *
-     * @param user  the ForumUser object
-     * @see         ForumUser
-     * @throws      SQLException if a SQL exception occurred
-     * @throws      UnsupportedMethod if the method is not supported by the script
+     * @param user                the ForumUser object
+     * @throws SQLException       if a SQL exception occurred
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @see                       ForumUser
      */
     public void createUser(ForumUser user) throws SQLException, UnsupportedMethod {
         createUser((ScriptUser) user);

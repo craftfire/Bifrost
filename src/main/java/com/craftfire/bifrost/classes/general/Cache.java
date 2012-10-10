@@ -96,8 +96,8 @@ public class Cache {
      * <p>
      * This should only be used when retrieving an object which has been stored without an ID.
      *
-     * @param group  the {@link CacheGroup} which the object should be grabbed from
-     * @return       the object that has been stored, returns null if no stored object could be found
+     * @param  group  the {@link CacheGroup} which the object should be grabbed from
+     * @return        the object that has been stored, returns null if no stored object could be found
      */
     public Object get(CacheGroup group) {
         return get(group, 1);
@@ -106,9 +106,9 @@ public class Cache {
     /**
      * Returns the object of the specified {@link CacheGroup} group parameter by the id parameter.
      *
-     * @param group  the {@link CacheGroup} which the object should be grabbed from
-     * @param id     the unique ID of the object
-     * @return       the object that has been stored, returns null if no stored object could be found
+     * @param  group  the {@link CacheGroup} which the object should be grabbed from
+     * @param  id     the unique ID of the object
+     * @return        the object that has been stored, returns null if no stored object could be found
      */
     public Object get(CacheGroup group, Object id) {
         return this.cacheManager.get(group.toString(), id);
@@ -120,8 +120,8 @@ public class Cache {
      * <p>
      * This should only be used when checking an object which has been stored without an ID.
      *
-     * @param group  the {@link CacheGroup} to check
-     * @return       {@code true} if contains {@code false} if not
+     * @param  group  the {@link CacheGroup} to check
+     * @return        {@code true} if contains {@code false} if not
      */
     public boolean contains(CacheGroup group) {
         return contains(group, 1);
@@ -133,9 +133,9 @@ public class Cache {
      * <p>
      * The object id is specified by the id param and the group is specified by the group param.
      *
-     * @param group  the {@link CacheGroup} to check
-     * @param id     the ID of the object to check
-     * @return       {@code true} if contains {@code false} if not
+     * @param  group  the {@link CacheGroup} to check
+     * @param  id     the ID of the object to check
+     * @return        {@code true} if contains {@code false} if not
      */
     public boolean contains(CacheGroup group, Object id) {
          return this.cacheManager.contains(group.toString(), id);
@@ -167,11 +167,11 @@ public class Cache {
      * <p>
      * If the object is not metadatable, not present in cache, or other error occurred, returns {@code false}.
      *
-     * @param group  the {@link CacheGroup} of the object
-     * @param id     the id of the object
-     * @param key    the meta key to set
-     * @param value  the meta value
-     * @return       {@code true} if succeeded, {@code false} if not
+     * @param  group  the {@link CacheGroup} of the object
+     * @param  id     the id of the object
+     * @param  key    the meta key to set
+     * @param  value  the meta value
+     * @return        {@code true} if succeeded, {@code false} if not
      */
     public boolean setMetadata(CacheGroup group, Object id, String key, Object value) {
         MetadatableCacheItem item = this.cacheManager.getMetadatableItem(group.toString(), id);
@@ -185,10 +185,10 @@ public class Cache {
     /**
      * Returns the value of the metadata key of specified object.
      * 
-     * @param group  the {@link CacheGroup} of the object
-     * @param id     the id of the object
-     * @param key    the meta key to get
-     * @return       value of the meta key, or null if the object is not metadatable, not present in cache, or other error occured
+     * @param  group  the {@link CacheGroup} of the object
+     * @param  id     the id of the object
+     * @param  key    the meta key to get
+     * @return        value of the meta key, or null if the object is not metadatable, not present in cache, or other error occurred
      */
     public Object getMetadata(CacheGroup group, Object id, String key) {
         MetadatableCacheItem item = this.cacheManager.getMetadatableItem(group.toString(), id);
@@ -205,10 +205,10 @@ public class Cache {
      * <p>
      * If the object is not metadatable, not present in cache, or other error occurred, returns {@code false}.
      *
-     * @param group  the {@link CacheGroup} of the object
-     * @param id     the id of the object
-     * @param key    the meta key to set
-     * @return       {@code true} if succeeded, {@code false} if not
+     * @param  group  the {@link CacheGroup} of the object
+     * @param  id     the id of the object
+     * @param  key    the meta key to set
+     * @return        {@code true} if succeeded, {@code false} if not
      */
     public boolean removeMetadata(CacheGroup group, Object id, String key) {
         MetadatableCacheItem item = this.cacheManager.getMetadatableItem(group.toString(), id);

@@ -96,7 +96,7 @@ public class ForumBoard extends Category {
      * <p>
      * Loads the threads from a database if not cached.
      * 
-     * @param limit               how many threads should be returned, 0 = returns all
+     * @param  limit              how many threads should be returned, 0 = returns all
      * @return                    the list of threads
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
@@ -134,9 +134,9 @@ public class ForumBoard extends Category {
      * Returns {@code true} if the handle contains a board cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.BOARD, id);
@@ -156,9 +156,9 @@ public class ForumBoard extends Category {
     /**
      * Returns the board object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the board
-     * @return board object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the board
+     * @return         board object if cache was found, {@code null} if no cache was found
      */
     public static ForumBoard getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.BOARD, id)) {

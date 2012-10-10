@@ -107,7 +107,7 @@ public class ForumUser extends ScriptUser {
      *
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
-     * @see #create()             for creating an user
+     * @see    #create()          for creating an user
      */
     @Override
     public void update() throws SQLException, UnsupportedMethod {
@@ -121,7 +121,7 @@ public class ForumUser extends ScriptUser {
      *
      * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
-     * @see #update()             for updating an user
+     * @see    #update()          for updating an user
      */
     @Override
     public void create() throws SQLException, UnsupportedMethod {

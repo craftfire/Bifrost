@@ -156,8 +156,8 @@ public class PrivateMessage extends Message {
      * Returns {@code true} if the private message has been read by the {@code recipient},
      * {@code false} if not.
      *
-     * @param recipient  the recipient
-     * @return           {@code true} if read by the {@code recipient}, {@code false} if not.
+     * @param  recipient  the recipient
+     * @return            {@code true} if read by the {@code recipient}, {@code false} if not.
      */
     public boolean isRead(ScriptUser recipient) {
         if (this.read.containsKey(recipient)) {
@@ -180,8 +180,8 @@ public class PrivateMessage extends Message {
      * Returns {@code true} if the private message is new for the {@code recipient},
      * {@code false} if not.
      *
-     * @param recipient  the recipient
-     * @return           {@code true} if new for the {@code recipient}, {@code false} if not.
+     * @param  recipient  the recipient
+     * @return            {@code true} if new for the {@code recipient}, {@code false} if not.
      */
     public boolean isNew(ScriptUser recipient) {
         if (this.isnew.containsKey(recipient)) {
@@ -261,9 +261,9 @@ public class PrivateMessage extends Message {
      * Returns {@code true} if the handle contains a private message cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, Object id) {
         return handle.getCache().contains(CacheGroup.PM, id);
@@ -301,9 +301,9 @@ public class PrivateMessage extends Message {
     /**
      * Returns the PrivateMessage object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the private message
-     * @return PrivateMessage object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the private message
+     * @return         PrivateMessage object if cache was found, {@code null} if no cache was found
      */
     public static PrivateMessage getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.PM, id)) {

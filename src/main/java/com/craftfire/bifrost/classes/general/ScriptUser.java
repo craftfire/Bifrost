@@ -466,7 +466,7 @@ public class ScriptUser extends GenericMethods {
      * <p>
      * Loads the private messages from a database if not cached.
      *
-     * @param limit               how many private messages should be returned, 0 = returns all
+     * @param  limit              how many private messages should be returned, 0 = returns all
      * @return                    the list of sent private messages
      * @throws UnsupportedMethod  if the method is not supported by the script
      * @throws SQLException       if a SQL error concurs
@@ -480,7 +480,7 @@ public class ScriptUser extends GenericMethods {
      * <p>
      * Loads the private messages from a database if not cached.
      *
-     * @param limit               how many private messages should be returned, 0 = returns all
+     * @param  limit              how many private messages should be returned, 0 = returns all
      * @return                    the list of received private messages
      * @throws UnsupportedMethod  if the method is not supported by the script
      * @throws SQLException       if a SQL error concurs
@@ -582,9 +582,9 @@ public class ScriptUser extends GenericMethods {
      * Returns {@code true} if the handle contains a user cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, Object id) {
         return handle.getCache().contains(CacheGroup.USER, id);
@@ -620,9 +620,9 @@ public class ScriptUser extends GenericMethods {
     /**
      * Returns the ScriptUser object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the user
-     * @return ScriptUser object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the user
+     * @return         ScriptUser object if cache was found, {@code null} if no cache was found
      */
     public static ScriptUser getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.USER, id)) {

@@ -80,7 +80,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * <p>
      * Loads the comments from a database if not cached.
      * 
-     * @param limit               how many comments should be returned, 0 = returns all
+     * @param  limit              how many comments should be returned, {@code 0} = returns all
      * @return                    the list of comments
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
@@ -264,9 +264,9 @@ public class CMSArticle extends Message implements ViewsCounter {
      * Returns {@code true} if the handle contains an article cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.ARTICLE, id);
@@ -291,9 +291,9 @@ public class CMSArticle extends Message implements ViewsCounter {
     /**
      * Returns the CMSArticle object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the article
-     * @return CMSArticle object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the article
+     * @return         CMSArticle object if cache was found, {@code null} if no cache was found
      */
     public static CMSArticle getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.ARTICLE, id)) {

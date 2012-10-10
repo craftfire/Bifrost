@@ -76,7 +76,7 @@ public class Bifrost {
      * ScriptAPI contains all the needed methods to add new script handles, use script methods and such.
      *
      * @return ScriptAPI
-     * @see ScriptAPI
+     * @see    ScriptAPI
      */
     public ScriptAPI getScriptAPI() {
         return this.scriptAPI;
@@ -86,7 +86,7 @@ public class Bifrost {
      * Returns the LoggingManager of Bifrost.
      *
      * @return LoggingManager
-     * @see LoggingManager
+     * @see    LoggingManager
      */
     public LoggingManager getLoggingManager() {
         return this.loggingManager;

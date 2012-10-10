@@ -19,6 +19,8 @@
  */
 package com.craftfire.bifrost.exceptions;
 
+import com.craftfire.bifrost.classes.general.ScriptHandle;
+
 /**
  * This exception should be thrown when the library user uses a version of the script,
  * which is not supported by Bifrost.
@@ -30,12 +32,12 @@ public class UnsupportedVersion extends Exception {
     /**
      * Default constructor with a default message.
      */
-    public UnsupportedVersion() {
-        this.message = "This version is not supported by the script.";
+    public UnsupportedVersion(ScriptHandle handle) {
+        this.message = "Version " + handle.getVersion() + " of " + handle.getScriptName() + " is not currently supported";
     }
 
     /**
-     * Constructs the exception with the specified <code>message</code>.
+     * Constructs the exception with the specified {@code message}.
      *
      * @param message  the message for the exception
      */

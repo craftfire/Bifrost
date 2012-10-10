@@ -34,7 +34,7 @@ public class UnsupportedScript extends Exception {
     }
 
     /**
-     * Constructs the exception with the specified <code>message</code>.
+     * Constructs the exception with the specified {@code message}.
      *
      * @param message  the message for the exception
      */

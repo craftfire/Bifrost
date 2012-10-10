@@ -110,7 +110,6 @@ public class CMSComment extends Message {
      * Returns the CMSComment object for the comment this comment replies to.
      * 
      * @return the CMSComment object
-     * @see Message#getParent()
      */
     @Override
     public MessageParent getParent() throws UnsupportedMethod {
@@ -203,9 +202,9 @@ public class CMSComment extends Message {
      * Returns {@code true} if the handle contains a comment cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.COMMENT, id);
@@ -231,9 +230,9 @@ public class CMSComment extends Message {
     /**
      * Returns the ForumPost object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the post
-     * @return ForumPost object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the post
+     * @return         ForumPost object if cache was found, {@code null} if no cache was found
      */
     public static CMSComment getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.COMMENT, id)) {

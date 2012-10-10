@@ -111,7 +111,7 @@ public class ForumPost extends Message {
      * 
      * @return                    a ForumBoard object
      * @throws UnsupportedMethod  if the method is not supported by script
-     * @throws SQLException       if a MySQL exception occurred
+     * @throws SQLException       if a SQL exception occurred
      */
     public ForumBoard getBoard() throws UnsupportedMethod, SQLException {
         return getThread().getBoard();
@@ -122,7 +122,7 @@ public class ForumPost extends Message {
      *
      * @return                    the thread Object
      * @throws UnsupportedMethod  if the method is not supported by the script
-     * @throws SQLException       if a MySQL exception occurred
+     * @throws SQLException       if a SQL exception occurred
      */
     public ForumThread getThread() throws UnsupportedMethod, SQLException {
         return getHandle().getThread(this.threadid);
@@ -194,9 +194,9 @@ public class ForumPost extends Message {
      * Returns {@code true} if the handle contains a post cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.POST, id);
@@ -221,9 +221,9 @@ public class ForumPost extends Message {
     /**
      * Returns the ForumPost object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the post
-     * @return ForumPost object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the post
+     * @return         ForumPost object if cache was found, {@code null} if no cache was found
      */
     public static ForumPost getCache(ScriptHandle handle, int id) {
         ForumPost temp = null;

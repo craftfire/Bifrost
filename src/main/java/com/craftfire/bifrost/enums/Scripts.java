@@ -36,8 +36,8 @@ public enum Scripts {
     /**
      * Construct the script, we have to define the alias and {@link ScriptType}  .
      *
-     * @param alias the alias of the script
-     * @param type the {@link ScriptType} of the script
+     * @param alias  the alias of the script
+     * @param type   the {@link ScriptType} of the script
      */
     Scripts(String alias, ScriptType type) {
         this.alias = alias;
@@ -65,9 +65,9 @@ public enum Scripts {
     /**
      * Converts a string into a script enum.
      *
-     * @param string  the string which contains the script name
-     * @return        the script for the string, if none are found it returns null.
-     * @throws        UnsupportedScript if the input string is not found in the list of supported scripts.
+     * @param  string             the string which contains the script name
+     * @return                    the script for the string, if none are found it returns null.
+     * @throws UnsupportedScript  if the input string is not found in the list of supported scripts.
      */
     public static Scripts stringToScript(String string) throws UnsupportedScript {
         for (Scripts script : values()) {

@@ -104,7 +104,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * 
      * @return                    a ForumBoard object
      * @throws UnsupportedMethod  if the method is not supported by script
-     * @throws SQLException       if a MySQL exception occurred
+     * @throws SQLException       if a SQL exception occurred
      */
     public ForumBoard getBoard() throws UnsupportedMethod, SQLException {
         return getHandle().getBoard(getCategoryID());
@@ -116,11 +116,11 @@ public class ForumThread extends Message implements ViewsCounter {
      * <p>
      * List will be empty if there were no posts.
      *
-     * @param  limit             how many ForumPosts that should be returned, 0 = returns all.
-     * @return                   a List of ForumPost's
-     * @throws UnsupportedMethod if the method is not supported by the script
-     * @throws SQLException      if a MySQL exception occurred
-     * @see                      ForumPost
+     * @param  limit              how many ForumPosts that should be returned, 0 = returns all.
+     * @return                    a List of ForumPost's
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException       if a SQL exception occurred
+     * @see                       ForumPost
      */
     public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
         return getHandle().getPostsFromThread(getID(), limit);
@@ -129,10 +129,10 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns the first Post of the thread.
      *
-     * @return                     first ForumPost of the thread
-     * @throws  UnsupportedMethod  if the method is not supported by the script
-     * @throws  SQLException       if a MySQL exception occurred
-     * @see                        ForumPost
+     * @return                    first ForumPost of the thread
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException       if a SQL exception occurred
+     * @see                       ForumPost
      */
     public ForumPost getFirstPost() throws UnsupportedMethod, SQLException {
         return getHandle().getPost(this.firstpostid);
@@ -141,10 +141,10 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns the last Post of the thread.
      *
-     * @return                     last ForumPosts of the thread
-     * @throws  UnsupportedMethod  if the method is not supported by the script
-     * @throws  SQLException       if a MySQL exception occurred
-     * @see                        ForumPost
+     * @return                    last ForumPosts of the thread
+     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException       if a SQL exception occurred
+     * @see                       ForumPost
      */
     public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
         return getHandle().getPost(this.lastpostid);
@@ -153,7 +153,7 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns the date when the thread was posted.
      *
-     * @return  date of the thread
+     * @return date of the thread
      */
     public Date getThreadDate() {
         return getDate();
@@ -162,7 +162,7 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Sets the date of the thread.
      *
-     * @param threaddate date of the thread
+     * @param threaddate  date of the thread
      */
     public void setThreadDate(Date threaddate) {
         setDate(threaddate);
@@ -180,7 +180,7 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Sets the subject of the thread.
      *
-     * @param subject subject of the thread
+     * @param subject  subject of the thread
      */
     public void setSubject(String subject) {
         super.setTitle(subject);
@@ -310,9 +310,9 @@ public class ForumThread extends Message implements ViewsCounter {
      * Returns {@code true} if the handle contains a thread cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.THREAD, id);
@@ -337,9 +337,9 @@ public class ForumThread extends Message implements ViewsCounter {
     /**
      * Returns the ForumThread object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the thread
-     * @return ForumThread object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the thread
+     * @return         ForumThread object if cache was found, {@code null} if no cache was found
      */
     public static ForumThread getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.THREAD, id)) {

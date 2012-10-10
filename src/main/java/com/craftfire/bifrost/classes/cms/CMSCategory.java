@@ -89,7 +89,7 @@ public class CMSCategory extends Category {
      * <p>
      * Loads the articles from a database if not cached.
      * 
-     * @param limit               how many articles should be returned, 0 = returns all
+     * @param  limit              how many articles should be returned, 0 = returns all
      * @return                    the list of articles
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
@@ -177,9 +177,9 @@ public class CMSCategory extends Category {
      * Returns {@code true} if the handle contains a category cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, int id) {
         return handle.getCache().contains(CacheGroup.CMSCAT, id);
@@ -199,9 +199,9 @@ public class CMSCategory extends Category {
     /**
      * Returns the category object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the category
-     * @return category object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the category
+     * @return         category object if cache was found, {@code null} if no cache was found
      */
     public static CMSCategory getCache(ScriptHandle handle, int id) {
         if (handle.getCache().contains(CacheGroup.CMSCAT, id)) {

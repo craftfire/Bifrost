@@ -170,7 +170,7 @@ public abstract class Message extends GenericMethods implements MessageParent {
      * 
      * @return                    the parent of the message
      * @throws UnsupportedMethod  if the method is not supported by script
-     * @throws SQLException       if a MySQL exception occurred
+     * @throws SQLException       if a SQL exception occurred
      */
     public abstract MessageParent getParent() throws UnsupportedMethod, SQLException;
 
@@ -180,7 +180,7 @@ public abstract class Message extends GenericMethods implements MessageParent {
      * 
      * @return                    a Category object
      * @throws UnsupportedMethod  if the method is not supported by script
-     * @throws SQLException       if a MySQL exception occurred
+     * @throws SQLException       if a SQL exception occurred
      */
     public abstract Category getCategory() throws UnsupportedMethod, SQLException;
 
@@ -196,7 +196,7 @@ public abstract class Message extends GenericMethods implements MessageParent {
     /**
      * Sets the category of this message.
      * 
-     * @param  categoryid  the ID of the category
+     * @param categoryid  the ID of the category
      */
     public void setCategoryID(int categoryid) {
         this.categoryid = categoryid;

@@ -46,16 +46,16 @@ public class ScriptHandle {
     /**
      * Creates a ScriptHandle.
      *
-     * @param handleID  the ID of the handle
-     * @param script    the script using the enum list, for example: Scripts.SMF
-     * @param version   the version that the user has set in his config
-     * @throws          UnsupportedVersion if the input version is not found in the list of supported versions
+     * @param  handleID            the ID of the handle
+     * @param  script              the script using the enum list, for example: Scripts.SMF
+     * @param  version             the version that the user has set in his config
+     * @throws UnsupportedVersion  if the input version is not found in the list of supported versions
      */
     public ScriptHandle(int handleID, Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
         this.handleID = handleID;
         this.script = ScriptAPI.setScript(script, version, dataManager);
         if (!this.script.isSupportedVersion()) {
-            throw new UnsupportedVersion();
+            throw new UnsupportedVersion(this);
         }
         this.script.setHandle(this);
     }
@@ -63,8 +63,8 @@ public class ScriptHandle {
     /**
      * Creates a ScriptHandle.
      *
-     * @param script  the script object
-     * @throws        UnsupportedVersion if the input version is not found in the list of supported version
+     * @param  script              the script object
+     * @throws UnsupportedVersion  if the input version is not found in the list of supported version
      */
     public ScriptHandle(Script script) throws UnsupportedVersion {
         this.handleID = script.getHandle().getID();
@@ -76,11 +76,11 @@ public class ScriptHandle {
      * Creates a ScriptHandle, similar to {@link #ScriptHandle(int, Scripts, String, DataManager)},
      * just with a string instead.
      *
-     * @param handleID  the ID of the handle
-     * @param script    the script in a string, for example: smf
-     * @param version   the version that the user has set in his config
-     * @throws          UnsupportedScript if the input string is not found in the list of supported scripts
-     * @throws          UnsupportedVersion if the input version is not found in the list of supported versions
+     * @param  handleID            the ID of the handle
+     * @param  script              the script in a string, for example: smf
+     * @param  version             the version that the user has set in his config
+     * @throws UnsupportedScript   if the input string is not found in the list of supported scripts
+     * @throws UnsupportedVersion  if the input version is not found in the list of supported versions
      */
     public ScriptHandle(int handleID, String script, String version, DataManager dataManager) throws UnsupportedScript,
             UnsupportedVersion {

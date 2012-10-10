@@ -39,7 +39,7 @@ public interface MessageParent {
      * @param  limit              how many messages should be returned, 0 = returns all
      * @return                    the list of messages
      * @throws UnsupportedMethod  if the method is not supported by script
-     * @throws SQLException       if a MySQL exception occurred
+     * @throws SQLException       if a SQL exception occurred
      */
     List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod, SQLException;
 }

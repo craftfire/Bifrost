@@ -290,7 +290,7 @@ public class Ban extends GenericMethods {
      * <p>
      * It should <b>not</b> be run when creating a new ban, only when editing an already existing ban.
      *
-     * @throws SQLException         if a SQL error concurs
+     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     @Override
@@ -303,7 +303,7 @@ public class Ban extends GenericMethods {
      * <p>
      * It should <b>not</b> be run when updating a ban, only when creating a new ban.
      *
-     * @throws SQLException         if a SQL error concurs
+     * @throws SQLException       if a SQL error concurs
      * @throws UnsupportedMethod  if the method is not supported by the script
      */
     @Override
@@ -315,9 +315,9 @@ public class Ban extends GenericMethods {
      * Returns {@code true} if the handle contains a ban cache with the given id parameter,
      * {@code false} if not.
      *
-     * @param handle  the script handle
-     * @param id      the id of the object to look for
-     * @return        {@code true} if contains, {@code false} if not
+     * @param  handle  the script handle
+     * @param  id      the id of the object to look for
+     * @return         {@code true} if contains, {@code false} if not
      */
     public static boolean hasCache(ScriptHandle handle, Object id) {
         return handle.getCache().contains(CacheGroup.BAN, id);
@@ -336,9 +336,9 @@ public class Ban extends GenericMethods {
     /**
      * Returns the Ban object by the given id if found, returns {@code null} if no cache was found.
      *
-     * @param handle  the script handle
-     * @param id      the id of the ban
-     * @return Ban object if cache was found, {@code null} if no cache was found
+     * @param  handle  the script handle
+     * @param  id      the id of the ban
+     * @return         Ban object if cache was found, {@code null} if no cache was found
      */
     public static Ban getCache(ScriptHandle handle, Object id) {
         if (handle.getCache().contains(CacheGroup.BAN, id)) {

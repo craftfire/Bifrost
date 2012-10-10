@@ -62,7 +62,7 @@ public class ScriptAPI {
      * Returns the Bifrost instance.
      *
      * @return Bifrost instance
-     * @see Bifrost
+     * @see    Bifrost
      */
     public Bifrost getBifrost() {
         return this.bifrost;
@@ -72,7 +72,7 @@ public class ScriptAPI {
      * Returns the LoggingManager of Bifrost.
      *
      * @return LoggingManager of Bifrost
-     * @see LoggingManager
+     * @see    LoggingManager
      */
     public LoggingManager getLoggingManager() {
         return getBifrost().getLoggingManager();
@@ -101,10 +101,10 @@ public class ScriptAPI {
      * <p>
      * Returns {@code null} if the {@code script} is not supported.
      *
-     * @param script       the script
-     * @param version      the version of the script
-     * @param dataManager  the {@link DataManager} for the script
-     * @return a {@link Script} object, returns null if not supported
+     * @param  script       the script
+     * @param  version      the version of the script
+     * @param  dataManager  the {@link DataManager} for the script
+     * @return              a {@link Script} object, returns null if not supported
      */
     public static Script setScript(Scripts script, String version, DataManager dataManager) {
         switch (script) {
@@ -134,8 +134,8 @@ public class ScriptAPI {
     /**
      * Returns the {@link ScriptHandle} for the specified {@code script}.
      *
-     * @param handleID  the ID you want to grab the script handle from
-     * @return the script handle for the specified {@code script}
+     * @param  handleID  the ID you want to grab the script handle from
+     * @return           the script handle for the specified {@code script}
      */
     public ScriptHandle getHandle(int handleID) {
         if (handleExists(handleID)) {
@@ -151,8 +151,8 @@ public class ScriptAPI {
     /**
      * Returns the {@link ForumHandle} for the specified {@code script}.
      *
-     * @param handleID  the ID you want to grab the forum handle from
-     * @return the forum handle for the specified {@code script}
+     * @param  handleID  the ID you want to grab the forum handle from
+     * @return           the forum handle for the specified {@code script}
      */
     public ForumHandle getForumHandle(int handleID) {
         return (ForumHandle) getHandle(handleID);
@@ -161,8 +161,8 @@ public class ScriptAPI {
     /**
      * Returns the {@link CMSHandle} for the specified {@code script}.
      *
-     * @param handleID  the ID you want to grab the cms handle from
-     * @return the cms handle for the specified {@code script}
+     * @param  handleID  the ID you want to grab the cms handle from
+     * @return           the cms handle for the specified {@code script}
      */
     public CMSHandle getCMSHandle(int handleID) {
         return (CMSHandle) getHandle(handleID);
@@ -201,9 +201,9 @@ public class ScriptAPI {
     /**
      * Adds a handle to the list.
      *
-     * @param script               the script
-     * @param version              the version of the script
-     * @param dataManager          the {@link DataManager} of the script
+     * @param  script              the script
+     * @param  version             the version of the script
+     * @param  dataManager         the {@link DataManager} of the script
      * @throws UnsupportedScript   if the specified {@code script} is not supported by Bifrost
      * @throws UnsupportedVersion  if the specified {@code version} is not supported by the script
      */
@@ -231,8 +231,8 @@ public class ScriptAPI {
     /**
      * Checks if a script handle already exists, returns true if it does, false if not
      *
-     * @param handleID  the handle ID you want to check
-     * @return          true if exists, false if not
+     * @param  handleID  the handle ID you want to check
+     * @return           true if exists, false if not
      */
     protected boolean handleExists(int handleID) {
         return this.handles.containsKey(handleID);
