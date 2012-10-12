@@ -29,7 +29,6 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.ScriptException;
-import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class contains methods relevant to methods to use for a generic script.
@@ -355,7 +354,7 @@ public class ScriptHandle {
      * @see Script#getPMs(int) Documentation for this method
      */
     @SuppressWarnings("unchecked")
-    public List<PrivateMessage> getPMs(int limit) throws ScriptException {
+    public List<PrivateMessage> getPMs(int limit) throws ScriptException, SQLException {
         if (getCache().contains(CacheGroup.PM_LIST)) {
             List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
             if (pms.size() == ((limit == 0) ? getPMCount() : limit)) {
