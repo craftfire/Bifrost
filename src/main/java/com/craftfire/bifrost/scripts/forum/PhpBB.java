@@ -20,9 +20,9 @@
 package com.craftfire.bifrost.scripts.forum;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.classes.Version;
@@ -57,7 +57,6 @@ public class PhpBB extends ForumScript {
      */
     public PhpBB(Scripts script, String version, DataManager dataManager) {
         super(script, version, dataManager);
-        /* TODO: Edit variables */
         setScriptName("phpbb");
         setShortName("phpbb");
         setVersionRanges(new VersionRange[]{new VersionRange("3.0.0", "3.0.11")});
@@ -72,7 +71,7 @@ public class PhpBB extends ForumScript {
 
     @Override
     public boolean authenticate(String username, String password) {
-        String passwordHash = this.getDataManager().getStringField("users",
+        String passwordHash = getDataManager().getStringField("users",
                 "user_password", "`username` = '" + username + "'");
         return hashPassword(username, password).equals(passwordHash);
     }
@@ -84,12 +83,12 @@ public class PhpBB extends ForumScript {
 
     @Override
     public String getUsername(int userid) {
-        return this.getDataManager().getStringField("users", "username", "`user_id` = '" + userid + "'");
+        return getDataManager().getStringField("users", "username", "`user_id` = '" + userid + "'");
     }
 
     @Override
     public int getUserID(String username) {
-        return this.getDataManager().getIntegerField("users", "user_id", "`username` = '" + username + "'");
+        return getDataManager().getIntegerField("users", "user_id", "`username` = '" + username + "'");
     }
 
     @Override
@@ -99,7 +98,6 @@ public class PhpBB extends ForumScript {
 
     @Override
     public ForumUser getUser(int userid) throws SQLException {
-        /*TODO*/
         Results results = getDataManager().getResults("SELECT * FROM `" + getDataManager().getPrefix() +
                                                       "` WHERE `user_id` = " + userid);
         DataRow row = results.getFirstResult();
@@ -107,16 +105,19 @@ public class PhpBB extends ForumScript {
                                        row.getIntField("user_id"),
                                        row.getStringField("username"),
                                        row.getStringField("user_password"));
-        //user.setActivated();
-        //user.setAvatarURL();
-        //user.setBirthday();
+        user.setActivated(row.getIntField("user_type") == 0);
+        if (!row.getStringField("user_birthday").isEmpty()) {
+            try {
+                user.setBirthday(new SimpleDateFormat("dd-MM-yyyy").parse(row.getStringField("user_birthday")));
+            } catch (ParseException e) {
+                getLoggingManager().stackTrace(e);
+            }
+        }
         user.setEmail(row.getStringField("user_email"));
-        //user.setGender();
-        //user.setLastIP();
-        //user.setLastLogin();
+        user.setLastLogin(new Date(row.getLongField("user_lastvisit") * 1000));
+        user.setRegDate(new Date(row.getLongField("user_regdate") * 1000));
+        user.setRegIP(row.getStringField("user_ip"));
 
-        user.setRegDate(new Date(row.getIntField("user_regdate")));
-        user.setRegIP(row.getStringField("user_regdate"));
         return user;
     }
 
@@ -126,13 +127,82 @@ public class PhpBB extends ForumScript {
     }
 
     @Override
-    public void updateUser(ScriptUser user) {
-        /* TODO: Delete this method or implement it */
+    public void updateUser(ScriptUser user) throws SQLException {
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("username", user.getUsername());
+        data.put("username_clean", user.getUsername().toLowerCase());
+        data.put("user_email", user.getEmail());
+        if (user.isActivated()) {
+            data.put("user_inactive_reason", 0);
+            data.put("user_inactive_time", 0);
+            data.put("user_type", 0);
+        } else {
+            data.put("user_inactive_reason", 1);
+            data.put("user_inactive_time", user.getRegDate().getTime() / 1000);
+            data.put("user_type", 1);
+        }
+        data.put("user_regdate", user.getRegDate().getTime() / 1000);
+        data.put("user_lastvisit", user.getLastLogin().getTime() / 1000);
+
+        if (user.getBirthday() != null) {
+            data.put("user_birthday", new SimpleDateFormat("dd-MM-yyyy").format(user.getBirthday()));
+        }
+        if (user.getPassword().length() != 34) {
+            user.setPassword(hashPassword(user.getUsername(), user.getPassword()));
+            data.put("user_password", user.getPassword());
+        }
+        getDataManager().updateFields(data, "users", "`user_id` = '" + user.getID() + "'");
     }
 
     @Override
-    public void createUser(ScriptUser user) {
-        /* TODO: Delete this method or implement it */
+    public void createUser(ScriptUser user) throws SQLException {
+        long timestamp = new Date().getTime() / 1000;
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("username", user.getUsername());
+        data.put("username_clean", user.getUsername().toLowerCase());
+        data.put("user_email", user.getEmail());
+        data.put("user_email_hash", CraftCommons.encrypt(Encryption.CRC32,
+                                                         user.getEmail().toLowerCase()) + user.getEmail().length());
+        if (user.isActivated()) {
+            data.put("user_inactive_reason", 0);
+            data.put("user_inactive_time", 0);
+            data.put("user_type", 0);
+        } else {
+            data.put("user_inactive_reason", 1);
+            data.put("user_inactive_time", timestamp);
+            data.put("user_type", 1);
+        }
+        data.put("user_regdate", timestamp);
+        data.put("user_lastvisit", timestamp);
+        if (user.getBirthday() != null) {
+            data.put("user_birthday", new SimpleDateFormat("dd-MM-yyyy").format(user.getBirthday()));
+        }
+        if (user.getPassword().length() != 34) {
+            user.setPassword(hashPassword(user.getUsername(), user.getPassword()));
+            data.put("user_password", user.getPassword());
+        }
+        data.put("group_id", 2);
+        data.put("user_ip", user.getRegIP());
+        data.put("user_passchg", timestamp);
+        data.put("user_lang", "en");
+        getDataManager().insertFields(data, "users");
+        user.setID(this.getDataManager().getLastID("user_id", "users"));
+
+        data = new HashMap<String, Object>();
+        data.put("group_id", 2);
+        data.put("user_id", user.getID());
+        data.put("user_pending", 0);
+        getDataManager().insertFields(data, "user_group");
+
+        data = new HashMap<String, Object>();
+        data.put("group_id", 7);
+        data.put("user_id", user.getID());
+        data.put("user_pending", 0);
+        getDataManager().insertFields(data, "user_group");
+
+        getDataManager().updateField("config", "config_value", user.getID(), "`config_name` = 'newest_user_id'");
+        getDataManager().updateField("config", "config_value", user.getUsername(), "`config_name` = 'newest_username'");
+        getDataManager().increaseField("config", "config_value", "`config_name` = 'num_users'");
     }
 
     @Override
@@ -283,20 +353,17 @@ public class PhpBB extends ForumScript {
 
     @Override
     public boolean isRegistered(String username) {
-        /* TODO: Delete this method or implement it */
-        return false;
+        return this.getDataManager().exist("users", "username", username);
     }
 
     @Override
     public int getUserCount() {
-        /* TODO: Delete this method or implement it */
-        return 0;
+        return this.getDataManager().getCount("users");
     }
 
     @Override
     public int getGroupCount() {
-        /* TODO: Delete this method or implement it */
-        return 0;
+        return this.getDataManager().getCount("groups");
     }
 
     @Override
