@@ -60,8 +60,6 @@ import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
 import com.craftfire.bifrost.exceptions.ScriptException;
-import com.craftfire.bifrost.exceptions.UnsupportedScript;
-import com.craftfire.bifrost.exceptions.ScriptException;
 
 public class BifrostScriptTest {
     static final String newline = System.getProperty("line.separator");
@@ -159,8 +157,6 @@ public class BifrostScriptTest {
             handle = bifrost.getScriptAPI().getHandle(handleID);
         } catch (ScriptException ScriptException) {
             throw new RuntimeException(ScriptException);
-        } catch (UnsupportedScript unsupportedScript) {
-            throw new RuntimeException(unsupportedScript);
         }
     }
 
