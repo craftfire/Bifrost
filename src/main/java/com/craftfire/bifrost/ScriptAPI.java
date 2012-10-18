@@ -127,7 +127,8 @@ public class ScriptAPI {
                 return null;
         }
         if (!scriptInstance.isSupportedVersion()) {
-            throw new ScriptException("Version " + scriptInstance.getVersion() + " of " + scriptInstance.getScriptName() + " is not currently supported");
+            throw new ScriptException(ScriptException.Type.UNSUPPORTED_VERSION,
+                                      "Version " + scriptInstance.getVersion() + " of " + scriptInstance.getScriptName() + " is not currently supported");
         }
         return scriptInstance;
     }
