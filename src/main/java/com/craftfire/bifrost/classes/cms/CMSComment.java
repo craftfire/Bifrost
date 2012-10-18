@@ -30,7 +30,7 @@ import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a CMS comment.
@@ -84,7 +84,7 @@ public class CMSComment extends Message {
      * @see MessageParent#getChildMessages(int)
      */
     @Override
-    public List<CMSComment> getChildMessages(int limit) throws UnsupportedMethod {
+    public List<CMSComment> getChildMessages(int limit) throws ScriptException {
         return getHandle().getCommentReplies(getID(), limit);
     }
 
@@ -112,7 +112,7 @@ public class CMSComment extends Message {
      * @return the CMSComment object
      */
     @Override
-    public MessageParent getParent() throws UnsupportedMethod {
+    public MessageParent getParent() throws ScriptException {
         if (this.parentid != 0) {
             return getHandle().getComment(this.parentid);
         } else {
@@ -142,9 +142,9 @@ public class CMSComment extends Message {
      * Returns the CMSArticle object of the article this comment is on.
      * 
      * @return                    the CMSArticle object
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSArticle getArticle() throws UnsupportedMethod {
+    public CMSArticle getArticle() throws ScriptException {
         return getHandle().getArticle(this.articleid);
     }
 
@@ -157,7 +157,7 @@ public class CMSComment extends Message {
     public int getCategoryID() {
         try {
             return getArticle().getCategoryID();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             return 0;
         }
     }
@@ -168,7 +168,7 @@ public class CMSComment extends Message {
      * @see Message#getCategory()
      */
     @Override
-    public Category getCategory() throws UnsupportedMethod, SQLException {
+    public Category getCategory() throws ScriptException, SQLException {
         return getArticle().getCategory();
     }
 
@@ -178,10 +178,10 @@ public class CMSComment extends Message {
      * It should <b>not</b> be run when creating a new comment, only when editing an already existing comment.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updateComment(this);
     }
 
@@ -191,10 +191,10 @@ public class CMSComment extends Message {
      * It should <b>not</b> be run when updating a comment, only when creating a new comment.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createComment(this);
     }
 

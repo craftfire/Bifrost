@@ -50,7 +50,7 @@ import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 //TODO: Convert arrays to use Result class
 /**
@@ -783,7 +783,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
+    public void updatePost(ForumPost post) throws SQLException, ScriptException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
         data.put("user_id", post.getAuthor().getID());
@@ -798,7 +798,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
+    public void createPost(ForumPost post) throws SQLException, ScriptException {
         int ipID = this.insertIP(post.getAuthor(), "post", "insert");
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("thread_id", post.getThreadID());
@@ -918,7 +918,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
+    public void updateThread(ForumThread thread) throws SQLException, ScriptException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("node_id", thread.getBoardID());
         data.put("title", thread.getSubject());
@@ -946,7 +946,7 @@ public class XenForo extends ForumScript {
     }
 
     @Override
-    public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
+    public void createThread(ForumThread thread) throws SQLException, ScriptException {
         this.insertIP(thread.getAuthor(), "thread", "insert");
         long timestamp = new Date().getTime() / 1000;
         HashMap<String, Object> data = new HashMap<String, Object>();

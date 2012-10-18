@@ -27,7 +27,7 @@ import com.craftfire.commons.managers.DataManager;
 import com.craftfire.bifrost.classes.general.Script;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class contains methods relevant to direct methods for each cms script.
@@ -48,10 +48,10 @@ public class CMSScript extends Script {
      * 
      * @param  commentid          the comment ID
      * @return                    CMSComment object, null if nothing was found
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSComment getComment(int commentid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSComment getComment(int commentid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -64,20 +64,20 @@ public class CMSScript extends Script {
      *
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSComment objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSComment> getComments(int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the complete count of how many comments have been made.
      * 
      * @return                    the amount of how many comments have been made
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getCommentTotalCount() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getCommentTotalCount() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -91,10 +91,10 @@ public class CMSScript extends Script {
      * @param  articleid          the artcile ID to grab the comments from
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSComment objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSComment> getCommentsOnArticle(int articleid, int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSComment> getCommentsOnArticle(int articleid, int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -102,11 +102,11 @@ public class CMSScript extends Script {
      *
      * @param  articleid          the article ID to count comments on
      * @return                    the amount of how many comments there are on the article
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       CMSArticle
      */
-    public int getCommentCount(int articleid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getCommentCount(int articleid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -120,10 +120,10 @@ public class CMSScript extends Script {
      * @param  commentid          the ID of the comment to grab the replying comments from
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSComment objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSComment> getCommentReplies(int commentid, int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSComment> getCommentReplies(int commentid, int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -131,10 +131,10 @@ public class CMSScript extends Script {
      *
      * @param  commentid          the ID of the comment to count the replying comments
      * @return                    the amount of how many comments there are replying to given comment
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getCommentReplyCount(int commentid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getCommentReplyCount(int commentid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -148,10 +148,10 @@ public class CMSScript extends Script {
      * @param  username           the username to grab the comments from
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSComment objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSComment> getUserComments(String username, int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSComment> getUserComments(String username, int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -159,21 +159,21 @@ public class CMSScript extends Script {
      *
      * @param  username           the username to get the count from.
      * @return                    the amount of how many comments the username have made, returns 0 if none
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getUserCommentCount(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getUserCommentCount(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the CMSComment object of the last comment that has been made.
      *
      * @return                    CMSComment object of the last comment
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       CMSComment
      */
-    public CMSComment getLastComment() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSComment getLastComment() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -181,11 +181,11 @@ public class CMSScript extends Script {
      *
      * @param  username           the username to grab the last comment from
      * @return                    CMSComment object of the last comment made by the user
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       CMSComment
      */
-    public CMSComment getLastUserComment(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSComment getLastUserComment(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -193,30 +193,30 @@ public class CMSScript extends Script {
      * 
      * @param  articleid          the article ID to grab the last comment from
      * @return                    CMSComment object of the last comment from the article
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSComment getLastCommentOnArticle(int articleid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSComment getLastCommentOnArticle(int articleid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Updates the CMSComment object with whatever values set by the user.
      *
      * @param  comment            the CMSComment object.
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public void updateComment(CMSComment comment) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void updateComment(CMSComment comment) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Creates the CMSComment object with whatever values set by the user.
      *
      * @param  comment            the CMSComment object.
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public void createComment(CMSComment comment) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void createComment(CMSComment comment) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -224,10 +224,10 @@ public class CMSScript extends Script {
      * 
      * @param  articleid          the article ID
      * @return                    CMSArticle object, null if nothing was found
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSArticle getArticle(int articleid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSArticle getArticle(int articleid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -240,20 +240,20 @@ public class CMSScript extends Script {
      *
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSArticle objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSArticle> getArticles(int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the complete count of how many articles have been made.
      * 
      * @return                    the amount of how many articles have been made
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getArticleTotalCount() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getArticleTotalCount() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -267,10 +267,10 @@ public class CMSScript extends Script {
      * @param  catid              the category ID to grab the articles from
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSArticle objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSArticle> getArticlesFromCategory(int catid, int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSArticle> getArticlesFromCategory(int catid, int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -278,10 +278,10 @@ public class CMSScript extends Script {
      * 
      * @param  catid              the category ID to count articles from
      * @return                    the amount of how many articles there are in the category
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getArticleCount(int catid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getArticleCount(int catid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -295,10 +295,10 @@ public class CMSScript extends Script {
      * @param  username           the username to grab the articles from
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSArticle objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSArticle> getUserArticles(String username, int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSArticle> getUserArticles(String username, int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -306,20 +306,20 @@ public class CMSScript extends Script {
      *
      * @param  username           the username to get the count from.
      * @return                    the amount of how many articles the username have made, returns 0 if none
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getUserArticleCount(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getUserArticleCount(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the CMSArticle object of the last article that has been made.
      *
      * @return                    CMSArticle object of the last article
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSArticle getLastArticle() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSArticle getLastArticle() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -327,10 +327,10 @@ public class CMSScript extends Script {
      *
      * @param  username           the username to grab the last article from
      * @return                    CMSArticle object of the last article made by the user
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSArticle getLastUserArticle(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSArticle getLastUserArticle(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -338,30 +338,30 @@ public class CMSScript extends Script {
      * 
      * @param catid               the category ID to grab the last article from
      * @return                    CMSArticle object of the last article from the category
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSArticle getLastArticleFromCategory(int catid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSArticle getLastArticleFromCategory(int catid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Updates the CMSArticle object with whatever values set by the user.
      *
      * @param  article            the CMSArticle object
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public void updateArticle(CMSArticle article) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void updateArticle(CMSArticle article) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Creates the CMSArticle object with whatever values set by the user.
      *
      * @param  article            the CMSArticle object
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public void createArticle(CMSArticle article) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void createArticle(CMSArticle article) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -369,10 +369,10 @@ public class CMSScript extends Script {
      * 
      * @param  catid              the category ID
      * @return                    CMSCategory object, null if nothing was found
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSCategory getCategory(int catid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public CMSCategory getCategory(int catid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -385,20 +385,20 @@ public class CMSScript extends Script {
      *
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSCategory objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSCategory> getCategories(int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSCategory> getCategories(int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the complete count of how many categories are there.
      * 
      * @return                    the amount of how many categories are there
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getCategoryCount() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getCategoryCount() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -412,10 +412,10 @@ public class CMSScript extends Script {
      * @param  catid              the category ID to grab the subcategories from
      * @param  limit              the limit, set to 0 if you want to return all
      * @return                    List with CMSCategory objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSCategory> getSubCategories(int catid, int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<CMSCategory> getSubCategories(int catid, int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -423,37 +423,37 @@ public class CMSScript extends Script {
      * 
      * @param  catid              the category ID to count subcategories from
      * @return                    the amount of how many subcategories there are in the category
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getSubCategoryCount(int catid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getSubCategoryCount(int catid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Updates the CMSCategory object with whatever values set by the user.
      *
      * @param  category           the CMSCategory object
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public void updateCategory(CMSCategory category) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void updateCategory(CMSCategory category) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Creates the CMSCategory object with whatever values set by the user.
      *
      * @param  category           the CMSCategory object
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public void createCategory(CMSCategory category) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void createCategory(CMSCategory category) throws ScriptException {
+        throw new ScriptException();
     }
 
     /* (non-Javadoc)
      * @see com.craftfire.bifrost.script.Script#getUser(java.lang.String)
      */
     @Override
-    public CMSUser getUser(String username) throws UnsupportedMethod, SQLException {
+    public CMSUser getUser(String username) throws ScriptException, SQLException {
         return (CMSUser) super.getUser(username);
     }
 
@@ -461,7 +461,7 @@ public class CMSScript extends Script {
      * @see com.craftfire.bifrost.script.Script#getUser(int)
      */
     @Override
-    public CMSUser getUser(int userid) throws UnsupportedMethod, SQLException {
+    public CMSUser getUser(int userid) throws ScriptException, SQLException {
         return (CMSUser) super.getUser(userid);
     }
 
@@ -469,14 +469,14 @@ public class CMSScript extends Script {
      * @see com.craftfire.bifrost.script.Script#getLastRegUser()
      */
     @Override
-    public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
+    public CMSUser getLastRegUser() throws ScriptException, SQLException {
         return (CMSUser) super.getLastRegUser();
     }
 
     /**
      * @see com.craftfire.bifrost.classes.general.Script#updateUser(ScriptUser)
      */
-    public void updateUser(CMSUser user) throws SQLException, UnsupportedMethod {
+    public void updateUser(CMSUser user) throws SQLException, ScriptException {
         updateUser((ScriptUser) user);
     }
 
@@ -484,7 +484,7 @@ public class CMSScript extends Script {
      * @see com.craftfire.bifrost.classes.general.Script#createUser(ScriptUser)
      * ()
      */
-    public void createUser(CMSUser user) throws SQLException, UnsupportedMethod {
+    public void createUser(CMSUser user) throws SQLException, ScriptException {
         createUser((ScriptUser) user);
     }
 }

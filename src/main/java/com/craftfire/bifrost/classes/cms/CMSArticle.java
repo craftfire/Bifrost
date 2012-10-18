@@ -28,7 +28,7 @@ import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.classes.general.ViewsCounter;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a CMS article.
@@ -82,9 +82,9 @@ public class CMSArticle extends Message implements ViewsCounter {
      * 
      * @param  limit              how many comments should be returned, {@code 0} = returns all
      * @return                    the list of comments
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSComment> getComments(int limit) throws UnsupportedMethod {
+    public List<CMSComment> getComments(int limit) throws ScriptException {
         return getHandle().getCommentsOnArticle(getID(), limit);
     }
 
@@ -94,7 +94,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * For CMSArticle it always has the same result as {@link #getComments(int)}.
      */
     @Override
-    public List<CMSComment> getChildMessages(int limit) throws UnsupportedMethod {
+    public List<CMSComment> getChildMessages(int limit) throws ScriptException {
         return getComments(limit);
     }
 
@@ -104,7 +104,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * For CMSArticle it always has the same result as {@link #getCategory()}.
      */
     @Override
-    public CMSCategory getParent() throws UnsupportedMethod, SQLException {
+    public CMSCategory getParent() throws ScriptException, SQLException {
         return getCategory();
     }
 
@@ -114,7 +114,7 @@ public class CMSArticle extends Message implements ViewsCounter {
      * @see Message#getCategory()
      */
     @Override
-    public CMSCategory getCategory() throws UnsupportedMethod, SQLException {
+    public CMSCategory getCategory() throws ScriptException, SQLException {
         return getHandle().getCategory(getCategoryID());
     }
 
@@ -240,10 +240,10 @@ public class CMSArticle extends Message implements ViewsCounter {
      * It should <b>not</b> be run when creating a new article, only when editing an already existing article.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updateArticle(this);
     }
 
@@ -253,10 +253,10 @@ public class CMSArticle extends Message implements ViewsCounter {
      * It should <b>not</b> be run when updating an article, only when creating a new article.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createArticle(this);
     }
 

@@ -28,7 +28,7 @@ import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a forum post.
@@ -96,9 +96,9 @@ public class ForumPost extends Message {
      * Returns the ID of the board that the thread is posted in.
      * 
      * @return                    the ID of the board
-     * @throws UnsupportedMethod  if the method is not supported by script
+     * @throws ScriptException  if the method is not supported by script
      */
-    public int getBoardID() throws UnsupportedMethod {
+    public int getBoardID() throws ScriptException {
         try {
             return getThread().getBoardID();
         } catch (SQLException e) {
@@ -110,10 +110,10 @@ public class ForumPost extends Message {
      * Returns a ForumBoard object for the board that the thread is posted in.
      * 
      * @return                    a ForumBoard object
-     * @throws UnsupportedMethod  if the method is not supported by script
+     * @throws ScriptException  if the method is not supported by script
      * @throws SQLException       if a SQL exception occurred
      */
-    public ForumBoard getBoard() throws UnsupportedMethod, SQLException {
+    public ForumBoard getBoard() throws ScriptException, SQLException {
         return getThread().getBoard();
     }
 
@@ -121,10 +121,10 @@ public class ForumPost extends Message {
      * Returns the {@link ForumThread} of the post.
      *
      * @return                    the thread Object
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @throws SQLException       if a SQL exception occurred
      */
-    public ForumThread getThread() throws UnsupportedMethod, SQLException {
+    public ForumThread getThread() throws ScriptException, SQLException {
         return getHandle().getThread(this.threadid);
     }
 
@@ -170,10 +170,10 @@ public class ForumPost extends Message {
      * It should <b>not</b> be run when creating a new post, only when editing an already existing post.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updatePost(this);
     }
 
@@ -183,10 +183,10 @@ public class ForumPost extends Message {
      * It should <b>not</b> be run when updating a post, only when creating a new post.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createPost(this);
     }
 
@@ -276,7 +276,7 @@ public class ForumPost extends Message {
      * @see Message#getCategory()
      */
     @Override
-    public ForumBoard getCategory() throws UnsupportedMethod, SQLException {
+    public ForumBoard getCategory() throws ScriptException, SQLException {
         return getBoard();
     }
 
@@ -289,7 +289,7 @@ public class ForumPost extends Message {
     public int getCategoryID() {
         try {
             return getBoardID();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             return 0;
         }
     }
@@ -300,7 +300,7 @@ public class ForumPost extends Message {
      * For ForumPost this always returns null.
      */
     @Override
-    public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod {
+    public List<? extends Message> getChildMessages(int limit) throws ScriptException {
         return null;
     }
 
@@ -310,7 +310,7 @@ public class ForumPost extends Message {
      * For ForumPost it always has the same result as {@link #getThread()}.
      */
     @Override
-    public ForumThread getParent() throws UnsupportedMethod, SQLException {
+    public ForumThread getParent() throws ScriptException, SQLException {
         return getThread();
     }
 

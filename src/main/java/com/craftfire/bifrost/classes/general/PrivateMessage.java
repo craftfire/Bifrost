@@ -24,7 +24,7 @@ import java.util.*;
 
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a private/conversation message.
@@ -233,11 +233,11 @@ public class PrivateMessage extends Message {
      * <p>
      * Use {@link #create()} instead if you wish to update the private message.
      *
-     * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException     if a SQL error concurs
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updatePrivateMessage(this);
     }
 
@@ -249,11 +249,11 @@ public class PrivateMessage extends Message {
      * <p>
      * Use {@link #update()} instead if you wish to update the private message.
      *
-     * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException     if a SQL error concurs
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
        getHandle().createPrivateMessage(this);
     }
 
@@ -404,7 +404,7 @@ public class PrivateMessage extends Message {
      * @see Message#getParent()
      */
     @Override
-    public PrivateMessage getParent() throws UnsupportedMethod, SQLException {
+    public PrivateMessage getParent() throws ScriptException, SQLException {
         return getHandle().getPM(this.parentid);
     }
 
@@ -414,7 +414,7 @@ public class PrivateMessage extends Message {
      * @see com.craftfire.bifrost.classes.general.MessageParent#getChildMessages(int)
      */
     @Override
-    public List<PrivateMessage> getChildMessages(int limit) throws UnsupportedMethod {
+    public List<PrivateMessage> getChildMessages(int limit) throws ScriptException {
         return getHandle().getPMReplies(getID(), limit);
     }
 }

@@ -45,7 +45,7 @@ import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class contains all the methods for WordPress.
@@ -99,18 +99,18 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public CMSUser getLastRegUser() throws UnsupportedMethod, SQLException {
+    public CMSUser getLastRegUser() throws ScriptException, SQLException {
         return this.getHandle().getUser(this.getDataManager().getIntegerField("SELECT `ID` FROM `" + this.getDataManager().getPrefix() + "users` ORDER BY `user_registered` DESC LIMIT 1"));
     }
 
     @Override
-    public CMSUser getUser(String username) throws UnsupportedMethod, SQLException {
+    public CMSUser getUser(String username) throws ScriptException, SQLException {
         return this.getHandle().getUser(getUserID(username));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public CMSUser getUser(int userid) throws SQLException, UnsupportedMethod {
+    public CMSUser getUser(int userid) throws SQLException, ScriptException {
         if (this.getDataManager().exist("users", "ID", userid)) {
             CMSUser user = new CMSUser(this, userid, null, null);
             Results res = this.getDataManager().getResults("SELECT * FROM `" + this.getDataManager().getPrefix() + "users` WHERE `ID` = '" + userid + "' LIMIT 1");
@@ -157,7 +157,7 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public void updateUser(ScriptUser user) throws SQLException, UnsupportedMethod {
+    public void updateUser(ScriptUser user) throws SQLException, ScriptException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("user_login", user.getUsername());
         data.put("user_email", user.getEmail());
@@ -206,7 +206,7 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public void createUser(ScriptUser user) throws SQLException, UnsupportedMethod {
+    public void createUser(ScriptUser user) throws SQLException, ScriptException {
         HashMap<String, Object> data;
         if (CraftCommons.unixHashIdentify(user.getPassword()) == null) {
             user.setPassword(hashPassword(null, user.getPassword()));
@@ -260,11 +260,11 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public List<Group> getGroups(int limit) throws UnsupportedMethod, SQLException {
+    public List<Group> getGroups(int limit) throws ScriptException, SQLException {
         return getGroups(limit, false);
     }
 
-    protected List<Group> getGroups(int limit, boolean namesonly) throws UnsupportedMethod, SQLException {
+    protected List<Group> getGroups(int limit, boolean namesonly) throws ScriptException, SQLException {
         List<Group> groups = new ArrayList<Group>();
         int newLimit = limit;
         if (newLimit > getGroupCount() | newLimit <= 0) {
@@ -283,7 +283,7 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public int getGroupID(String group) throws UnsupportedMethod, SQLException {
+    public int getGroupID(String group) throws ScriptException, SQLException {
         List<Group> groups = getGroups(0, true);
         for (Group grp : groups) {
             if (grp.getName().equalsIgnoreCase(group)) {
@@ -294,12 +294,12 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public Group getGroup(int groupid) throws UnsupportedMethod, SQLException {
+    public Group getGroup(int groupid) throws ScriptException, SQLException {
         return getGroup(groupid, false);
     }
 
     @SuppressWarnings("unchecked")
-    protected Group getGroup(int groupid, boolean namesonly) throws UnsupportedMethod, SQLException {
+    protected Group getGroup(int groupid, boolean namesonly) throws ScriptException, SQLException {
         String groupname = "";
         Group group;
         switch (groupid) {
@@ -375,13 +375,13 @@ public class WordPress extends CMSScript {
     }
 
     @Override
-    public Group getGroup(String group) throws UnsupportedMethod, SQLException {
+    public Group getGroup(String group) throws ScriptException, SQLException {
         return getGroup(getGroupID(group));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Group> getUserGroups(String username) throws SQLException, UnsupportedMethod {
+    public List<Group> getUserGroups(String username) throws SQLException, ScriptException {
         int userid = this.getHandle().getUserID(username);
         String capabilities = this.getDataManager().getStringField("usermeta", "meta_value", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'");
         Map<Object, Object> capmap = null;
@@ -423,7 +423,7 @@ public class WordPress extends CMSScript {
         return uGroups;
     }
 
-    protected void setUserGroups(String username, List<Group> groups) throws SQLException, UnsupportedMethod {
+    protected void setUserGroups(String username, List<Group> groups) throws SQLException, ScriptException {
         List<Group> newGroups = groups;
         if (newGroups == null) {
             newGroups = new ArrayList<Group>();
@@ -518,9 +518,9 @@ public class WordPress extends CMSScript {
 
 
     @Override
-    public void updateGroup(Group group) throws UnsupportedMethod, SQLException {
+    public void updateGroup(Group group) throws ScriptException, SQLException {
         if (!getGroup(group.getID(), true).getName().equalsIgnoreCase(group.getName())) {
-            throw new UnsupportedMethod("The script doesn't support changing group names or IDs.");
+            throw new ScriptException("The script doesn't support changing group names or IDs.");
         }
         if (group.getID() == 6) {
             if (this.getDataManager().exist("sitemeta", "meta_key", "site_admins")) {

@@ -19,9 +19,9 @@
  */
 package com.craftfire.bifrost.classes.general;
 
-import java.util.List;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import java.util.List;
 
 /**
  * Base class for all categories like ForumBoard, ArticleCategory, WikiCategory, IssueCategory.
@@ -127,38 +127,38 @@ public abstract class Category extends GenericMethods implements MessageParent {
      * in classes of specific category types (such as ForumBoard). Loads it from
      * database if not cached.
      * 
-     * @return                    a Category object
-     * @throws UnsupportedMethod  if the method is not supported by script
+     * @return                  a Category object
+     * @throws ScriptException  if the method is not supported by script
      */
-    public abstract Category getParent() throws UnsupportedMethod;
+    public abstract Category getParent() throws ScriptException;
 
     /**
      * Returns the list of subcategories of this category. Should be implemented
      * in classes of specific category types (such as ForumBoard). Loads the
      * categories from database if not cached.
      * 
-     * @param  limit              how many subcategories should be returned, 0 = returns all
-     * @return                    the subcategory list
-     * @throws UnsupportedMethod  if the method is not supported by script
+     * @param  limit            how many subcategories should be returned, 0 = returns all
+     * @return                  the subcategory list
+     * @throws ScriptException  if the method is not supported by script
      */
-    public abstract List<? extends Category> getSubcategories(int limit) throws UnsupportedMethod;
+    public abstract List<? extends Category> getSubcategories(int limit) throws ScriptException;
 
     /**
      * Returns the list of messages contained in this category. Should be
      * implemented in classes of specific category types (such as ForumBoard).
      * Loads the messages from database if not cached.
      * 
-     * @param  limit              how many messages should be returned, 0 = returns all
-     * @return                    the list of messages
-     * @throws UnsupportedMethod  if the method is not supported by script
+     * @param  limit            how many messages should be returned, 0 = returns all
+     * @return                  the list of messages
+     * @throws ScriptException  if the method is not supported by script
      */
-    public abstract List<? extends Message> getMessages(int limit) throws UnsupportedMethod;
+    public abstract List<? extends Message> getMessages(int limit) throws ScriptException;
     
     /* (non-Javadoc)
      * @see MessageParent#getChildMessages(int)
      */
     @Override
-    public List<? extends Message> getChildMessages(int limit) throws UnsupportedMethod {
+    public List<? extends Message> getChildMessages(int limit) throws ScriptException {
         return getMessages(limit);
     }
 

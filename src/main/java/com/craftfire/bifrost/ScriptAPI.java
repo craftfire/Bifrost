@@ -22,6 +22,7 @@ package com.craftfire.bifrost;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.craftfire.bifrost.exceptions.ScriptException;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
@@ -32,8 +33,6 @@ import com.craftfire.bifrost.classes.forum.ForumScript;
 import com.craftfire.bifrost.classes.general.Script;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedScript;
-import com.craftfire.bifrost.exceptions.UnsupportedVersion;
 import com.craftfire.bifrost.scripts.cms.WordPress;
 import com.craftfire.bifrost.scripts.forum.PhpBB;
 import com.craftfire.bifrost.scripts.forum.SMF;
@@ -103,13 +102,13 @@ public class ScriptAPI {
      * <p>
      * Returns {@code null} if the {@code script} is not supported.
      *
-     * @param script               the script
-     * @param version              the version of the script
-     * @param dataManager          the {@link DataManager} for the script
-     * @return                     a {@link Script} object, returns null if not supported
-     * @throws UnsupportedVersion  if the {@code version} is not supported by the script
+     * @param script            the script
+     * @param version           the version of the script
+     * @param dataManager       the {@link DataManager} for the script
+     * @return                  a {@link Script} object, returns null if not supported
+     * @throws ScriptException  if the {@code version} is not supported by the script
      */
-    public static Script setScript(Scripts script, String version, DataManager dataManager) throws UnsupportedVersion {
+    public static Script setScript(Scripts script, String version, DataManager dataManager) throws ScriptException {
         Script scriptInstance;
         switch (script) {
             case WP:
@@ -128,7 +127,7 @@ public class ScriptAPI {
                 return null;
         }
         if (!scriptInstance.isSupportedVersion()) {
-            throw new UnsupportedVersion("Version " + scriptInstance.getVersion() + " of " + scriptInstance.getScriptName() + " is not currently supported");
+            throw new ScriptException("Version " + scriptInstance.getVersion() + " of " + scriptInstance.getScriptName() + " is not currently supported");
         }
         return scriptInstance;
     }
@@ -213,19 +212,18 @@ public class ScriptAPI {
     /**
      * Creates an instance of given standard Bifrost-supported script. Creates a handle for it and adds the handle to the list.
      *
-     * @param  script              the script
-     * @param  version             the version of the script
-     * @param  dataManager         the {@link DataManager} of the script
-     * @throws UnsupportedScript   if the specified {@code script} is not supported by Bifrost
-     * @throws UnsupportedVersion  if the specified {@code version} is not supported by the script
+     * @param  script           the script
+     * @param  version          the version of the script
+     * @param  dataManager      the {@link DataManager} of the script
+     * @throws ScriptException  if the specified {@code script} or {@code version} is not supported by Bifrost/the script
      */
-    public int addHandle(Scripts script, String version, DataManager dataManager) throws UnsupportedScript, UnsupportedVersion {
+    public int addHandle(Scripts script, String version, DataManager dataManager) throws ScriptException, ScriptException {
         if (script == null || version == null || dataManager == null) {
             throw new IllegalArgumentException("None of the arguments can be null!");
         }
         Script scriptInstance = ScriptAPI.setScript(script, version, dataManager);
         if (scriptInstance == null) {
-            throw new UnsupportedScript();
+            throw new ScriptException();
         }
         return addHandle(scriptInstance);
     }

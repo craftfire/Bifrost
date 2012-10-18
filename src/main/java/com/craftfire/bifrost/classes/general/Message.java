@@ -19,10 +19,10 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import com.craftfire.bifrost.exceptions.ScriptException;
+
 import java.sql.SQLException;
 import java.util.Date;
-
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 
 /**
  * Base class for all messages like Thread, Post, Article, Comment, PrivateMessage, etc.
@@ -168,21 +168,21 @@ public abstract class Message extends GenericMethods implements MessageParent {
     /**
      * Returns the parent of the message.
      * 
-     * @return                    the parent of the message
-     * @throws UnsupportedMethod  if the method is not supported by script
-     * @throws SQLException       if a SQL exception occurred
+     * @return                  the parent of the message
+     * @throws ScriptException  if the method is not supported by script
+     * @throws SQLException     if a SQL exception occurred
      */
-    public abstract MessageParent getParent() throws UnsupportedMethod, SQLException;
+    public abstract MessageParent getParent() throws ScriptException, SQLException;
 
     /**
      * Returns a Category object for the category of the message. Should be
      * implemented in classes of specific message types (such as ForumTopic).
      * 
-     * @return                    a Category object
-     * @throws UnsupportedMethod  if the method is not supported by script
-     * @throws SQLException       if a SQL exception occurred
+     * @return                  a Category object
+     * @throws ScriptException  if the method is not supported by script
+     * @throws SQLException     if a SQL exception occurred
      */
-    public abstract Category getCategory() throws UnsupportedMethod, SQLException;
+    public abstract Category getCategory() throws ScriptException, SQLException;
 
     /**
      * Returns the ID of the category of the message.

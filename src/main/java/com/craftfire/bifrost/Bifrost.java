@@ -19,8 +19,13 @@
  */
 package com.craftfire.bifrost;
 
+import com.craftfire.commons.exceptions.AnalyticsException;
+import com.craftfire.commons.managers.AnalyticsManager;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 //TODO: Javadoc, analytics and logging.
 
@@ -58,7 +63,15 @@ public class Bifrost {
      */
     public Bifrost() {
         this.scriptAPI = new ScriptAPI(this);
-        this.loggingManager.info("Initialized Bifrost version " + this.version); // TODO
+        this.loggingManager.info("Initialized Bifrost version " + this.version);
+        try {
+            new AnalyticsManager("http://stats.craftfire.com/", "Bifrost", getVersion()).submit();
+        } catch (MalformedURLException ignore) {
+        } catch (IOException e) {
+            getLoggingManager().stackTrace(e);
+        } catch (AnalyticsException e) {
+            getLoggingManager().stackTrace(e);
+        }
     }
 
     /**

@@ -19,8 +19,6 @@
  */
 package com.craftfire.bifrost.enums;
 
-import com.craftfire.bifrost.exceptions.UnsupportedScript;
-
 /**
  * This enum holds all the different supported scripts.
  */
@@ -65,11 +63,11 @@ public enum Scripts {
     /**
      * Converts a string into a script enum.
      *
-     * @param  string             the string which contains the script name
-     * @return                    the script for the string, if none are found it returns null.
-     * @throws UnsupportedScript  if the input string is not found in the list of supported scripts.
+     * @param  string                      the string which contains the script name
+     * @return                             the script for the string, if none are found it returns null.
+     * @throws ScriptException  if the input string is not found in the list of supported scripts.
      */
-    public static Scripts stringToScript(String string) throws UnsupportedScript {
+    public static Scripts stringToScript(String string) throws ScriptException {
         for (Scripts script : values()) {
             if (string.equalsIgnoreCase(script.toString()) || string.equalsIgnoreCase(script.getAlias())) {
                 return script;
@@ -82,6 +80,6 @@ public enum Scripts {
                 }
             }
         }
-        throw new UnsupportedScript();
+        throw new ScriptException();
     }
 }

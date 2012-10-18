@@ -22,7 +22,7 @@ package com.craftfire.bifrost.classes.forum;
 import java.sql.SQLException;
 
 import com.craftfire.bifrost.classes.general.ScriptUser;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 import com.craftfire.bifrost.classes.general.Script;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
 
@@ -62,9 +62,9 @@ public class ForumUser extends ScriptUser {
      * Returns the post count of this user.
      *
      * @return                    post count
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getPostCount() throws UnsupportedMethod {
+    public int getPostCount() throws ScriptException {
         return getHandle().getPostCount(getUsername());
     }
 
@@ -72,9 +72,9 @@ public class ForumUser extends ScriptUser {
      * Returns the thread count of this user.
      *
      * @return                    thread count
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getThreadCount() throws UnsupportedMethod {
+    public int getThreadCount() throws ScriptException {
         return getHandle().getThreadCount(getUsername());
     }
 
@@ -83,9 +83,9 @@ public class ForumUser extends ScriptUser {
      *
      * @return                    last forum thread, null if empty
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public ForumThread getLastThread() throws UnsupportedMethod, SQLException {
+    public ForumThread getLastThread() throws ScriptException, SQLException {
         return getHandle().getLastUserThread(getUsername());
     }
 
@@ -94,9 +94,9 @@ public class ForumUser extends ScriptUser {
      *
      * @return                    last forum post, null if empty
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
+    public ForumPost getLastPost() throws ScriptException, SQLException {
         return getHandle().getLastUserPost(getUsername());
     }
 
@@ -106,11 +106,11 @@ public class ForumUser extends ScriptUser {
      * It should <b>not</b> be run when creating a new forum user, only when editing an already existing forum user.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see    #create()          for creating an user
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updateUser(this);
     }
 
@@ -120,11 +120,11 @@ public class ForumUser extends ScriptUser {
      * It should <b>not</b> be run when updating a forum user, only when creating a forum user.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see    #update()          for updating an user
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createUser(this);
     }
 }

@@ -19,7 +19,7 @@
  */
 package com.craftfire.bifrost.classes.general;
 
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 import java.sql.SQLException;
 
@@ -71,10 +71,10 @@ public class GenericMethods {
      * <p>
      * It should <b>not</b> be run when creating a new object, only when editing an already existing object.
      *
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public void update() throws SQLException,UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void update() throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -82,9 +82,9 @@ public class GenericMethods {
      * <p>
      * It should <b>not</b> be run when updating an object, only when creating a new object.
      *
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public void create() throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void create() throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 }

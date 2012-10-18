@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.classes.general.Script;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a cms user.
@@ -62,9 +62,9 @@ public class CMSUser extends ScriptUser {
      * Returns the comment count of this user.
      *
      * @return                    comment count
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getCommentCount() throws UnsupportedMethod {
+    public int getCommentCount() throws ScriptException {
         return getHandle().getUserCommentCount(getUsername());
     }
 
@@ -72,9 +72,9 @@ public class CMSUser extends ScriptUser {
      * Returns the article count of this user.
      *
      * @return                    article count
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getArticleCount() throws UnsupportedMethod {
+    public int getArticleCount() throws ScriptException {
         return getHandle().getUserArticleCount(getUsername());
     }
 
@@ -82,9 +82,9 @@ public class CMSUser extends ScriptUser {
      * Returns the last comment of this user, returns null if no comments were found.
      *
      * @return                    last comment, null if empty
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSComment getLastComment() throws UnsupportedMethod {
+    public CMSComment getLastComment() throws ScriptException {
         return getHandle().getLastUserComment(getUsername());
     }
 
@@ -92,9 +92,9 @@ public class CMSUser extends ScriptUser {
      * Returns the last article of this user, returns null if no articles were found.
      *
      * @return                    last article, null if empty
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public CMSArticle getLastArticle() throws UnsupportedMethod {
+    public CMSArticle getLastArticle() throws ScriptException {
         return getHandle().getLastUserArticle(getUsername());
     }
 
@@ -104,11 +104,11 @@ public class CMSUser extends ScriptUser {
      * It should <b>not</b> be run when creating a new cms user, only when editing an already existing cms user.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see #create()             for creating an user
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updateUser(this);
     }
 
@@ -118,11 +118,11 @@ public class CMSUser extends ScriptUser {
      * It should <b>not</b> be run when updating a cms user, only when creating a cms user.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see #update()             for updating an user
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createUser(this);
     }
 }

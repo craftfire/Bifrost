@@ -23,15 +23,14 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.craftfire.bifrost.exceptions.ScriptException;
 import com.craftfire.commons.classes.Version;
 import com.craftfire.commons.classes.VersionRange;
 import com.craftfire.commons.managers.DataManager;
 import com.craftfire.commons.managers.LoggingManager;
 
-import com.craftfire.bifrost.Bifrost;
 import com.craftfire.bifrost.enums.ScriptType;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
 
 /**
  * This class contains methods relevant to direct methods for each script.
@@ -221,10 +220,10 @@ public class Script {
      * @param  username           the username of the user
      * @param  password           the password of the user
      * @return                    {@code true} if the password matches with the username's password
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public boolean authenticate(String username, String password) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public boolean authenticate(String username, String password) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -234,10 +233,10 @@ public class Script {
      * @param  salt               the salt of the user to hash
      * @param  password           the password of the user to hash
      * @return                    a hashed string
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public String hashPassword(String salt, String password) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public String hashPassword(String salt, String password) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -246,10 +245,10 @@ public class Script {
      * @param  userid             the userid to get the username from
      * @return                    username of {@code userid}, returns {@code null} if nothing was found
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public String getUsername(int userid) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public String getUsername(int userid) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -257,10 +256,10 @@ public class Script {
      *
      * @param  username           the username to get the user ID from
      * @return                    user ID of {@code username}, returns {@code 0} if nothing was found
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getUserID(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getUserID(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -271,11 +270,11 @@ public class Script {
      * @return                    a {@link ScriptUser} object of the given username,
      *                            returns {@code null} if nothing was found
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       ScriptUser
      */
-    public ScriptUser getUser(String username) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public ScriptUser getUser(String username) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -286,11 +285,11 @@ public class Script {
      * @return                    a {@link ScriptUser} object of the given user ID,
      *                            returns {@code null} if nothing was found
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       ScriptUser
      */
-    public ScriptUser getUser(int userid) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public ScriptUser getUser(int userid) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -298,11 +297,11 @@ public class Script {
      *
      * @return                    a {@link ScriptUser} object of the latest registered user
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       ScriptUser
      */
-    public ScriptUser getLastRegUser() throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public ScriptUser getLastRegUser() throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -310,11 +309,11 @@ public class Script {
      *
      * @param  user               the {@link ScriptUser} object
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       ScriptUser
      */
-    public void updateUser(ScriptUser user) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void updateUser(ScriptUser user) throws SQLException, ScriptException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -322,11 +321,11 @@ public class Script {
      *
      * @param user                the {@link ScriptUser} object
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       ScriptUser
      */
-    public void createUser(ScriptUser user) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void createUser(ScriptUser user) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -340,12 +339,12 @@ public class Script {
      *
      * @param  limit              the limit, set to {@code 0} if you want to return all
      * @return                    List with {@link Group} objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @throws SQLException       if a SQL exception occurred
      * @see                       Group
      */
-    public List<Group> getGroups(int limit) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<Group> getGroups(int limit) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -354,10 +353,10 @@ public class Script {
      * @param  group              name of the group
      * @return                    id of the group
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getGroupID(String group) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getGroupID(String group) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -367,11 +366,11 @@ public class Script {
      * @param  groupid            the group ID
      * @return                    {@link Group} object, returns {@code null} if nothing was found
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       Group
      */
-    public Group getGroup(int groupid) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public Group getGroup(int groupid) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -381,11 +380,11 @@ public class Script {
      * @param  group              the group name
      * @return                    {@link Group} object, returns {@code null} if nothing was found
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       Group
      */
-    public Group getGroup(String group) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public Group getGroup(String group) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -396,11 +395,11 @@ public class Script {
      * @param  username           the username to grab the groups of.
      * @return                    List with {@link Group} objects, returns an empty List if none are found.
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       Group
      */
-    public List<Group> getUserGroups(String username) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<Group> getUserGroups(String username) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -408,11 +407,11 @@ public class Script {
      *
      * @param  group              the {@link Group} object
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       Group
      */
-    public void updateGroup(Group group) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void updateGroup(Group group) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -420,11 +419,11 @@ public class Script {
      *
      * @param  group              the {@link Group} object
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       Group
      */
-    public void createGroup(Group group) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void createGroup(Group group) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -434,11 +433,11 @@ public class Script {
      * @param  pmid               the private message ID
      * @return                    {@link PrivateMessage} object
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       PrivateMessage
      */
-    public PrivateMessage getPM(int pmid) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public PrivateMessage getPM(int pmid) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
     
     /**
@@ -452,11 +451,11 @@ public class Script {
      *
      * @param  limit              the limit, set to {@code 0} if you want to return all
      * @return                    List with PrivateMessage objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       PrivateMessage
      */
-    public List<PrivateMessage> getPMs(int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<PrivateMessage> getPMs(int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -471,11 +470,11 @@ public class Script {
      * @param  pmid               the ID of the private message
      * @param  limit              the limit, set to {@code 0} if you want to return all
      * @return                    List with {@link PrivateMessage} objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       PrivateMessage
      */
-    public List<PrivateMessage> getPMReplies(int pmid, int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<PrivateMessage> getPMReplies(int pmid, int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -491,11 +490,11 @@ public class Script {
      * @param  limit              the limit, set to {@code 0} if you want to return all
      * @return                    List with {@link PrivateMessage} objects, if none are found it returns an empty List
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       PrivateMessage
      */
-    public List<PrivateMessage> getPMsSent(String username, int limit) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<PrivateMessage> getPMsSent(String username, int limit) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -511,21 +510,21 @@ public class Script {
      * @param  limit              the limit, set to {@code 0} if you want to return all
      * @return                    List with {@link PrivateMessage} objects, if none are found it returns an empty List
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       PrivateMessage
      */
-    public List<PrivateMessage> getPMsReceived(String username, int limit) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<PrivateMessage> getPMsReceived(String username, int limit) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns a total amount of how many private messages are there.
      * 
      * @return                    total amount of private messages
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getPMCount() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getPMCount() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -533,10 +532,10 @@ public class Script {
      * 
      * @param  pmid               the ID of the message
      * @return                    an amount of private message replying to the message
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getPMReplyCount(int pmid) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getPMReplyCount(int pmid) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -545,10 +544,10 @@ public class Script {
      * @param  username           the username to get the count from
      * @return                    the amount of how many private messages the {@code username} has sent,
      *                            returns {@code 0} if none
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getPMSentCount(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getPMSentCount(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -557,10 +556,10 @@ public class Script {
      * @param  username           the {@code username} to get the count from
      * @return                    the amount of how many private messages the {@code username} has received,
      *                            returns {@code 0} if none
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getPMReceivedCount(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getPMReceivedCount(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -568,11 +567,11 @@ public class Script {
      *
      * @param  privateMessage     the {@link PrivateMessage} object
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       PrivateMessage
      */
-    public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void updatePrivateMessage(PrivateMessage privateMessage) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -580,22 +579,22 @@ public class Script {
      *
      * @param  privateMessage     the {@link PrivateMessage} object
      * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @see                       PrivateMessage
      */
-    public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void createPrivateMessage(PrivateMessage privateMessage) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns a List with {@code username}'s IP addresses.
      *
-     * @param  username           the username to get the IP addresses from
-     * @return                    List with {@code username}'s IP addresses
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @param  username                    the username to get the IP addresses from
+     * @return                             List with {@code username}'s IP addresses
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<String> getIPs(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<String> getIPs(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
@@ -607,99 +606,99 @@ public class Script {
      * <p>
      * If none are found, the List will be empty.
      *
-     * @param  limit              the limit, set to 0 if you want to return all
-     * @return                    List with {@link Ban} objects, if none are found it returns an empty List
-     * @throws UnsupportedMethod  if the method is not supported by the script
-     * @see                       Ban
+     * @param  limit                      the limit, set to 0 if you want to return all
+     * @return                             List with {@link Ban} objects, if none are found it returns an empty List
+     * @throws ScriptException  if the method is not supported by the script
+     * @see                                Ban
      */
-    public List<Ban> getBans(int limit) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public List<Ban> getBans(int limit) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Creates the {@link Ban} object with whatever values set by the user.
      *
-     * @param  ban                the {@link Ban} object
-     * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
-     * @see                       Ban
+     * @param  ban                         the {@link Ban} object
+     * @throws SQLException                if a SQL exception occurred
+     * @throws ScriptException  if the method is not supported by the script
+     * @see                                Ban
      */
-    public void updateBan(Ban ban) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void updateBan(Ban ban) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Creates the {@link Ban} object with whatever values set by the user.
      *
-     * @param  ban                the {@link Ban} object
-     * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
-     * @see                       Ban
+     * @param  ban                         the {@link Ban} object
+     * @throws SQLException                if a SQL exception occurred
+     * @throws ScriptException  if the method is not supported by the script
+     * @see                                Ban
      */
-    public void addBan(Ban ban) throws SQLException, UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public void addBan(Ban ban) throws SQLException, ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the complete count of how many bans that have been made.
      *
-     * @return                    the amount of how many bans that have been made, returns {@code 0} if none
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @return                             the amount of how many bans that have been made, returns {@code 0} if none
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getBanCount() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getBanCount() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns {@code true} if {@code string} matches a ban in the script, returns {@code false} if not.
      *
-     * @param  string             string to search for
-     * @return                    {@code true} if {@code string} is banned, returns {@code false} if not
-     * @throws SQLException       if a SQL exception occurred
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @param  string                      string to search for
+     * @return                             {@code true} if {@code string} is banned, returns {@code false} if not
+     * @throws SQLException                if a SQL exception occurred
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public boolean isBanned(String string) throws UnsupportedMethod, SQLException {
-        throw new UnsupportedMethod();
+    public boolean isBanned(String string) throws ScriptException, SQLException {
+        throw new ScriptException();
     }
 
     /**
      * Returns {@code true} if {@code username} is registered, returns {@code false} if not.
      *
-     * @param  username           username to check if is registered
-     * @return                    {@code true} if {@code username} is registered, {@code false} if not
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @param  username                    username to check if is registered
+     * @return                             {@code true} if {@code username} is registered, {@code false} if not
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public boolean isRegistered(String username) throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public boolean isRegistered(String username) throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the complete count of how many users the script has registered.
      *
-     * @return                    the amount of how many users the script has registered, returns {@code 0} if none
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @return                             the amount of how many users the script has registered, returns {@code 0} if none
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getUserCount() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getUserCount() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the complete count of how many groups the script has.
      *
-     * @return                    the amount of how how many groups the script has, returns {@code 0} if none
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @return                             the amount of how how many groups the script has, returns {@code 0} if none
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getGroupCount() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public int getGroupCount() throws ScriptException {
+        throw new ScriptException();
     }
 
     /**
      * Returns the script's home URL.
      *
-     * @return                    home URL of the script
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @return                             home URL of the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public String getHomeURL() throws UnsupportedMethod {
-        throw new UnsupportedMethod();
+    public String getHomeURL() throws ScriptException {
+        throw new ScriptException();
     }
 }

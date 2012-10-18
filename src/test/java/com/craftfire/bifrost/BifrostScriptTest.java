@@ -59,9 +59,9 @@ import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 import com.craftfire.bifrost.exceptions.UnsupportedScript;
-import com.craftfire.bifrost.exceptions.UnsupportedVersion;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 public class BifrostScriptTest {
     static final String newline = System.getProperty("line.separator");
@@ -157,8 +157,8 @@ public class BifrostScriptTest {
             bifrost = new Bifrost();
             int handleID = bifrost.getScriptAPI().addHandle(script, version, dataManager);
             handle = bifrost.getScriptAPI().getHandle(handleID);
-        } catch (UnsupportedVersion unsupportedVersion) {
-            throw new RuntimeException(unsupportedVersion);
+        } catch (ScriptException ScriptException) {
+            throw new RuntimeException(ScriptException);
         } catch (UnsupportedScript unsupportedScript) {
             throw new RuntimeException(unsupportedScript);
         }
@@ -199,32 +199,32 @@ public class BifrostScriptTest {
             printResult("getLatestVersion", "" + handle.getLatestVersion(), true);
             printResult("getVersion", "" + handle.getVersion(), true);
             printResult("getHomeURL", handle.getHomeURL(), true);
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
         try {
             printResult("getBanCount", "" + handle.getBanCount(), true);
             printResult("getBans", handle.getBans(0));
             printResult("isBanned", "" + handle.isBanned("test"), true);
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             e.printStackTrace();
         }
         try {
             printResult("getGroupCount", "" + handle.getGroupCount(), true);
             printResult("getGroups", handle.getGroups(0));
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             e.printStackTrace();
         }
         try {
             printResult("getLastRegUser", "" + handle.getLastRegUser(), true);
             printResult("getUserCount", "" + handle.getUserCount(), true);
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void testAuthenticate() throws UnsupportedMethod {
+    public void testAuthenticate() throws ScriptException {
         print(seperate);
         print(script.toString() + " - " + version + " - AUTHENTICATE");
         assertTrue("Wrong password", handle.authenticate(username, passwd));
@@ -251,7 +251,7 @@ public class BifrostScriptTest {
             printResult("getLastName", user.getLastName());
             try {
                 printResult("getIPs", "" + user.getIPs());
-            } catch (UnsupportedMethod e) {
+            } catch (ScriptException e) {
                 e.printStackTrace();
             }
             try {
@@ -259,7 +259,7 @@ public class BifrostScriptTest {
                 printResult("getPMSentCount", "" + user.getPMSentCount());
                 printResult("getPMsSent", "" + user.getPMsSent(0));
                 printResult("getPMsReceived", "" + user.getPMsReceived(0));
-            } catch (UnsupportedMethod e) {
+            } catch (ScriptException e) {
                 e.printStackTrace();
             }
             printResult("getRealName", user.getRealName());
@@ -274,17 +274,17 @@ public class BifrostScriptTest {
             printResult("isAnonymous", "" + user.isAnonymous());
             try {
                 printResult("isBanned", "" + user.isBanned());
-            } catch (UnsupportedMethod e) {
+            } catch (ScriptException e) {
                 e.printStackTrace();
             }
             printResult("isRegistered", "" + user.isRegistered());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
 
     @Test
-    public void testUserUpdate() throws UnsupportedMethod, SQLException {
+    public void testUserUpdate() throws ScriptException, SQLException {
         print(seperate);
         print(script.toString() + " - " + version + " - USER UPDATING");
         try {
@@ -295,7 +295,7 @@ public class BifrostScriptTest {
             user.update();
             user.setUsername(temp);
             user.update();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -312,7 +312,7 @@ public class BifrostScriptTest {
         newUser.setEmail("dev@craftfire.com");
         try {
             newUser.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -335,7 +335,7 @@ public class BifrostScriptTest {
             printResult("getTimeRemaining", "" + ban.getTimeRemaining());
             printResult("getUserID", "" + ban.getUserID());
             printResult("isPermanent", "" + ban.isPermanent());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -351,7 +351,7 @@ public class BifrostScriptTest {
             ban.update();
             ban.setReason(temp);
             ban.update();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -365,7 +365,7 @@ public class BifrostScriptTest {
             newBan.setNotes("Staff notes");
             newBan.setReason("Hello world!");
             newBan.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -382,7 +382,7 @@ public class BifrostScriptTest {
             printResult("getDescription", group.getDescription());
             printResult("getUserCount", "" + group.getUserCount());
             printResult("getUsers", "" + group.getUsers());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -399,7 +399,7 @@ public class BifrostScriptTest {
             group.update();
             group.setName(temp);
             group.update();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -412,7 +412,7 @@ public class BifrostScriptTest {
             Group newGroup = handle.newGroup("craftfire_group_" + this.randomInt);
             newGroup.setDescription("Description is not needed!");
             newGroup.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -429,7 +429,7 @@ public class BifrostScriptTest {
             printResult("getRecipients", "" + pm.getRecipients());
             printResult("getDate", "" + pm.getDate());
             printResult("getID", "" + pm.getID());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -446,7 +446,7 @@ public class BifrostScriptTest {
             pm.update();
             pm.setBody(temp);
             pm.update();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -465,7 +465,7 @@ public class BifrostScriptTest {
             newPM.setSubject("This is an example subject: " + this.randomInt);
             newPM.setNew(handle.getUser("Craftfire"), true);
             newPM.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -486,7 +486,7 @@ public class BifrostScriptTest {
             printResult("getLastThread", "" + user.getLastThread());
             printResult("getPostCount", "" + user.getPostCount());
             printResult("getThreadCount", "" + user.getThreadCount());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -509,7 +509,7 @@ public class BifrostScriptTest {
             printResult("getPostDate", "" + post.getPostDate());
             printResult("getPostID", "" + post.getID());
             printResult("getThreadID", "" + post.getThreadID());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -530,7 +530,7 @@ public class BifrostScriptTest {
             post.update();
             post.setSubject(temp);
             post.update();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -549,7 +549,7 @@ public class BifrostScriptTest {
             newPost.setAuthor(handle.getUser("craftfire" + this.randomInt));
             newPost.setSubject("Test " + this.randomInt + ": This is the subject of the post!");
             newPost.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -575,7 +575,7 @@ public class BifrostScriptTest {
             printResult("getThreadDate", "" + thread.getThreadDate());
             printResult("getThreadID", "" + thread.getID());
             printResult("getViews", "" + thread.getViewsCount());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -595,7 +595,7 @@ public class BifrostScriptTest {
             thread.update();
             thread.setSubject(temp);
             thread.update();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -614,7 +614,7 @@ public class BifrostScriptTest {
             newThread.setAuthor(handle.getUser("craftfire" + this.randomInt));
             newThread.setSubject("Test: " + this.randomInt + " This is the subject of the thread!");
             newThread.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -636,7 +636,7 @@ public class BifrostScriptTest {
             printResult("getParent", "" + board.getParent());
             printResult("getSubcategories", board.getSubcategories(0));
             printResult("getThreads", board.getThreads(0));
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -659,7 +659,7 @@ public class BifrostScriptTest {
             board.setName(temp);
             board.update();
             assertEquals("Debug", changed);
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -677,7 +677,7 @@ public class BifrostScriptTest {
             newBoard.setDescription("Test: " + this.randomInt + " This it the description of the board?!");
             newBoard.setName("Test: " + this.randomInt + " This is the name of the board!");
             newBoard.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -698,7 +698,7 @@ public class BifrostScriptTest {
             printResult("getLastArticle", "" + user.getLastArticle());
             printResult("getCommentCount", "" + user.getCommentCount());
             printResult("getArticleCount", "" + user.getArticleCount());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -724,7 +724,7 @@ public class BifrostScriptTest {
             printResult("isDeleted", "" + comment.isDeleted());
             printResult("getParentID", "" + comment.getParentID());
             printResult("getChildMessages", "" + comment.getChildMessages(0));
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -750,7 +750,7 @@ public class BifrostScriptTest {
             comment.setBody(temp);
             comment.update();
             assertEquals("Debug", changed);
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -769,7 +769,7 @@ public class BifrostScriptTest {
             newComment.setAuthor(chandle.getUser("craftfire" + this.randomInt));
             newComment.setTitle("Test " + this.randomInt + ": This is the title of the comment!");
             newComment.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -799,7 +799,7 @@ public class BifrostScriptTest {
             printResult("getUrl", article.getUrl());
             printResult("getViewsCount", "" + article.getViewsCount());
             printResult("getComments", article.getComments(0));
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -825,7 +825,7 @@ public class BifrostScriptTest {
             article.setTitle(temp);
             article.update();
             assertEquals("Debug", changed);
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -844,7 +844,7 @@ public class BifrostScriptTest {
             newArticle.setAuthor(chandle.getUser("craftfire" + this.randomInt));
             newArticle.setTitle("Test " + this.randomInt + ": This is the title of the article!");
             newArticle.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -867,7 +867,7 @@ public class BifrostScriptTest {
             printResult("getArticles", category.getArticles(0));
             printResult("getSubcategories", category.getSubcategories(0));
             printResult("isPublic", "" + category.isPublic());
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -893,7 +893,7 @@ public class BifrostScriptTest {
             category.setName(temp);
             category.update();
             assertEquals("Debug", changed);
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }
@@ -911,7 +911,7 @@ public class BifrostScriptTest {
             newCategory.setDescription("Test: This is the description of the category?!");
             newCategory.setName("Test " + this.randomInt + ": This is the name of the category!");
             newCategory.create();
-        } catch (UnsupportedMethod e) {
+        } catch (ScriptException e) {
             fail(e.toString());
         }
     }

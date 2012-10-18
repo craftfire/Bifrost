@@ -26,7 +26,7 @@ import java.util.List;
 
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a group.
@@ -153,11 +153,11 @@ public class Group extends GenericMethods {
      * <p>
      * It should <b>not</b> be run when creating a new group, only when editing an already existing group.
      *
-     * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException     if a SQL error concurs
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         this.getHandle().updateGroup(this);
     }
 
@@ -166,11 +166,11 @@ public class Group extends GenericMethods {
      * <p>
      * It should <b>not</b> be run when updating a group, only when creating a new group.
      *
-     * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws SQLException     if a SQL error concurs
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         this.getHandle().createGroup(this);
     }
 

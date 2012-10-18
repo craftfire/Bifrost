@@ -46,7 +46,7 @@ import com.craftfire.bifrost.classes.general.PrivateMessage;
 import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.enums.Gender;
 import com.craftfire.bifrost.enums.Scripts;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 //TODO: Convert arrays to use Result class
 /**
@@ -698,7 +698,7 @@ public class SMF extends ForumScript {
     }
 
     @Override
-    public void updatePost(ForumPost post) throws SQLException, UnsupportedMethod {
+    public void updatePost(ForumPost post) throws SQLException, ScriptException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("id_topic", post.getThreadID());
         data.put("id_board", post.getBoardID());
@@ -720,7 +720,7 @@ public class SMF extends ForumScript {
     }
 
     @Override
-    public void createPost(ForumPost post) throws SQLException, UnsupportedMethod {
+    public void createPost(ForumPost post) throws SQLException, ScriptException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         post.setPostDate(new Date());
         data.put("id_topic", post.getThreadID());
@@ -883,7 +883,7 @@ public class SMF extends ForumScript {
     }
 
     @Override
-    public void updateThread(ForumThread thread) throws SQLException, UnsupportedMethod {
+    public void updateThread(ForumThread thread) throws SQLException, ScriptException {
         String temp;
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("id_board", thread.getBoardID());
@@ -925,7 +925,7 @@ public class SMF extends ForumScript {
     }
 
     @Override
-    public void createThread(ForumThread thread) throws SQLException, UnsupportedMethod {
+    public void createThread(ForumThread thread) throws SQLException, ScriptException {
         HashMap<String, Object> data = new HashMap<String, Object>();
         thread.setThreadDate(new Date());
         data.put("id_board", thread.getBoardID());

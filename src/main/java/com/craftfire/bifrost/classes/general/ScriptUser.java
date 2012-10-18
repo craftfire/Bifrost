@@ -29,7 +29,7 @@ import com.craftfire.commons.CraftCommons;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.enums.Gender;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a script user.
@@ -229,10 +229,10 @@ public class ScriptUser extends GenericMethods {
      * Loads the groups from a database if not cached.
      *
      * @return                    the list of groups
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @throws SQLException       if a SQL error concurs
      */
-    public List<Group> getGroups() throws UnsupportedMethod, SQLException {
+    public List<Group> getGroups() throws ScriptException, SQLException {
         return getHandle().getUserGroups(this.username);
     }
 
@@ -468,10 +468,10 @@ public class ScriptUser extends GenericMethods {
      *
      * @param  limit              how many private messages should be returned, 0 = returns all
      * @return                    the list of sent private messages
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @throws SQLException       if a SQL error concurs
      */
-    public List<PrivateMessage> getPMsSent(int limit) throws UnsupportedMethod, SQLException {
+    public List<PrivateMessage> getPMsSent(int limit) throws ScriptException, SQLException {
         return getHandle().getPMsSent(this.username, limit);
     }
 
@@ -482,10 +482,10 @@ public class ScriptUser extends GenericMethods {
      *
      * @param  limit              how many private messages should be returned, 0 = returns all
      * @return                    the list of received private messages
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @throws SQLException       if a SQL error concurs
      */
-    public List<PrivateMessage> getPMsReceived(int limit) throws UnsupportedMethod, SQLException {
+    public List<PrivateMessage> getPMsReceived(int limit) throws ScriptException, SQLException {
         return getHandle().getPMsReceived(this.username, limit);
     }
 
@@ -493,9 +493,9 @@ public class ScriptUser extends GenericMethods {
      * Returns the amount private messages that the user has sent.
      *
      * @return                    amount of sent private messages
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getPMSentCount() throws UnsupportedMethod {
+    public int getPMSentCount() throws ScriptException {
         return getHandle().getPMSentCount(this.username);
     }
 
@@ -503,9 +503,9 @@ public class ScriptUser extends GenericMethods {
      * Returns the amount private messages that the user has received.
      *
      * @return                    amount of received private messages
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public int getPMReceivedCount() throws UnsupportedMethod {
+    public int getPMReceivedCount() throws ScriptException {
         return getHandle().getPMReceivedCount(this.username);
     }
 
@@ -514,7 +514,7 @@ public class ScriptUser extends GenericMethods {
      *
      * @return {@code true} if user is banned, {@code false} if not
      */
-    public boolean isBanned() throws UnsupportedMethod, SQLException {
+    public boolean isBanned() throws ScriptException, SQLException {
         if (getHandle().isBanned(this.username)) {
             return true;
         } else if (getHandle().isBanned(this.email)) {
@@ -531,7 +531,7 @@ public class ScriptUser extends GenericMethods {
      *
      * @return {@code true} if user is registered, {@code false} if not
      */
-    public boolean isRegistered() throws UnsupportedMethod {
+    public boolean isRegistered() throws ScriptException {
         return getHandle().isRegistered(this.username);
     }
 
@@ -541,9 +541,9 @@ public class ScriptUser extends GenericMethods {
      * Loads the IP-addresses from a database if not cached.
      *
      * @return                    the list of IP-addresses
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<String> getIPs() throws UnsupportedMethod {
+    public List<String> getIPs() throws ScriptException {
         return getHandle().getIPs(this.username);
     }
 
@@ -556,10 +556,10 @@ public class ScriptUser extends GenericMethods {
      * Use {@link #create()} instead if you wish to update the user.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updateUser(this);
     }
 
@@ -571,10 +571,10 @@ public class ScriptUser extends GenericMethods {
      * Use {@link #update()} instead if you wish to update the user.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createUser(this);
     }
 

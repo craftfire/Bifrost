@@ -30,7 +30,7 @@ import com.craftfire.bifrost.classes.general.ScriptUser;
 import com.craftfire.bifrost.classes.general.ViewsCounter;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a forum thread/topic.
@@ -103,10 +103,10 @@ public class ForumThread extends Message implements ViewsCounter {
      * Returns a ForumBoard object for the board/category of the thread.
      * 
      * @return                    a ForumBoard object
-     * @throws UnsupportedMethod  if the method is not supported by script
+     * @throws ScriptException  if the method is not supported by script
      * @throws SQLException       if a SQL exception occurred
      */
-    public ForumBoard getBoard() throws UnsupportedMethod, SQLException {
+    public ForumBoard getBoard() throws ScriptException, SQLException {
         return getHandle().getBoard(getCategoryID());
     }
 
@@ -118,11 +118,11 @@ public class ForumThread extends Message implements ViewsCounter {
      *
      * @param  limit              how many ForumPosts that should be returned, 0 = returns all.
      * @return                    a List of ForumPost's
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @throws SQLException       if a SQL exception occurred
      * @see                       ForumPost
      */
-    public List<ForumPost> getPosts(int limit) throws UnsupportedMethod, SQLException {
+    public List<ForumPost> getPosts(int limit) throws ScriptException, SQLException {
         return getHandle().getPostsFromThread(getID(), limit);
     }
 
@@ -130,11 +130,11 @@ public class ForumThread extends Message implements ViewsCounter {
      * Returns the first Post of the thread.
      *
      * @return                    first ForumPost of the thread
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @throws SQLException       if a SQL exception occurred
      * @see                       ForumPost
      */
-    public ForumPost getFirstPost() throws UnsupportedMethod, SQLException {
+    public ForumPost getFirstPost() throws ScriptException, SQLException {
         return getHandle().getPost(this.firstpostid);
     }
 
@@ -142,11 +142,11 @@ public class ForumThread extends Message implements ViewsCounter {
      * Returns the last Post of the thread.
      *
      * @return                    last ForumPosts of the thread
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      * @throws SQLException       if a SQL exception occurred
      * @see                       ForumPost
      */
-    public ForumPost getLastPost() throws UnsupportedMethod, SQLException {
+    public ForumPost getLastPost() throws ScriptException, SQLException {
         return getHandle().getPost(this.lastpostid);
     }
 
@@ -286,10 +286,10 @@ public class ForumThread extends Message implements ViewsCounter {
      * It should <b>not</b> be run when creating a new thread, only when editing an already existing thread.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updateThread(this);
     }
 
@@ -299,10 +299,10 @@ public class ForumThread extends Message implements ViewsCounter {
      * It should <b>not</b> be run when updating a thread, only when creating a new thread.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createThread(this);
     }
 
@@ -394,7 +394,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * For ForumThread it has always the same result as {@link #getBoard()}.
      */
     @Override
-    public ForumBoard getCategory() throws UnsupportedMethod, SQLException {
+    public ForumBoard getCategory() throws ScriptException, SQLException {
         return getBoard();
     }
 
@@ -404,7 +404,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * For ForumThread it has always the same result as {@link #getPosts(int)}.
      */
     @Override
-    public List<ForumPost> getChildMessages(int limit) throws UnsupportedMethod, SQLException {
+    public List<ForumPost> getChildMessages(int limit) throws ScriptException, SQLException {
         return getPosts(limit);
     }
 
@@ -414,7 +414,7 @@ public class ForumThread extends Message implements ViewsCounter {
      * For ForumThread it always has the same result as {@link #getBoard()}.
      */
     @Override
-    public ForumBoard getParent() throws UnsupportedMethod, SQLException {
+    public ForumBoard getParent() throws ScriptException, SQLException {
         return getBoard();
     }
 

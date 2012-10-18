@@ -27,7 +27,7 @@ import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a forum board/category.
@@ -87,7 +87,7 @@ public class ForumBoard extends Category {
      * For ForumBoard it has the same effect as {@link #getThreads(int)}
      */
     @Override
-    public List<ForumThread> getMessages(int limit) throws UnsupportedMethod {
+    public List<ForumThread> getMessages(int limit) throws ScriptException {
         return getThreads(limit);
     }
     
@@ -98,9 +98,9 @@ public class ForumBoard extends Category {
      * 
      * @param  limit              how many threads should be returned, 0 = returns all
      * @return                    the list of threads
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<ForumThread> getThreads(int limit) throws UnsupportedMethod {
+    public List<ForumThread> getThreads(int limit) throws ScriptException {
         return getHandle().getThreadsFromBoard(getID(), limit);
     }
 
@@ -110,10 +110,10 @@ public class ForumBoard extends Category {
      * It should <b>not</b> be run when creating a new board, only when editing an already existing board.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updateBoard(this);
     }
 
@@ -123,10 +123,10 @@ public class ForumBoard extends Category {
      * It should <b>not</b> be run when updating a board, only when creating a new board.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createBoard(this);
     }
 
@@ -198,7 +198,7 @@ public class ForumBoard extends Category {
      * @see Category#getParent()
      */
     @Override
-    public ForumBoard getParent() throws UnsupportedMethod {
+    public ForumBoard getParent() throws ScriptException {
         return getHandle().getBoard(getParentID());
     }
 
@@ -206,7 +206,7 @@ public class ForumBoard extends Category {
      * @see Category#getSubcategories(int)
      */
     @Override
-    public List<ForumBoard> getSubcategories(int limit) throws UnsupportedMethod {
+    public List<ForumBoard> getSubcategories(int limit) throws ScriptException {
         return getHandle().getSubBoards(getID(), limit);
     }
 }

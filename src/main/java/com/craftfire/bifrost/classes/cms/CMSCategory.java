@@ -27,7 +27,7 @@ import com.craftfire.bifrost.classes.general.Category;
 import com.craftfire.bifrost.classes.general.ScriptHandle;
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.UnsupportedMethod;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class should only be used with a CMS category.
@@ -91,9 +91,9 @@ public class CMSCategory extends Category {
      * 
      * @param  limit              how many articles should be returned, 0 = returns all
      * @return                    the list of articles
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
-    public List<CMSArticle> getArticles(int limit) throws UnsupportedMethod {
+    public List<CMSArticle> getArticles(int limit) throws ScriptException {
         return getHandle().getArticlesFromCategory(getID(), limit);
     }
 
@@ -103,7 +103,7 @@ public class CMSCategory extends Category {
      * @see com.craftfire.bifrost.classes.general.Category#getParent()
      */
     @Override
-    public CMSCategory getParent() throws UnsupportedMethod {
+    public CMSCategory getParent() throws ScriptException {
         return getHandle().getCategory(getParentID());
     }
 
@@ -113,7 +113,7 @@ public class CMSCategory extends Category {
      * @see com.craftfire.bifrost.classes.general.Category#getSubcategories(int)
      */
     @Override
-    public List<CMSCategory> getSubcategories(int limit) throws UnsupportedMethod {
+    public List<CMSCategory> getSubcategories(int limit) throws ScriptException {
         return getHandle().getSubCategories(getID(), limit);
     }
 
@@ -123,7 +123,7 @@ public class CMSCategory extends Category {
      * For CMSCategory it always has the same result as {@link #getArticles(int)}.
      */
     @Override
-    public List<CMSArticle> getMessages(int limit) throws UnsupportedMethod {
+    public List<CMSArticle> getMessages(int limit) throws ScriptException {
         return getArticles(limit);
     }
 
@@ -153,10 +153,10 @@ public class CMSCategory extends Category {
      * It should <b>not</b> be run when creating a new category, only when editing an already existing category.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void update() throws SQLException, UnsupportedMethod {
+    public void update() throws SQLException, ScriptException {
         getHandle().updateCategory(this);
     }
 
@@ -166,10 +166,10 @@ public class CMSCategory extends Category {
      * It should <b>not</b> be run when updating an category, only when creating a new category.
      *
      * @throws SQLException       if a SQL error concurs
-     * @throws UnsupportedMethod  if the method is not supported by the script
+     * @throws ScriptException  if the method is not supported by the script
      */
     @Override
-    public void create() throws SQLException, UnsupportedMethod {
+    public void create() throws SQLException, ScriptException {
         getHandle().createCategory(this);
     }
 
