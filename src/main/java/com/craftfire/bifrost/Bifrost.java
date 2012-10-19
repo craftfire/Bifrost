@@ -63,9 +63,11 @@ public class Bifrost {
      */
     public Bifrost() {
         this.scriptAPI = new ScriptAPI(this);
-        this.loggingManager.info("Initialized Bifrost version " + this.version);
+        getLoggingManager().info("Initialized Bifrost version " + this.version);
         try {
-            new AnalyticsManager("http://stats.craftfire.com/", "Bifrost", this.version).submit();
+            AnalyticsManager analytics = new AnalyticsManager("http://stats.craftfire.com", "Bifrost", this.version);
+            analytics.setLoggingManager(getLoggingManager());
+            analytics.submit();
         } catch (MalformedURLException ignore) {
         } catch (IOException e) {
             getLoggingManager().stackTrace(e);
