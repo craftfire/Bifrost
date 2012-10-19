@@ -312,7 +312,7 @@ public class Script {
      * @throws ScriptException  if the method is not supported by the script
      * @see                       ScriptUser
      */
-    public void updateUser(ScriptUser user) throws SQLException, ScriptException, ScriptException {
+    public void updateUser(ScriptUser user) throws SQLException, ScriptException {
         throw new ScriptException();
     }
 

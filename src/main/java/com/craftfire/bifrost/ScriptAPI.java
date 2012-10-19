@@ -218,7 +218,7 @@ public class ScriptAPI {
      * @param  dataManager      the {@link DataManager} of the script
      * @throws ScriptException  if the specified {@code script} or {@code version} is not supported by Bifrost/the script
      */
-    public int addHandle(Scripts script, String version, DataManager dataManager) throws ScriptException, ScriptException {
+    public int addHandle(Scripts script, String version, DataManager dataManager) throws ScriptException {
         if (script == null || version == null || dataManager == null) {
             throw new IllegalArgumentException("None of the arguments can be null!");
         }
