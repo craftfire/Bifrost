@@ -28,13 +28,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.Util;
-import com.craftfire.commons.classes.Version;
-import com.craftfire.commons.classes.VersionRange;
+import com.craftfire.commons.database.DataManager;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.encryption.Encryption;
+import com.craftfire.commons.util.Util;
+import com.craftfire.commons.util.Version;
+import com.craftfire.commons.util.VersionRange;
 
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;

@@ -19,10 +19,10 @@
  */
 package com.craftfire.bifrost;
 
-import com.craftfire.commons.exceptions.AnalyticsException;
-import com.craftfire.commons.managers.AnalyticsManager;
-import com.craftfire.commons.managers.DataManager;
-import com.craftfire.commons.managers.LoggingManager;
+import com.craftfire.commons.analytics.AnalyticsException;
+import com.craftfire.commons.analytics.AnalyticsManager;
+import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.util.LoggingManager;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

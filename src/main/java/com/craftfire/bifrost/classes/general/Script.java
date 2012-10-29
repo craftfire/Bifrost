@@ -23,10 +23,10 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.craftfire.commons.classes.Version;
-import com.craftfire.commons.classes.VersionRange;
-import com.craftfire.commons.managers.DataManager;
-import com.craftfire.commons.managers.LoggingManager;
+import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.util.LoggingManager;
+import com.craftfire.commons.util.Version;
+import com.craftfire.commons.util.VersionRange;
 
 import com.craftfire.bifrost.enums.ScriptType;
 import com.craftfire.bifrost.enums.Scripts;

@@ -22,9 +22,9 @@ package com.craftfire.bifrost.classes.general;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.craftfire.commons.classes.Version;
-import com.craftfire.commons.classes.VersionRange;
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.util.Version;
+import com.craftfire.commons.util.VersionRange;
 
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
