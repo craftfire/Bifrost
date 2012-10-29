@@ -23,14 +23,14 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.craftfire.bifrost.exceptions.ScriptException;
-import com.craftfire.commons.classes.Version;
-import com.craftfire.commons.classes.VersionRange;
-import com.craftfire.commons.managers.DataManager;
-import com.craftfire.commons.managers.LoggingManager;
+import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.util.LoggingManager;
+import com.craftfire.commons.util.Version;
+import com.craftfire.commons.util.VersionRange;
 
 import com.craftfire.bifrost.enums.ScriptType;
 import com.craftfire.bifrost.enums.Scripts;
+import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
  * This class contains methods relevant to direct methods for each script.
@@ -449,12 +449,13 @@ public class Script {
      * <p>
      * If none are found, the List will be empty.
      *
-     * @param  limit              the limit, set to {@code 0} if you want to return all
-     * @return                    List with PrivateMessage objects, if none are found it returns an empty List
+     * @param  limit            the limit, set to {@code 0} if you want to return all
+     * @return                  List with PrivateMessage objects, if none are found it returns an empty List
      * @throws ScriptException  if the method is not supported by the script
-     * @see                       PrivateMessage
+     * @throws SQLException     if a SQL exception occurred
+     * @see                     PrivateMessage
      */
-    public List<PrivateMessage> getPMs(int limit) throws ScriptException {
+    public List<PrivateMessage> getPMs(int limit) throws ScriptException, SQLException {
         throw new ScriptException();
     }
 

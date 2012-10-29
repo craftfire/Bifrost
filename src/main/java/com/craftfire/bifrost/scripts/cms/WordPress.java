@@ -28,12 +28,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.classes.Version;
-import com.craftfire.commons.classes.VersionRange;
+import com.craftfire.commons.database.DataManager;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.encryption.Encryption;
+import com.craftfire.commons.util.Util;
+import com.craftfire.commons.util.Version;
+import com.craftfire.commons.util.VersionRange;
 
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
@@ -133,7 +134,7 @@ public class WordPress extends CMSScript {
                 Map<Object, Object> capmap = null;
                 if (capabilities != null && !capabilities.isEmpty()) {
                     try {
-                        Object temp = CraftCommons.getUtil().phpUnserialize(capabilities);
+                        Object temp = CraftCommons.phpUnserialize(capabilities);
                         if (temp instanceof Map<?, ?>) {
                             capmap = (Map<Object, Object>) temp;
                         }
@@ -144,10 +145,10 @@ public class WordPress extends CMSScript {
                     user.setUserTitle(capmap.keySet().toArray()[0].toString());
                 }
                 lastlogin = this.getDataManager().getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'last_user_login'");
-                if (!CraftCommons.isLong(lastlogin)) {
+                if (!Util.isLong(lastlogin)) {
                     lastlogin = this.getDataManager().getStringField("usermeta", "meta_value", "`user_id` = '" + user.getID() + "' AND `meta_key` = 'wp-last-login'");
                 }
-                if (CraftCommons.isLong(lastlogin)) {
+                if (Util.isLong(lastlogin)) {
                     user.setLastLogin(new java.util.Date(Long.parseLong(lastlogin)));
                 }
                 return user;
@@ -334,7 +335,7 @@ public class WordPress extends CMSScript {
                 String admins = this.getDataManager().getStringField("sitemeta", "meta_value", "`meta_key` = 'site_admins'");
                 Map<Object, String> adminmap = null;
                 try {
-                    adminmap = (Map<Object, String>) CraftCommons.getUtil().phpUnserialize(admins);
+                    adminmap = (Map<Object, String>) CraftCommons.phpUnserialize(admins);
                 } catch (IllegalStateException e) {
                     return null;
                 } catch (ClassCastException e) {
@@ -357,7 +358,7 @@ public class WordPress extends CMSScript {
                 int userid = d.getIntField("user_id");
                 Map<String, String> capmap = null;
                 try {
-                    capmap = (Map<String, String>) CraftCommons.getUtil().phpUnserialize(capabilities);
+                    capmap = (Map<String, String>) CraftCommons.phpUnserialize(capabilities);
                 } catch (IllegalStateException e) {
                     continue;
                 } catch (ClassCastException e) {
@@ -387,7 +388,7 @@ public class WordPress extends CMSScript {
         Map<Object, Object> capmap = null;
         if (capabilities != null && !capabilities.isEmpty()) {
             try {
-                capmap = (Map<Object, Object>) CraftCommons.getUtil().phpUnserialize(capabilities);
+                capmap = (Map<Object, Object>) CraftCommons.phpUnserialize(capabilities);
             } catch (IllegalStateException ignore) {
             } catch (ClassCastException ignore) {
             }
@@ -403,7 +404,7 @@ public class WordPress extends CMSScript {
                     Map<Object, Object> adminmap = null;
                     Object temp = null;
                     try {
-                        temp = CraftCommons.getUtil().phpUnserialize(admins);
+                        temp = CraftCommons.phpUnserialize(admins);
                     } catch (IllegalStateException ignore) {
                     }
                     if (temp instanceof Map<?, ?>) {
@@ -438,7 +439,7 @@ public class WordPress extends CMSScript {
             String admins = this.getDataManager().getStringField("sitemeta", "meta_value", "`meta_key` = 'site_admins'");
             Object temp = null;
             try {
-                temp = CraftCommons.getUtil().phpUnserialize(admins);
+                temp = CraftCommons.phpUnserialize(admins);
             } catch (IllegalStateException ignore) {
             }
             if (temp instanceof Map<?, ?>) {
@@ -485,7 +486,7 @@ public class WordPress extends CMSScript {
                 }
             }
         }
-        String capabilities = CraftCommons.getUtil().phpSerialize(capmap);
+        String capabilities = CraftCommons.phpSerialize(capmap);
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("meta_value", capabilities);
         if (this.getDataManager().getCount("usermeta", "`meta_key` = 'wp_capabilities' AND `user_id` = '" + userid + "'") > 0) {
@@ -506,7 +507,7 @@ public class WordPress extends CMSScript {
         }
         data.clear();
         if (adminlist != null) {
-            String admins = CraftCommons.getUtil().phpSerialize(adminlist);
+            String admins = CraftCommons.phpSerialize(adminlist);
             data.put("meta_value", admins);
             this.getDataManager().updateFields(data, "sitemeta", "`meta_key` = 'site_admins'");
         }
@@ -529,7 +530,7 @@ public class WordPress extends CMSScript {
                 while (iterator.hasNext()) {
                     adminlist.add(iterator.next().getUsername());
                 }
-                String admins = CraftCommons.getUtil().phpSerialize(adminlist);
+                String admins = CraftCommons.phpSerialize(adminlist);
                 HashMap<String, Object> data = new HashMap<String, Object>();
                 data.put("meta_value", admins);
                 this.getDataManager().updateFields(data, "sitemeta", "`meta_key` = 'site_admins'");

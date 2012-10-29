@@ -22,7 +22,7 @@ package com.craftfire.bifrost.classes.cms;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.database.DataManager;
 
 import com.craftfire.bifrost.classes.general.Script;
 import com.craftfire.bifrost.classes.general.ScriptUser;

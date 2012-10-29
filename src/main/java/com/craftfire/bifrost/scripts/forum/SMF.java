@@ -31,10 +31,11 @@ import java.util.Random;
 import javax.swing.JTable;
 
 import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.classes.Version;
-import com.craftfire.commons.classes.VersionRange;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.encryption.Encryption;
+import com.craftfire.commons.util.Util;
+import com.craftfire.commons.util.Version;
+import com.craftfire.commons.util.VersionRange;
 
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumScript;
@@ -1142,13 +1143,13 @@ public class SMF extends ForumScript {
 
     @Override
     public boolean isBanned(String string) {
-        if (CraftCommons.isEmail(string)) {
+        if (Util.isEmail(string)) {
             if (this.getDataManager().getStringField(
                     "SELECT `id_ban` FROM `" + this.getDataManager().getPrefix() + "ban_items` WHERE `email_address` = '" +
                             string + "'") != null) {
                 return true;
             }
-        } else if (CraftCommons.isIP(string)) {
+        } else if (Util.isIP(string)) {
             String[] values = ipValues(string);
             if (this.getDataManager().getStringField(
                     "SELECT `id_ban` FROM `" + this.getDataManager().getPrefix() + "ban_items` WHERE `ip_low1` = '" +

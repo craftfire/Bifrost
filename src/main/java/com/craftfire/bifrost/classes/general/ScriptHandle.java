@@ -22,13 +22,12 @@ package com.craftfire.bifrost.classes.general;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.craftfire.commons.classes.Version;
-import com.craftfire.commons.classes.VersionRange;
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.util.Version;
+import com.craftfire.commons.util.VersionRange;
 
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
-import com.craftfire.bifrost.exceptions.ScriptException;
 import com.craftfire.bifrost.exceptions.ScriptException;
 
 /**
@@ -355,7 +354,7 @@ public class ScriptHandle {
      * @see Script#getPMs(int) Documentation for this method
      */
     @SuppressWarnings("unchecked")
-    public List<PrivateMessage> getPMs(int limit) throws ScriptException {
+    public List<PrivateMessage> getPMs(int limit) throws ScriptException, SQLException {
         if (getCache().contains(CacheGroup.PM_LIST)) {
             List<PrivateMessage> pms = (List<PrivateMessage>) getCache().get(CacheGroup.PM_LIST);
             if (pms.size() == ((limit == 0) ? getPMCount() : limit)) {

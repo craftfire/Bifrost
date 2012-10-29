@@ -33,12 +33,13 @@ import java.util.List;
 import java.util.Random;
 
 import com.craftfire.commons.CraftCommons;
-import com.craftfire.commons.classes.Version;
-import com.craftfire.commons.classes.VersionRange;
+import com.craftfire.commons.database.DataManager;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
-import com.craftfire.commons.enums.Encryption;
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.encryption.Encryption;
+import com.craftfire.commons.util.Util;
+import com.craftfire.commons.util.Version;
+import com.craftfire.commons.util.VersionRange;
 
 import com.craftfire.bifrost.classes.forum.ForumPost;
 import com.craftfire.bifrost.classes.forum.ForumScript;
@@ -1060,11 +1061,11 @@ public class XenForo extends ForumScript {
 
     @Override
     public boolean isBanned(String string) throws SQLException {
-        if (CraftCommons.isEmail(string)) {
+        if (Util.isEmail(string)) {
             if (this.getDataManager().exist("ban_email", "banned_email", string)) {
                 return true;
             }
-        } else if (CraftCommons.isIP(string)) {
+        } else if (Util.isIP(string)) {
             if (this.getDataManager().exist("ip_match", "ip", string)) {
                 return true;
             }

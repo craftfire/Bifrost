@@ -23,8 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.craftfire.bifrost.exceptions.ScriptException;
-import com.craftfire.commons.managers.DataManager;
-import com.craftfire.commons.managers.LoggingManager;
+
+import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.util.LoggingManager;
 
 import com.craftfire.bifrost.classes.cms.CMSHandle;
 import com.craftfire.bifrost.classes.cms.CMSScript;

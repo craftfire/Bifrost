@@ -39,8 +39,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.craftfire.commons.enums.DataType;
-import com.craftfire.commons.managers.DataManager;
+import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.database.DataType;
 
 import com.craftfire.bifrost.classes.cms.CMSArticle;
 import com.craftfire.bifrost.classes.cms.CMSCategory;
