@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JTable;
@@ -410,7 +411,7 @@ public class SMF extends ForumScript {
     @Override
     public PrivateMessage getPM(int pmid) {
         PrivateMessage pm = new PrivateMessage(this, pmid);
-        HashMap<String, Object> array = this.getDataManager().getArray(
+        Map<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "personal_messages` WHERE `id_pm` = '" +
                         pmid + "' LIMIT 1");
         for (int i = 0; array.size() > i; i++) {

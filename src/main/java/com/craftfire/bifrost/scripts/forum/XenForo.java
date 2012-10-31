@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.craftfire.commons.CraftCommons;
@@ -428,7 +429,7 @@ public class XenForo extends ForumScript {
 
     @Override
     public Group getGroup(int groupid) {
-        HashMap<String, Object> array = this.getDataManager().getArray(
+        Map<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "user_group` WHERE `user_group_id` = '" + groupid +
                         "'");
         List<ScriptUser> users = new ArrayList<ScriptUser>();
@@ -460,7 +461,7 @@ public class XenForo extends ForumScript {
 
     @Override
     public Group getGroup(String group) {
-        HashMap<String, Object> array = this.getDataManager().getArray(
+        Map<String, Object> array = this.getDataManager().getArray(
                 "SELECT `user_group_id` FROM `" + this.getDataManager().getPrefix() +
                         "user_group` WHERE `title` = '" + group + "'");
         return getGroup(Integer.parseInt(array.get("user_group_id").toString()));
@@ -470,7 +471,7 @@ public class XenForo extends ForumScript {
     public List<Group> getUserGroups(String username) {
         //TODO: Finish this: this.currentUsername = username;
         List<Group> groups = new ArrayList<Group>();
-        HashMap<String, Object> array = this.getDataManager().getArray(
+        Map<String, Object> array = this.getDataManager().getArray(
                 "SELECT `user_group_id`, `secondary_group_ids` FROM `" + this.getDataManager().getPrefix() +
                         "user` WHERE `user_id` = '" + getUserID(username) + "' LIMIT 1");
         groups.add(getGroup(Integer.parseInt(array.get("user_group_id").toString())));
@@ -509,7 +510,7 @@ public class XenForo extends ForumScript {
     @Override
     public PrivateMessage getPM(int pmid) throws SQLException {
         PrivateMessage pm = new PrivateMessage(this, pmid);
-        HashMap<String, Object> array = this.getDataManager().getArray(
+        Map<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "conversation_message` WHERE `message_id` = '" +
                         pmid + "' LIMIT 1");
         for (int i = 0; array.size() > i; i++) {
@@ -767,7 +768,7 @@ public class XenForo extends ForumScript {
 
     @Override
     public ForumPost getPost(int postid) throws SQLException {
-        HashMap<String, Object> array = this.getDataManager().getArray(
+        Map<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "post` WHERE `post_id` = '" + postid + "' LIMIT 1");
         //TODO: figure out how to use nodeID
        /* int nodeID = this.getDataManager().getIntegerField("thread", "node_id", "`thread_id` = '" +
@@ -875,7 +876,7 @@ public class XenForo extends ForumScript {
 
     @Override
     public ForumThread getThread(int threadid) throws SQLException {
-        HashMap<String, Object> array = this.getDataManager().getArray(
+        Map<String, Object> array = this.getDataManager().getArray(
                 "SELECT * FROM `" + this.getDataManager().getPrefix() + "thread` WHERE `thread_id` = '" + threadid +
                         "' LIMIT 1");
         ForumThread thread =
