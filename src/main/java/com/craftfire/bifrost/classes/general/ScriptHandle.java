@@ -19,10 +19,12 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 
 import com.craftfire.commons.database.DataManager;
+import com.craftfire.commons.ip.IPAddress;
 import com.craftfire.commons.util.Version;
 import com.craftfire.commons.util.VersionRange;
 
@@ -90,10 +92,37 @@ public class ScriptHandle {
     /**
      * Creates a new ban in the script.
      *
-     * @see Ban#Ban(ScriptHandle, String, String, String) Documentation for this method
+     * @see Ban#Ban(ScriptHandle, String, URI, IPAddress) Documentation for this method
      */
-    public Ban newBan(String name, String email, String ip) {
+    public Ban newBan(String name, URI email, IPAddress ip) {
         return new Ban(this, name, email, ip);
+    }
+
+    /**
+     * Creates a new name/username ban in the script.
+     *
+     * @see Ban#Ban(ScriptHandle, String) Documentation for this method
+     */
+    public Ban newBan(String name) {
+        return new Ban(this, name);
+    }
+
+    /**
+     * Creates a new email ban in the script.
+     *
+     * @see Ban#Ban(ScriptHandle, URI) Documentation for this method
+     */
+    public Ban newBan(URI email) {
+        return new Ban(this, email);
+    }
+
+    /**
+     * Creates a new IPAddress ban in the script.
+     *
+     * @see Ban#Ban(ScriptHandle, IPAddress) Documentation for this method
+     */
+    public Ban newBan(IPAddress ipAddress) {
+        return new Ban(this, ipAddress);
     }
 
     /**

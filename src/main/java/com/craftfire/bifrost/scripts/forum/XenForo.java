@@ -22,6 +22,7 @@ package com.craftfire.bifrost.scripts.forum;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URI;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -38,6 +39,7 @@ import com.craftfire.commons.database.DataManager;
 import com.craftfire.commons.database.DataRow;
 import com.craftfire.commons.database.Results;
 import com.craftfire.commons.encryption.Encryption;
+import com.craftfire.commons.ip.IPAddress;
 import com.craftfire.commons.util.Util;
 import com.craftfire.commons.util.Version;
 import com.craftfire.commons.util.VersionRange;
@@ -1020,12 +1022,12 @@ public class XenForo extends ForumScript {
                 this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                         "ban_email` " + limitstring);
         for (HashMap<String, Object> map : array) {
-            bans.add(new Ban(this.getHandle(), null, map.get("banned_email").toString(), null));
+            bans.add(new Ban(this.getHandle(), URI.create(map.get("banned_email").toString())));
         }
         array = this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                 "ip_match` " + limitstring);
         for (HashMap<String, Object> map : array) {
-            bans.add(new Ban(this.getHandle(), null, null, map.get("ip").toString()));
+            bans.add(new Ban(this.getHandle(), IPAddress.valueOf(map.get("ip").toString())));
         }
         array = this.getDataManager().getArrayList("SELECT * FROM `" + this.getDataManager().getPrefix() +
                 "user_ban` " + limitstring);

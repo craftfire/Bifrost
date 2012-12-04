@@ -19,12 +19,15 @@
  */
 package com.craftfire.bifrost.classes.general;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.Date;
 
 import com.craftfire.bifrost.enums.CacheCleanupReason;
 import com.craftfire.bifrost.enums.CacheGroup;
 import com.craftfire.bifrost.exceptions.ScriptException;
+import com.craftfire.commons.ip.IPAddress;
 
 /**
  * This class should only be used with a ban.
@@ -32,31 +35,38 @@ import com.craftfire.bifrost.exceptions.ScriptException;
  * The first constructor should only be used by the script itself and not by the library user.
  * To update any changed values in the post, run {@link #update()}.
  * <p>
- * When creating a new Ban make sure you use the correct constructor:
- * {@link #Ban(ScriptHandle, String, String, String)}.
+ * To create a Ban, use one of the following constructors:
+ * <ul>
+ *     <li>{@link #Ban(ScriptHandle, String, URI, IPAddress)}</li>
+ *     <li>{@link #Ban(ScriptHandle, String)}</li>
+ *     <li>{@link #Ban(ScriptHandle, URI)}</li>
+ *     <li>{@link #Ban(ScriptHandle, IPAddress)}</li>
+ * </ul>
  * <p>
  * Remember to run {@link #create()} after creating a ban to insert it into the script.
  */
 public class Ban extends GenericMethods {
-    private String name, email, ip, reason, notes;
+    private String name, reason, notes;
+    private IPAddress ipAddress;
+    private URI email;
     private int userid;
     private Date startdate, enddate;
 
     /**
      * This constructor should only be used by the script and not by that library user.
      *
-     * @param script  the script
-     * @param banid   the ID of the ban
-     * @param name    the name/username which is set in the ban entry
-     * @param email   the email which is set in the ban entry
-     * @param ip      the ip which is set in the ban entry
+     * @param script    the script
+     * @param banid     the ID of the ban
+     * @param name      the name/username which is set in the ban entry
+     * @param email     the email which is set in the ban entry
+     * @param ipAddress the ip which is set in the ban entry
      */
-    public Ban(Script script, int banid, String name, String email, String ip) {
+    public Ban(Script script, int banid, String name, URI email, IPAddress ipAddress) {
         super(script.getHandle());
         this.setID(banid);
         this.name = name;
         this.email = email;
-        this.ip = ip;
+        this.ipAddress = ipAddress;
     }
 
     /**
@@ -64,16 +74,55 @@ public class Ban extends GenericMethods {
      * <p>
      * Remember to run {@link #create()} after creating a ban to insert it into the script.
      *
-     * @param handle  the handle
-     * @param name    the name/username of the ban, set to null if none.
-     * @param email   the email of the ban, set to null if none.
-     * @param ip      the ip of the ban, set to null if none.
+     * @param handle     the handle
+     * @param name       the name/username of the ban, set to null if none.
+     * @param email      the email of the ban, set to null if none.
+     * @param ipAddress  the ip of the ban, set to null if none.
      */
-    public Ban(ScriptHandle handle, String name, String email, String ip) {
+    public Ban(ScriptHandle handle, String name, URI email, IPAddress ipAddress) {
         super(handle);
         this.name = name;
         this.email = email;
-        this.ip = ip;
+        this.ipAddress = ipAddress;
+    }
+
+    /**
+     * This constructor should be used when creating a new Name/Username ban for the script.
+     * <p>
+     * Remember to run {@link #create()} after creating a ban to insert it into the script.
+     *
+     * @param handle  the handle
+     * @param name    the name/username to ban
+     */
+    public Ban(ScriptHandle handle, String name) {
+        super(handle);
+        this.name = name;
+    }
+
+    /**
+     * This constructor should be used when creating a new Email ban for the script.
+     * <p>
+     * Remember to run {@link #create()} after creating a ban to insert it into the script.
+     *
+     * @param handle  the handle
+     * @param email   the email to ban
+     */
+    public Ban(ScriptHandle handle, URI email) {
+        super(handle);
+        this.email = email;
+    }
+
+    /**
+     * This constructor should be used when creating a new IPAddress ban for the script.
+     * <p>
+     * Remember to run {@link #create()} after creating a ban to insert it into the script.
+     *
+     * @param handle     the handle
+     * @param ipAddress  the ip to ban
+     */
+    public Ban(ScriptHandle handle, IPAddress ipAddress) {
+        super(handle);
+        this.ipAddress = ipAddress;
     }
 
     /**
@@ -124,7 +173,12 @@ public class Ban extends GenericMethods {
      * @return email of the ban entry, {@code null} if no email was found
      */
     public String getEmail() {
-        return this.email;
+        //TODO: Check if this is the correct method to return the e-mail.
+        try {
+            return this.email.toURL().toString();
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 
     /**
@@ -132,7 +186,7 @@ public class Ban extends GenericMethods {
      *
      * @param email  the email
      */
-    public void setEmail(String email) {
+    public void setEmail(URI email) {
         this.email = email;
     }
 
@@ -143,17 +197,17 @@ public class Ban extends GenericMethods {
      *
      * @return IP-address of the ban entry, {@code null} if no IP-address was found
      */
-    public String getIP() {
-        return this.ip;
+    public IPAddress getIP() {
+        return this.ipAddress;
     }
 
     /**
      * Sets the IP-address.
      *
-     * @param ip  the IP-address
+     * @param ipAddress  the IP-address
      */
-    public void setIP(String ip) {
-        this.ip = ip;
+    public void setIP(IPAddress ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     /**
@@ -352,7 +406,7 @@ public class Ban extends GenericMethods {
      * <p>
      * The method should be called when updating or creating a {@link Ban}, but before calling {@link #addCache}.
      * Only {@link ScriptHandle} and derived classes need to call this method.
-     * 
+     *
      * @param handle  the handle the method is called from
      * @param ban     the ban to cleanup related cache
      * @param reason  the reason of cache cleanup, {@link CacheCleanupReason#OTHER} causes full cleanup
@@ -360,13 +414,13 @@ public class Ban extends GenericMethods {
      */
     public static void cleanupCache(ScriptHandle handle, Ban ban, CacheCleanupReason reason) {
         switch (reason) {
-        case CREATE:
-        case OTHER:
-            handle.getCache().clear(CacheGroup.BAN_LIST);
-            handle.getCache().clear(CacheGroup.BAN_COUNT);
-            break;
-        case UPDATE:
-            break;
+            case CREATE:
+            case OTHER:
+                handle.getCache().clear(CacheGroup.BAN_LIST);
+                handle.getCache().clear(CacheGroup.BAN_COUNT);
+                break;
+            case UPDATE:
+                break;
         }
     }
 }

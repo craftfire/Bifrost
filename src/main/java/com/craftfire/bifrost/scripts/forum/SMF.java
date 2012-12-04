@@ -19,6 +19,7 @@
  */
 package com.craftfire.bifrost.scripts.forum;
 
+import java.net.URI;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +35,8 @@ import javax.swing.JTable;
 import com.craftfire.commons.CraftCommons;
 import com.craftfire.commons.database.DataManager;
 import com.craftfire.commons.encryption.Encryption;
+import com.craftfire.commons.ip.IPAddress;
+import com.craftfire.commons.ip.IPv4Address;
 import com.craftfire.commons.util.Util;
 import com.craftfire.commons.util.Version;
 import com.craftfire.commons.util.VersionRange;
@@ -1040,7 +1043,7 @@ public class SMF extends ForumScript {
             } else {
                 enddate = new Date(Long.parseLong(banTable.getModel().getValueAt(i, 3).toString()) * 1000);
             }
-            Ban ban = new Ban(this, banid, username, email, ip);
+            Ban ban = new Ban(this, banid, username, URI.create(email), IPAddress.valueOf(ip));
             ban.setReason(reason);
             ban.setNotes(notes);
             ban.setUserID(userid);
@@ -1062,9 +1065,9 @@ public class SMF extends ForumScript {
         data.put("reason", ban.getReason());
         data.put("notes", ban.getNotes());
         this.getDataManager().updateFields(data, "ban_groups", "`id_ban_group` = '" + ban.getID() + "'");
-        if (ban.getIP() != null && ! ban.getIP().isEmpty()) {
+        if (ban.getIP() != null) {
             data = new HashMap<String, Object>();
-            String[] values = ipValues(ban.getIP());
+            String[] values = ipValues(ban.getIP().toIPv4().toString());
             data.put("ip_low1", values[0]);
             data.put("ip_high1", values[1]);
             data.put("ip_low2", values[2]);
@@ -1076,7 +1079,7 @@ public class SMF extends ForumScript {
             this.getDataManager().updateFields(data, "ban_items",
                     "`id_ban_group` = '" + ban.getID() + "' AND `ip_low1` != '0'");
         }
-        if (ban.getEmail() != null && ! ban.getEmail().isEmpty()) {
+        if (ban.getEmail() != null) {
             data = new HashMap<String, Object>();
             data.put("email_address", ban.getEmail());
             this.getDataManager().updateFields(data, "ban_items",
@@ -1104,9 +1107,9 @@ public class SMF extends ForumScript {
         data.put("cannot_access", "1");
         this.getDataManager().insertFields(data, "ban_groups");
         ban.setID(this.getDataManager().getLastID("id_ban_group", "ban_groups"));
-        if (ban.getIP() != null && ! ban.getIP().isEmpty()) {
+        if (ban.getIP() != null) {
             data = new HashMap<String, Object>();
-            String[] values = ipValues(ban.getIP());
+            String[] values = ipValues(ban.getIP().toIPv4().toString());
             data.put("id_ban_group", ban.getID());
             data.put("ip_low1", values[0]);
             data.put("ip_high1", values[1]);
@@ -1118,7 +1121,7 @@ public class SMF extends ForumScript {
             data.put("ip_high4", values[7]);
             this.getDataManager().insertFields(data, "ban_items");
         }
-        if (ban.getEmail() != null && ! ban.getEmail().isEmpty()) {
+        if (ban.getEmail() != null) {
             data = new HashMap<String, Object>();
             data.put("id_ban_group", ban.getID());
             data.put("email_address", ban.getEmail());
