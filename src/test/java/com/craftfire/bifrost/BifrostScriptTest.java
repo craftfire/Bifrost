@@ -27,6 +27,7 @@ import static org.junit.Assert.fail;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import com.craftfire.commons.ip.IPAddress;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -320,7 +322,7 @@ public class BifrostScriptTest {
         try {
             Ban ban = handle.getBans(1).get(0);
             printResult("getEmail", ban.getEmail());
-            printResult("getIP", ban.getIP());
+            printResult("getIP", ban.getIP().toString());
             printResult("getID", "" + ban.getID());
             printResult("getNotes", ban.getNotes());
             printResult("getReason", ban.getReason());
@@ -357,7 +359,7 @@ public class BifrostScriptTest {
         print(seperate);
         print(script.toString() + " - " + version + " - BAN CREATE");
         try {
-            Ban newBan = handle.newBan("craftfire-ban-" + this.randomInt, "dev@craftfire.com", "127.0.0.1");
+            Ban newBan = handle.newBan("craftfire-ban-" + this.randomInt, URI.create("dev@craftfire.com"), IPAddress.valueOf("127.0.0.1"));
             newBan.setNotes("Staff notes");
             newBan.setReason("Hello world!");
             newBan.create();
