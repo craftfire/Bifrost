@@ -238,7 +238,7 @@ public class ScriptAPI {
      */
     public int addHandle(Script script) {
         if (script == null) {
-            throw new IllegalArgumentException("Argumnent 'script' cannot be null.");
+            throw new IllegalArgumentException("Parameter 'script' cannot be null.");
         }
         ScriptHandle handle;
         int id = this.getNewHandleID();

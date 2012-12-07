@@ -56,18 +56,18 @@ import java.net.MalformedURLException;
 public class Bifrost {
     private String version = "1.0.0";
     private final ScriptAPI scriptAPI;
-    private final LoggingManager loggingManager = new LoggingManager("CraftFire.Bifrost", "[Bifrost]");
+    private LoggingManager loggingManager = new LoggingManager("CraftFire.Bifrost", "[Bifrost]");
 
     /**
      * Default constructor for Bifrost.
      */
     public Bifrost() {
         this.scriptAPI = new ScriptAPI(this);
-        getLoggingManager().info("Initializing Bifrost version " + this.version);
+        getLogger().info("Initializing Bifrost version " + this.version);
         AnalyticsManager analytics = new AnalyticsManager("http://stats.craftfire.com", "Bifrost", this.version);
-        analytics.setLoggingManager(getLoggingManager());
+        analytics.setLoggingManager(getLogger());
         analytics.submitVoid();
-        getLoggingManager().info("Initialized Bifrost version " + this.version);
+        getLogger().info("Initialized Bifrost version " + this.version);
     }
 
     /**
@@ -97,7 +97,22 @@ public class Bifrost {
      * @return LoggingManager
      * @see    LoggingManager
      */
-    public LoggingManager getLoggingManager() {
+    public LoggingManager getLogger() {
+        if (this.loggingManager == null) {
+           this.loggingManager = new LoggingManager("Craftfire.Bifrost", "[Bifrost]");
+        }
         return this.loggingManager;
+    }
+
+    /**
+     * Sets the LoggingManager for Bifrost.
+     *
+     * @param loggingManager  the LoggingManager
+     */
+    public void setLoggingManager(LoggingManager loggingManager) {
+        if (loggingManager == null) {
+            throw new IllegalArgumentException("Parameter 'loggingManager' cannot be null.");
+        }
+        this.loggingManager = loggingManager;
     }
 }
