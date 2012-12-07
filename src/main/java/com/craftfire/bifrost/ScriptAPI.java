@@ -76,8 +76,8 @@ public class ScriptAPI {
      * @return LoggingManager of Bifrost
      * @see    LoggingManager
      */
-    public LoggingManager getLoggingManager() {
-        return getBifrost().getLoggingManager();
+    public LoggingManager getLogger() {
+        return getBifrost().getLogger();
     }
 
     /**
@@ -140,7 +140,7 @@ public class ScriptAPI {
      * @return Map with all the script handles
      */
     public Map<Integer, ScriptHandle> getHandles() {
-        this.getLoggingManager().debug("ScriptAPI: Getting all handles, size: " + this.handles.size());
+        getLogger().debug("ScriptAPI: Getting all handles, size: " + this.handles.size());
         return this.handles;
     }
 
@@ -152,10 +152,10 @@ public class ScriptAPI {
      */
     public ScriptHandle getHandle(int handleID) {
         if (handleExists(handleID)) {
-            this.getLoggingManager().debug("ScriptAPI: Found handle for ID '" + handleID + "!");
+            getLogger().debug("ScriptAPI: Found handle for ID '" + handleID + "!");
             return this.handles.get(handleID);
         } else {
-            this.getLoggingManager().debug("ScriptAPI: Handle for ID '" + handleID + "' does not exist, " +
+            getLogger().debug("ScriptAPI: Handle for ID '" + handleID + "' does not exist, " +
                                             "returning null");
             return null;
         }
@@ -187,7 +187,7 @@ public class ScriptAPI {
      * @return latest script handle, return null if there are no handles
      */
     public ScriptHandle getHandle() {
-        this.getLoggingManager().debug("ScriptAPI: Returning last handle: " + this.lastHandle);
+        getLogger().debug("ScriptAPI: Returning last handle: " + this.lastHandle);
         return this.lastHandle;
     }
 
@@ -197,7 +197,7 @@ public class ScriptAPI {
      * @return latest forum handle, return null if there are no handles
      */
     public ForumHandle getForumHandle() {
-        this.getLoggingManager().debug("ScriptAPI: Returning last forum handle: " + this.lastHandle);
+        getLogger().debug("ScriptAPI: Returning last forum handle: " + this.lastHandle);
         return (ForumHandle) this.lastHandle;
     }
 
@@ -207,7 +207,7 @@ public class ScriptAPI {
      * @return latest cms handle, return null if there are no handles
      */
     public CMSHandle getCMSHandle() {
-        this.getLoggingManager().debug("ScriptAPI: Returning last cms handle: " + this.lastHandle);
+        getLogger().debug("ScriptAPI: Returning last cms handle: " + this.lastHandle);
         return (CMSHandle) this.lastHandle;
     }
 
@@ -258,7 +258,7 @@ public class ScriptAPI {
         default:
             handle = new ScriptHandle(id, script);
         }
-        this.getLoggingManager().debug(
+        getLogger().debug(
                 "ScriptAPI: Adding handle ID: '" + id + "' with type: '" + script.getType() + "' for script: '" + script.getScriptName() + "', version: '" + script.getVersion() + "'");
         this.handles.put(id, handle);
         this.lastHandle = handle;
