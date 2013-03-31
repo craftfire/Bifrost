@@ -78,7 +78,7 @@ public class PhpBB extends ForumScript {
 
     @Override
     public String hashPassword(String username, String password) {
-        return CraftCommons.encrypt(Encryption.PHPASS, username.toLowerCase() + password, null, 0);
+        return CraftCommons.encrypt(Encryption.PHPASS_H, username.toLowerCase() + password, null, 0);
     }
 
     @Override

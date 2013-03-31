@@ -82,7 +82,7 @@ public class WordPress extends CMSScript {
 
     @Override
     public String hashPassword(String salt, String password) {
-        String hash = CraftCommons.encrypt(Encryption.PHPASS, password, salt);
+        String hash = CraftCommons.encrypt(Encryption.PHPASS_P, password, salt);
         if (hash.startsWith("*")) {
             hash = CraftCommons.encrypt(CraftCommons.unixHashIdentify(salt), password, salt);
         }
