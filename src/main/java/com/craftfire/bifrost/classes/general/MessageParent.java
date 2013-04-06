@@ -1,7 +1,7 @@
 /*
  * This file is part of Bifrost.
  *
- * Copyright (c) 2011-2012, CraftFire <http://www.craftfire.com/>
+ * Copyright (c) 2011 CraftFire <http://www.craftfire.com/>
  * Bifrost is licensed under the GNU Lesser General Public License.
  *
  * Bifrost is free software: you can redistribute it and/or modify
