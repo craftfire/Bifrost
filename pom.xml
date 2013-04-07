@@ -250,7 +250,7 @@
                     <detectLinks>true</detectLinks>
                     <linksource>true</linksource>
                     <links>
-                        <link>http://${project.artifactID}.craftfire.com/apidocs</link>
+                        <link>http://commons.craftfire.com/apidocs</link>
                     </links>
                 </configuration>
             </plugin>
