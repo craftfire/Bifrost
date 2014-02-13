@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Project information -->
@@ -7,23 +6,26 @@
     <groupId>com.craftfire</groupId>
     <artifactId>bifrost</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <url>http://www.craftfire.com</url>
+    <packaging>jar</packaging>
     <inceptionYear>2011</inceptionYear>
+    <url>http://www.craftfire.com</url>
     <description>API library that provides authentication, control, and syncing of supported scripts and databases.</description>
+
+    <!-- Parent information -->
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
     <!-- Build properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mainClass>${project.groupId}.${project.artifactId}.AuthDebug</mainClass>
-        <commonsVersion>0.0.1-SNAPSHOT</commonsVersion>
         <buildNumber>0</buildNumber>
+        <ciSystem>unknown</ciSystem>
+        <commit>unknown</commit>
+        <mainClass>${project.groupId}.${project.artifactId}.AuthDebug</mainClass>
     </properties>
-
-    <!-- Organization information -->
-    <organization>
-        <name>CraftFire</name>
-        <url>http://www.craftfire.com</url>
-    </organization>
 
     <!-- License information -->
     <licenses>
@@ -34,6 +36,31 @@
         </license>
     </licenses>
 
+    <!-- Organization information -->
+    <organization>
+        <name>CraftFire</name>
+        <url>http://www.craftfire.com</url>
+    </organization>
+
+    <!-- Project developers -->
+    <developers>
+        <developer>
+            <id>Contex</id>
+            <name>Contex</name>
+            <email>contexmoh@gmail.com</email>
+        </developer>
+        <developer>
+            <id>Wolf480pl</id>
+            <name>Wolf480pl</name>
+            <email>wolf480@interia.pl</email>
+        </developer>
+        <developer>
+            <id>Wulfspider</id>
+            <name>Luke Spragg</name>
+            <email>the@wulf.im</email>
+        </developer>
+    </developers>
+
     <!-- Source code access -->
     <scm>
         <developerConnection>scm:git:git@github.com:CraftFire/Bifrost.git</developerConnection>
@@ -41,23 +68,23 @@
         <url>https://github.com/CraftFire/Bifrost</url>
     </scm>
 
-    <!-- Build server -->
+    <!-- Continuous integration -->
     <ciManagement>
-        <system>jenkins</system>
-        <url>http://build.craftfire.com/job/Bifrost</url>
+        <system>travis</system>
+        <url>https://travis-ci.org/CraftFire/Bifrost</url>
     </ciManagement>
 
-    <!-- Issue tracker -->
+    <!-- Issue management -->
     <issueManagement>
         <system>jira</system>
-        <url>http://issues.craftfire.com/browse/BIFROST</url>
+        <url>https://craftfire.atlassian.net/browse/BIFROST</url>
     </issueManagement>
 
     <!-- Dependency repositories -->
     <repositories>
         <repository>
-            <id>craftfire-repo</id>
-            <url>http://repo.craftfire.com</url>
+            <id>sonatype-nexus</id>
+            <url>https://oss.sonatype.org/content/groups/public</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -68,18 +95,22 @@
     <!-- Build plugin repositories -->
     <pluginRepositories>
         <pluginRepository>
-            <id>craftfire-repo</id>
-            <url>http://repo.craftfire.com</url>
+            <id>sonatype-nexus</id>
+            <url>https://oss.sonatype.org/content/groups/public</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
-    <!-- Build dependencies -->
+    <!-- Project dependencies -->
     <dependencies>
         <!-- Include in final JAR -->
         <dependency>
             <groupId>com.craftfire</groupId>
             <artifactId>commons</artifactId>
-            <version>${commonsVersion}</version>
+            <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- Testing only -->
@@ -119,10 +150,10 @@
                     <execution>
                         <configuration>
                             <properties>
-                                <name>${project.name}</name>
+                                <project>${project.name}</project>
+                                <year>${project.inceptionYear}</year>
+                                <name>${project.organization.name}</name>
                                 <url>${project.organization.url}</url>
-                                <inceptionYear>${project.inceptionYear}</inceptionYear>
-                                <organization>${project.organization.name}</organization>
                             </properties>
                             <quiet>true</quiet>
                             <encoding>UTF-8</encoding>
@@ -151,10 +182,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <compilerArguments>
                         <O>-Xlint:all</O>
                         <O>-Xlint:-path</O>
@@ -163,11 +194,11 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
-            <!-- Testing plugin -->
+            <!-- Surefire test plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.14</version>
+                <version>2.15</version>
                 <configuration>
                     <excludes>
                         <exclude>**/BifrostScriptTest.java</exclude>
@@ -181,19 +212,25 @@
                 <version>2.4</version>
                 <configuration>
                     <archive>
-                        <manifest>
+                        <manifestEntries>
+                            <Specification-Title>${project.name}</Specification-Title>
+                            <Specification-Version>${project.version}+${ciSystem}-b${buildNumber}.git-${commit}</Specification-Version>
+                            <Specification-Vendor>${project.organization.name}</Specification-Vendor>
                             <mainClass>${mainClass}</mainClass>
-                        </manifest>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
-            <!-- JAR dependency addition plugin -->
+            <!-- Dependency addition plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.2</version>
                 <executions>
                     <execution>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                        </configuration>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
@@ -201,56 +238,22 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Javadocs GitHub deployment -->
+            <!-- Coveralls reporting plugin  -->
             <plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version>0.7</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <server>github-deploy</server>
-                            <repositoryName>${project.name}</repositoryName>
-                            <repositoryOwner>${project.organization.name}</repositoryOwner>
-                            <branch>refs/heads/gh-pages</branch>
-                            <merge>true</merge>
-                            <path>commons</path>
-                            <message>Javadocs for ${project.name} ${project.version}-b${buildNumber}</message>
-                        </configuration>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>2.1.0</version>
             </plugin>
-        </plugins>
-    </build>
-
-    <!-- Reporting configuration -->
-    <reporting>
-        <!-- Reporting plugins -->
-        <plugins>
-            <!-- Javadoc creation plugin -->
+            <!-- Cobertura test coverage plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
-                    <windowtitle>Javadoc | ${project.name} ${project.version}-b${buildNumber}</windowtitle>
-                    <doctitle><![CDATA[${project.name} ${project.version}-b${buildNumber}]]></doctitle>
-                    <header><![CDATA[<a href="https://github.com/CraftFire/${project.name}" target="_blank"><img src="#"></a>]]></header>
-                    <bottom><![CDATA[Copyright (c) {inceptionYear} <a href="${project.organization.url}" target="_blank">${project.organization.name}</a>. ${project.name} is licensed under <a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">GNU Lesser General Public License Version 3</a>]]></bottom>
-                    <stylesheetfile>src/main/javadoc/stylesheet.css</stylesheetfile>
-                    <author>false</author>
-                    <version>false</version>
-                    <detectLinks>true</detectLinks>
-                    <linksource>true</linksource>
-                    <links>
-                        <link>http://commons.craftfire.com/apidocs</link>
-                    </links>
+                    <format>xml</format>
+                    <maxmem>256m</maxmem>
                 </configuration>
             </plugin>
         </plugins>
-    </reporting>
+    </build>
 </project>
