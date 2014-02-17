@@ -106,12 +106,12 @@
 
     <!-- Project dependencies -->
     <dependencies>
-        <!-- Include in final JAR -->
+        <!-- Provided by third-party -->
         <dependency>
             <groupId>com.craftfire</groupId>
             <artifactId>commons</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <!-- Testing only -->
         <dependency>
@@ -220,23 +220,6 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
-            </plugin>
-            <!-- Dependency addition plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <minimizeJar>true</minimizeJar>
-                        </configuration>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <!-- Coveralls reporting plugin  -->
             <plugin>
